@@ -1,0 +1,107 @@
+/**
+ * PickyBooking — design tokens
+ *
+ * TABLE OF CONTENTS
+ * 1. Brand and surface colors
+ * 2. Spacing, radius, shadow
+ * 3. Admin vs frontend context
+ *
+ * Admin / plugin chrome brand lives here (`--picky-brand` mint).
+ * Frontend booking CTAs use Layout Colors → Submit button
+ * (`color_form_book_now` → CSS `--brand`), default #221c24 — not the plugin mint.
+ */
+
+body.picky-admin,
+.picky-root {
+    /* Plugin brand (admin chrome, builder CTAs) — not the public booking button */
+    --picky-brand: #79fed1;
+    --picky-brand-hover: #5ff0c6;
+    --picky-brand-on: #111111;
+    /* Readable brand tint for text/links on light surfaces */
+    --picky-brand-ink: #0f766e;
+    /* Neutral accent — chrome, focus rings, secondary UI */
+    --picky-accent: #717171;
+    --picky-accent-hover: #475569;
+
+    /* Dark shell (settings rail / glass panels) */
+    --picky-bg-dark: #1a1d21;
+    --picky-bg-glass: rgba(26, 29, 33, 0.85);
+    --picky-border: rgba(255, 255, 255, 0.1);
+    --picky-text: #e4e4e4;
+    --picky-text-muted: #a8a8a8;
+    --picky-shadow-deep: 0 12px 32px rgba(0, 0, 0, 0.4);
+
+    /* Layout rhythm */
+    --picky-radius-lg: 12px;
+    --picky-radius-md: 8px;
+    --picky-radius-sm: 6px;
+    --picky-transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Builder transform handles — dark for contrast on light canvas */
+    --picky-handle-fill: #221c24;
+    --picky-handle-fill-hover: #111111;
+    --picky-handle-fill-active: #000000;
+    --picky-handle-stroke: rgba(255, 255, 255, 0.92);
+    --picky-handle-stroke-hover: #ffffff;
+    --picky-handle-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.85),
+        0 1px 3px rgba(0, 0, 0, 0.28);
+    --picky-handle-shadow-hover:
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        0 0 0 1px #ffffff,
+        0 0 0 2px rgba(34, 28, 36, 0.2),
+        0 2px 6px rgba(0, 0, 0, 0.28);
+    --picky-handle-size: 8px;
+    --picky-handle-radius: 2px;
+    --picky-handle-hover-scale: 1.06;
+    --picky-bbox-outline: rgba(71, 85, 105, 0.45);
+
+    /* WP-admin light form controls (settings + shared inputs) */
+    --picky-settings-input-bg: #fff;
+    --picky-settings-input-border: #c5ccd6;
+    --picky-settings-input-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.12), inset 0 0 0 1px rgba(15, 23, 42, 0.04);
+    --picky-settings-input-color: #1e293b;
+    --picky-settings-input-radius: 6px;
+    --picky-settings-input-font-size: 12px;
+    --picky-settings-input-focus-ring: inset 0 1px 2px rgba(15, 23, 42, 0.1), 0 0 0 2px rgba(71, 85, 105, 0.28);
+
+    /* ——— Warm pastel system (shared with landing; 20 tones) ——— */
+    --picky-p-01: #f5f0e8;
+    --picky-p-02: #f7f2ea;
+    --picky-p-03: #f3ebe1;
+    --picky-p-04: #efe6d8;
+    --picky-p-05: #f8ebe3;
+    --picky-p-06: #f5e0d4;
+    --picky-p-07: #f7e8eb;
+    --picky-p-08: #fce7f0;
+    --picky-p-09: #f7f0de;
+    --picky-p-10: #f5edd0;
+    --picky-p-11: #eef7f3;
+    --picky-p-12: #e6f5ef;
+    --picky-p-13: #dcefe8;
+    --picky-p-14: #e8f4f2;
+    --picky-p-15: #eceaf8;
+    --picky-p-16: #e8e4f5;
+    --picky-p-17: #e4e9f7;
+    --picky-p-18: #e8eef5;
+    --picky-p-19: #e6e8ef;
+    --picky-p-20: #ebe7e2;
+
+    --picky-ico-lavender-bg: #ebe9fe;
+    --picky-ico-lavender-fg: #4338ca;
+    --picky-ico-mint-bg: #d1fae5;
+    --picky-ico-mint-fg: #047857;
+    --picky-ico-peach-bg: #ffedd5;
+    --picky-ico-peach-fg: #c2410c;
+    --picky-ico-amber-bg: #fef3c7;
+    --picky-ico-amber-fg: #b45309;
+    --picky-ico-rose-bg: #ffe4e6;
+    --picky-ico-rose-fg: #be123c;
+}
+
+/* Root shell: predictable box model for all descendants */
+.picky-root {
+    box-sizing: border-box;
+    max-width: 100%;
+}

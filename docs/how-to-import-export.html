@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Import / Export — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html" class="is-active">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>Import / Export layouts</h1>
+          <p>Clone floor plans between staging and production, duplicate presets, and move services with the layout JSON.</p>
+          <div class="badge-row">
+            <span class="badge badge--accent">How-to</span>
+            <span class="badge">Import / Export tab</span>
+          </div>
+        </header>
+
+        <section class="card">
+          <p><span class="badge">Pro</span> This guide describes <strong>PickyBooking Pro</strong> capabilities. They are not included in PickyBooking — see <a href="free-vs-pro.html">Free vs Pro</a>.</p>
+        </section>
+
+
+        <section class="card">
+          <h2>What gets exported</h2>
+          <p class="lead">Layout JSON typically includes elements (positions, types, colors, rotation), services library, appearance flags (IDs, labels, avatars…), wizard/event/multi-select meta, and canvas settings — not live bookings or payment credentials.</p>
+        </section>
+
+        <section class="card">
+          <h2>Export a layout</h2>
+          <ol class="steps">
+            <li>
+              <strong>Open the layout</strong>
+              <span>Layouts gallery → open in the visual editor, <em>or</em> use Export on the layout card if shown.</span>
+            </li>
+            <li>
+              <strong>Click Export</strong>
+              <span>In the builder top bar (as described on the Import / Export tab). Download / copy the JSON file.</span>
+            </li>
+            <li>
+              <strong>Store safely</strong>
+              <span>Version the file with the layout name and date (e.g. <code>dining-main-2026-08.json</code>).</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Import into this site</h2>
+          <ol class="steps">
+            <li>
+              <strong>PickyBooking → Import / Export</strong>
+              <span>Tab 10 in the settings shell.</span>
+            </li>
+            <li>
+              <strong>Optional title</strong>
+              <span>Name the new layout (default “Imported Layout”).</span>
+            </li>
+            <li>
+              <strong>Paste JSON or upload the file</strong>
+              <span>Submit the import form. On success you are taken into the builder for the new <code>picky_layout</code> post.</span>
+            </li>
+            <li>
+              <strong>Review &amp; save</strong>
+              <span>Check services bindings, appearance toggles, and shortcode ID (new ID ≠ old site).</span>
+            </li>
+          </ol>
+          <div class="callout callout--warn">
+            <strong>Invalid JSON</strong>
+            <p>Import errors if the file is empty, not JSON, or has no valid elements. Re-export from the source layout; do not hand-edit IDs unless you know the schema.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Clone across environments</h2>
+          <ol class="steps">
+            <li>
+              <strong>Export on staging</strong>
+              <span>After the map looks right.</span>
+            </li>
+            <li>
+              <strong>Import on production</strong>
+              <span>Same plugin version recommended.</span>
+            </li>
+            <li>
+              <strong>Re-publish the page</strong>
+              <span>New layout ID → update <code>[pickybooking id="…"]</code> (or Elementor widget).</span>
+            </li>
+            <li>
+              <strong>Re-check site settings</strong>
+              <span>Work Days, Payments, Integrations are site-wide — they do not travel inside layout JSON.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Same-site shortcuts</h2>
+          <ul>
+            <li><strong>Duplicate</strong> in the Layouts gallery — quick clone without leaving the site.</li>
+            <li><strong>Bundled presets</strong> — import from the library gallery (restaurant, wedding, cinema…).</li>
+          </ul>
+        </section>
+
+        <div class="footer">
+          <span><a href="how-to-avatars.html">← Avatars</a></span>
+          <span><a href="how-to-ai.html">AI in builder →</a></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

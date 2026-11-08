@@ -1,0 +1,197 @@
+/**
+ * PickyBooking — tools icon font (legacy handle)
+ *
+ * TABLE OF CONTENTS
+ * 1. @font-face
+ * 2. Icon class mapping
+ */
+
+@font-face {
+  font-family: 'picky-tools-font';
+  src:  url('../../assets/font/picky-tools-font.eot?xkkb7t');
+  src:  url('../../assets/font/picky-tools-font.eot?xkkb7t#iefix') format('embedded-opentype'),
+    url('../../assets/font/picky-tools-font.ttf?xkkb7t') format('truetype'),
+    url('../../assets/font/picky-tools-font.woff?xkkb7t') format('woff'),
+    url('../../assets/font/picky-tools-font.svg?xkkb7t#picky-tools-font') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.picky-admin [class^="icon-"], .picky-admin [class*=" icon-"], .picky-wrap [class^="icon-"], .picky-wrap [class*=" icon-"] { 
+  font-family: 'picky-tools-font' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-arrow-down:before {
+  content: "\e900";
+}
+.icon-arrow-left:before {
+  content: "\e901";
+}
+.icon-arrow-right:before {
+  content: "\e902";
+}
+.icon-arrow-up:before {
+  content: "\e903";
+}
+.icon-box:before {
+  content: "\e904";
+}
+.icon-chevron-down:before {
+  content: "\e905";
+}
+.icon-chevron-left:before {
+  content: "\e906";
+}
+.icon-chevron-right:before {
+  content: "\e907";
+}
+.icon-chevron-up:before {
+  content: "\e908";
+}
+.icon-corner-down-left:before {
+  content: "\e909";
+}
+.icon-corner-down-right:before {
+  content: "\e90a";
+}
+.icon-corner-left-down:before {
+  content: "\e90b";
+}
+.icon-corner-left-up:before {
+  content: "\e90c";
+}
+.icon-corner-right-down:before {
+  content: "\e90d";
+}
+.icon-corner-right-up:before {
+  content: "\e90e";
+}
+.icon-corner-up-left:before {
+  content: "\e90f";
+}
+.icon-corner-up-right:before {
+  content: "\e910";
+}
+.icon-crop:before {
+  content: "\e911";
+}
+.icon-edit:before {
+  content: "\e912";
+}
+.icon-edit-2:before {
+  content: "\e913";
+}
+.icon-edit-3:before {
+  content: "\e914";
+}
+.icon-external-link:before {
+  content: "\e915";
+}
+.icon-eye:before {
+  content: "\e916";
+}
+.icon-hash:before {
+  content: "\e931";
+}
+.icon-image:before {
+  content: "\e917";
+}
+.icon-info:before {
+  content: "\e932";
+}
+.icon-layout:before {
+  content: "\e918";
+}
+.icon-link-2:before {
+  content: "\e919";
+}
+.icon-log-in:before {
+  content: "\e91a";
+}
+.icon-log-out:before {
+  content: "\e91b";
+}
+.icon-maximize:before {
+  content: "\e91c";
+}
+.icon-maximize-2:before {
+  content: "\e91d";
+}
+.icon-menu:before {
+  content: "\e91e";
+}
+.icon-more-horizontal:before {
+  content: "\e91f";
+}
+.icon-more-vertical:before {
+  content: "\e920";
+}
+.icon-move:before {
+  content: "\e921";
+}
+.icon-plus:before {
+  content: "\e922";
+}
+.icon-plus-circle:before {
+  content: "\e923";
+}
+.icon-refresh-cw:before {
+  content: "\e924";
+}
+.icon-rotate-ccw:before {
+  content: "\e925";
+}
+.icon-rotate-cw:before {
+  content: "\e926";
+}
+.icon-search:before {
+  content: "\e933";
+}
+.icon-settings:before {
+  content: "\e934";
+}
+.icon-thumbs-down:before {
+  content: "\e927";
+}
+.icon-thumbs-up:before {
+  content: "\e928";
+}
+.icon-tool:before {
+  content: "\e929";
+}
+.icon-trash:before {
+  content: "\e92a";
+}
+.icon-trash-2:before {
+  content: "\e92b";
+}
+.icon-trello:before {
+  content: "\e935";
+}
+.icon-user:before {
+  content: "\e92c";
+}
+.icon-x:before {
+  content: "\e92d";
+}
+.icon-x-circle:before {
+  content: "\e92e";
+}
+.icon-zoom-in:before {
+  content: "\e92f";
+}
+.icon-zoom-out:before {
+  content: "\e930";
+}
+.icon-fire:before {
+  content: "\e9a9";
+}

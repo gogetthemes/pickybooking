@@ -1,0 +1,181 @@
+/**
+ * PickyBooking — tools icon font (builder)
+ *
+ * TABLE OF CONTENTS
+ * 1. @font-face
+ * 2. Icon class mapping
+ */
+
+@font-face {
+  font-family: 'picky-tools-font';
+  src:
+    url('../../assets/font/picky-tools-font.ttf') format('truetype'),
+    url('../../assets/font/picky-tools-font.woff') format('woff'),
+    url('../../assets/font/picky-tools-font.svg#picky-tools-font') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+.picky-admin [class^="icon-"], .picky-admin [class*=" icon-"], .picky-wrap [class^="icon-"], .picky-wrap [class*=" icon-"] {
+    
+    font-family: 'picky-tools-font' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-write:before {
+    content: "\e900";
+}
+.icon-clock:before {
+    content: "\e901";
+}
+.icon-reply:before {
+    content: "\e902";
+}
+.icon-forward:before {
+    content: "\e904";
+}
+.icon-flag:before {
+    content: "\e905";
+}
+.icon-search:before {
+    content: "\e906";
+}
+.icon-trash:before {
+    content: "\e907";
+}
+.icon-envelope:before {
+    content: "\e908";
+}
+.icon-bubble:before {
+    content: "\e909";
+}
+.icon-user:before {
+    content: "\e90a";
+}
+.icon-cloud:before {
+    content: "\e90b";
+}
+.icon-download:before {
+    content: "\e925";
+}
+.icon-upload:before {
+    content: "\e926";
+}
+.icon-bell:before {
+    content: "\e927";
+}
+.icon-folder:before {
+    content: "\e90c";
+}
+.icon-pin:before {
+    content: "\e90d";
+}
+.icon-camera:before {
+    content: "\e90e";
+}
+.icon-image:before {
+    content: "\e90f";
+}
+.icon-cog:before {
+    content: "\e910";
+}
+.icon-book:before {
+    content: "\e928";
+}
+.icon-map-marker:before {
+    content: "\e911";
+}
+.icon-store:before {
+    content: "\e929";
+}
+.icon-support:before {
+    content: "\e912";
+}
+.icon-tag:before {
+    content: "\e913";
+}
+.icon-heart:before {
+    content: "\e914";
+}
+.icon-video-camera:before {
+    content: "\e92a";
+}
+.icon-trophy:before {
+    content: "\e92b";
+}
+.icon-cart2:before {
+    content: "\e903";
+}
+.icon-eye:before {
+    content: "\e915";
+}
+.icon-cancel:before {
+    content: "\e916";
+}
+.icon-chart:before {
+    content: "\e917";
+}
+.icon-target:before {
+    content: "\e918";
+}
+.icon-printer:before {
+    content: "\e92c";
+}
+.icon-location:before {
+    content: "\e92d";
+}
+.icon-bookmark:before {
+    content: "\e919";
+}
+.icon-monitor:before {
+    content: "\e91a";
+}
+.icon-cross:before {
+    content: "\e91b";
+}
+.icon-plus:before {
+    content: "\e91c";
+}
+.icon-left:before {
+    content: "\e91d";
+}
+.icon-up:before {
+    content: "\e91e";
+}
+.icon-browser:before {
+    content: "\e91f";
+}
+.icon-windows:before {
+    content: "\e920";
+}
+.icon-switch:before {
+    content: "\e921";
+}
+.icon-dashboard:before {
+    content: "\e922";
+}
+.icon-play:before {
+    content: "\e923";
+}
+.icon-fast-forward:before {
+    content: "\e92e";
+}
+.icon-next:before {
+    content: "\e92f";
+}
+.icon-refresh:before {
+    content: "\e924";
+}
+.icon-home:before {
+    content: "\e930";
+}

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Getting started — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html" class="is-active">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>Getting started</h1>
+          <p>Stage-by-stage path from install to first live booking. Follow this order — each step unlocks the next.</p>
+          <div class="badge-row">
+            <span class="badge badge--accent">Important path</span>
+            <span class="badge">~30–60 minutes first setup</span>
+          </div>
+        </header>
+
+        <section class="card">
+          <h2>Stage 1 — Install</h2>
+          <ol class="steps">
+            <li>
+              <strong>Upload &amp; activate</strong>
+              <span>Install the PickyBooking plugin in WordPress → Plugins. On activation, default settings are written to <code>picky_settings</code>.</span>
+            </li>
+            <li>
+              <strong>Open the dashboard</strong>
+              <span>In wp-admin find the <em>PickyBooking</em> menu. All work happens inside one settings shell with tabs: Bookings, Calendar, Layouts, Main, Work Days, and more.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Stage 2 — Business rules (do this before styling)</h2>
+          <div class="callout">
+            <strong>Why first?</strong>
+            <p>Wrong hours or exclusive/capacity mode break guest availability even if the map looks perfect.</p>
+          </div>
+          <ol class="steps">
+            <li>
+              <strong>Main settings</strong>
+              <span>Set singular/plural item names (Table/Tables, Seat/Seats…), booking window (days ahead), default duration, buffer between bookings, exclusive vs capacity, wizard default, form fields, mobile map behavior.</span>
+            </li>
+            <li>
+              <strong>Work Days</strong>
+              <span>Enable each weekday, open/close times, optional second window (lunch break / double shift).</span>
+            </li>
+            <li>
+              <strong>Form &amp; Emails</strong>
+              <span>Thank-you text, admin email, optional customer confirmation email, consent checkbox copy.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Stage 3 — Build a layout</h2>
+          <ol class="steps">
+            <li>
+              <strong>Layouts → New or preset</strong>
+              <span>Start blank or import a bundled preset (restaurant, wedding, cinema, coworking, beauty, EV, football…).</span>
+            </li>
+            <li>
+              <strong>Place bookable items</strong>
+              <span>Squares and circles are bookable. Walls, text, shapes, icons are visual only. Set capacity, ID, label, color/image, services.</span>
+            </li>
+            <li>
+              <strong>Rotate / 3D if needed</strong>
+              <span>Use Z-rotate for arcs and rows; X/Y tilt for perspective. Guest avatars follow the same angle.</span>
+            </li>
+            <li>
+              <strong>Services library</strong>
+              <span>Define paid/optional services and assign them per item. Add-ons can depend on parent services.</span>
+            </li>
+            <li>
+              <strong>Appearance &amp; wizard override</strong>
+              <span>Canvas background, show seats/IDs/labels/avatars, multi-select, event (one-time) mode, per-layout wizard (Classic / Smart / Smart Map / Simple).</span>
+            </li>
+            <li>
+              <strong>Save &amp; copy shortcode</strong>
+              <span>Copy <code>[pickybooking id="…"]</code> from the layout card or builder badge.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Stage 4 — Optional money &amp; CRM</h2>
+          <ul>
+            <li><strong>Payments</strong> — deposit on/off; Stripe Checkout or WooCommerce; amount from fixed price, services, or both.</li>
+            <li><strong>SMS</strong> — Vonage/Nexmo alert to staff on new booking.</li>
+            <li><strong>Integrations</strong> — HubSpot, Mailchimp, n8n, Zapier, Make, Google Calendar, AI (Groq/OpenAI).</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>Stage 5 — Publish &amp; test</h2>
+          <ol class="steps">
+            <li>
+              <strong>Add shortcode to a page</strong>
+              <span>Or drop the Elementor Layout Navigator / WPBakery map.</span>
+            </li>
+            <li>
+              <strong>Book as a guest</strong>
+              <span>Desktop and mobile. Check unavailable seats, multi-select tray, payment return, emails.</span>
+            </li>
+            <li>
+              <strong>Confirm in admin</strong>
+              <span>Bookings list and Calendar show the reservation. Change status: Requested → Reserved / Canceled.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Stage 6 — Day-to-day operations</h2>
+          <div class="grid-2">
+            <div class="tile">
+              <h3>Bookings tab</h3>
+              <p>Unified list of reservations and multi-item orders. Status, payment, guest data, new-row highlights.</p>
+            </div>
+            <div class="tile">
+              <h3>Calendar tab</h3>
+              <p>Visual day/week view filtered by layout. Open a booking and edit without leaving the calendar.</p>
+            </div>
+          </div>
+          <p class="picky-docs-mt">Detailed walkthrough: <a href="how-to-bookings.html">Handle bookings</a> · <a href="how-to-notifications.html">Emails &amp; SMS</a> · <a href="how-to-crm.html">CRM</a></p>
+        </section>
+
+        <section class="card">
+          <h2>Detailed how-tos</h2>
+          <ul>
+            <li><a href="how-to-layout.html">Build a layout</a> — place items, appearance, publish</li>
+            <li><a href="how-to-services.html">Services &amp; prices</a> — library + bind to seats</li>
+            <li><a href="how-to-payments.html">Payments setup</a> — Stripe / WooCommerce deposits</li>
+          </ul>
+        </section>
+
+        <div class="footer">
+          <span><a href="index.html">← Overview</a></span>
+          <span><a href="how-to-layout.html">Build a layout →</a></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

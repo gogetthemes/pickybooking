@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Handle bookings — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html" class="is-active">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>How to handle bookings</h1>
+          <p>Day-to-day ops: find new reservations, confirm or cancel, edit details, and understand orders vs single bookings.</p>
+          <div class="badge-row">
+            <span class="badge badge--accent">How-to</span>
+            <span class="badge">Bookings · Calendar</span>
+          </div>
+        </header>
+
+        <section class="card">
+          <h2>Where bookings live</h2>
+          <div class="grid-2">
+            <div class="tile">
+              <h3>Bookings tab</h3>
+              <p>List of all reservations and multi-item orders. Best for inbox-style work and status changes.</p>
+            </div>
+            <div class="tile">
+              <h3>Calendar tab</h3>
+              <p>Visual schedule filtered by layout. Best when staff plan a day/week on one venue map.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Statuses (what each means)</h2>
+          <table>
+            <thead><tr><th>Status</th><th>Meaning</th><th>Typical action</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Requested</strong></td>
+                <td>Pending confirmation or unpaid hold</td>
+                <td>Call guest / wait for payment → set Reserved, or Cancel</td>
+              </tr>
+              <tr>
+                <td><strong>Reserved</strong></td>
+                <td>Confirmed (free or paid)</td>
+                <td>Seat stays blocked for that slot</td>
+              </tr>
+              <tr>
+                <td><strong>Canceled</strong></td>
+                <td>Released</td>
+                <td>Seat becomes bookable again</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout">
+            <strong>Multi-item orders</strong>
+            <p>When a guest selects several seats, you get a parent <em>order</em> and child <em>bookings</em>. Changing status on the order can cascade to children — confirm in the editor before bulk-cancelling.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Step-by-step: confirm a new booking</h2>
+          <ol class="steps">
+            <li>
+              <strong>Open Bookings</strong>
+              <span>PickyBooking → Bookings. New rows may be highlighted until marked seen.</span>
+            </li>
+            <li>
+              <strong>Open the row</strong>
+              <span>Check date, time, item ID(s), guest name/phone/email, services, payment state.</span>
+            </li>
+            <li>
+              <strong>Set status to Reserved</strong>
+              <span>If payment is required, wait until paid (or confirm manually if you took cash). Status saves with AJAX feedback.</span>
+            </li>
+            <li>
+              <strong>Optional: edit details</strong>
+              <span>Correct time, notes, or guest fields in the embedded editor (also available from Calendar).</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Cancel a booking</h2>
+          <ol class="steps">
+            <li>
+              <strong>Open the booking or order</strong>
+              <span>From Bookings or Calendar.</span>
+            </li>
+            <li>
+              <strong>Set status to Canceled</strong>
+              <span>The seat frees for that slot (after buffers still apply for nearby times).</span>
+            </li>
+            <li>
+              <strong>Refunds</strong>
+              <span>If paid via Stripe/Woo, refund in that provider’s dashboard — PickyBooking status does not auto-refund.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Use the Calendar</h2>
+          <ol class="steps">
+            <li>
+              <strong>Filter by layout</strong>
+              <span>Pick the venue map you are staffing today.</span>
+            </li>
+            <li>
+              <strong>Click a booking</strong>
+              <span>Editor opens without leaving the calendar.</span>
+            </li>
+            <li>
+              <strong>Change status inline</strong>
+              <span>Same Requested / Reserved / Canceled flow as the list.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>What guests see after you change status</h2>
+          <ul>
+            <li><strong>Reserved</strong> — seat stays unavailable for overlapping times; avatar may show if enabled and guest is a WP user / demo avatar.</li>
+            <li><strong>Canceled</strong> — seat returns to the pool for new bookings.</li>
+            <li><strong>Requested</strong> — usually still blocks the slot so double-booking does not happen while you decide.</li>
+          </ul>
+        </section>
+
+        <div class="footer">
+          <span><a href="how-to-services.html">← Services</a></span>
+          <span><a href="how-to-notifications.html">Emails &amp; SMS →</a></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

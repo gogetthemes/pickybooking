@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shortcodes &amp; embeds — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html" class="is-active">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>Shortcodes &amp; embeds</h1>
+          <p>Publish any saved layout on a page, post, or builder widget.</p>
+        </header>
+
+        <section class="card">
+          <h2>Primary shortcode</h2>
+          <p><code>[pickybooking id="LAYOUT_ID"]</code></p>
+          <ul>
+            <li><strong>id</strong> — required. Numeric WordPress post ID of the layout (<code>picky_layout</code>).</li>
+            <li>Copy from the Layouts gallery card or the builder shortcode badge.</li>
+            <li>You can place several shortcodes on one page; each map runs independently.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>Page builders</h2>
+          <div class="grid-2">
+            <div class="tile">
+              <h3>Elementor</h3>
+              <p>Use the <em>Layout Navigator</em> widget in the PickyBooking category. Pick the layout from the control.</p>
+            </div>
+            <div class="tile">
+              <h3>WPBakery</h3>
+              <p>Mapped shortcode element with layout ID (and related VC params where registered).</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>What the shortcode renders</h2>
+          <ol class="steps">
+            <li><strong>Map canvas</strong><span>Items, walls, labels, icons at builder coordinates.</span></li>
+            <li><strong>Wizard UI</strong><span>Classic / Smart / Smart Map / Simple depending on settings.</span></li>
+            <li><strong>Booking form</strong><span>Date, time, contacts, services, pay/book CTA.</span></li>
+            <li><strong>Account strip</strong><span>When registration/avatars features apply.</span></li>
+          </ol>
+        </section>
+
+        <p class="footer">
+          <span><a href="integrations.html">← Integrations</a></span>
+          <span><a href="faq.html">FAQ →</a></span>
+        </p>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Booking flows — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html" class="is-active">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>Booking flows</h1>
+          <p>Four wizard modes share the same engine — availability, buffers, payments — but change the order guests experience.</p>
+        </header>
+
+        <section class="card">
+          <h2>Choose a mode</h2>
+          <table>
+            <thead><tr><th>Mode</th><th>Best when</th><th>Guest path</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Classic</strong></td>
+                <td>Map is the hero; guests know where they want to sit</td>
+                <td>Item → date/time → details → book</td>
+              </tr>
+              <tr>
+                <td><strong>Smart</strong></td>
+                <td>Time scarcity matters more than specific seats</td>
+                <td>Date/time → available items → details → book</td>
+              </tr>
+              <tr>
+                <td><strong>Smart Map</strong></td>
+                <td>You want both map and live availability</td>
+                <td>Map + dock for date/time → select → tray → book</td>
+              </tr>
+              <tr>
+                <td><strong>Simple</strong></td>
+                <td>Few identical resources; map is optional</td>
+                <td>Date/time → details → auto-assign free item</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="lead picky-docs-mt">Set the site default in <em>Main</em>. Override per layout in the builder.</p>
+        </section>
+
+        <section class="card">
+          <h2>Shared guest capabilities</h2>
+          <div class="grid-2">
+            <div class="tile"><h3>Availability</h3><p>Work days, horizon, duration, buffer, exclusive/capacity all apply in every mode.</p></div>
+            <div class="tile"><h3>Multi-select</h3><p>When enabled on the layout, guests can reserve several items; creates an order + child bookings.</p></div>
+            <div class="tile"><h3>Services</h3><p>Chips from the layout library; add-ons respect parent service rules.</p></div>
+            <div class="tile"><h3>Avatars</h3><p>Booked seats can show the guest photo filling the tile (same size as empty seats).</p></div>
+            <div class="tile"><h3>Event mode</h3><p>Fixed ceremony/match time — calendar UI hidden; optional label on the bar.</p></div>
+            <div class="tile"><h3>Payments</h3><p>CTA becomes Pay &amp; Book when a deposit/provider is required.</p></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Guest journey (Smart Map example)</h2>
+          <ol class="steps">
+            <li><strong>Open the page</strong><span>Map loads; bookable items animate in; dock shows date/time fields.</span></li>
+            <li><strong>Pick date &amp; time</strong><span>Unavailable seats update on the map for that slot.</span></li>
+            <li><strong>Select seat(s)</strong><span>With multi-select, items collect in the tray; otherwise one selection opens the form.</span></li>
+            <li><strong>Add services &amp; contacts</strong><span>Optional party size, email, phone, consent.</span></li>
+            <li><strong>Book or pay</strong><span>Success screen / Stripe or Woo redirect → confirmation emails/SMS/webhooks.</span></li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Mobile</h2>
+          <p>Configure whether phones keep a scaled map, hide the map, or use a dropdown of items. Always test the chosen wizard on a real phone width.</p>
+        </section>
+
+        <p class="footer">
+          <span><a href="builder.html">← Builder</a></span>
+          <span><a href="admin.html">Admin panel →</a></span>
+        </p>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

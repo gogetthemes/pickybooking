@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Industry recipes — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html" class="is-active">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>Industry recipes</h1>
+          <p>Recommended settings per business type — labels, booking mode, wizard, duration, and extras. Start from a bundled preset when one exists.</p>
+          <div class="badge-row">
+            <span class="badge badge--accent">Recipes</span>
+            <span class="badge">Copy → adapt</span>
+          </div>
+        </header>
+
+        <section class="card">
+          <h2>How to use a recipe</h2>
+          <ol class="steps">
+            <li><strong>Import the closest preset</strong><span>Layouts gallery → Restaurant, Wedding, Cinema, Coworking, Beauty, EV, Football — or blank.</span></li>
+            <li><strong>Apply Main + Work Days</strong><span>Match the table below before polishing the map.</span></li>
+            <li><strong>Bind services</strong><span>See <a href="how-to-services.html">Services &amp; prices</a>.</span></li>
+            <li><strong>Publish &amp; test</strong><span>Shortcode + one full guest journey on mobile.</span></li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <article class="feature">
+            <h3>Restaurant / cafe</h3>
+            <ul>
+              <li><strong>Preset:</strong> Restaurant</li>
+              <li><strong>Labels:</strong> Table / Tables</li>
+              <li><strong>Mode:</strong> Exclusive</li>
+              <li><strong>Wizard:</strong> Smart or Smart Map (busy nights → date/time first)</li>
+              <li><strong>Duration:</strong> 1.5–2.5h + buffer for turnover</li>
+              <li><strong>Show:</strong> ID + max persons on hover</li>
+              <li><strong>Services:</strong> cake, wine, decor — bind to larger tables</li>
+              <li><strong>Payments:</strong> optional deposit to cut no-shows</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Wedding / ceremony</h3>
+            <ul>
+              <li><strong>Preset:</strong> Wedding Ceremony</li>
+              <li><strong>Labels:</strong> Seat / Seats</li>
+              <li><strong>Mode:</strong> Exclusive</li>
+              <li><strong>Wizard:</strong> Smart Map or Event schedule (fixed ceremony time)</li>
+              <li><strong>Avatars:</strong> on — great for “who sits where”</li>
+              <li><strong>Multi-select:</strong> optional for couples booking a block</li>
+              <li><strong>Decor:</strong> Text + walls for aisle/altar; do not make them bookable</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Cinema / auditorium</h3>
+            <ul>
+              <li><strong>Preset:</strong> Cinema</li>
+              <li><strong>Labels:</strong> Seat / Seats</li>
+              <li><strong>Mode:</strong> Exclusive</li>
+              <li><strong>Wizard:</strong> Classic or Smart Map; Event mode for a single screening</li>
+              <li><strong>Map:</strong> walls for aisles; consistent seat size</li>
+              <li><strong>Services:</strong> popcorn combo as optional chips</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Coworking / hot desk</h3>
+            <ul>
+              <li><strong>Preset:</strong> Coworking</li>
+              <li><strong>Labels:</strong> Desk / Desks or Seat / Seats</li>
+              <li><strong>Mode:</strong> Capacity (shared room) or Exclusive (private office)</li>
+              <li><strong>Wizard:</strong> Smart — show only free desks for the slot</li>
+              <li><strong>Party size:</strong> on when capacity mode</li>
+              <li><strong>Services:</strong> locker, parking, day-pass upgrade</li>
+              <li><strong>Horizon:</strong> larger days-ahead for weekly planning</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Beauty / clinic / spa</h3>
+            <ul>
+              <li><strong>Preset:</strong> Beauty Salon</li>
+              <li><strong>Labels:</strong> Chair / Chairs or Room / Rooms</li>
+              <li><strong>Mode:</strong> Exclusive</li>
+              <li><strong>Wizard:</strong> Smart; split Work Days for lunch</li>
+              <li><strong>Services:</strong> treatments as services per chair; add-ons as children</li>
+              <li><strong>Form:</strong> consent checkbox + customer email on</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Sports court / field</h3>
+            <ul>
+              <li><strong>Labels:</strong> Court / Courts or Field / Fields</li>
+              <li><strong>Mode:</strong> Exclusive</li>
+              <li><strong>End time:</strong> show time-to for variable sessions</li>
+              <li><strong>Payments:</strong> deposit recommended</li>
+              <li><strong>Mobile:</strong> dropdown if only a few courts</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>EV charging / parking bays</h3>
+            <ul>
+              <li><strong>Preset:</strong> EV Charging</li>
+              <li><strong>Labels:</strong> Bay / Bays</li>
+              <li><strong>Mode:</strong> Exclusive</li>
+              <li><strong>Wizard:</strong> Smart Map</li>
+              <li><strong>Duration:</strong> match typical charge window + buffer</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Day tours / classes / hotel</h3>
+            <ul>
+              <li><strong>Tours / classes:</strong> Capacity + party size; Smart wizard; duration = leg/session length</li>
+              <li><strong>Hotel / B&amp;B:</strong> Exclusive rooms; longer duration / end time; larger days-ahead; email + optional deposit</li>
+            </ul>
+          </article>
+        </section>
+
+        <div class="footer">
+          <span><a href="features.html">← Features</a></span>
+          <span><a href="how-to-layout.html">Build a layout →</a></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

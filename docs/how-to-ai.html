@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI in builder — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html" class="is-active">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>AI in the layout builder</h1>
+          <p>Use Groq or OpenAI to draft a floor plan and generate copy for services, elements, and form text — then always review before publishing.</p>
+          <div class="badge-row">
+            <span class="badge badge--accent">How-to</span>
+            <span class="badge">Integrations → AI</span>
+          </div>
+        </header>
+
+        <section class="card">
+          <p><span class="badge">Pro</span> This guide describes <strong>PickyBooking Pro</strong> capabilities. They are not included in PickyBooking — see <a href="free-vs-pro.html">Free vs Pro</a>.</p>
+        </section>
+
+
+        <section class="card">
+          <h2>What AI can do</h2>
+          <div class="grid-2">
+            <div class="tile">
+              <h3>Layout draft</h3>
+              <p>From a text prompt, generate a starting arrangement of bookable items (and helpers). You edit positions, sizes, and IDs after.</p>
+            </div>
+            <div class="tile">
+              <h3>Copy helpers</h3>
+              <p>Draft service names/descriptions, element labels, and form/thank-you style text where AI buttons appear in admin.</p>
+            </div>
+          </div>
+          <div class="callout callout--warn">
+            <strong>What AI does not do</strong>
+            <p>It does not set Work Days, take payments, or replace a real floor measurement. Treat output as a draft — verify capacity, IDs, and fire codes yourself.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Step 1 — Connect a provider</h2>
+          <ol class="steps">
+            <li>
+              <strong>Open Integrations</strong>
+              <span>PickyBooking → Integrations → AI section.</span>
+            </li>
+            <li>
+              <strong>Choose provider</strong>
+              <span><strong>Groq</strong> (default, fast) or <strong>OpenAI</strong>.</span>
+            </li>
+            <li>
+              <strong>Paste API key</strong>
+              <span>Groq key or OpenAI key. Keys are stored in <code>picky_settings</code>; leave blank on save to keep the existing secret.</span>
+            </li>
+            <li>
+              <strong>Pick a model</strong>
+              <span>Use a listed model for that provider (e.g. Groq <code>meta-llama/llama-4-scout-17b-16e-instruct</code>, OpenAI <code>gpt-4o-mini</code>). Save settings.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Step 2 — Generate a layout draft</h2>
+          <ol class="steps">
+            <li>
+              <strong>Open a layout in the builder</strong>
+              <span>Blank canvas or a preset you will replace/adjust.</span>
+            </li>
+            <li>
+              <strong>Open AI Layout</strong>
+              <span>Use the AI layout draft control in the builder.</span>
+            </li>
+            <li>
+              <strong>Write a concrete prompt</strong>
+              <span>Include industry, approximate counts, and zones. Example: <em>“Wedding ceremony, 40 guest seats in two grids left/right of aisle, bride/groom front, curved front row of 6, labels for Bride’s Family and Groom’s Family.”</em></span>
+            </li>
+            <li>
+              <strong>Apply &amp; edit</strong>
+              <span>Fix overlaps, unify sizes, set custom IDs, bind <a href="how-to-services.html">services</a>, then save.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Prompt tips</h2>
+          <ul>
+            <li>State <strong>counts</strong> (“8 tables of 4”, “24 cinema seats in 4 rows”).</li>
+            <li>Name <strong>zones</strong> you want as Text labels, not bookable items.</li>
+            <li>Mention <strong>shapes</strong> (square vs circle) if it matters.</li>
+            <li>Avoid vague prompts (“nice restaurant”) — you get generic noise.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>Step 3 — AI copy for services / form</h2>
+          <ol class="steps">
+            <li>
+              <strong>Services Library</strong>
+              <span>Where AI fill is offered, generate name/description drafts — then set real prices yourself.</span>
+            </li>
+            <li>
+              <strong>Form &amp; Emails</strong>
+              <span>Optional AI helpers for thank-you / confirm copy. Keep legal consent text human-written.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>When AI fails</h2>
+          <ul>
+            <li>Missing or invalid API key / wrong provider selected.</li>
+            <li>Model id not allowed for that provider — pick from the dropdown again.</li>
+            <li>Rate limit / quota on Groq or OpenAI — retry later or switch provider.</li>
+            <li>Network blocked from the server — hosting firewall must allow outbound HTTPS to the API.</li>
+            <li>Check browser/network response on the AJAX call (<code>picky_ai</code> nonce / layout draft endpoint).</li>
+          </ul>
+        </section>
+
+        <div class="footer">
+          <span><a href="how-to-import-export.html">← Import / Export</a></span>
+          <span><a href="troubleshooting.html">Troubleshooting →</a></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

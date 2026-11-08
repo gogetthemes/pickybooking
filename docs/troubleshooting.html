@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Troubleshooting — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html" class="is-active">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>Troubleshooting</h1>
+          <p>Symptom → likely cause → what to check. Start here when the map or booking flow misbehaves.</p>
+          <div class="badge-row">
+            <span class="badge badge--accent">Reference</span>
+            <span class="badge">Ops checklist</span>
+          </div>
+        </header>
+
+        <section class="card">
+          <h2>Map &amp; availability</h2>
+          <article class="feature">
+            <h3>All seats look free but booking fails / everything is grey</h3>
+            <ul>
+              <li><strong>Work Days</strong> — weekday closed or outside open/close (and second window).</li>
+              <li><strong>Days ahead</strong> — date past the horizon in Main.</li>
+              <li><strong>Buffer / duration</strong> — slot overlaps another booking including turnover.</li>
+              <li><strong>Exclusive vs capacity</strong> — capacity full for party size.</li>
+              <li><strong>Event mode</strong> — layout locked to one date/time; wrong date selected.</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Seat stays blocked after cancel</h3>
+            <ul>
+              <li>Confirm status is <strong>Canceled</strong> (not still Requested).</li>
+              <li>Multi-item order: cancel the parent order / all children.</li>
+              <li>Hard-refresh the public page (cache plugin / CDN).</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Shortcode shows nothing / blank map</h3>
+            <ul>
+              <li>Wrong <code>id</code> — copy again from Layouts gallery.</li>
+              <li>Layout empty or not saved.</li>
+              <li>JS conflict — check browser console; disable other map/booking plugins temporarily.</li>
+              <li>Theme CSS hiding overflow — try transparent canvas off / another theme briefly.</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Rotated seats / avatars look wrong size</h3>
+            <ul>
+              <li>Hard refresh (Cmd+Shift+R). Avatars should fill the same tile and follow rotation.</li>
+              <li>Uneven sizes in a grid usually come from the layout itself (different width/height in builder) — not from avatars.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="card">
+          <h2>Emails &amp; SMS</h2>
+          <article class="feature">
+            <h3>Admin email never arrives</h3>
+            <ul>
+              <li>Correct address in Form &amp; Emails; check spam.</li>
+              <li>Install SMTP (WP <code>wp_mail</code> often fails on shared hosting).</li>
+              <li>Booking must complete (including payment return if Pay &amp; Book).</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Guest confirmation missing</h3>
+            <ul>
+              <li>“Send confirmation to customer” on in Form &amp; Emails.</li>
+              <li>Email field visible in Main and filled by the guest.</li>
+              <li>Same SMTP / spam checks as admin mail.</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>SMS silent</h3>
+            <ul>
+              <li>SMS tab enabled; Vonage key/secret saved; account funded.</li>
+              <li>Destination phone format (E.164).</li>
+              <li>Balance check on save — re-save credentials and watch for errors.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="card">
+          <h2>Payments</h2>
+          <article class="feature">
+            <h3>Pay &amp; Book redirects but booking stays Requested / unpaid</h3>
+            <ul>
+              <li>Finish Stripe Checkout / Woo payment fully — abandon mid-checkout leaves unpaid holds.</li>
+              <li>Test vs live Stripe keys mismatch.</li>
+              <li>Woo: order status must reach paid; check Woo order notes.</li>
+              <li>Failed payment init should not permanently block the map — try another seat/time.</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Amount is 0 or unexpected</h3>
+            <ul>
+              <li>Amount source = services but no services selected / library empty → see <a href="how-to-services.html">Services</a>.</li>
+              <li>Currency mismatch between Payments and service prices.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="card">
+          <h2>CRM &amp; webhooks</h2>
+          <article class="feature">
+            <h3>HubSpot / Mailchimp empty</h3>
+            <ul>
+              <li>Use Test Connection after saving keys.</li>
+              <li>Guest email (and phone for HubSpot matching) required — enable fields in Main.</li>
+              <li>Token scopes / audience ID wrong.</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>n8n / Zapier / Make never fires</h3>
+            <ul>
+              <li>HTTPS webhook URL pasted in the correct Integrations section.</li>
+              <li>Listen for <code>pickybooking.booking_created</code>.</li>
+              <li>HMAC secret must match if configured.</li>
+              <li>Trigger a completed booking (not a half-paid attempt).</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="card">
+          <h2>Avatars &amp; AI</h2>
+          <ul>
+            <li><strong>No photos on booked seats</strong> — see <a href="how-to-avatars.html">Avatars &amp; accounts</a> (layout toggle + registration / user avatar).</li>
+            <li><strong>AI draft fails</strong> — see <a href="how-to-ai.html">AI in builder</a> (provider key, model, rate limits).</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>Quick cache rule</h2>
+          <div class="callout callout--warn">
+            <strong>After CSS/JS or layout save</strong>
+            <p>Hard-refresh the public page and purge any page/CDN cache. Stale assets cause most “it still looks broken” reports.</p>
+          </div>
+        </section>
+
+        <div class="footer">
+          <span><a href="faq.html">← FAQ</a></span>
+          <span><a href="industries.html">Industry recipes →</a></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

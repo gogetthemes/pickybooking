@@ -1,0 +1,114 @@
+/**
+ * PickyBooking — admin icon font
+ *
+ * TABLE OF CONTENTS
+ * 1. @font-face
+ * 2. Icon class mapping
+ */
+
+/**
+ * PickyBooking — Admin fonts
+ *
+ * All styles specific to the Settings surface (#picky-wrap-content.picky-settings-surface).
+ * Loaded after picky-admin.css. Depends on the CSS custom properties defined there.
+ *
+ * Sections:
+ *   1. Settings component styles (cards, toggles, fields, radio, workdays, etc.)
+ *   2. Settings rail / nav shell (fixed sidebar, collapse / expand, responsive)
+ *   3. Integration strips (HubSpot / n8n / Zapier / Make summary rows)
+ */
+
+@font-face {
+    font-family: 'picky-admin-font';
+    src:  url('../font/picky-admin-font.eot?9ghvw3');
+    src:  url('../font/picky-admin-font.eot?9ghvw3#iefix') format('embedded-opentype'),
+      url('../font/picky-admin-font.ttf?9ghvw3') format('truetype'),
+      url('../font/picky-admin-font.woff?9ghvw3') format('woff'),
+      url('../font/picky-admin-font.svg?9ghvw3#picky-admin-font') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+  }
+  
+  i {
+    
+    font-family: 'picky-admin-font' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+  
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icon-calendar:before {
+    content: "\e900";
+  }
+  .icon-chevron-left:before {
+    content: "\e90d";
+  }
+  .icon-chevron-right:before {
+    content: "\e90c";
+  }
+  .icon-code:before {
+    content: "\e90b";
+  }
+  .icon-credit-card:before {
+    content: "\e901";
+  }
+  .icon-droplet:before {
+    content: "\e902";
+  }
+  .icon-edit-2:before {
+    content: "\e913";
+  }
+  .icon-hash:before {
+    content: "\e931";
+  }
+  .icon-layers:before {
+    content: "\e906";
+  }
+  .icon-layout:before {
+    content: "\e918";
+  }
+  .icon-life-buoy:before {
+    content: "\e907";
+  }
+  .icon-link:before {
+    content: "\e908";
+  }
+  .icon-list:before {
+    content: "\e903";
+  }
+  .icon-maximize:before {
+    content: "\e91c";
+  }
+  .icon-minus:before {
+    content: "\e90a";
+  }
+  .icon-plus:before {
+    content: "\e922";
+  }
+  .icon-rotate-ccw:before {
+    content: "\e925";
+  }
+  .icon-settings:before {
+    content: "\e934";
+  }
+  .icon-smartphone:before {
+    content: "\e904";
+  }
+  .icon-toggle-right:before {
+    content: "\e905";
+  }
+  .icon-user:before {
+    content: "\e92c";
+  }
+  .icon-users:before {
+    content: "\e909";
+  }
+  

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PickyBooking Docs — Start here</title>
+  <meta name="description" content="Official PickyBooking documentation: setup stages, booking flows, layout builder, and feature reference." />
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html" class="is-active">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>Visual booking maps for WordPress</h1>
+          <p>
+            PickyBooking lets guests pick a real place on a floor plan — seats, tables, desks, courts, rooms —
+            then book date, time, and add-ons. This guide starts with what matters most, then covers every feature.
+          </p>
+          <div class="badge-row">
+            <span class="badge badge--accent">Read first</span>
+            <span class="badge">Layouts · Bookings · Calendar</span>
+            <span class="badge">Shortcode <code class="picky-docs-code-plain">[pickybooking]</code></span>
+          </div>
+        </header>
+
+        <section class="card">
+          <h2>Edition note</h2>
+          <p>You are reading docs shipped with <strong>PickyBooking</strong> (free). Payments, SMS, CRM, AI, decorative layers, avatars, and JSON import/export require <a href="free-vs-pro.html">PickyBooking Pro</a>.</p>
+        </section>
+
+
+        <section class="card">
+          <h2>What matters most</h2>
+          <p class="lead">If you only have five minutes, do these four things in order.</p>
+          <ol class="steps">
+            <li>
+              <strong>Create a layout</strong>
+              <span>Open Layouts, start blank or import a preset, place bookable items on the map, save.</span>
+            </li>
+            <li>
+              <strong>Set hours &amp; booking rules</strong>
+              <span>In Main + Work Days: item labels, exclusive vs capacity, booking horizon, duration and buffer.</span>
+            </li>
+            <li>
+              <strong>Publish the map</strong>
+              <span>Paste <code>[pickybooking id="LAYOUT_ID"]</code> on a page (or Elementor / WPBakery). Choose Classic, Smart, Smart Map, or Simple.</span>
+            </li>
+            <li>
+              <strong>Manage bookings</strong>
+              <span>Use Bookings and Calendar to confirm or cancel. Optionally enable payments, email/SMS, CRM webhooks.</span>
+            </li>
+          </ol>
+          <div class="callout">
+            <strong>Important</strong>
+            <p>Empty seats and seats with guest photos use the same tile size. Photos fill the seat and follow its rotation / 3D tilt.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Product map</h2>
+          <div class="grid-3">
+            <a class="tile" href="builder.html">
+              <h3>Layout builder</h3>
+              <p>Squares, circles, walls, text, shapes, icons. Rotate, tilt, bind services, AI draft.</p>
+            </a>
+            <a class="tile" href="booking-flows.html">
+              <h3>Guest booking</h3>
+              <p>Four wizard modes, multi-select, services, avatars, mobile map behavior.</p>
+            </a>
+            <a class="tile" href="admin.html">
+              <h3>Admin &amp; ops</h3>
+              <p>Bookings list, calendar, statuses, settings tabs, import/export.</p>
+            </a>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Who it is for</h2>
+          <div class="grid-2">
+            <div class="tile">
+              <h3>Hospitality &amp; events</h3>
+              <p>Restaurants, weddings, cinemas, halls — guests choose a concrete seat or table on a map.</p>
+            </div>
+            <div class="tile">
+              <h3>Workspace &amp; services</h3>
+              <p>Coworking desks, beauty chairs, EV bays, courts — capacity or exclusive mode.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Practical how-to guides</h2>
+          <p class="lead">Step-by-step for real admin work — start here after the overview.</p>
+          <div class="grid-2">
+            <a class="tile" href="how-to-layout.html">
+              <h3>Build a layout</h3>
+              <p>Create/import a map, place seats, appearance, wizard, publish shortcode.</p>
+            </a>
+            <a class="tile" href="how-to-services.html">
+              <h3>Services &amp; prices</h3>
+              <p>Services Library, bind extras to items, check the guest form.</p>
+            </a>
+            <a class="tile" href="how-to-bookings.html">
+              <h3>Handle bookings</h3>
+              <p>Confirm, cancel, Calendar vs list, orders vs single bookings.</p>
+            </a>
+            <a class="tile" href="how-to-notifications.html">
+              <h3>Emails &amp; SMS</h3>
+              <p>Admin mail, guest confirmation, Vonage staff SMS.</p>
+            </a>
+            <a class="tile" href="how-to-crm.html">
+              <h3>CRM &amp; automation</h3>
+              <p>HubSpot, Mailchimp, Google Calendar, n8n / Zapier / Make.</p>
+            </a>
+            <a class="tile" href="how-to-payments.html">
+              <h3>Payments setup</h3>
+              <p>Deposits with Stripe Checkout or WooCommerce.</p>
+            </a>
+            <a class="tile" href="how-to-avatars.html">
+              <h3>Avatars &amp; accounts</h3>
+              <p>Photos on booked seats, WP registration, account bar.</p>
+            </a>
+            <a class="tile" href="how-to-import-export.html">
+              <h3>Import / Export</h3>
+              <p>Clone layouts between staging and production via JSON.</p>
+            </a>
+            <a class="tile" href="how-to-ai.html">
+              <h3>AI in builder</h3>
+              <p>Groq/OpenAI layout drafts and service/form copy helpers.</p>
+            </a>
+            <a class="tile" href="industries.html">
+              <h3>Industry recipes</h3>
+              <p>Restaurant, wedding, cinema, coworking, beauty, tours…</p>
+            </a>
+            <a class="tile" href="troubleshooting.html">
+              <h3>Troubleshooting</h3>
+              <p>Map blocked, mail/SMS silent, payments, CRM webhooks.</p>
+            </a>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Next reading</h2>
+          <ul>
+            <li><a href="getting-started.html">Getting started</a> — full stage-by-stage setup</li>
+            <li><a href="industries.html">Industry recipes</a> — recommended settings by business type</li>
+            <li><a href="features.html">Features catalog</a> — every major feature and sub-points</li>
+            <li><a href="troubleshooting.html">Troubleshooting</a> — when something breaks</li>
+          </ul>
+        </section>
+
+        <div class="footer">
+          <span>PickyBooking</span>
+          <span>Public URL: <code>/wp-content/plugins/PickyBooking/docs/</code></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

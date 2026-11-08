@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Services &amp; prices — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html" class="is-active">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>How to set up services &amp; prices</h1>
+          <p>Create a Services Library for the layout, bind services to seats/tables, and control what guests see in the booking form.</p>
+          <div class="badge-row">
+            <span class="badge badge--accent">How-to</span>
+            <span class="badge">Per-layout library</span>
+          </div>
+        </header>
+
+        <section class="card">
+          <h2>What “services” are</h2>
+          <p class="lead">Extras or products tied to a booking: champagne, massage upgrade, parking pass, meeting-room AV pack. They appear as chips in the guest form. Prices can feed deposits when Payments use “services” or “services or fixed”.</p>
+        </section>
+
+        <section class="card">
+          <h2>Step 1 — Open Services Library</h2>
+          <ol class="steps">
+            <li>
+              <strong>Edit the layout</strong>
+              <span>Layouts → open the map in the builder.</span>
+            </li>
+            <li>
+              <strong>Open Services Library</strong>
+              <span>Use the layout’s Services / library panel (not a global Settings tab). Each layout has its own list.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Step 2 — Add a service</h2>
+          <ol class="steps">
+            <li>
+              <strong>Name &amp; description</strong>
+              <span>Guest-facing title (e.g. “Birthday cake”) and short description.</span>
+            </li>
+            <li>
+              <strong>Price &amp; currency</strong>
+              <span>Numeric price; currency should match what you use in Payments.</span>
+            </li>
+            <li>
+              <strong>Icon (optional)</strong>
+              <span>Pick from the booking icons catalog so chips look clear on mobile.</span>
+            </li>
+            <li>
+              <strong>Add-on of (optional)</strong>
+              <span>Make this service available only when a parent service is selected (e.g. “Extra towels” only with “Spa package”).</span>
+            </li>
+            <li>
+              <strong>Save the library</strong>
+              <span>Then save the layout so bindings persist.</span>
+            </li>
+          </ol>
+          <div class="callout">
+            <strong>AI helper</strong>
+            <p>If Integrations → AI is configured (Groq/OpenAI), you can draft service copy from a short prompt — always review prices before publishing.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Step 3 — Bind services to items</h2>
+          <ol class="steps">
+            <li>
+              <strong>Select a bookable item</strong>
+              <span>Square or circle on the canvas.</span>
+            </li>
+            <li>
+              <strong>Choose available services</strong>
+              <span>Multi-select chips from the library. Only bound services appear when that seat/table is booked.</span>
+            </li>
+            <li>
+              <strong>Repeat by zone</strong>
+              <span>VIP seats → premium services; standard seats → basic list. Duplicate items keep bindings when you copy after binding.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Step 4 — Check the guest form</h2>
+          <ul>
+            <li>Publish / refresh the shortcode page.</li>
+            <li>Select an item that has services → you should see the chips.</li>
+            <li>Select an item with no services → no service section (or empty).</li>
+            <li>If payments use service totals, pick paid services and confirm the Pay &amp; Book amount.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>Common setups</h2>
+          <div class="grid-2">
+            <div class="tile">
+              <h3>Restaurant</h3>
+              <p>Decor, cake, wine package — bind to larger tables only.</p>
+            </div>
+            <div class="tile">
+              <h3>Beauty / clinic</h3>
+              <p>Treatment types as services on each chair/room; add-ons as children.</p>
+            </div>
+            <div class="tile">
+              <h3>Coworking</h3>
+              <p>Day pass extras, locker, parking — bind to desks vs meeting rooms differently.</p>
+            </div>
+            <div class="tile">
+              <h3>Event / wedding</h3>
+              <p>Optional dinner upgrade or shuttle — bind to guest seats, not altar/stage decor.</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="footer">
+          <span><a href="how-to-layout.html">← Build a layout</a></span>
+          <span><a href="how-to-bookings.html">Handle bookings →</a></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

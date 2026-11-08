@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FAQ — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html" class="is-active">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>FAQ</h1>
+          <p>Short answers to common setup and product questions.</p>
+        </header>
+
+        <section class="card">
+
+          <article class="feature">
+            <h3>Lite vs Pro — what do I need?</h3>
+            <p><strong>Lite</strong> (WordPress.org): bookable floor plans, shortcode booking, email alerts. <strong>Pro</strong>: payments, decorative layers, SMS, AI, CRM/webhooks, avatars, JSON import/export, Elementor. See <a href="free-vs-pro.html">Free vs Pro</a>.</p>
+          </article>
+          <article class="feature">
+            <h3>Can I run Lite and Pro together?</h3>
+            <p>No. They share the same booking data types. Activate only one edition per site.</p>
+          </article>
+          <article class="feature">
+            <h3>Why is a seat shown as unavailable?</h3>
+            <p>Another booking overlaps the slot (including buffer), the weekday is closed, the date is outside “days ahead”, or (in capacity mode) remaining persons are zero.</p>
+          </article>
+          <article class="feature">
+            <h3>Exclusive vs capacity — which do I need?</h3>
+            <p><strong>Exclusive</strong> for one party per table/room/court. <strong>Capacity</strong> when many guests share the same resource until max persons is reached.</p>
+          </article>
+          <article class="feature">
+            <h3>Avatars look larger than empty seats</h3>
+            <p>They should not — avatars fill the same bookable tile. Hard-refresh the page (and clear caches). Rotated seats: avatars inherit the same angle.</p>
+          </article>
+          <article class="feature">
+            <h3>Where do I find the layout ID?</h3>
+            <p>Layouts gallery / builder shortcode badge / URL when editing. Use that number in <code>[pickybooking id="…"]</code>.</p>
+          </article>
+          <article class="feature">
+            <h3>Can one page have two maps?</h3>
+            <p>Yes. Place two shortcodes with different layout IDs.</p>
+          </article>
+          <article class="feature">
+            <h3>Do I need WooCommerce?</h3>
+            <p>Only if you choose the WooCommerce payment provider. Stripe Checkout works without Woo. Free bookings need neither.</p>
+          </article>
+          <article class="feature">
+            <h3>How do I clone a layout to another site?</h3>
+            <p>Import / Export tab → export JSON → import on the other install. Or duplicate inside the same site from Layouts.</p>
+          </article>
+          <article class="feature">
+            <h3>Where are the step-by-step tutorials?</h3>
+            <p>Sidebar <strong>How-to guides</strong> plus
+              <a href="industries.html">Industry recipes</a> and
+              <a href="troubleshooting.html">Troubleshooting</a>.
+              Also: <a href="how-to-avatars.html">Avatars</a>,
+              <a href="how-to-import-export.html">Import/Export</a>,
+              <a href="how-to-ai.html">AI in builder</a>.</p>
+          </article>
+          <article class="feature">
+            <h3>Online docs URL</h3>
+            <p>After the plugin is installed, open:<br />
+              <code>/wp-content/plugins/PickyBooking/docs/</code><br />
+              From wp-admin you can also use the Documentation tab link.</p>
+          </article>
+        </section>
+
+        <p class="footer">
+          <span><a href="shortcodes.html">← Shortcodes</a></span>
+          <span><a href="index.html">Back to overview</a></span>
+        </p>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

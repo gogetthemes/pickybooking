@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Features catalog — PickyBooking Docs</title>
+  <meta name="description" content="Complete list of PickyBooking main features and sub-features with explanations." />
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html" class="is-active">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>Features catalog</h1>
+          <p>Full list of main capabilities and their sub-points — with short explanations. Most important blocks are listed first.</p>
+          <div class="badge-row">
+            <span class="badge badge--accent">Complete reference</span>
+            <span class="badge">Priority order</span>
+          </div>
+        </header>
+
+        <section class="card">
+          <h2>Free vs Pro at a glance</h2>
+          <p>Core builder (bookable items), shortcode, emails, and presets are free in <strong>Lite</strong>. Payments, decorative layers, SMS, AI, CRM/automation, avatars, JSON import/export, and Elementor are <strong>Pro</strong>. Full matrix: <a href="free-vs-pro.html">Free vs Pro</a>.</p>
+        </section>
+
+
+        <section class="card">
+          <h2>1. Visual layout builder <span class="badge badge--accent">Core</span></h2>
+          <p class="lead">Draw a real floor/area plan that guests interact with on the front end.</p>
+
+          <article class="feature">
+            <h3>1.1 Bookable items</h3>
+            <p>Anything guests can reserve on the map.</p>
+            <ul>
+              <li><strong>Square items</strong> — rectangular tables, desks, rooms, booths.</li>
+              <li><strong>Circle items</strong> — round tables, stools, pods.</li>
+              <li><strong>Capacity (max persons)</strong> — used in capacity booking mode and party-size logic.</li>
+              <li><strong>Seats count</strong> — optional seat badge on the map.</li>
+              <li><strong>Custom ID / label</strong> — public identifier (e.g. L12, Table 4) and display name.</li>
+              <li><strong>Color or image fill</strong> — brand the plate; images cover the tile.</li>
+              <li><strong>Opacity</strong> — soft overlays for zones still bookable.</li>
+            </ul>
+          </article>
+
+          <article class="feature">
+            <h3>1.2 Decorative / non-bookable layers</h3>
+            <p>Help guests understand the space; they never open a booking form.</p>
+            <ul>
+              <li><strong>Walls</strong> — corridors, stage edges, barriers; free rotation.</li>
+              <li><strong>Text</strong> — section titles (“Bride’s Family”, “Zone A”).</li>
+              <li><strong>Shapes</strong> — rectangles, rounded, circles, triangles for zones.</li>
+              <li><strong>Icons</strong> — bathroom, bar, exit, VIP, etc. from the icon catalog.</li>
+            </ul>
+          </article>
+
+          <article class="feature">
+            <h3>1.3 Transform &amp; canvas</h3>
+            <ul>
+              <li><strong>Drag position</strong> — place items in px; front end matches builder 1:1.</li>
+              <li><strong>Resize</strong> — width/height handles.</li>
+              <li><strong>Rotate Z</strong> — flat rotation for arcs and angled rows.</li>
+              <li><strong>3D tilt (X / Y)</strong> — perspective on the plate; avatars follow the same transform.</li>
+              <li><strong>Layer order</strong> — bring to front / send to back.</li>
+              <li><strong>Duplicate</strong> — Ctrl/Cmd+D for quick grids.</li>
+              <li><strong>Undo / zoom / canvas size</strong> — edit large venues comfortably.</li>
+            </ul>
+          </article>
+
+          <article class="feature">
+            <h3>1.4 Services library</h3>
+            <ul>
+              <li><strong>Named services with price &amp; currency</strong> — shown in the booking popup.</li>
+              <li><strong>Per-item service binding</strong> — only relevant add-ons for that seat/table.</li>
+              <li><strong>Add-ons of parent services</strong> — gated extras.</li>
+              <li><strong>Service icons</strong> — visual chips in the guest UI.</li>
+              <li><strong>AI fill</strong> — draft service copy when AI keys are configured.</li>
+            </ul>
+          </article>
+
+          <article class="feature">
+            <h3>1.5 Layout appearance &amp; modes</h3>
+            <ul>
+              <li><strong>Canvas background</strong> — image/color/fit; transparent canvas for branded pages.</li>
+              <li><strong>Toggle seats, IDs, labels, item fill</strong> — declutter or emphasize.</li>
+              <li><strong>Booked avatars</strong> — show guest photos on reserved seats (same tile size as empty seats).</li>
+              <li><strong>Multi-select</strong> — guests pick several items in one checkout.</li>
+              <li><strong>Event schedule</strong> — one fixed date/time (calendar hidden) for ceremonies/matches.</li>
+              <li><strong>Per-layout wizard override</strong> — Classic / Smart / Smart Map / Simple.</li>
+              <li><strong>AI layout draft</strong> — generate a starting floor plan from a prompt.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="card">
+          <h2>2. Guest booking experience <span class="badge badge--accent">Core</span></h2>
+          <p class="lead">How visitors reserve on your WordPress page.</p>
+
+          <article class="feature">
+            <h3>2.1 Wizard modes</h3>
+            <ul>
+              <li><strong>Classic</strong> — pick item on map → then date/time/details.</li>
+              <li><strong>Smart</strong> — date &amp; time first → only available items → details.</li>
+              <li><strong>Smart Map</strong> — map stays visible; sticky dock for date/time; live availability on seats; selection tray + Book.</li>
+              <li><strong>Simple</strong> — no map pick; date/time/details; auto-assign first free item.</li>
+            </ul>
+          </article>
+
+          <article class="feature">
+            <h3>2.2 Map interaction</h3>
+            <ul>
+              <li><strong>Live availability</strong> — booked/blocked seats disabled for the selected slot.</li>
+              <li><strong>Hover badges</strong> — ID and capacity without cluttering the idle map.</li>
+              <li><strong>Enter animation</strong> — staggered reveal of bookable items on load.</li>
+              <li><strong>Mobile behavior</strong> — keep scaled map, hide map, or use dropdown — site-wide or per rules.</li>
+              <li><strong>Account bar</strong> — login / book as guest; logged-in avatars on seats when enabled.</li>
+            </ul>
+          </article>
+
+          <article class="feature">
+            <h3>2.3 Form &amp; checkout</h3>
+            <ul>
+              <li><strong>Date &amp; start time</strong> — within work days and horizon.</li>
+              <li><strong>Optional end time</strong> — variable session length.</li>
+              <li><strong>Party size / seats</strong> — respects capacity mode.</li>
+              <li><strong>Contact fields</strong> — name, phone, email (toggle visibility in Main).</li>
+              <li><strong>Services chips</strong> — extras from the layout library.</li>
+              <li><strong>Multi-item cart</strong> — parent order + child bookings.</li>
+              <li><strong>Book Now / Pay &amp; Book</strong> — CTA switches when payments are required.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="card">
+          <h2>3. Availability &amp; booking engine <span class="badge badge--accent">Core</span></h2>
+          <article class="feature">
+            <h3>3.1 Modes</h3>
+            <ul>
+              <li><strong>Exclusive</strong> — one booking fully occupies the item for that time range (tables, rooms, courts).</li>
+              <li><strong>Capacity</strong> — shared resource until max persons filled (tours, classes, hot desks).</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>3.2 Time rules</h3>
+            <ul>
+              <li><strong>Weekly hours</strong> — per weekday on/off + open/close.</li>
+              <li><strong>Split windows</strong> — second daily range (e.g. lunch closed).</li>
+              <li><strong>Days ahead</strong> — how far into the future guests may book.</li>
+              <li><strong>Default duration</strong> — length when end time is not chosen.</li>
+              <li><strong>Buffer / turnover</strong> — padding before/after so slots do not collide.</li>
+              <li><strong>Slot hints AJAX</strong> — suggests workable times for the guest UI.</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>3.3 Data model</h3>
+            <ul>
+              <li><strong>Layouts CPT</strong> — floor plans + meta.</li>
+              <li><strong>Bookings CPT</strong> — single reservation (or child of an order).</li>
+              <li><strong>Orders CPT</strong> — parent for multi-item checkouts.</li>
+              <li><strong>Statuses</strong> — Requested, Reserved, Canceled (cascade on orders).</li>
+              <li><strong>Failed payment init</strong> — does not permanently block the map.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="card">
+          <h2>4. Admin operations</h2>
+          <article class="feature">
+            <h3>4.1 Bookings</h3>
+            <ul>
+              <li><strong>Unified list</strong> — reservations and paid orders in one place.</li>
+              <li><strong>Inline status</strong> — change Requested / Reserved / Canceled with feedback.</li>
+              <li><strong>Guest &amp; payment columns</strong> — date, time, people, services, payment link.</li>
+              <li><strong>New booking highlights</strong> — mark newly arrived rows as seen.</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>4.2 Calendar</h3>
+            <ul>
+              <li><strong>Layout filter</strong> — focus one venue map.</li>
+              <li><strong>Embedded editor</strong> — open booking details without leaving the calendar.</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>4.3 Layouts library</h3>
+            <ul>
+              <li><strong>User layouts gallery</strong> — open builder, duplicate, delete.</li>
+              <li><strong>Bundled presets</strong> — restaurant, wedding, cinema, coworking, beauty, EV, football…</li>
+              <li><strong>Import / export JSON</strong> — clone between sites.</li>
+              <li><strong>Shortcode copy</strong> — one click from the card.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="card">
+          <h2>5. Payments</h2>
+          <ul>
+            <li><strong>Deposit toggle</strong> — require money before confirmation.</li>
+            <li><strong>Amount source</strong> — fixed, from services, or services-or-fixed.</li>
+            <li><strong>Stripe Checkout</strong> — hosted payment + return handler.</li>
+            <li><strong>WooCommerce</strong> — create order/fee; use Woo gateways (incl. Stripe/PayPal via Woo).</li>
+            <li><strong>Currency</strong> — display and charge currency.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>6. Communications</h2>
+          <ul>
+            <li><strong>Admin email</strong> — <code>wp_mail</code> on new booking.</li>
+            <li><strong>Customer email</strong> — optional confirmation.</li>
+            <li><strong>Thank-you / success copy</strong> — after submit.</li>
+            <li><strong>Staff SMS</strong> — Vonage/Nexmo to a destination phone.</li>
+            <li><strong>AI copy helpers</strong> — draft form/service text when AI is connected.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>7. Integrations &amp; automation</h2>
+          <ul>
+            <li><strong>HubSpot</strong> — contacts / optional deals.</li>
+            <li><strong>Mailchimp</strong> — audience subscribe/update.</li>
+            <li><strong>n8n / Zapier / Make</strong> — JSON webhooks with HMAC secrets.</li>
+            <li><strong>Google Calendar</strong> — service-account events (+ attendees option).</li>
+            <li><strong>AI providers</strong> — Groq (default) or OpenAI for layout draft &amp; copy.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>8. Embeds &amp; page builders</h2>
+          <ul>
+            <li><strong>Shortcode</strong> — <code>[pickybooking id="LAYOUT_ID"]</code>.</li>
+            <li><strong>Elementor</strong> — Layout Navigator widget.</li>
+            <li><strong>WPBakery / Visual Composer</strong> — mapped shortcode params.</li>
+            <li><strong>Multiple maps per page</strong> — each instance scoped in JS.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>9. Theming &amp; front-end polish</h2>
+          <ul>
+            <li><strong>Layout Colors tab</strong> — map / datepicker / form palette for the public shortcode.</li>
+            <li><strong>Container alignment</strong> — how the booking block sits in the page.</li>
+            <li><strong>Demo seeding</strong> — sample layouts, demo guests, avatar occupancy for showcases.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>10. Bundled industry presets</h2>
+          <div class="grid-2">
+            <div class="tile"><h3>Restaurant</h3><p>Dining floor, booths, bar — exclusive tables.</p></div>
+            <div class="tile"><h3>Wedding ceremony</h3><p>Aisle, altar, guest grids — great for booked avatars.</p></div>
+            <div class="tile"><h3>Cinema</h3><p>Auditorium seat map with aisles.</p></div>
+            <div class="tile"><h3>Coworking</h3><p>Hot desks, offices, meeting rooms.</p></div>
+            <div class="tile"><h3>Beauty salon</h3><p>Stations/rooms with zone-bound services.</p></div>
+            <div class="tile"><h3>EV charging</h3><p>Charging bays / parking plan.</p></div>
+            <div class="tile"><h3>Football match</h3><p>Pitch / player position booking.</p></div>
+            <div class="tile"><h3>More recipes in admin Docs</h3><p>Clinic, tours, classes, hotel/B&amp;B patterns.</p></div>
+          </div>
+        </section>
+
+        <p class="footer">
+          <span><a href="getting-started.html">← Getting started</a></span>
+          <span><a href="builder.html">Layout builder →</a></span>
+        </p>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

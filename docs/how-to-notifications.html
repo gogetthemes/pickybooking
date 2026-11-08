@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emails &amp; SMS — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html" class="is-active">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>How to get emails &amp; SMS notifications</h1>
+          <p>Configure staff alerts, guest confirmations, thank-you copy, and optional Vonage SMS when a booking is created.</p>
+          <div class="badge-row">
+            <span class="badge badge--accent">How-to</span>
+            <span class="badge">Form &amp; Emails · SMS</span>
+          </div>
+        </header>
+
+        <section class="card">
+          <p><span class="badge">Pro</span> This guide describes <strong>PickyBooking Pro</strong> capabilities. They are not included in PickyBooking — see <a href="free-vs-pro.html">Free vs Pro</a>.</p>
+        </section>
+
+
+        <section class="card">
+          <h2>What fires when</h2>
+          <table>
+            <thead><tr><th>Channel</th><th>When</th><th>Who</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Admin email</td>
+                <td>Successful new booking (after form submit / paid flow completes)</td>
+                <td>Address in Form &amp; Emails</td>
+              </tr>
+              <tr>
+                <td>Customer email</td>
+                <td>Same moment, if “Send confirmation to customer” is on</td>
+                <td>Guest email field (must be visible &amp; filled)</td>
+              </tr>
+              <tr>
+                <td>Staff SMS</td>
+                <td>Same moment, if SMS is enabled</td>
+                <td>Phone in SMS settings (Vonage/Nexmo)</td>
+              </tr>
+              <tr>
+                <td>Thank-you screen</td>
+                <td>Immediately on the booking page</td>
+                <td>Guest in browser</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="card">
+          <h2>Admin + guest email</h2>
+          <ol class="steps">
+            <li>
+              <strong>Open Form &amp; Emails</strong>
+              <span>PickyBooking → Form &amp; Emails tab.</span>
+            </li>
+            <li>
+              <strong>Set admin email</strong>
+              <span>Where staff copies go. Use an inbox you monitor.</span>
+            </li>
+            <li>
+              <strong>Edit thank-you / success text</strong>
+              <span>Shown after Book / Pay &amp; Book. Keep it short and include what happens next.</span>
+            </li>
+            <li>
+              <strong>Enable customer confirmation (optional)</strong>
+              <span>Turn on “Send confirmation to customer”. In <em>Main</em>, ensure the email field is shown on the form.</span>
+            </li>
+            <li>
+              <strong>Consent checkbox (if needed)</strong>
+              <span>Enable and write clear policy text for GDPR / marketing consent.</span>
+            </li>
+            <li>
+              <strong>Test deliverability</strong>
+              <span>Place a real test booking. If mail never arrives, install an SMTP plugin (WordPress <code>wp_mail</code> alone is often blocked on shared hosting).</span>
+            </li>
+          </ol>
+          <div class="callout callout--warn">
+            <strong>Email field must be on</strong>
+            <p>Customer email and HubSpot/Mailchimp matching need a filled email. Toggle the email field under Main → form visibility.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Staff SMS (Vonage / Nexmo)</h2>
+          <ol class="steps">
+            <li>
+              <strong>Open SMS tab</strong>
+              <span>PickyBooking → SMS.</span>
+            </li>
+            <li>
+              <strong>Enable send SMS</strong>
+              <span>Turn the feature on.</span>
+            </li>
+            <li>
+              <strong>Paste API key &amp; secret</strong>
+              <span>From your Vonage/Nexmo dashboard. Save — the plugin checks balance when credentials are saved.</span>
+            </li>
+            <li>
+              <strong>Destination phone</strong>
+              <span>Staff number that should get “new booking” alerts (E.164 format recommended).</span>
+            </li>
+            <li>
+              <strong>Test</strong>
+              <span>Create a booking on the public map and confirm the SMS arrives within a minute.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Checklist when nothing arrives</h2>
+          <ul>
+            <li>Spam / junk folder for admin and guest addresses.</li>
+            <li>SMTP configured (recommended for production).</li>
+            <li>Guest email field shown and completed.</li>
+            <li>Booking actually completed (payment return finished if Pay &amp; Book).</li>
+            <li>SMS: correct keys, funded Vonage account, phone format.</li>
+          </ul>
+        </section>
+
+        <div class="footer">
+          <span><a href="how-to-bookings.html">← Handle bookings</a></span>
+          <span><a href="how-to-crm.html">CRM &amp; automation →</a></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

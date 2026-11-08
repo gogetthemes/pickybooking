@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Layout builder — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html" class="is-active">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>Layout builder</h1>
+          <p>Design the map guests will use. What you place here is what they click — keep bookable items clear and decorative layers secondary.</p>
+        </header>
+
+        <section class="card">
+          <h2>Open the builder</h2>
+          <p>Go to <strong>Layouts</strong> → open an existing layout or create new / import a preset. The canvas editor loads with tools for elements, services, appearance, and AI draft.</p>
+        </section>
+
+        <section class="card">
+          <h2>Element types</h2>
+          <table>
+            <thead><tr><th>Type</th><th>Bookable?</th><th>Use for</th></tr></thead>
+            <tbody>
+              <tr><td>Square</td><td>Yes</td><td>Tables, desks, rooms, booths</td></tr>
+              <tr><td>Circle</td><td>Yes</td><td>Round tables, stools</td></tr>
+              <tr><td>Wall</td><td>No</td><td>Structure, stage, barriers</td></tr>
+              <tr><td>Text</td><td>No</td><td>Section titles, wayfinding</td></tr>
+              <tr><td>Shape</td><td>No</td><td>Zones, rugs, stages</td></tr>
+              <tr><td>Icon</td><td>No</td><td>Restroom, bar, exit, VIP</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="card">
+          <h2>Editing a bookable item</h2>
+          <ul>
+            <li>Select → drag to move, handles to resize.</li>
+            <li><strong>Rotate Z</strong> for angled rows; <strong>3D pad</strong> for X/Y tilt.</li>
+            <li>Set <strong>custom ID</strong>, <strong>label</strong>, <strong>max persons</strong>, <strong>seats</strong>.</li>
+            <li>Pick <strong>color</strong> or upload a <strong>custom image</strong>.</li>
+            <li>Assign <strong>available services</strong> from the Services Library.</li>
+            <li>Duplicate (Ctrl/Cmd+D), reorder layers, delete.</li>
+          </ul>
+          <div class="callout">
+            <strong>Avatars &amp; rotation</strong>
+            <p>When a seat is booked and avatars are enabled, the photo fills the same tile and inherits the item’s rotation and 3D tilt — so curved rows stay visually consistent.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Layout-level settings</h2>
+          <div class="grid-2">
+            <div class="tile">
+              <h3>Services Library</h3>
+              <p>Create priced services, descriptions, icons, parent/add-on links. Bind per item.</p>
+            </div>
+            <div class="tile">
+              <h3>Appearance</h3>
+              <p>Canvas bg, transparency, show/hide seats·IDs·labels·fill·avatars.</p>
+            </div>
+            <div class="tile">
+              <h3>Wizard &amp; event</h3>
+              <p>Override site wizard; switch to one-time event date/time; multi-select on/off.</p>
+            </div>
+            <div class="tile">
+              <h3>AI Layout</h3>
+              <p>Describe the venue; get a draft plan (requires AI keys in Integrations).</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Good practices</h2>
+          <ol class="steps">
+            <li><strong>Keep bookables uniform where possible</strong><span>Same size for a grid of seats reads cleaner; intentional size differences are fine for VIP/stage seats.</span></li>
+            <li><strong>Label sections with Text, not bookable items</strong><span>Guests should not tap a decorative title expecting a booking.</span></li>
+            <li><strong>Test the shortcode after every major edit</strong><span>Save → refresh the public page → try the intended wizard mode.</span></li>
+          </ol>
+        </section>
+
+        <p class="footer">
+          <span><a href="features.html">← Features</a></span>
+          <span><a href="booking-flows.html">Booking flows →</a></span>
+        </p>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

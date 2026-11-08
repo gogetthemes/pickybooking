@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Integrations — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html" class="is-active">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>Integrations</h1>
+          <p>Optional connections. Core booking works without any of these — enable only what your business needs.</p>
+        </header>
+
+        <section class="card">
+          <p><span class="badge">Pro</span> This guide describes <strong>PickyBooking Pro</strong> capabilities. They are not included in PickyBooking — see <a href="free-vs-pro.html">Free vs Pro</a>.</p>
+        </section>
+
+
+        <section class="card">
+          <h2>Payments</h2>
+          <ul>
+            <li><strong>Stripe Checkout</strong> — API keys in Payments; guest redirected to Stripe, then returns to your site.</li>
+            <li><strong>WooCommerce</strong> — creates a Woo order/fee so you can use any Woo gateway.</li>
+            <li><strong>Amount logic</strong> — fixed deposit, sum of selected services, or services with fixed fallback.</li>
+          </ul>
+          <div class="callout callout--warn">
+            <strong>Test before going live</strong>
+            <p>Run a full book → pay → return → admin status update on a staging site with test keys.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Email &amp; SMS</h2>
+          <ul>
+            <li><strong>WordPress mail</strong> — admin notification; optional customer confirmation (Form &amp; Emails).</li>
+            <li><strong>SMS (Vonage / Nexmo)</strong> — staff phone alert; balance checked when saving keys.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>CRM &amp; automation</h2>
+          <div class="grid-2">
+            <div class="tile"><h3>HubSpot</h3><p>Create/update contacts; optional deals from bookings.</p></div>
+            <div class="tile"><h3>Mailchimp</h3><p>Add guests to an audience list.</p></div>
+            <div class="tile"><h3>n8n / Zapier / Make</h3><p>Webhook on <code>pickybooking.booking_created</code> with optional HMAC secret.</p></div>
+            <div class="tile"><h3>Google Calendar</h3><p>Service-account JSON creates calendar events; optional invite attendees.</p></div>
+          </div>
+          <p class="picky-docs-mt">Each card in Integrations has a connection strip and test action where available.</p>
+        </section>
+
+        <section class="card">
+          <h2>AI</h2>
+          <ul>
+            <li><strong>Providers</strong> — Groq (default) or OpenAI.</li>
+            <li><strong>Layout draft</strong> — generate a starting floor plan from a text prompt.</li>
+            <li><strong>Copy helpers</strong> — service descriptions, form text, element labels.</li>
+          </ul>
+        </section>
+
+        <p class="footer">
+          <span><a href="admin.html">← Admin</a></span>
+          <span><a href="shortcodes.html">Shortcodes →</a></span>
+        </p>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Payments setup — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html" class="is-active">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>How to set up payments</h1>
+          <p>Turn free bookings into deposits with Stripe Checkout or WooCommerce. Guests see <em>Pay &amp; Book</em> when payment is required.</p>
+          <div class="badge-row">
+            <span class="badge badge--accent">How-to</span>
+            <span class="badge">Payments tab</span>
+          </div>
+        </header>
+
+        <section class="card">
+          <p><span class="badge">Pro</span> This guide describes <strong>PickyBooking Pro</strong> capabilities. They are not included in PickyBooking — see <a href="free-vs-pro.html">Free vs Pro</a>.</p>
+        </section>
+
+
+        <section class="card">
+          <h2>Choose a provider</h2>
+          <table>
+            <thead><tr><th>Provider</th><th>Use when</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>None</strong></td>
+                <td>Free reservations only — CTA stays “Book Now”.</td>
+              </tr>
+              <tr>
+                <td><strong>Stripe Checkout</strong></td>
+                <td>You want hosted Stripe without WooCommerce. Paste publishable + secret keys.</td>
+              </tr>
+              <tr>
+                <td><strong>WooCommerce</strong></td>
+                <td>You already sell with Woo and want its gateways (Stripe/PayPal via Woo, etc.).</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="card">
+          <h2>Step-by-step (Stripe)</h2>
+          <ol class="steps">
+            <li>
+              <strong>Open Payments</strong>
+              <span>PickyBooking → Payments.</span>
+            </li>
+            <li>
+              <strong>Enable deposit</strong>
+              <span>Turn deposits on so payment is required to complete the booking flow.</span>
+            </li>
+            <li>
+              <strong>Amount source</strong>
+              <span><em>Fixed</em> = same deposit every time. <em>Services</em> = sum of selected services. <em>Services or fixed</em> = services when present, otherwise fixed.</span>
+            </li>
+            <li>
+              <strong>Currency</strong>
+              <span>Must match your Stripe account and service prices.</span>
+            </li>
+            <li>
+              <strong>Provider = Stripe</strong>
+              <span>Paste test keys first. Save.</span>
+            </li>
+            <li>
+              <strong>Test end-to-end</strong>
+              <span>Public page → select seat → Pay &amp; Book → complete Checkout → return → booking Reserved / paid in Bookings.</span>
+            </li>
+            <li>
+              <strong>Switch to live keys</strong>
+              <span>Only after a successful test. Keep a staging site for future experiments.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Step-by-step (WooCommerce)</h2>
+          <ol class="steps">
+            <li>
+              <strong>Install &amp; configure Woo</strong>
+              <span>Enable the gateways you need under WooCommerce → Settings → Payments.</span>
+            </li>
+            <li>
+              <strong>Provider = WooCommerce</strong>
+              <span>In PickyBooking Payments. Set deposit / amount source / currency as above.</span>
+            </li>
+            <li>
+              <strong>Test</strong>
+              <span>Guest is sent through a Woo order/fee path; when Woo marks paid, the booking status updates accordingly.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Ops notes</h2>
+          <ul>
+            <li>Failed payment starts do not permanently block the map.</li>
+            <li>Refunds are handled in Stripe or Woo — change booking status separately if needed.</li>
+            <li>Service-based amounts need a filled <a href="how-to-services.html">Services Library</a>.</li>
+          </ul>
+        </section>
+
+        <div class="footer">
+          <span><a href="how-to-crm.html">← CRM</a></span>
+          <span><a href="index.html">Back to overview</a></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

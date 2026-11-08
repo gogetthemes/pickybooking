@@ -1,0 +1,4802 @@
+/**
+ * PickyBooking — settings surface stylesheet
+ *
+ * TABLE OF CONTENTS
+ * 1. Settings page shell
+ * 2. Tab rail and panels
+ * 3. Integration strips
+ * 4. Services library panel
+ * 5. Service hierarchy
+ */
+
+@import url('picky-admin-font.css');
+
+/* === ADMIN SETTINGS (canvas-style surface) === */
+
+.picky-wrap--settings .picky-settings-page-title {
+    font-weight: 600;
+    font-size: 1.35rem;
+    color: var(--picky-text, #e4e4e4);
+    margin: 0 0 1rem;
+    letter-spacing: -0.02em;
+}
+
+#picky-wrap-content.picky-settings-surface {
+    max-width: 1100px;
+    padding: 0 0 2rem;
+}
+
+.picky-settings-tabs-wrap--surface {
+    background: var(--picky-bg-dark, #1a1d21);
+    border: 1px solid var(--picky-border, rgba(255, 255, 255, 0.1));
+    border-radius: var(--picky-radius-lg, 12px);
+    box-shadow: var(--picky-shadow-deep, 0 12px 32px rgba(0, 0, 0, 0.35));
+    
+    overflow: visible;
+}
+
+.picky-settings-tabs-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 10px 12px 0;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--picky-border, rgba(255, 255, 255, 0.1));
+}
+
+.picky-settings-tabs-header-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 10px;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--picky-text-muted, #a8a8a8);
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 6px;
+    background: transparent;
+    transition: color var(--picky-transition, 0.2s ease), background var(--picky-transition, 0.2s ease);
+}
+/* Color only for Settings section items. */
+.picky-settings-tabs-header-btn--option {
+	color: #525252;
+}
+.picky-settings-tabs-header-btn--option i {
+	color: #525252;
+}
+
+.picky-settings-tabs-header-btn:hover,
+.picky-settings-tabs-header-btn:focus {
+    color: var(--picky-text, #e4e4e4);
+    outline: none;
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.picky-settings-tabs-header-btn.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--picky-border, rgba(255, 255, 255, 0.1));
+    border-bottom-color: transparent;
+}
+
+.picky-settings-tabs-wrap-inner {
+	padding: 0px 30px 40px;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 120px);
+}
+
+.picky-settings-tab-panel {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+}
+
+.picky-settings-section {
+    margin: 6px 0 4px;
+    padding: 0 2px;
+}
+
+.picky-settings-section__title {
+    margin: 18px 0 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--picky-text-muted, #a8a8a8);
+    border: none;
+    padding: 0;
+}
+
+.picky-settings-section__desc {
+    margin: 0 0 8px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--picky-text-muted, #a8a8a8);
+}
+
+.picky-settings-section__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.picky-settings-section__head .picky-settings-section__title {
+    margin: 18px 0 6px;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.picky-settings-section:first-child .picky-settings-section__head .picky-settings-section__title {
+    margin-top: 0;
+}
+
+.picky-settings-section:first-child .picky-settings-section__brand {
+	margin-top: 0;
+}
+
+.picky-settings-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.picky-settings-card__head .picky-settings-card__title {
+    margin: 0 0 8px;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.picky-settings-card--checkbox-group .picky-settings-card__head .picky-settings-card__title {
+    margin-bottom: 4px;
+}
+
+.picky-settings-field-hint {
+    margin: 0 0 12px;
+    padding: 8px 11px;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--picky-text-muted, #a8a8a8);
+    background: rgba(71, 85, 105, 0.12);
+    border: 1px solid rgba(71, 85, 105, 0.28);
+    border-radius: 6px;
+}
+
+.picky-settings-help {
+    position: relative;
+    flex: 0 0 auto;
+    margin: 0;
+    z-index: 2;
+}
+
+.picky-settings-section__head .picky-settings-help {
+    margin-top: 14px;
+}
+
+.picky-settings-card__head .picky-settings-help {
+    margin-top: 2px;
+}
+
+.picky-settings-help__summary {
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+}
+
+.picky-settings-help__summary::-webkit-details-marker {
+    display: none;
+}
+
+.picky-settings-help__summary::marker {
+    content: '';
+}
+
+.picky-settings-help__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #1c2436;
+    background: #eef1f4;
+    transition:
+        color var(--picky-transition, 0.15s ease),
+        border-color var(--picky-transition, 0.15s ease),
+        background var(--picky-transition, 0.15s ease),
+        box-shadow var(--picky-transition, 0.15s ease);
+}
+
+.picky-settings-help__summary:hover .picky-settings-help__mark,
+.picky-settings-help__summary:focus-visible .picky-settings-help__mark {
+    color: #ffffff;
+    border-color: var(--picky-accent, #475569);
+    background: var(--picky-accent, #475569);
+}
+
+.picky-settings-help__summary:focus-visible {
+    outline: none;
+}
+
+.picky-settings-help__summary:focus-visible .picky-settings-help__mark {
+    box-shadow: 0 0 0 2px rgba(71, 85, 105, 0.35);
+}
+
+.picky-settings-help__content {
+    position: absolute;
+    left: 0;
+    right: auto;
+    top: calc(100% + 8px);
+    bottom: auto;
+    z-index: 100200;
+    min-width: 220px;
+    width: min(320px, 72vw);
+    max-width: min(320px, calc(100vw - 48px));
+    padding: 10px 12px;
+    border-radius: var(--picky-radius-md, 8px);
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+    font-size: 13px;
+    line-height: 1.45;
+    color: #334155;
+    text-align: left;
+}
+
+.picky-settings-help__content a {
+    color: var(--picky-accent, #475569);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.picky-settings-help__content a:hover,
+.picky-settings-help__content a:focus {
+    color: #334155;
+}
+
+.picky-settings-help__content code {
+    padding: 0.12em 0.35em;
+    font-size: 12px;
+    border-radius: 4px;
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.picky-settings-help__content strong {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+.picky-settings-toggle-row .picky-settings-help__content {
+    right: auto;
+    left: 0;
+}
+
+.picky-settings-card {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 720px;
+    padding: 16px 18px 18px;
+    border-radius: var(--picky-radius-md, 8px);
+    border: 1px solid var(--picky-border, rgba(255, 255, 255, 0.1));
+    background: rgba(255, 255, 255, 0.03);
+    margin: 0;
+}
+
+.picky-settings-card__title {
+    margin: 0 0 12px;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--picky-text, #e4e4e4);
+    line-height: 1.35;
+}
+
+.picky-settings-card__title label {
+    cursor: pointer;
+    color: inherit;
+}
+
+.picky-settings-card__desc {
+    margin: -6px 0 12px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--picky-text-muted, #a8a8a8);
+}
+
+.picky-settings-field--shortcode_layout.picky-settings-card {
+    max-width: 100%;
+}
+
+.picky-settings-card--checkbox-group .picky-settings-card__title {
+    margin-bottom: 8px;
+}
+
+.picky-settings-checkbox-stack {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-radius: 6px;
+    border: 1px solid var(--picky-border, rgba(255, 255, 255, 0.08));
+    overflow: visible;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.picky-settings-checkbox-stack__item + .picky-settings-checkbox-stack__item {
+    border-top: 1px solid var(--picky-border, rgba(255, 255, 255, 0.08));
+}
+
+.picky-settings-toggle-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 0;
+    padding: 12px 14px;
+    transition: background var(--picky-transition, 0.15s ease);
+}
+
+.picky-settings-toggle-row:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.picky-settings-toggle-row__main {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    cursor: pointer;
+    color: inherit;
+}
+
+.picky-settings-toggle-row__main input[type="checkbox"] {
+    margin: 3px 0 0;
+    flex: 0 0 auto;
+}
+
+.picky-settings-toggle-row__text {
+    flex: 1 1 auto;
+    font-size: 13px;
+    line-height: 1.89;
+    color: var(--picky-text, #e4e4e4);
+}
+
+.picky-settings-toggle-row .picky-settings-help {
+    margin-top: 1px;
+}
+
+.picky-settings-field-desc {
+    color: var(--picky-text-muted, #a8a8a8);
+    line-height: 3;
+    font-size: 13px;
+}
+
+.picky-settings-checkbox-with-desc {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.picky-settings-checkbox-with-desc .picky-settings-field-desc {
+    flex: 1 1 220px;
+    min-width: 0;
+    margin: 0;
+}
+
+.picky-settings-checkbox-with-desc .picky-settings-checkbox-wrap {
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.picky-settings-checkbox-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    margin: 0;
+    line-height: 1;
+    border-radius: 6px;
+    border: 1px solid var(--picky-border, rgba(255, 255, 255, 0.12));
+    background: rgba(71, 85, 105, 0.12);
+}
+
+.picky-settings-checkbox-wrap input {
+    margin: 0;
+}
+
+
+#picky-wrap-content.picky-settings-surface .picky-settings-group > p:not(.picky-settings-checkbox-wrap) > :is(
+    input[type="text"], input[type="number"], input[type="email"]) {
+    width: 100%;
+    max-width: 100%;
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid var(--picky-border, rgba(255, 255, 255, 0.12));
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--picky-text, #e4e4e4);
+    box-shadow: none;
+    box-sizing: border-box;
+}
+#picky-wrap-content.picky-settings-surface .picky-settings-group > p:not(.picky-settings-checkbox-wrap) > select {
+    width: 100%;
+    max-width: 100%;
+    min-height: 44px;
+    padding: 10px calc(14px + var(--picky-select-end-gutter, 32px)) 10px 14px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid var(--picky-border, rgba(255, 255, 255, 0.12));
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--picky-text, #e4e4e4);
+    box-shadow: none;
+    box-sizing: border-box;
+}
+#picky-wrap-content.picky-settings-surface .picky-settings-group > p > :is(textarea, select) {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-group select {
+    color-scheme: dark;
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-group > p:not(.picky-settings-checkbox-wrap) > :is(input, select):focus,
+#picky-wrap-content.picky-settings-surface .picky-settings-group > p > textarea:focus {
+    outline: none;
+    border-color: var(--picky-accent, #475569);
+    box-shadow: 0 0 0 1px rgba(71, 85, 105, 0.35);
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-group > p > textarea {
+    min-height: 120px;
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.45;
+    border-radius: 6px;
+    border: 1px solid var(--picky-border, rgba(255, 255, 255, 0.12));
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--picky-text, #e4e4e4);
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-group > p:not(.picky-settings-checkbox-wrap) > :is(
+    input[type="text"], input[type="number"], input[type="email"]) {
+	min-height: 36px !important;
+	padding: 5px 10px !important;
+	font-size: var(--picky-settings-input-font-size, 12px) !important;
+	border-radius: var(--picky-settings-input-radius, 6px) !important;
+	border: 1px solid var(--picky-settings-input-border, #c5ccd6) !important;
+	background: var(--picky-settings-input-bg, #fff) !important;
+	color: var(--picky-settings-input-color, #1e293b) !important;
+	box-shadow: var(--picky-settings-input-shadow, inset 0 1px 2px rgba(15, 23, 42, 0.12), inset 0 0 0 1px rgba(15, 23, 42, 0.04)) !important;
+	color-scheme: light !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-group > p:not(.picky-settings-checkbox-wrap) > select {
+	min-height: 36px !important;
+	padding: 5px calc(10px + var(--picky-select-end-gutter, 32px)) 5px 10px !important;
+	font-size: var(--picky-settings-input-font-size, 12px) !important;
+	border-radius: var(--picky-settings-input-radius, 6px) !important;
+	border: 1px solid var(--picky-settings-input-border, #c5ccd6) !important;
+	background: var(--picky-settings-input-bg, #fff) !important;
+	color: var(--picky-settings-input-color, #1e293b) !important;
+	box-shadow: var(--picky-settings-input-shadow, inset 0 1px 2px rgba(15, 23, 42, 0.12), inset 0 0 0 1px rgba(15, 23, 42, 0.04)) !important;
+	color-scheme: light !important;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-group > p > textarea {
+	min-height: 120px !important;
+	padding: 8px 10px !important;
+	font-size: var(--picky-settings-input-font-size, 12px) !important;
+	line-height: 1.45 !important;
+	border-radius: var(--picky-settings-input-radius, 6px) !important;
+	border: 1px solid var(--picky-settings-input-border, #c5ccd6) !important;
+	background: var(--picky-settings-input-bg, #fff) !important;
+	color: var(--picky-settings-input-color, #1e293b) !important;
+	box-shadow: var(--picky-settings-input-shadow, inset 0 1px 2px rgba(15, 23, 42, 0.12), inset 0 0 0 1px rgba(15, 23, 42, 0.04)) !important;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-group > p:not(.picky-settings-checkbox-wrap) > :is(input, select):focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-group > p > textarea:focus {
+	outline: none !important;
+	border-color: var(--picky-accent, #475569) !important;
+	box-shadow: var(--picky-settings-input-focus-ring, inset 0 1px 2px rgba(15, 23, 42, 0.1), 0 0 0 2px rgba(71, 85, 105, 0.22)) !important;
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-group > p:has(.picky-settings-input-suffix) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    max-width: 100%;
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-group > p:has(.picky-settings-input-suffix) > :is(
+    input[type="text"], input[type="number"], input[type="email"], input[type="password"], select) {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+}
+
+/* Password + “token saved” hint: keep full-width field, hint below */
+#picky-wrap-content.picky-settings-surface .picky-settings-group > p:has(input[type="password"]):has(.picky-settings-input-suffix) {
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-group > p:has(input[type="password"]):has(.picky-settings-input-suffix) > input[type="password"] {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-group > p:has(input[type="password"]):has(.picky-settings-input-suffix) > .picky-settings-input-suffix {
+    white-space: normal;
+}
+
+.picky-settings-input-suffix {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-size: 13px;
+    color: var(--picky-text-muted, #a8a8a8);
+}
+
+.picky-settings-field--shop_people_amount.picky-settings-card:not(:has(.picky-settings-checkbox-with-desc)) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px 16px;
+}
+
+.picky-settings-field--shop_people_amount.picky-settings-card:not(:has(.picky-settings-checkbox-with-desc)) .picky-settings-card__title {
+    margin: 0;
+}
+
+.picky-settings-field--shop_people_amount.picky-settings-card:not(:has(.picky-settings-checkbox-with-desc)) .picky-settings-checkbox-wrap {
+    justify-self: end;
+}
+
+#picky-settings-tab-5 .picky-settings-field--deposit_amount,
+#picky-settings-tab-5 .picky-settings-field--deposit_currency,
+#picky-settings-tab-5 .picky-int-card__fields .picky-settings-field--deposit_amount,
+#picky-settings-tab-5 .picky-int-card__fields .picky-settings-field--deposit_currency {
+    max-width: 100%;
+}
+
+
+@media (min-width: 600px) {
+    #picky-settings-tab-5 .picky-settings-field--deposit_amount,
+    #picky-settings-tab-5 .picky-settings-field--deposit_currency,
+    #picky-settings-tab-5 .picky-int-card__fields .picky-settings-field--deposit_amount,
+    #picky-settings-tab-5 .picky-int-card__fields .picky-settings-field--deposit_currency {
+        display: inline-block;
+        vertical-align: top;
+        width: calc(50% - 10px);
+        max-width: calc(50% - 10px);
+        box-sizing: border-box;
+    }
+    #picky-settings-tab-5 .picky-settings-field--deposit_amount,
+    #picky-settings-tab-5 .picky-int-card__fields .picky-settings-field--deposit_amount {
+        margin-right: 16px;
+    }
+}
+
+.picky-settings-group--colors.picky-settings-card,
+.picky-settings-group--colors {
+    max-width: 100%;
+    width: 100%;
+    padding: 16px 18px;
+    border-radius: var(--picky-radius-md, 8px);
+    border: 1px solid var(--picky-border, rgba(255, 255, 255, 0.1));
+    background: rgba(0, 0, 0, 0.2);
+    margin: 0;
+}
+
+.picky-settings-colors {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 20px;
+}
+
+@media (max-width: 920px) {
+    .picky-settings-colors {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.picky-settings-color-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--picky-border, rgba(255, 255, 255, 0.08));
+    min-width: 0;
+}
+
+.picky-settings-color-row:last-child {
+    border-bottom: 0;
+}
+
+.picky-settings-color-row__label {
+    font-size: 13px;
+    color: var(--picky-text-muted, #a8a8a8);
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.picky-settings-color-row__label label {
+    color: inherit;
+}
+
+.picky-settings-color-row__control {
+    flex: 0 0 auto;
+}
+
+.picky-settings-field--work_days.picky-settings-card {
+    max-width: 100%;
+    width: 100%;
+    padding: 16px 18px 20px;
+}
+
+.picky-settings-workdays-fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.picky-settings-field--work_days .picky-checkboxes-fields-wrap {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--picky-border, rgba(255, 255, 255, 0.08));
+    min-width: 0;
+    
+    overflow-x: visible;
+}
+
+.picky-settings-field--work_days .picky-checkboxes-fields-wrap:last-of-type {
+    border-bottom: 0;
+}
+
+.picky-settings-field--work_days .rb-label-wrap {
+    min-width: 100px;
+    flex: 0 0 auto;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--picky-text, #e4e4e4);
+}
+
+.picky-settings-field--work_days select {
+    width: auto;
+    min-width: 7rem;
+    max-width: 10rem;
+    min-height: 40px;
+    padding: 6px calc(10px + var(--picky-select-end-gutter, 32px)) 6px 10px;
+    font-size: 13px;
+    border-radius: 6px;
+    border: 1px solid var(--picky-border, rgba(255, 255, 255, 0.12));
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--picky-text, #e4e4e4);
+    color-scheme: dark;
+    margin: 0 4px 0 0;
+}
+
+.picky-settings-field--work_days .more-time-interval-label {
+    font-size: 12px;
+    color: var(--picky-text-muted, #a8a8a8);
+}
+
+.picky-settings-radio-option {
+    margin-bottom: 12px;
+}
+
+.picky-settings-group > .picky-settings-radio-option:last-child {
+    margin-bottom: 0;
+}
+
+.picky-settings-radio.picky-settings-radio--with-desc {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--picky-border, rgba(255, 255, 255, 0.08));
+    background: rgba(0, 0, 0, 0.12);
+}
+
+.picky-settings-field--shortcode_layout .picky-settings-radio.picky-settings-radio--with-desc {
+    flex-direction: row;
+}
+
+.picky-settings-radio--with-desc .picky-settings-field-desc {
+    flex: 1 1 220px;
+    min-width: min(100%, 200px);
+    margin: 0;
+    padding: 0;
+    color: var(--picky-text-muted, #a8a8a8);
+    line-height: 1.45;
+    font-size: 13px;
+}
+
+.picky-settings-radio--with-desc input[type="radio"] {
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.picky-settings-radio--with-desc label {
+    flex: 0 1 auto;
+    min-width: 0;
+    margin: 0;
+}
+
+.picky-settings-radio--with-desc .picky-settings-help {
+    flex: 0 0 auto;
+    margin: 0;
+    align-self: center;
+    margin-left: auto;
+}
+
+.picky-settings-field--shortcode_layout .picky-settings-radio--with-desc label {
+    font-size: 13px;
+    font-weight: 400;
+    padding: 0 !important;
+    display: inline;
+    border: 0;
+    background: transparent;
+    color: var(--picky-text, #e4e4e4);
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-field--shortcode_layout .picky-settings-radio--with-desc input[type="radio"] {
+    position: static !important;
+    margin: 0;
+}
+
+.picky-settings-field--shortcode_layout h3 label {
+    padding: 0 !important;
+    background: transparent;
+}
+
+.picky-settings-radio {
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 8px;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-field--work_days .picky-more-time-wrap-all.picky-inline,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-field--work_days .picky-more-time-wrap.picky-inline,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-field--work_days .picky-more-time-selects-wrap.picky-inline,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-field--work_days .picky-checkboxes-fields-wrap > .picky-inline {
+	display: inline-flex;
+	align-items: center;
+	flex-wrap: nowrap;
+	gap: 8px 10px;
+	vertical-align: middle;
+	flex: 0 0 auto;
+	min-width: 0;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-field--work_days .picky-more-time-wrap-all.picky-inline {
+	gap: 10px 12px;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-field--work_days .picky-more-time-selects-wrap.picky-inline select {
+	flex: 0 0 auto;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-field--work_days .picky-checkboxes-fields-wrap > select {
+	flex: 0 0 auto;
+}
+
+
+.picky-settings-tabs-wrap .picky-settings-field--work_days .picky-more-time-wrap-all.picky-inline,
+.picky-settings-tabs-wrap .picky-settings-field--work_days .picky-more-time-wrap.picky-inline,
+.picky-settings-tabs-wrap .picky-settings-field--work_days .picky-more-time-selects-wrap.picky-inline,
+.picky-settings-tabs-wrap .picky-settings-field--work_days .picky-checkboxes-fields-wrap > .picky-inline {
+	display: inline-flex;
+	align-items: center;
+	flex-wrap: nowrap;
+	gap: 8px 10px;
+	vertical-align: middle;
+	flex: 0 0 auto;
+	min-width: 0;
+}
+
+.picky-settings-tabs-wrap .picky-settings-field--work_days .picky-more-time-wrap-all.picky-inline {
+	gap: 10px 12px;
+}
+
+@media (max-width: 600px) {
+	body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-field--work_days .picky-checkboxes-fields-wrap,
+	.picky-settings-tabs-wrap .picky-settings-field--work_days .picky-checkboxes-fields-wrap {
+		flex-wrap: wrap;
+		row-gap: 10px;
+	}
+}
+
+.picky-settings-tabs-wrap .picky-settings-field--work_days .picky-checkboxes-fields-wrap input[type="checkbox"] {
+	float: none;
+}
+
+.picky-settings-tabs-wrap .picky-settings-field--work_days .picky-more-time-wrap input[type="checkbox"],
+.picky-settings-tabs-wrap .picky-settings-field--work_days .picky-checkboxes-fields-wrap > .picky-inline input[type="checkbox"] {
+    margin: 0;
+}
+
+.picky-wrap--settings #options-save .submit-wrap {
+    margin-top: 20px;
+    padding: 16px 0 0;
+    border-top: 1px solid var(--picky-border, rgba(255, 255, 255, 0.08));
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.picky-admin .notice { display: none; }
+
+.picky-wrap--settings #options-save .submit-wrap .button-primary {
+	background: var(--picky-brand, #79fed1);
+	border-color: rgba(0, 0, 0, 0.15);
+	text-shadow: none;
+	box-shadow: none;
+	padding: 0 22px;
+	height: 38px;
+	min-height: 38px;
+	line-height: 38px;
+	border-radius: 6px;
+	font-size: 13px;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	color: var(--picky-brand-on, #111);
+}
+
+.picky-wrap--settings #options-save .submit-wrap .button-primary:hover,
+.picky-wrap--settings #options-save .submit-wrap .button-primary:focus {
+    background: var(--picky-brand-hover, #5ff0c6);
+    border-color: rgba(0, 0, 0, 0.25);
+    color: var(--picky-brand-on, #111);
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface #options-save .submit-wrap {
+	position: sticky;
+	bottom: 14px;
+	bottom: max(14px, env(safe-area-inset-bottom, 0px));
+	z-index: 12;
+	margin-top: 20px;
+	padding-top: 14px;
+	padding-inline: 22px;
+	padding-bottom: max(14px, env(safe-area-inset-bottom, 0px));
+	border-radius: 0 0 var(--picky-radius-lg, 12px) var(--picky-radius-lg, 12px);
+	background: transparent;
+}
+
+
+#picky-wrap-content .picky-settings-group input[type="checkbox"],
+#picky-wrap-content .picky-settings-group input[type="radio"] {
+    appearance: auto;   
+}
+
+
+#picky-wrap-content .picky-settings-group input[type="checkbox"]:checked::before,
+#picky-wrap-content .picky-settings-group input[type="radio"]:checked::before {
+	display: none !important;
+}
+
+#picky-wrap-content .picky-settings-group input[type="radio"] {
+	margin-top: 2px;
+	margin-right: 8px;
+}
+
+#picky-wrap-content .picky-setting-radio-buttons input[type="radio"] {
+	margin-top: 2px;
+}
+
+#picky-wrap-content .picky-settings-radio--with-desc input[type="radio"] {
+    margin-top: 0;
+    margin-right: 0;
+}
+
+
+#picky-wrap-content.picky-settings-surface .picky-settings-field--reservable_item_name > p > input[type="text"],
+#picky-wrap-content.picky-settings-surface .picky-settings-field--reservable_items_name > p > input[type="text"] {
+    width: 280px !important;
+    max-width: 100% !important;
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-field--days_ahead > p > input[type="number"],
+#picky-wrap-content.picky-settings-surface .picky-settings-field--table_booked_time > p > input[type="number"],
+#picky-wrap-content.picky-settings-surface .picky-settings-field--table_before_booked_time > p > input[type="number"] {
+    width: 140px !important;
+    max-width: 100% !important;
+    flex: 0 0 140px !important;
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-field--deposit_amount > p > input[type="number"] {
+    width: 160px !important;
+    max-width: 100% !important;
+    flex: 0 0 160px !important;
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-field--deposit_currency > p > input[type="text"] {
+    width: 120px !important;
+    max-width: 100% !important;
+    flex: 0 0 120px !important;
+    text-transform: uppercase;
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-field--container_align > p > select {
+    width: 180px !important;
+    max-width: 100% !important;
+    flex: 0 0 180px !important;
+}
+
+
+
+
+#picky-wrap-content.picky-settings-surface,
+body.picky-admin #picky-wrap-content.picky-settings-surface {
+	max-width: none;
+	width: 100%;
+	box-sizing: border-box;
+	
+	/* Expanded rail fills the old empty band (was 180px rail + 70px gap). */
+	--picky-rail-expanded-w: 250px;
+	--picky-rail-collapsed-w: 63px;
+	--picky-rail-content-gap: 0px;
+	/* Collapsed: flush to content — any gap shows as a white stripe. */
+	--picky-rail-collapsed-content-gap: 0px;
+	
+	--picky-settings-rail-ms: 280ms;
+	--picky-settings-rail-ease: cubic-bezier(0.4, 0, 0.2, 1);
+	
+	--picky-rail-pad-offset: 0px;
+
+	/* WP admin chrome — updated by syncPickySettingsAdminChromeInsets() in picky-admin.js */
+	--picky-wp-footer-height: 40px;
+	--picky-wp-admin-bar-height: 0px;
+	/* Rail fills the viewport under the admin bar (do not reserve footer — that clipped the last icons). */
+	--picky-settings-viewport-height: calc(100vh - var(--picky-wp-admin-bar-height));
+
+	/* Page titles — match Layouts / Bookings / Calendar (picky-cal-head h1) */
+	--picky-settings-tab-heading-size: 1.5rem;
+	--picky-settings-tab-heading-weight: 700;
+	--picky-settings-tab-heading-line-height: 1.2;
+	--picky-settings-tab-heading-tracking: -0.02em;
+	--picky-settings-tab-subtitle-size: 14px;
+	--picky-settings-tab-subtitle-weight: 500;
+	--picky-settings-tab-subtitle-color: #475569;
+	--picky-settings-section-title-size: 1.05rem;
+	--picky-settings-section-title-weight: 700;
+	
+	--picky-settings-option-column-max: 80%;
+
+	padding-bottom: var(--picky-wp-footer-height);
+	box-sizing: border-box;
+}
+
+body.admin-bar.picky-admin #picky-wrap-content.picky-settings-surface {
+	--picky-wp-admin-bar-height: var(--wp-admin--admin-bar--height, 32px);
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-tabs-wrap--surface,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-wrap--surface {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-rows: auto auto;
+	align-items: start;
+	row-gap: 0;
+	width: 100%;
+	max-width: none;
+	min-width: 0;
+	box-sizing: border-box;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-wrap-inner.picky-settings-app-panels {
+	grid-column: 1;
+	grid-row: 1;
+	width: 100%;
+	max-width: none;
+	min-width: 0;
+	box-sizing: border-box;
+	position: relative;
+	z-index: 5;
+	pointer-events: auto;
+	/* Same top inset as Settings option tabs (e.g. Weekly schedule). */
+	padding-top: 16px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-wrap-inner.picky-settings-app-panels.builder-opened.is-tab-layouts {
+    background: #f0f4f6;
+	z-index: 0;
+	overflow-x: auto;
+	overflow-y: visible;
+	max-width: 100%;
+	min-width: 0;
+	-webkit-overflow-scrolling: touch;
+	/* Builder chrome is flush — drop the gallery title inset. */
+	padding-top: 0;
+	/* No trailing band under Layout appearance — WP footer is pulled flush below. */
+	padding-bottom: 30px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #options-save {
+	grid-column: 1;
+	grid-row: 2;
+	display: block;
+	width: 100%;
+	max-width: none;
+	min-width: 0;
+	box-sizing: border-box;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-shell--option-tabs .picky-settings-tabs-wrap-inner.picky-settings-app-panels {
+	display: none !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-shell--option-tabs #options-save {
+	grid-row: 1;
+	display: block !important;
+	height: auto !important;
+	overflow: visible !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+/* App tabs (Bookings / Calendar / Layouts / …): settings form is unused — don't leave a blank band under the panel. */
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-shell--app-tabs #options-save {
+	display: none !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-wrap-inner.picky-settings-option-panels {
+	width: 100%;
+	max-width: var(--picky-settings-option-column-max, 60%);
+	min-width: 0;
+	box-sizing: border-box;
+	padding-top: 16px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-app-panels {
+	width: 100%;
+	max-width: none;
+	min-width: 0;
+	box-sizing: border-box;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-app-tab {
+	width: 100%;
+	max-width: none;
+	min-width: 0;
+	box-sizing: border-box;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-10.picky-settings-app-tab,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-11.picky-settings-app-tab {
+	/* Same left edge as Bookings / Main — no extra column inset. */
+	max-width: none;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+/* Page titles (Bookings h1, Settings section titles, Import/Docs): one shared inset. */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-app-tab .picky-app-tab-title,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-app-tab .picky-cal-head__title-row h1,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-tab-panel > .picky-settings-section:first-child .picky-settings-section__title,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-intro .picky-settings-section__title {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: var(--picky-settings-tab-heading-size);
+	font-weight: var(--picky-settings-tab-heading-weight);
+	line-height: var(--picky-settings-tab-heading-line-height);
+	letter-spacing: var(--picky-settings-tab-heading-tracking);
+	color: #0f172a;
+	text-transform: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-app-tab,
+.picky-settings-tab-panel {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-docs-wrap--embedded {
+	margin: 0;
+	padding: 0;
+	max-width: var(--picky-settings-option-column-max, 80%);
+	width: 100%;
+	box-sizing: border-box;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded > .picky-cal-head,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-docs-wrap--embedded > .picky-cal-head {
+	margin: 0 0 8px;
+	padding: 0 0 12px;
+}
+#picky-wrap-content.picky-settings-surface .picky-settings-app-tab .picky-app-tab-subtitle,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-app-tab .picky-app-tab-subtitle,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head .picky-cal-subtitle,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-tab-panel > .picky-settings-section:first-child .picky-settings-section__desc,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-intro .picky-settings-section__desc {
+	margin: 0;
+	padding: 0;
+	max-width: 42rem;
+	font-size: var(--picky-settings-tab-subtitle-size);
+	font-weight: var(--picky-settings-tab-subtitle-weight);
+	line-height: 1.5;
+	letter-spacing: -0.01em;
+	color: var(--picky-settings-tab-subtitle-color);
+}
+body.picky-admin .picky-wrap[data-picky-context="import-export"] > .picky-app-tab-subtitle {
+	margin: 0;
+	max-width: 42rem;
+	font-size: var(--picky-settings-tab-subtitle-size);
+	font-weight: var(--picky-settings-tab-subtitle-weight);
+	line-height: 1.5;
+	color: var(--picky-settings-tab-subtitle-color);
+}
+#picky-wrap-content.picky-settings-surface .picky-settings-app-tab .picky-cal-head h1,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-app-tab .picky-cal-head h1 {
+	margin: 0;
+	font-size: var(--picky-settings-tab-heading-size);
+	font-weight: var(--picky-settings-tab-heading-weight);
+	line-height: var(--picky-settings-tab-heading-line-height);
+	letter-spacing: var(--picky-settings-tab-heading-tracking);
+	color: #0f172a;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-app-tab .picky-cal-head h1 {
+	color: #0f172a;
+	margin-top: 0;
+}
+
+/* Settings option tabs: first block = Layouts-style page head */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-tab-panel > .picky-settings-section:first-child,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-tab-panel > .picky-int-intro {
+	display: block;
+	margin: 0 0 8px;
+	padding: 0 0 12px;
+	border-bottom: 1px solid #e8eaed;
+	background: transparent;
+	box-shadow: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-tab-panel > .picky-settings-section:first-child .picky-settings-section__head,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-intro .picky-settings-section__head {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 6px;
+	margin: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-tab-panel > .picky-settings-section:first-child .picky-settings-section__desc,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-intro .picky-settings-section__desc {
+	margin: 0;
+}
+
+/* Later section titles on Settings tabs — like “Your layouts” */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-tab-panel > .picky-settings-section:not(:first-child):not(.picky-int-intro) .picky-settings-section__title {
+	margin: 2rem 0 0.35rem;
+	font-size: var(--picky-settings-section-title-size);
+	font-weight: var(--picky-settings-section-title-weight);
+	line-height: 1.3;
+	letter-spacing: -0.01em;
+	color: #111827;
+	text-transform: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-tab-panel > .picky-settings-section:not(:first-child) .picky-settings-section__desc {
+	margin: 0 0 0.85rem;
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 1.45;
+	color: #6b7280;
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-app-tab .picky-settings-section__desc:not(.picky-cal-subtitle) {
+	margin: 0 0 14px;
+	padding: 0;
+	font-size: 13px;
+	line-height: 1.45;
+	color: #aab2be;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-app-tab .picky-settings-section__desc:not(.picky-cal-subtitle) {
+	color: #717171;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-tab-panel > .picky-settings-section:first-child .picky-settings-section__desc,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-intro .picky-settings-section__desc {
+	margin: 0;
+	max-width: 42rem;
+	font-size: var(--picky-settings-tab-subtitle-size);
+	font-weight: var(--picky-settings-tab-subtitle-weight);
+	line-height: 1.5;
+	letter-spacing: -0.01em;
+	color: var(--picky-settings-tab-subtitle-color);
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-app-tab .picky-settings-section__desc strong {
+	color: #0f172a;
+	font-weight: 600;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-app-tab .picky-import-export--embedded .picky-settings-section__desc:not(:last-of-type) {
+	margin-bottom: 8px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-app-tab .picky-import-export--embedded .picky-settings-section__desc:last-of-type {
+	margin-bottom: 14px;
+}
+
+#picky-wrap-content.picky-settings-surface .picky-docs-wrap--embedded .picky-docs-card > h2 {
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.35;
+	letter-spacing: -0.01em;
+	margin: 0 0 6px;
+	padding-bottom: 0;
+	color: #e2e8f0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-docs-wrap--embedded .picky-docs-card > h2 {
+	color: #0f172a;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-docs-wrap--embedded .picky-docs-card > h2 + .description {
+	margin: 0 0 10px;
+	font-size: 13px;
+	line-height: 1.45;
+	color: #717171;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-docs-wrap--embedded .picky-docs-subtitle {
+	margin: 18px 0 8px;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.35;
+	letter-spacing: -0.01em;
+	text-transform: none;
+	color: #334155;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-docs-wrap--embedded .picky-docs-card {
+	margin: 14px 0;
+	padding: 14px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-docs-wrap--embedded .picky-docs-card:first-of-type {
+	margin-top: 0;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-wrap--embedded .picky-cal-head {
+	/* Match Weekly schedule page-head (option-panels first section). */
+	margin: 0 0 8px;
+	padding: 0 0 12px;
+	border-bottom: 1px solid #e8eaed;
+	display: block;
+	background: transparent;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+	box-shadow: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-wrap--embedded .picky-cal-subtitle {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.45;
+	color: #717171;
+	max-width: 42rem;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-wrap--embedded .picky-cal-filters {
+	margin: 0 0 14px;
+	padding: 15px 0 15px;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+/* ——— Collapsible filters / search (Layouts, Calendar, Bookings) ——— */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-filters-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	height: 34px;
+	min-height: 34px;
+	padding: 0 12px;
+	margin: 0;
+	border: 1px solid #c5ccd6 !important;
+	border-radius: 6px;
+	background: #fff !important;
+	color: #171717 !important;
+	box-shadow: none !important;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1;
+	cursor: pointer;
+	flex-shrink: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-filters-toggle .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 1;
+	color: #525252;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-filters-toggle:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-filters-toggle:focus {
+	background: #f8fafc !important;
+	border-color: #94a3b8 !important;
+	color: #0f172a !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-filters-toggle.is-active {
+	background: #f1f5f9 !important;
+	border-color: #94a3b8 !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-stats {
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 16px 32px;
+	flex: 1 1 60%;
+	max-width: 60%;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	align-self: center;
+}
+
+/* Title row: same band as Weekly schedule / Settings first section. */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head {
+	display: block;
+	padding: 0 0 12px;
+	margin: 0 0 8px;
+	border-bottom: 1px solid #e8eaed;
+	background: transparent;
+	box-shadow: none;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head__main {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	width: 100%;
+	min-width: 0;
+}
+/* Bookings / Calendar / Layouts: title+copy left (~40%), stats right (~60%). */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head__main:has(> .picky-cal-head__copy) {
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px 28px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head__copy {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	flex: 1 1 40%;
+	max-width: 40%;
+	min-width: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head__title-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px 12px;
+	width: 100%;
+	min-width: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head__title-row h1 {
+	margin: 0;
+	flex: 0 0 auto;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head__title-row .picky-filters-toggle {
+	margin-left: auto;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head__title-row .picky-cal-head__cta,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head__title-row .picky-layouts-list__add {
+	margin-left: auto;
+	flex-shrink: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head__title-row .picky-filters-toggle + .picky-cal-head__cta,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head__title-row .picky-filters-toggle + .picky-layouts-list__add {
+	margin-left: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head .picky-cal-subtitle {
+	margin: 0;
+	max-width: 42rem;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head .picky-cal-stat {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	min-height: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	color: #334155;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head .picky-cal-stat__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	flex-shrink: 0;
+	border-radius: 10px;
+	background: #f1f5f9;
+	color: #475569;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head .picky-cal-stat__icon i,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head .picky-cal-stat__icon [class^="icon-"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head .picky-cal-stat__icon [class*=" icon-"] {
+	/* Stats use nav icon set (picky-admin-font). .picky-wrap forces tools-font globally. */
+	font-family: 'picky-admin-font' !important;
+	font-size: 16px;
+	line-height: 1;
+	width: 16px;
+	height: 16px;
+	color: inherit;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head .picky-cal-stat-reserved .picky-cal-stat__icon {
+	background: #eef6ff;
+	color: #2563eb;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head .picky-cal-stat-requests .picky-cal-stat__icon {
+	background: #fff8e8;
+	color: #b45309;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head .picky-cal-stat-revenue .picky-cal-stat__icon {
+	background: #ecfdf5;
+	color: #047857;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head .picky-cal-stat__body {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head .picky-cal-stat__value {
+	display: block;
+	margin: 0;
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	color: #0f172a;
+	white-space: nowrap;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head .picky-cal-stat__label {
+	display: block;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1.3;
+	color: #717171;
+	white-space: nowrap;
+}
+@media (max-width: 1100px) {
+	body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head__main:has(> .picky-cal-head__copy) {
+		flex-wrap: wrap;
+	}
+	body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-head__copy {
+		max-width: none;
+		flex: 1 1 100%;
+	}
+	body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-stats {
+		flex: 1 1 100%;
+		max-width: none;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+	}
+}
+
+/* Calendar Jump to row hosts Filters toggle */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 10px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-toolbar .picky-filters-toggle {
+	order: 20;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-toolbar .picky-cal-jump {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	order: 21;
+	margin: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-view-links {
+	order: 15;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-view-link,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-view-link:link,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-view-link:visited {
+	color: #525252 !important;
+	text-decoration: underline dashed #9ca3af !important;
+	text-decoration-thickness: 1px !important;
+	text-underline-offset: 4px !important;
+	border-bottom: 0 !important;
+	box-shadow: none !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-view-link:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-view-link:focus {
+	color: #171717 !important;
+	text-decoration: underline dashed #171717 !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-view-link.is-active {
+	color: #171717 !important;
+	text-decoration: underline solid #171717 !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-jump input[type="date"] {
+	height: var(--picky-ctrl-h, 36px);
+	min-height: var(--picky-ctrl-h, 36px);
+	line-height: calc(var(--picky-ctrl-h, 36px) - 2px);
+	padding: 0 var(--picky-ctrl-px, 10px);
+	box-sizing: border-box;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-jump input[type="date"]::-webkit-datetime-edit,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-jump input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+	padding: 0;
+	line-height: calc(var(--picky-ctrl-h, 36px) - 2px);
+	display: inline-flex;
+	align-items: center;
+	height: calc(var(--picky-ctrl-h, 36px) - 2px);
+}
+
+/* Bookings search panel under tablenav when opened from Filter row */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order .tablenav.top .picky-filters-toggle {
+	vertical-align: middle;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order .picky-orders-search-panel.picky-filters-panel.is-open {
+	width: 100%;
+	max-width: 480px;
+	margin: 0 0 12px !important;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-filters-panel {
+	display: none !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-filters-panel.is-open {
+	display: flex !important;
+}
+
+/* Layouts top bar: restore flex when open */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-top-bar.picky-filters-panel.is-open {
+	display: flex !important;
+	flex-wrap: wrap;
+	align-items: flex-end;
+}
+
+/* Calendar filters grid when open */
+body.picky-admin #picky-wrap-content.picky-settings-surface form.picky-cal-filters.picky-filters-panel.is-open {
+	display: flex !important;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	gap: 10px 12px;
+}
+
+/* Bookings: categories + search toggle on one row */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order .picky-orders-views-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 12px;
+	width: 100%;
+	margin: 0 0 12px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order .picky-orders-views-row .subsubsub {
+	flex: 1 1 auto;
+	min-width: 0;
+	margin: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order .picky-orders-search-panel.picky-filters-panel {
+	display: none !important;
+	flex: 1 1 220px;
+	max-width: 420px;
+	min-width: 180px;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	align-items: center;
+	gap: 8px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order .picky-orders-search-panel.picky-filters-panel.is-open {
+	display: flex !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order .picky-orders-search-panel input[type="search"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order .picky-orders-search-panel input[name="s"] {
+	flex: 1 1 auto;
+	min-width: 0;
+	max-width: 100%;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded .form-table {
+	margin-top: 4px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list form#posts-filter {
+	width: 100%;
+	max-width: none;
+	box-sizing: border-box;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-wrap--embedded,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-wrap--embedded,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-docs-wrap--embedded,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded {
+	width: 100%;
+	max-width: none;
+	min-width: 0;
+	box-sizing: border-box;
+	position: relative;
+	z-index: 1;
+	pointer-events: auto;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-wrap--embedded .picky-cal-head {
+	display: block;
+	margin: 0 0 8px;
+	padding: 0 0 12px;
+	border-bottom: 1px solid #e8eaed;
+	background: transparent;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+	box-shadow: none;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-wrap--embedded .picky-cal-subtitle {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.45;
+	color: #717171;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-wrap--embedded .picky-cal-stats {
+	margin-top: 0;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-layout .picky-layouts-list-stats {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 8px 10px;
+	margin-top: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-layout .picky-layouts-list-stats .picky-cal-stat {
+	margin: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-layout .picky-layouts-list__add {
+	margin: 0;
+	white-space: nowrap;
+}
+
+.picky-embedded-posts-list__toolbar {
+	margin: 0 0 10px 0;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-layout .picky-reservations-custom__table thead th.column-edit_link,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-layout .picky-reservations-custom__table tbody td.column-edit_link {
+	text-align: right;
+	display: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-layout .picky-reservations-custom__table tbody td.column-edit_link .button {
+	vertical-align: middle;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__form {
+	margin: 0;
+	padding: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-7 .picky-reservations-top-bar,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-9 .picky-reservations-top-bar,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-top-bar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: flex-start;
+	gap: 10px 14px;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0 0 14px;
+	padding: 0 0 16px 0;
+	background: rgba(248, 251, 255, 0.72);
+	border-bottom: 1px solid #e0e0e0;
+	border-radius: 0;
+	position: sticky;
+	top: 24px;
+	z-index: 6;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-7 .picky-reservations-top-bar .picky-reservations-filter-fields,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-9 .picky-reservations-top-bar .picky-reservations-filter-fields,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-top-bar .picky-reservations-filter-fields {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	gap: 10px 12px;
+	flex: 1 1 auto;
+	min-width: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-7 .picky-reservations-top-bar .picky-reservations-filter-fields > *,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-9 .picky-reservations-top-bar .picky-reservations-filter-fields > *,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-top-bar .picky-reservations-filter-fields > * {
+	flex: 0 1 auto;
+	min-width: 0;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-7 .picky-reservations-top-bar .picky-reservations-filter-fields #post-query-submit,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-9 .picky-reservations-top-bar .picky-reservations-filter-fields #post-query-submit,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-top-bar .picky-reservations-filter-fields #post-query-submit {
+	flex-shrink: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-7 .picky-reservations-top-bar .picky-reservations-filter-fields label,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-9 .picky-reservations-top-bar .picky-reservations-filter-fields label,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-top-bar .picky-reservations-filter-fields label {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	font-size: 12px;
+	font-weight: 500;
+	color: #221c24;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-7 .picky-reservations-top-bar .search-box,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-9 .picky-reservations-top-bar .search-box,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-top-bar .search-box {
+	float: none !important;
+	clear: none !important;
+	flex: 0 1 380px;
+	min-width: 200px;
+	max-width: 100%;
+	margin: 0 0 0 auto !important;
+	padding: 0 !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: flex-end;
+	gap: 8px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-7 .picky-reservations-top-bar input[type="search"],
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-9 .picky-reservations-top-bar input[type="search"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-top-bar input[type="search"],
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-7 .picky-reservations-top-bar input[type="text"],
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-9 .picky-reservations-top-bar input[type="text"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-top-bar input[type="text"] {
+	height: var(--picky-ctrl-h);
+	min-height: var(--picky-ctrl-h);
+	padding: var(--picky-ctrl-py) var(--picky-ctrl-px);
+	font-size: var(--picky-ctrl-fs);
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	background: var(--picky-ctrl-bg);
+	color: var(--picky-ctrl-color);
+	box-shadow: var(--picky-ctrl-shadow) !important;
+	box-sizing: border-box;
+	transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-7 .picky-reservations-top-bar select,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-9 .picky-reservations-top-bar select,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-top-bar select {
+	height: var(--picky-ctrl-h);
+	min-height: var(--picky-ctrl-h);
+	padding: var(--picky-ctrl-py) calc(var(--picky-ctrl-px) + var(--picky-select-end-gutter)) var(--picky-ctrl-py) var(--picky-ctrl-px);
+	font-size: var(--picky-ctrl-fs);
+	line-height: 1.6 !important;
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	background: var(--picky-ctrl-bg);
+	color: var(--picky-ctrl-color);
+	box-shadow: var(--picky-ctrl-shadow) !important;
+	box-sizing: border-box;
+	transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-7 .picky-reservations-top-bar input:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-9 .picky-reservations-top-bar input:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-top-bar input:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-7 .picky-reservations-top-bar select:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-9 .picky-reservations-top-bar select:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-top-bar select:focus {
+	outline: none;
+	border-color: var(--picky-accent, #475569);
+	box-shadow: var(--picky-ctrl-focus) !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 10px 12px;
+	margin: 0 0 12px;
+	padding: 0;
+	border: 0;
+	background: transparent;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-toolbar .bulkactions {
+	float: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-toolbar__pager {
+	margin-left: auto;
+	flex: 0 0 auto;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-toolbar__pager .tablenav-pages {
+	float: none;
+	margin: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav {
+	margin: 0;
+	padding: 10px 16px;
+	border: 0;
+	background: #fafbfc;
+	min-height: 0;
+	height: auto;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav.bottom {
+	border-bottom: 0;
+	border-top: 1px solid #eef2f7;
+	background: #ffffff;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav .displaying-num {
+	color: #717171;
+	font-weight: 500;
+	font-size: 12px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav .tablenav-pages {
+	font-size: 12px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav .button,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav button[type="submit"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav input[type="submit"] {
+	border-radius: 8px;
+	border: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__table-wrap {
+	border: 1px solid #dce3ec;
+	border-radius: 10px;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	background: #ffffff;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	margin: 0;
+	background: #ffffff;
+	font-size: 13px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__table thead th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	padding: 11px 12px;
+	text-align: left;
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: #717171;
+	
+	
+	white-space: nowrap;
+}
+.picky-reservations-custom__table .manage-column,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__table thead th {
+	background: #eef1f4;
+	border-bottom: 1px solid #e2e8f0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__table thead th a {
+	display: flex;
+	color: #475569;
+	text-decoration: none;
+	padding: 8px 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__table thead th a:hover {
+	color: #475569;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__table thead th.sorted a,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__table thead th.sorted a:hover {
+	color: #0f172a;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__table tbody td {
+	padding: 12px 12px;
+	vertical-align: middle;
+	color: #1e293b;
+	border-top: 1px solid #f1f5f9;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__table tbody tr:nth-child(even) td {
+	background: #fafbfc;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__table tbody tr:hover td {
+	background: #f1f5f9;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__table .check-column {
+	width: 2.5rem;
+	text-align: center;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__title-link {
+	font-weight: 600;
+	color: #0f172a;
+	text-decoration: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__title-link:hover {
+	color: #475569;
+	text-decoration: underline;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__row-actions {
+	margin-top: 4px;
+	font-size: 12px;
+	color: #717171;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__row-actions a {
+	color: #475569;
+	font-weight: 500;
+	text-decoration: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__row-actions a:hover {
+	text-decoration: underline;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__row-actions .submitdelete {
+	color: #b91c1c;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__row-actions-sep {
+	color: #cbd5e1;
+	font-weight: 400;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-custom__empty {
+	padding: 28px 16px;
+	text-align: center;
+	color: #717171;
+	font-size: 14px;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .subsubsub {
+	margin: 0 0 12px;
+	padding: 0;
+	font-size: var(--picky-ctrl-fs, 12px);
+	font-weight: 500;
+	float: none;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 12px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .subsubsub li {
+	display: inline-flex;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .subsubsub .count {
+	font-weight: 500;
+	color: #717171;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .subsubsub a {
+	padding: 4px 10px;
+	border-radius: 999px;
+	border: 1px solid transparent;
+	color: #334155;
+	text-decoration: none;
+	transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .subsubsub a:hover {
+	background: rgba(15, 23, 42, 0.06);
+	border-color: #e2e8f0;
+	color: #0f172a;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .subsubsub a.current {
+	background: #eef1f5;
+	border-color: #d8dde4;
+	color: #0f172a;
+	font-weight: 600;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list hr.wp-header-end {
+	display: none;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .search-box {
+	float: none !important;
+	clear: both !important;
+	width: 100%;
+	max-width: 100%;
+	margin: 10px 0 14px !important;
+	padding: 10px 12px;
+	box-sizing: border-box;
+	border: 1px solid #e8eaed;
+	border-radius: 8px;
+	background: #f8fafc;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 10px;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .search-box label.screen-reader-text {
+	position: static !important;
+	width: auto !important;
+	height: auto !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	clip: auto !important;
+	clip-path: none !important;
+	overflow: visible !important;
+	white-space: normal !important;
+	font-size: var(--picky-ctrl-fs, 12px);
+	font-weight: 500;
+	color: #475569;
+	flex: 0 0 auto;
+	display: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .search-box input[type="search"] {
+	flex: 1 1 220px;
+	max-width: min(420px, 100%);
+	min-width: 0;
+	margin: 0 !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .search-box input[type="submit"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .search-box #search-submit,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .search-box .button {
+	flex: 0 0 auto;
+	margin: 0 !important;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav {
+	margin: 0 0 12px;
+	padding: 0;
+	min-height: 0;
+	width: 100%;
+	box-sizing: border-box;
+	border: 0;
+	background: transparent;
+	height: auto;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav.top {
+	margin-bottom: 10px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav.bottom {
+	margin-top: 14px;
+	margin-bottom: 0;
+	padding-top: 12px;
+	border-top: 1px solid #e8ecf2;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav-pages {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	font-size: var(--picky-ctrl-fs, 12px);
+	color: #475569;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav .displaying-num {
+	margin-right: 8px;
+	color: #717171;
+	font-weight: 500;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav.top {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px 12px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav.top .alignleft.actions {
+	float: none;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 10px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav.top .tablenav-pages {
+	margin-left: auto;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav.top br.clear {
+	display: none;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav select,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav select {
+	height: var(--picky-ctrl-h);
+	min-height: var(--picky-ctrl-h);
+	padding: var(--picky-ctrl-py) calc(var(--picky-ctrl-px) + var(--picky-select-end-gutter)) var(--picky-ctrl-py) var(--picky-ctrl-px);
+	font-size: var(--picky-ctrl-fs);
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	background: var(--picky-ctrl-bg);
+	color: var(--picky-ctrl-color);
+	box-shadow: var(--picky-ctrl-shadow) !important;
+	box-sizing: border-box;
+	transition: border-color 0.12s ease, box-shadow 0.12s ease;
+	line-height: 1.7 !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav select:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav select:focus {
+	outline: none;
+	border-color: var(--picky-accent, #475569);
+	box-shadow: var(--picky-ctrl-focus) !important;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav-pages .pagination-links,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav-pages .pagination-links {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px;
+	vertical-align: middle;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav-pages a.button,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav-pages span.tablenav-pages-navspan.button,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav-pages a.button,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav-pages span.tablenav-pages-navspan.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2rem;
+	height: var(--picky-pagination-h) !important;
+	min-height: var(--picky-pagination-h) !important;
+	line-height: 1 !important;
+	padding: 0 8px !important;
+	margin: 0;
+	font-size: 12px !important;
+	font-weight: 600;
+	color: #475569 !important;
+	background: #ffffff !important;
+	border: 1px solid #e2e8f0 !important;
+	border-radius: var(--picky-pagination-r) !important;
+	box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+	box-sizing: border-box;
+	text-decoration: none !important;
+	transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav-pages a.button:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav-pages a.button:hover {
+	color: #475569 !important;
+	background: #f8fafc !important;
+	border-color: #cbd5e1 !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav-pages span.tablenav-pages-navspan.button.disabled,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav-pages span.tablenav-pages-navspan.button.disabled {
+	opacity: 0.5;
+	cursor: default;
+	color: #94a3b8 !important;
+	background: #f8fafc !important;
+	border-color: #e2e8f0 !important;
+	box-shadow: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav-pages .paging-input,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav-pages .paging-input {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 12px;
+	color: #717171;
+	font-weight: 500;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav-pages .current-page,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav-pages .current-page {
+	width: auto !important;
+	min-width: 2.75rem !important;
+	max-width: 5rem;
+	height: var(--picky-pagination-h) !important;
+	min-height: var(--picky-pagination-h) !important;
+	margin: 0 2px !important;
+	padding: 2px 6px !important;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	text-align: center;
+	color: #0f172a !important;
+	border: 1px solid #cbd5e1 !important;
+	border-radius: var(--picky-pagination-r) !important;
+	background: #ffffff !important;
+	box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.06);
+	box-sizing: border-box;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .tablenav-pages .current-page:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .tablenav-pages .current-page:focus {
+	outline: none;
+	border-color: var(--picky-accent, #475569) !important;
+	box-shadow: var(--picky-ctrl-focus);
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table {
+	border: 1px solid #dce3ec;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+	background: #ffffff;
+	width: 100%;
+	clear: both;
+	margin-top: 0;
+	margin-bottom: 0;
+	border-collapse: separate;
+	border-spacing: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table.widefat {
+	border-color: #dce3ec;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table thead th,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table thead td {
+	border-bottom: 1px solid #e2e8f0;
+	background: #eef1f4;
+	color: #0f172a;
+	font-weight: 600;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	padding: 20px 14px;
+	vertical-align: middle;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table .check-column {
+	width: 2.2em;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table th.check-column {
+	padding: 16px 0 0 15px;
+}
+.picky-settings-tab th.sortable a {
+	padding: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table tbody tr {
+	background: #ffffff;
+	transition: background 0.12s ease;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table tbody tr:nth-child(even) {
+	background: #fafbfc;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table tbody tr:hover {
+	background: #f0f4ff;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table tbody td {
+	border-top: 1px solid #eef2f7;
+	padding: 12px 14px;
+	font-size: 13px;
+	color: #1e293b;
+	vertical-align: middle;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table .row-title {
+	font-weight: 600;
+	color: #0f172a;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table .column-date abbr,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table .column-title .post-state {
+	color: #717171;
+	font-weight: 500;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list table.wp-list-table .button-link {
+	color: var(--picky-accent, #475569);
+	font-weight: 600;
+}
+
+/* Bookings (picky_order) list — give Order room; keep secondary cols compact. */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table {
+	table-layout: fixed;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .check-column {
+	width: 2.5em;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table th.check-column,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table td.check-column {
+	padding-top: 12px !important;
+	padding-bottom: 12px !important;
+	vertical-align: middle !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .column-title {
+	width: 28%;
+	min-width: 200px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .column-picky_order_layout {
+	width: 14%;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .column-picky_order_date,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .column-picky_order_time {
+	width: 9%;
+	white-space: nowrap;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .column-picky_order_customer {
+	width: 16%;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .column-picky_order_items_count {
+	width: 8%;
+	min-width: 4.5em;
+	text-align: center;
+	white-space: nowrap;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table th.column-picky_order_items_count {
+	white-space: nowrap;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .column-picky_order_total {
+	width: 10%;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+	font-weight: 600;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .column-picky_order_payment {
+	width: 11%;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody td,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody th {
+	vertical-align: middle !important;
+}
+/*
+ * Order column is a <th scope="row"> (WP posts list), not a <td>.
+ * Core `.widefat tbody th { vertical-align: top }` + in-flow .row-actions
+ * (left:-9999em still takes height) kept "Order #n" stuck to the top.
+ * Hide actions out of flow; leave the title as the only in-flow content.
+ */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody th.column-title,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody th.column-primary,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody td.column-title,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody td.column-primary {
+	position: relative !important;
+	vertical-align: middle !important;
+	overflow: visible;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody th.column-title > strong,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody td.column-title > strong {
+	position: static !important;
+	display: inline-block;
+	margin: 0 !important;
+	padding: 0 !important;
+	line-height: 1.3;
+	vertical-align: middle;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody th.column-title .row-title,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody td.column-title .row-title {
+	display: inline !important;
+	font-size: 14px !important;
+	font-weight: 700 !important;
+	letter-spacing: -0.01em;
+	line-height: 1.3 !important;
+}
+/* Always absolute — overrides core `tr:hover .row-actions { position: static }`. */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody th.column-title .row-actions,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody td.column-title .row-actions,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody tr:hover th.column-title .row-actions,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody tr:hover td.column-title .row-actions,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody tr:focus-within th.column-title .row-actions,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody tr:focus-within td.column-title .row-actions {
+	position: absolute !important;
+	left: 14px !important;
+	right: auto !important;
+	top: calc(50% + 0.7em) !important;
+	bottom: auto !important;
+	transform: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	float: none !important;
+	clear: none !important;
+	width: auto !important;
+	height: auto !important;
+	z-index: 2;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody th.column-title .row-actions,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody td.column-title .row-actions {
+	/* display:none — not left:-9999em — so the cell height is only the title line */
+	display: none !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody tr:hover th.column-title .row-actions,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody tr:hover td.column-title .row-actions,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody tr:focus-within th.column-title .row-actions,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody tr:focus-within td.column-title .row-actions {
+	display: block !important;
+	visibility: visible !important;
+	opacity: 1;
+	pointer-events: auto;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody th.column-title .row-actions span,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody td.column-title .row-actions span {
+	font-size: 12px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody th.column-title .row-actions a,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody td.column-title .row-actions a {
+	text-decoration: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody th.column-title .toggle-row,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table tbody td.column-title .toggle-row {
+	position: absolute !important;
+	right: 8px;
+	top: 50% !important;
+	transform: translateY(-50%);
+	margin: 0 !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table td.column-picky_order_customer small {
+	display: block;
+	margin-top: 2px;
+	color: #64748b;
+	font-size: 12px;
+	word-break: break-word;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table td.column-picky_order_items_count {
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	color: #0f172a;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .picky-order-pay-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 3px 10px;
+	border-radius: 999px;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	line-height: 1.3;
+	white-space: nowrap;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .picky-order-pay-badge--paid {
+	background: #dcfce7;
+	color: #166534;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .picky-order-pay-badge--pending {
+	background: #ffedd5;
+	color: #9a3412;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .picky-order-pay-badge--muted {
+	background: #f1f5f9;
+	color: #475569;
+	font-weight: 600;
+}
+
+@media screen and (max-width: 1200px) {
+	body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table {
+		table-layout: auto;
+	}
+	body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list--picky-order table.wp-list-table .column-title {
+		min-width: 180px;
+		width: auto;
+	}
+}
+
+
+body.admin-bar.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header {
+	top: var(--picky-wp-admin-bar-height);
+	height: var(--picky-settings-viewport-height);
+	max-height: var(--picky-settings-viewport-height);
+	min-height: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: stretch;
+	/* Visible so rail-edge toggle (outside the rail box) is not clipped. */
+	overflow: visible;
+	padding-bottom: 12px;
+	border-right: 1px solid rgb(0 0 0 / 15%);
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-wrap--layout-embedded {
+	margin: 0;
+	padding: 0;
+	max-width: none;
+}
+
+/* Layout editor only (body class toggled when the builder tab is active).
+   Do NOT use :has(#picky-builder-surface) — the builder stays in the DOM when
+   switching to Settings tabs, which would hide #options-save and blank those pages. */
+body.picky-admin.picky-layout-builder-open #picky-wrap-content.picky-settings-surface {
+	padding-bottom: 0 !important;
+}
+body.picky-admin.picky-layout-builder-open #picky-wrap-content.picky-settings-surface.picky-settings-shell--app-tabs #options-save {
+	display: none !important;
+}
+body.picky-admin.picky-layout-builder-open #picky-wrap-content.picky-settings-surface .picky-settings-tabs-wrap--surface {
+	grid-template-rows: auto;
+	overflow: visible;
+}
+body.picky-admin.picky-layout-builder-open #wpcontent,
+body.picky-admin.picky-layout-builder-open #wpbody,
+body.picky-admin.picky-layout-builder-open #wpbody-content {
+	padding-bottom: 0 !important;
+	margin-bottom: 0 !important;
+}
+body.picky-admin.picky-layout-builder-open #wpfooter {
+	position: static !important;
+	margin: 0 !important;
+	padding: 6px 20px !important;
+	border-top: 1px solid #dcdcde;
+}
+body.picky-admin.picky-layout-builder-open .picky-wrap--layout-embedded > .clear,
+body.picky-admin.picky-layout-builder-open .picky-wrap--settings > br.clear {
+	display: none !important;
+}
+body.picky-admin #picky-builder-surface.picky-builder-surface,
+body.picky-admin #picky-settings-tab-9.picky-settings-tab-panel {
+	overflow: visible;
+}
+
+.picky-settings-nav-toggle__icon--when-collapsed {
+	display: none;
+}
+#picky-wrap-content.picky-settings-nav-is-collapsed .picky-settings-nav-toggle--collapse .picky-settings-nav-toggle__icon--when-expanded {
+	display: none !important;
+}
+#picky-wrap-content.picky-settings-nav-is-collapsed .picky-settings-nav-toggle--collapse .picky-settings-nav-toggle__icon--when-collapsed {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+}
+#picky-wrap-content.picky-settings-nav-is-collapsed .picky-settings-nav-toggle--collapse:not(.picky-settings-nav-toggle--rail-edge) .picky-settings-nav-toggle__label {
+	display: none !important;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-sidebar-toggle-icon {
+	display: block;
+	width: 16px;
+	height: 16px;
+	flex-shrink: 0;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle__icon--when-expanded {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.picky-settings-nav-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	padding: 6px 10px;
+	margin-bottom: 12px;
+	font-size: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	border-radius: 6px;
+	box-sizing: border-box;
+	min-height: 34px;
+}
+.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle {
+	color: #221c24;
+	background: #eef1f5;
+	border: 1px solid #d8dde4;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--collapse {
+	color: #e6e9ee;
+	background: #2a3442;
+	border: 1px solid #3a4759;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-rail__top {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0 0 12px 0;
+	padding: 0 var(--picky-rail-pad-r, 12px) 12px var(--picky-rail-pad-l, 12px);
+	border-bottom: 1px solid #eef1f4;
+	flex-shrink: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface:not(.picky-settings-nav-is-collapsed) .picky-settings-rail__top {
+	padding-left: calc(var(--picky-rail-pad-l, 12px) + var(--picky-nav-item-pad-x, 10px));
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header-brand {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface:not(.picky-settings-nav-is-collapsed) .picky-settings-rail__top .picky-logo-wrap {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	min-width: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-rail__logo-link {
+	display: block;
+	line-height: 0;
+	flex-shrink: 0;
+	border-radius: 8px;
+	box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.06);
+	transition: box-shadow 0.15s ease, opacity 0.15s ease;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-rail__logo-link:hover {
+	box-shadow: 0 0 0 1px rgba(71, 85, 105, 0.35);
+	opacity: 0.95;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-rail__logo-link:focus {
+	outline: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-rail__logo-link:focus-visible {
+	box-shadow: 0 0 0 2px rgba(71, 85, 105, 0.35);
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-rail__product-name {
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.25;
+	letter-spacing: -0.02em;
+	color: #0f172a;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	min-width: 0;
+}
+/* Edge tab glued to the rail’s right border (left: 100% follows width animation — no jump). */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--rail-edge,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--collapse.picky-settings-nav-toggle--rail-edge {
+	position: absolute;
+	z-index: 30;
+	top: 5px;
+	left: 100%;
+	right: auto;
+	width: 22px;
+	min-width: 22px;
+	height: 28px;
+	min-height: 28px;
+	padding: 0;
+	margin: 0 0 0 -1px;
+	gap: 0;
+	justify-content: center;
+	align-items: center;
+	border-radius: 0 7px 7px 0;
+	color: #9aa3af;
+	background: #ffffff;
+	border: 1px solid #d8dde4;
+	border-left-color: #ffffff;
+	box-shadow: 1px 1px 3px rgba(15, 23, 42, 0.06);
+	filter: none;
+	transform: none;
+	transition:
+		background 0.12s ease,
+		border-color 0.12s ease,
+		color 0.12s ease,
+		box-shadow 0.12s ease;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header-btn {
+    margin: 0 0 2px 0;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Nav list padding; divider aligns with link pad-x. */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header__nav {
+	--picky-nav-item-pad-x: 10px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-nav-divider {
+	margin: 12px 0 8px 0;
+	padding: 0 var(--picky-nav-item-pad-x, 10px);
+	box-sizing: border-box;
+	width: 100%;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-nav-divider__label {
+	color: #525252;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	display: block;
+}
+#picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-wrap--surface,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-wrap--surface {
+	overflow: visible;
+}
+
+#picky-wrap-content.picky-settings-surface .picky-settings-tabs-wrap--surface,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-wrap--surface {
+	padding-left: calc(
+		var(--picky-rail-pad-offset) + var(--picky-rail-expanded-w) + var(--picky-rail-content-gap)
+	);
+	transition: padding-left var(--picky-settings-rail-ms, 280ms) var(--picky-settings-rail-ease, cubic-bezier(0.4, 0, 0.2, 1));
+}
+#picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-wrap--surface,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-wrap--surface {
+	padding-left: calc(
+		var(--picky-rail-pad-offset) + var(--picky-rail-collapsed-w) + var(--picky-rail-collapsed-content-gap)
+	);
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-nav-toggle--rail-edge {
+	z-index: 30;
+	color: #717171;
+	/* box-shadow: 1px 1px 4px rgba(15, 23, 42, 0.1); */
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--rail-edge:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--collapse.picky-settings-nav-toggle--rail-edge:hover {
+	color: #475569;
+	background: #f8fafc;
+	border-color: #c9d0da;
+	border-left-color: #ffffff;
+	box-shadow: 1px 1px 4px rgba(15, 23, 42, 0.1);
+	filter: none;
+	transform: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--rail-edge:focus {
+	outline: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--rail-edge:focus-visible,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--collapse.picky-settings-nav-toggle--rail-edge:focus-visible {
+	color: #334155;
+	background: #ffffff;
+	border-color: rgba(71, 85, 105, 0.45);
+	border-left-color: #ffffff;
+	box-shadow: 0 0 0 2px rgba(71, 85, 105, 0.2);
+	filter: none;
+	transform: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--rail-edge:active,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--collapse.picky-settings-nav-toggle--rail-edge:active {
+	color: #1e293b;
+	background: #f1f5f9;
+	border-color: #c9d0da;
+	border-left-color: #ffffff;
+	transform: none;
+	box-shadow: none;
+	filter: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--rail-edge .picky-sidebar-toggle-icon {
+	display: block;
+	width: 14px;
+	height: 14px;
+	flex-shrink: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--rail-edge .picky-rail-edge-icon-svg {
+	display: block;
+	width: 14px;
+	height: 14px;
+	flex-shrink: 0;
+}
+.picky-settings-nav-toggle:hover,
+.picky-settings-nav-toggle:focus {
+	filter: brightness(1.06);
+	outline: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--rail-edge:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--rail-edge:focus {
+	filter: none;
+}
+.picky-settings-nav-toggle .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	line-height: 1;
+}
+
+.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header {
+	
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: stretch;
+	overflow: visible;
+	box-sizing: border-box;
+	--picky-rail-pad-l: 12px;
+	--picky-rail-pad-r: 12px;
+	width: var(--picky-rail-expanded-w, 250px);
+	min-width: var(--picky-rail-expanded-w, 250px);
+	max-width: var(--picky-rail-expanded-w, 250px);
+	min-height: 0;
+	background: #f0f4f6 !important;
+	
+	
+	transition:
+		width var(--picky-settings-rail-ms, 280ms) var(--picky-settings-rail-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+		min-width var(--picky-settings-rail-ms, 280ms) var(--picky-settings-rail-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+		max-width var(--picky-settings-rail-ms, 280ms) var(--picky-settings-rail-ease, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/* Nav list scrolls inside the fixed rail; logo + collapse tab stay put.
+   Full rail width so the scrollbar sits on the right edge. */
+   body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header__nav {
+    display: block;
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0 var(--picky-rail-pad-r, 12px) 0 var(--picky-rail-pad-l, 12px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(15, 23, 42, 0.22) transparent;
+    overscroll-behavior: contain;
+}
+.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header {
+	--picky-rail-pad-l: 10px;
+	--picky-rail-pad-r: 10px;
+	width: 63px;
+	min-width: 63px;
+	max-width: 63px;
+	padding: 20px 0 12px 0;
+	box-sizing: border-box;
+	text-align: center;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header__nav > .picky-settings-tabs-header-btn,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header__nav > .picky-settings-tabs-header-item--layouts > .picky-settings-tabs-header-btn {
+	width: 100%;
+	max-width: 100%;
+	padding: 8px 0 !important;
+	justify-content: center;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header__nav > .picky-settings-tabs-header-btn i,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header__nav > .picky-settings-tabs-header-item--layouts > .picky-settings-tabs-header-btn i {
+	flex-basis: 24px;
+	width: 24px;
+	min-width: 24px;
+	margin: 0 auto;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-btn,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-item--layouts {
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+
+@supports (container-type: inline-size) {
+	body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header {
+		container-type: inline-size;
+		container-name: picky-settings-rail;
+	}
+	@container picky-settings-rail (max-width: 96px) {
+		.picky-settings-rail__top {
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-start;
+			gap: 0;
+			margin: 0 0 4px 0;
+			padding: 0 0 12px 0;
+			border-bottom-color: #e8eaed;
+		}
+	}
+}
+@supports not (container-type: inline-size) {
+	body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-rail__top {
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 0;
+		margin: 0 0 4px 0;
+		padding: 0 0 12px 0;
+		border-bottom-color: #e8eaed;
+	}
+}
+
+
+.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-brand {
+	display: flex !important;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-brand .picky-logo-wrap {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	position: relative;
+	width: 32px;
+	height: 32px;
+	min-height: 32px;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+}
+.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-rail__logo-link {
+	line-height: 0;
+	display: block;
+}
+.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-brand .picky-logo-wrap img,
+.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-rail__logo-link img {
+	width: 32px;
+	height: 32px;
+	max-width: 32px;
+	object-fit: contain;
+}
+.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-rail__product-name {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+#picky-wrap-content.picky-settings-nav-is-collapsed .picky-settings-tabs-nav-divider__label {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+#picky-wrap-content.picky-settings-nav-is-collapsed .picky-settings-tabs-nav-divider {
+	display: block;
+	height: 1px;
+	margin: 8px 0;
+	padding: 0;
+	border: 0;
+	background: rgba(255, 255, 255, 0.08);
+	min-height: 0;
+}
+.picky-admin #picky-wrap-content.picky-settings-nav-is-collapsed .picky-settings-tabs-nav-divider {
+	background: rgba(0, 0, 0, 0.08);
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-btn span {
+	max-width: 0 !important;
+	opacity: 0 !important;
+	margin-left: 0;
+	padding: 0;
+	pointer-events: none;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header-btn span {
+	transition:
+		max-width var(--picky-settings-rail-ms, 280ms) var(--picky-settings-rail-ease, cubic-bezier(0.4, 0, 0.2, 1)),
+		opacity calc(var(--picky-settings-rail-ms, 280ms) * 0.7) ease;
+}
+
+
+.picky-settings-tabs-header-item--layouts {
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+}
+.picky-settings-tabs-submenu {
+	display: none;
+	list-style: none;
+	margin: 8px 0 0;
+	padding: 0;
+	box-sizing: border-box;
+	max-height: min(52vh, 400px);
+	overflow-x: hidden;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(15, 23, 42, 0.22) transparent;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface:not(.picky-settings-nav-is-collapsed) .picky-settings-tabs-header-item--layouts:has(.picky-settings-tabs-header-btn.active) .picky-settings-tabs-submenu,
+#picky-wrap-content.picky-settings-surface:not(.picky-settings-nav-is-collapsed) .picky-settings-tabs-header-item--layouts:has(.picky-settings-tabs-header-btn.active) .picky-settings-tabs-submenu {
+	/* Solid grey — no alpha, so trunk/branch overlaps don't double up. */
+	--picky-tree-color: #d0d5dd;
+	--picky-tree-indent: 18px;
+	display: block;
+	position: relative;
+	margin: 4px 0 2px 10px;
+	padding: 2px 0 6px calc(var(--picky-tree-indent) + 12px);
+	overflow-x: visible;
+	overflow-y: auto;
+	box-sizing: border-box;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface:not(.picky-settings-nav-is-collapsed) .picky-settings-tabs-header-item--layouts:has(.picky-settings-tabs-header-btn.active) .picky-settings-tabs-submenu__item {
+	position: relative;
+	margin: 0 0 1px;
+	padding: 0;
+}
+
+/* L-branch from trunk to this layout row */
+body.picky-admin #picky-wrap-content.picky-settings-surface:not(.picky-settings-nav-is-collapsed) .picky-settings-tabs-header-item--layouts:has(.picky-settings-tabs-header-btn.active) .picky-settings-tabs-submenu__item::before {
+	content: '';
+	position: absolute;
+	left: calc(-1 * var(--picky-tree-indent) - 2px);
+	top: -2px;
+	width: var(--picky-tree-indent);
+	height: calc(50% + 4px);
+	border-left: 1px solid var(--picky-tree-color);
+	border-bottom: 1px solid var(--picky-tree-color);
+	border-bottom-left-radius: 5px;
+	pointer-events: none;
+	transition: border-color 0.15s ease;
+	z-index: 0;
+}
+
+/* Trunk continues to the next sibling */
+body.picky-admin #picky-wrap-content.picky-settings-surface:not(.picky-settings-nav-is-collapsed) .picky-settings-tabs-header-item--layouts:has(.picky-settings-tabs-header-btn.active) .picky-settings-tabs-submenu__item:not(:last-child)::after {
+	content: '';
+	position: absolute;
+	left: calc(-1 * var(--picky-tree-indent) - 2px);
+	top: calc(50% + 0px);
+	bottom: -3px;
+	width: 1px;
+	background: var(--picky-tree-color);
+	pointer-events: none;
+	transition: background 0.15s ease;
+	z-index: 0;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface:not(.picky-settings-nav-is-collapsed) .picky-settings-tabs-header-item--layouts:has(.picky-settings-tabs-header-btn.active) .picky-settings-tabs-submenu__link {
+	position: relative;
+	z-index: 1;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface:not(.picky-settings-nav-is-collapsed) .picky-settings-tabs-header-item--layouts:has(.picky-settings-tabs-header-btn.active) .picky-settings-tabs-submenu__link:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface:not(.picky-settings-nav-is-collapsed) .picky-settings-tabs-header-item--layouts:has(.picky-settings-tabs-header-btn.active) .picky-settings-tabs-submenu__link:focus {
+	background: transparent;
+	box-shadow: none;
+}
+
+.picky-settings-tabs-submenu__item {
+	margin: 0;
+	padding: 0;
+}
+
+.picky-settings-tabs-submenu__link {
+    display: block;
+    padding: 6px 5px;
+    margin: 0 0 0px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.35;
+    text-decoration: none;
+    border-radius: 6px;
+    border: 0;
+    background: transparent;
+    box-sizing: border-box;
+    transition: background-color 0.12s ease, color 0.12s ease;
+    color: var(--picky-text-muted, #a8a8a8);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    box-shadow: none;
+}
+.picky-settings-tabs-submenu__link--all {
+	font-weight: 600;
+	color: #717171;
+	border: 0;
+	white-space: normal;
+	font-weight: 400 !important;
+	color: #717171 !important;
+	background: none !important;
+}
+.addnew-icon {
+	font-weight: 600;
+	position: relative;
+	padding-left: 10px;
+	color: var(--picky-brand-ink, #0f766e) !important;
+}
+.addnew-icon::before {
+    content: "\e922";
+    font-family: picky-admin-font;
+    position: relative;
+    left: -10px;
+    border: 1px solid var(--picky-brand-ink, #0f766e);
+    border-radius: 20px;
+    font-size: 11px;
+    width: 14px;
+    top: 2px;
+    display: inline-block;
+    height: 14px;
+    text-align: center;
+    line-height: 14px;
+    color: var(--picky-brand-ink, #0f766e);
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-submenu__link.addnew-icon:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-submenu__link.addnew-icon:focus {
+	color: #115e59 !important;
+	background: transparent;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-submenu__link.addnew-icon:hover::before,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-submenu__link.addnew-icon:focus::before {
+	border-color: #115e59;
+	color: #115e59;
+}
+.picky-settings-tabs-submenu__link:hover,
+.picky-settings-tabs-submenu__link:focus {
+	background: transparent;
+	color: var(--picky-text, #e4e4e4);
+	outline: none;
+	box-shadow: none;
+}
+.picky-settings-tabs-submenu__link.is-active {
+	background: rgba(255, 255, 255, 0.08);
+	color: #fff;
+	font-weight: 600;
+	border: 0;
+	box-shadow: none;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-submenu.picky-settings-tabs-submenu--flat {
+	margin-top: 6px;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-submenu__link--all {
+	color: #717171;
+	border: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-submenu__link {
+	color: #171717;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-submenu__link:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-submenu__link:focus {
+	background: transparent;
+	color: #171717;
+	box-shadow: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-submenu__link.is-active {
+	border: 0;
+	font-weight: 600;
+	color: #171717;
+	box-shadow: none;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-item--layouts {
+	position: relative;
+	z-index: 40;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-item--layouts:hover .picky-settings-tabs-submenu,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-item--layouts:focus-within .picky-settings-tabs-submenu {
+	display: none !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-submenu.picky-settings-tabs-submenu--flat {
+	background: transparent;
+	border: 0;
+	box-shadow: none;
+}
+
+/* ==========================================================================
+   ChatGPT-style rail: collapsed / hover / expanded
+   ========================================================================== */
+
+/* Hide legacy edge-tab if cached markup still has it. */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--rail-edge {
+	display: none !important;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-sidebar-toggle-icon {
+	width: 18px;
+	height: 18px;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle {
+	color: #64748b;
+	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 8px;
+	margin-bottom: 0;
+	filter: none;
+	transition: background-color 0.12s ease, color 0.12s ease;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle:focus-visible {
+	color: #525252;
+	background: #f0f0f0;
+	outline: none;
+	filter: none;
+}
+
+/* Expanded: collapse control on the right of the header. */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--header {
+	position: relative;
+	flex: 0 0 auto;
+	width: 34px;
+	min-width: 34px;
+	height: 34px;
+	min-height: 34px;
+	padding: 0;
+	margin: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-nav-toggle--header {
+	display: none !important;
+}
+
+/* Expanded: hide collapsed-only expand hit. */
+body.picky-admin #picky-wrap-content.picky-settings-surface:not(.picky-settings-nav-is-collapsed) .picky-settings-nav-toggle--expand-hit {
+	display: none !important;
+}
+
+/* Collapsed: logo by default; rail hover/focus → expand icon (same box = no jump). */
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-brand .picky-logo-wrap {
+	position: relative;
+	width: 32px;
+	height: 32px;
+	min-height: 32px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-rail__logo-link {
+	position: absolute;
+	inset: 0;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	opacity: 1;
+	pointer-events: auto;
+	transition: opacity 0.12s ease;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-nav-toggle--expand-hit {
+	display: flex !important;
+	position: absolute;
+	inset: 0;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	min-width: 32px;
+	height: 32px;
+	min-height: 32px;
+	padding: 0;
+	margin: 0;
+	border-radius: 8px;
+	color: #525252;
+	background: #f0f0f0;
+	cursor: pointer;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.12s ease;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header:hover .picky-settings-rail__logo-link,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header:focus-within .picky-settings-rail__logo-link {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	display: flex !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header:hover .picky-settings-nav-toggle--expand-hit,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header:focus-within .picky-settings-nav-toggle--expand-hit,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-nav-toggle--expand-hit:focus-visible {
+	opacity: 1 !important;
+	pointer-events: auto !important;
+}
+
+/* Collapsed: ew-resize on chrome; pointer on interactive items. */
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header {
+	cursor: ew-resize;
+	z-index: 100;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header a,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header button,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header .picky-settings-tabs-header-btn,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header .picky-settings-tabs-submenu {
+	cursor: pointer;
+}
+
+/* Collapsed: floating label tooltips (must not live inside a scrollport —
+   overflow-y:auto forces overflow-x to clip, which hides pills to the right). */
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header__nav {
+	overflow: visible !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-btn {
+	position: relative;
+	overflow: visible !important;
+	z-index: 1;
+	background: transparent;
+	border-color: transparent;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-btn:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-btn:focus-visible {
+	z-index: 50;
+	background: rgba(0, 0, 0, .05) !important;
+	border-color: transparent !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-btn.active {
+	z-index: 50;
+	background: rgba(0, 0, 0, .05) !important;
+	border-color: transparent !important;
+	color: #111 !important;
+}
+/* App items (Bookings / Calendar / Layouts): same icon color as Settings. */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header__nav > .picky-settings-tabs-header-btn:not(.picky-settings-tabs-header-btn--option) i,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header__nav > .picky-settings-tabs-header-item--layouts > .picky-settings-tabs-header-btn i,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header__nav > .picky-settings-tabs-header-btn:not(.picky-settings-tabs-header-btn--option):hover i,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header__nav > .picky-settings-tabs-header-btn:not(.picky-settings-tabs-header-btn--option):focus i,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header__nav > .picky-settings-tabs-header-btn:not(.picky-settings-tabs-header-btn--option).active i,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header__nav > .picky-settings-tabs-header-item--layouts > .picky-settings-tabs-header-btn:hover i,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header__nav > .picky-settings-tabs-header-item--layouts > .picky-settings-tabs-header-btn:focus i,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header__nav > .picky-settings-tabs-header-item--layouts > .picky-settings-tabs-header-btn.active i {
+	color: #525252;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-btn::after {
+	content: attr(data-picky-tip);
+	position: absolute;
+	/* Match icon→rail-edge gap: pad past the button, then the same pad past the rail edge. */
+	left: calc(100% + (2 * var(--picky-rail-pad-r, 12px)));
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 6px 12px;
+	background: #2f2f2f;
+	color: #fff;
+	border-radius: 999px;
+	font-family: inherit;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1.25;
+	letter-spacing: 0;
+	text-transform: none;
+	white-space: nowrap;
+	width: max-content;
+	max-width: none;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	z-index: 300;
+	box-shadow: 0 4px 16px rgba(15, 23, 42, 0.22);
+	transition: opacity 0.12s ease, visibility 0.12s ease;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-btn:hover::after,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-btn:focus-visible::after {
+	opacity: 1;
+	visibility: visible;
+}
+/* Hide empty tooltips when data-picky-tip is missing. */
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-btn:not([data-picky-tip])::after,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-tabs-header-btn[data-picky-tip=""]::after {
+	display: none;
+}
+
+/* Expand / collapse button tooltips. */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--header:hover::after,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--header:focus-visible::after {
+	content: attr(aria-label);
+	position: absolute;
+	left: auto;
+	right: 0;
+	top: calc(100% + 8px);
+	transform: none;
+	padding: 6px 12px;
+	background: #2f2f2f;
+	color: #fff;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1.25;
+	white-space: nowrap;
+	z-index: 210;
+	pointer-events: none;
+	box-shadow: 0 4px 16px rgba(15, 23, 42, 0.22);
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-nav-toggle--expand-hit:hover::after,
+body.picky-admin #picky-wrap-content.picky-settings-surface.picky-settings-nav-is-collapsed .picky-settings-nav-toggle--expand-hit:focus-visible::after {
+	content: attr(aria-label);
+	position: absolute;
+	left: calc(100% + (2 * var(--picky-rail-pad-r, 12px)));
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 6px 12px;
+	background: #2f2f2f;
+	color: #fff;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1.25;
+	white-space: nowrap;
+	z-index: 210;
+	pointer-events: none;
+	box-shadow: 0 4px 16px rgba(15, 23, 42, 0.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#picky-wrap-content.picky-settings-surface,
+	body.picky-admin #picky-wrap-content.picky-settings-surface {
+		--picky-settings-rail-ms: 1ms;
+		--picky-settings-rail-ease: linear;
+	}
+	body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header,
+	body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-wrap--surface,
+	body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-tabs-header-btn span,
+	body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-nav-toggle--rail-edge,
+	.picky-settings-nav-toggle__icon {
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* ==========================================================================
+   Picky Settings Surface — Unified Design System
+   All tokens and overrides are scoped to body.picky-admin so they
+   never bleed into the front-end shortcode or the standalone builder.
+   ========================================================================== */
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface {
+	
+	--picky-ctrl-h:       36px;
+	--picky-ctrl-py:      5px;
+	--picky-ctrl-px:      10px;
+	--picky-ctrl-fs:      12px;
+	--picky-ctrl-r:       5px;
+	--picky-ctrl-border:  1px solid #c5ccd6;
+	--picky-ctrl-bg:      #ffffff;
+	--picky-ctrl-color:   #1e293b;
+	--picky-ctrl-shadow:  inset 0 1px 2px rgba(15, 23, 42, 0.12), inset 0 0 0 1px rgba(15, 23, 42, 0.04);
+	--picky-ctrl-focus:   inset 0 1px 2px rgba(15, 23, 42, 0.1), 0 0 0 2px rgba(71, 85, 105, 0.22);
+	--picky-btn-h:        36px;
+	--picky-btn-px:       16px;
+	--picky-btn-r:        5px;
+	
+	--picky-list-select-h: 32px;
+	--picky-list-select-py: 4px;
+	--picky-list-select-px: 10px;
+	--picky-list-select-r: 6px;
+	
+	--picky-pagination-h: 30px;
+	--picky-pagination-r: 6px;
+	
+	--picky-select-end-gutter: 32px;
+}
+
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels input[type="text"]:not(.wp-color-picker):not(.picky-settings-color),
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels input[type="number"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels input[type="email"] {
+	height: var(--picky-ctrl-h);
+	min-height: var(--picky-ctrl-h);
+	padding: var(--picky-ctrl-py) var(--picky-ctrl-px);
+	font-size: var(--picky-ctrl-fs);
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	background: var(--picky-ctrl-bg);
+	color: var(--picky-ctrl-color);
+	box-shadow: var(--picky-ctrl-shadow);
+	box-sizing: border-box;
+	line-height: 1.4;
+	transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels select {
+	height: var(--picky-ctrl-h);
+	min-height: var(--picky-ctrl-h);
+	padding: var(--picky-ctrl-py) calc(var(--picky-ctrl-px) + var(--picky-select-end-gutter)) var(--picky-ctrl-py) var(--picky-ctrl-px);
+	font-size: var(--picky-ctrl-fs);
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	background: var(--picky-ctrl-bg);
+	color: var(--picky-ctrl-color);
+	box-shadow: var(--picky-ctrl-shadow);
+	box-sizing: border-box;
+	line-height: 1.4;
+	transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels textarea {
+	min-height: 100px;
+	height: auto;
+	padding: var(--picky-ctrl-py) var(--picky-ctrl-px);
+	font-size: var(--picky-ctrl-fs);
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	background: var(--picky-ctrl-bg);
+	color: var(--picky-ctrl-color);
+	box-shadow: var(--picky-ctrl-shadow);
+	box-sizing: border-box;
+	line-height: 1.5;
+	transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels input[type="text"]:not(.wp-color-picker):not(.picky-settings-color):focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels input[type="number"]:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels input[type="email"]:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels select:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels textarea:focus {
+	outline: none;
+	border-color: var(--picky-accent, #475569);
+	box-shadow: var(--picky-ctrl-focus);
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-picker-container,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .picky-settings-color-row__control .wp-picker-container {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	overflow: visible;
+	max-width: 100%;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-color-result.button {
+	box-sizing: border-box;
+	height: var(--picky-ctrl-h);
+	min-height: var(--picky-ctrl-h);
+	line-height: calc(var(--picky-ctrl-h) - 2px);
+	padding: 0 0px 0 35px;
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	/* Swatch color comes from WP inline background-color — never force a fill. */
+	background-image: none !important;
+	box-shadow: none !important;
+	font-size: var(--picky-ctrl-fs);
+	font-weight: 500;
+	color: var(--picky-ctrl-color);
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-color-result.button:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-color-result.button:hover {
+	border-color: #c3c4c7;
+	box-shadow: var(--picky-ctrl-focus);
+	color: var(--picky-ctrl-color);
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-color-result-text {
+	line-height: calc(var(--picky-ctrl-h) - 2px);
+	font-size: var(--picky-ctrl-fs);
+	
+	color: inherit;
+	border-radius: calc(var(--picky-ctrl-r) - 1px);
+	padding: 0 40px;
+	margin: 0;
+	height: 28px !important;
+	line-height: 28px;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-picker-input-wrap {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-picker-input-wrap input[type="text"].wp-color-picker,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors input[type="text"].wp-color-picker {
+	height: var(--picky-ctrl-h) !important;
+	min-height: var(--picky-ctrl-h) !important;
+	width: 7rem !important;
+	max-width: 100%;
+	padding: var(--picky-ctrl-py) var(--picky-ctrl-px) !important;
+	font-size: var(--picky-ctrl-fs) !important;
+	line-height: 1.35 !important;
+	border: var(--picky-ctrl-border) !important;
+	border-radius: var(--picky-ctrl-r) !important;
+	background: var(--picky-ctrl-bg) !important;
+	color: var(--picky-ctrl-color) !important;
+	box-shadow: var(--picky-ctrl-shadow) !important;
+	box-sizing: border-box !important;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-picker-input-wrap input[type="text"].wp-color-picker:focus {
+	outline: none;
+	border-color: var(--picky-accent, #475569) !important;
+	box-shadow: var(--picky-ctrl-focus) !important;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-picker-input-wrap .button.wp-picker-default {
+	height: var(--picky-ctrl-h);
+	min-height: var(--picky-ctrl-h);
+	line-height: calc(var(--picky-ctrl-h) - 2px);
+	padding: 0 12px;
+	border-radius: var(--picky-btn-r);
+	font-size: var(--picky-ctrl-fs);
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-picker-holder {
+	position: absolute !important;
+	top: calc(100% + 6px) !important;
+	left: 0 !important;
+	right: auto !important;
+	z-index: 100050 !important;
+	width: auto !important;
+	min-width: 289px !important;
+	max-width: none !important;
+	border-radius: 10px !important;
+	border: 0 solid #e2e8f0 !important;
+	background: #fff !important;
+	box-shadow: 0 16px 48px rgba(15, 23, 42, 0.18) !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .iris-picker {
+	width: 289px !important;
+	height: auto !important;
+	border-radius: 8px !important;
+	border: 0 !important;
+	box-shadow: none !important;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .iris-border {
+	border-radius: 8px !important;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-workdays-fieldset select {
+	width: auto;
+	min-width: 7rem;
+	max-width: 10rem;
+	height: var(--picky-ctrl-h);
+	min-height: var(--picky-ctrl-h);
+	font-size: var(--picky-ctrl-fs);
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	background: var(--picky-ctrl-bg);
+	color: var(--picky-ctrl-color);
+	box-shadow: var(--picky-ctrl-shadow);
+	padding: 0 calc(var(--picky-ctrl-px) + var(--picky-select-end-gutter)) 0 var(--picky-ctrl-px);
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-filters input {
+	height: var(--picky-ctrl-h);
+	min-height: var(--picky-ctrl-h);
+	padding: 0 var(--picky-ctrl-px);
+	line-height: calc(var(--picky-ctrl-h) - 2px);
+	font-size: var(--picky-ctrl-fs);
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	background: var(--picky-ctrl-bg);
+	color: var(--picky-ctrl-color);
+	box-shadow: var(--picky-ctrl-shadow) !important;
+	box-sizing: border-box;
+	transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-filters select {
+	height: var(--picky-ctrl-h);
+	min-height: var(--picky-ctrl-h);
+	padding: 0 calc(var(--picky-ctrl-px) + var(--picky-select-end-gutter)) 0 var(--picky-ctrl-px);
+	line-height: calc(var(--picky-ctrl-h) - 2px);
+	font-size: var(--picky-ctrl-fs);
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	background: var(--picky-ctrl-bg);
+	color: var(--picky-ctrl-color);
+	box-shadow: var(--picky-ctrl-shadow) !important;
+	box-sizing: border-box;
+	transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-filters input:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-filters select:focus {
+	outline: none;
+	border-color: var(--picky-accent, #475569);
+	box-shadow: var(--picky-ctrl-focus) !important;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded input[type="text"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded input[type="file"] {
+	height: var(--picky-ctrl-h);
+	min-height: var(--picky-ctrl-h);
+	padding: var(--picky-ctrl-py) var(--picky-ctrl-px);
+	font-size: var(--picky-ctrl-fs);
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	background: var(--picky-ctrl-bg);
+	color: var(--picky-ctrl-color);
+	box-shadow: var(--picky-ctrl-shadow);
+	box-sizing: border-box;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded select {
+	height: var(--picky-ctrl-h);
+	min-height: var(--picky-ctrl-h);
+	padding: var(--picky-ctrl-py) calc(var(--picky-ctrl-px) + var(--picky-select-end-gutter)) var(--picky-ctrl-py) var(--picky-ctrl-px);
+	font-size: var(--picky-ctrl-fs);
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	background: var(--picky-ctrl-bg);
+	color: var(--picky-ctrl-color);
+	box-shadow: var(--picky-ctrl-shadow);
+	box-sizing: border-box;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded input[type="file"] {
+	height: auto;
+	padding: 6px var(--picky-ctrl-px);
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded textarea {
+	min-height: 160px;
+	height: auto;
+	padding: var(--picky-ctrl-py) var(--picky-ctrl-px);
+	font-size: var(--picky-ctrl-fs);
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	background: var(--picky-ctrl-bg);
+	color: var(--picky-ctrl-color);
+	box-shadow: var(--picky-ctrl-shadow);
+	box-sizing: border-box;
+	line-height: 1.5;
+	font-family: ui-monospace, 'Cascadia Code', 'Courier New', monospace;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded input:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded select:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded textarea:focus {
+	outline: none;
+	border-color: var(--picky-accent, #475569);
+	box-shadow: var(--picky-ctrl-focus);
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list input[type="search"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list input[type="text"] {
+	height: var(--picky-ctrl-h);
+	min-height: var(--picky-ctrl-h);
+	padding: var(--picky-ctrl-py) var(--picky-ctrl-px);
+	font-size: var(--picky-ctrl-fs);
+	border: var(--picky-ctrl-border);
+	border-radius: var(--picky-ctrl-r);
+	background: var(--picky-ctrl-bg);
+	color: var(--picky-ctrl-color);
+	box-shadow: var(--picky-ctrl-shadow);
+	box-sizing: border-box;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list input:focus {
+	outline: none;
+	border-color: var(--picky-accent, #475569);
+	box-shadow: var(--picky-ctrl-focus);
+}
+
+
+
+/* Brand only on true primary CTAs (Save / Add) — not Clear, Filter, Apply, Search. */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-layouts-list__add.button-primary,
+body.picky-admin #picky-wrap-content.picky-settings-surface #options-save .submit-wrap .button-primary,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-save-btn,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-layout-library__import.button-primary {
+	background: var(--picky-brand, #79fed1) !important;
+	border: 0 !important;
+	color: var(--picky-brand-on, #111) !important;
+	box-shadow: none !important;
+	text-shadow: none !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-layouts-list__add.button-primary:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-layouts-list__add.button-primary:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface #options-save .submit-wrap .button-primary:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface #options-save .submit-wrap .button-primary:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-save-btn:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-save-btn:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-layout-library__import.button-primary:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-layout-library__import.button-primary:focus {
+	background: var(--picky-brand-hover, #5ff0c6) !important;
+	border: 0 !important;
+	color: var(--picky-brand-on, #111) !important;
+	box-shadow: none !important;
+}
+
+/* AI Layout — mint brand, not neutral white secondary */
+body.picky-admin #picky-wrap-content.picky-settings-surface .button.picky-ai-layout-btn,
+body.picky-admin #picky-wrap-content.picky-settings-surface .button.picky-ai-layout-btn--canvas {
+	background: #79fed1 !important;
+	background-color: #79fed1 !important;
+	background-image: none !important;
+	border: 0 !important;
+	box-shadow: none !important;
+	color: #111 !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .button.picky-ai-layout-btn:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .button.picky-ai-layout-btn:focus,
+body.picky-admin #picky-wrap-content.picky-settings-surface .button.picky-ai-layout-btn--canvas:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .button.picky-ai-layout-btn--canvas:focus {
+	background: #5ff0c6 !important;
+	background-color: #5ff0c6 !important;
+	border: 0 !important;
+	color: #111 !important;
+}
+
+/* Neutral secondary actions (Clear, Filter, Apply, Search, pagination). */
+body.picky-admin #picky-wrap-content.picky-settings-surface .button:not(.button-primary):not(.wp-color-result):not(.picky-ai-layout-btn):not(.picky-ai-layout-btn--canvas):not(.picky-layout-library__delete),
+body.picky-admin #picky-wrap-content.picky-settings-surface .button-secondary:not(.picky-layout-library__delete),
+body.picky-admin #picky-wrap-content.picky-settings-surface .wp-picker-default,
+body.picky-admin #picky-wrap-content.picky-settings-surface .wp-picker-clear,
+body.picky-admin #picky-wrap-content.picky-settings-surface #post-query-submit,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-filters .button,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-toolbar .button,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .button:not(.button-primary):not(.picky-layouts-list__add):not(.picky-ai-layout-btn):not(.picky-layout-library__delete),
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list input[type="submit"]:not(.button-primary),
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .button:not(.button-primary),
+body.picky-admin #picky-wrap-content.picky-settings-surface .tablenav .button:not(.button-primary) {
+	background: #fff !important;
+	border: 1px solid #c5ccd6 !important;
+	color: #1e293b !important;
+	box-shadow: none !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .button:not(.button-primary):not(.wp-color-result):not(.picky-ai-layout-btn):not(.picky-ai-layout-btn--canvas):not(.picky-layout-library__delete):hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .button-secondary:not(.picky-layout-library__delete):hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .wp-picker-default:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .wp-picker-clear:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface #post-query-submit:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-filters .button:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-toolbar .button:hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .button:not(.button-primary):not(.picky-layouts-list__add):not(.picky-ai-layout-btn):not(.picky-layout-library__delete):hover,
+body.picky-admin #picky-wrap-content.picky-settings-surface .tablenav .button:not(.button-primary):hover {
+	background: #f8fafc !important;
+	border-color: #94a3b8 !important;
+	color: #0f172a !important;
+}
+
+/* Filter/Search primary in lists — keep neutral even if WP marks them button-primary. */
+body.picky-admin #picky-wrap-content.picky-settings-surface #post-query-submit.button-primary,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-filters .button-primary,
+body.picky-admin #picky-wrap-content.picky-settings-surface .tablenav #search-submit,
+body.picky-admin #picky-wrap-content.picky-settings-surface .search-box .button {
+	background: #fff !important;
+	border: 1px solid #c5ccd6 !important;
+	color: #1e293b !important;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .button-primary,
+body.picky-admin #picky-wrap-content.picky-settings-surface .button-secondary,
+body.picky-admin #picky-wrap-content.picky-settings-surface input[type="submit"] {
+	height: var(--picky-btn-h);
+	min-height: var(--picky-btn-h);
+	line-height: calc(var(--picky-btn-h) - 2px);
+	padding: 0 var(--picky-btn-px);
+	border-radius: var(--picky-btn-r);
+	font-size: var(--picky-ctrl-fs);
+	box-sizing: border-box;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .button,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .page-numbers,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list input[type="submit"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list button[type="submit"] {
+	height: var(--picky-btn-h);
+	min-height: var(--picky-btn-h);
+	line-height: calc(var(--picky-btn-h) - 2px);
+	border-radius: var(--picky-btn-r);
+	font-size: var(--picky-ctrl-fs);
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-toolbar .button,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-filters .button,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-cal-filters input[type="submit"],
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-7 .picky-reservations-top-bar #post-query-submit,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-9 .picky-reservations-top-bar #post-query-submit,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-top-bar #post-query-submit,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-7 .picky-reservations-top-bar #search-submit,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-9 .picky-reservations-top-bar #search-submit,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-top-bar #search-submit,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-toolbar #doaction,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-reservations-toolbar #doaction2,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-embedded-posts-list .button {
+	height: var(--picky-btn-h);
+	min-height: var(--picky-btn-h);
+	line-height: calc(var(--picky-btn-h) - 2px);
+	padding: 0 var(--picky-btn-px);
+	border-radius: var(--picky-btn-r);
+	font-size: var(--picky-ctrl-fs);
+	border: none;
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-list-toolbar-btn--filter,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-list-toolbar-btn--search {
+	font-weight: 600;
+	box-shadow: 0 1px 0 rgba(15, 23, 42, 0.06);
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-reservations-custom .picky-list-toolbar-btn--apply {
+	font-weight: 600;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded input[type="submit"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-import-export--embedded .button {
+	height: var(--picky-btn-h);
+	min-height: var(--picky-btn-h);
+	line-height: calc(var(--picky-btn-h) - 2px);
+	padding: 0 var(--picky-btn-px);
+	border-radius: var(--picky-btn-r);
+	font-size: var(--picky-ctrl-fs);
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .button:focus-visible,
+body.picky-admin #picky-wrap-content.picky-settings-surface .button-primary:focus-visible,
+body.picky-admin #picky-wrap-content.picky-settings-surface .button-secondary:focus-visible,
+body.picky-admin #picky-wrap-content.picky-settings-surface input[type="submit"]:focus-visible {
+	outline: none;
+	box-shadow: var(--picky-ctrl-focus);
+}
+
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-group input[type="text"]:not(.wp-color-picker):not(.picky-settings-color),
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-group input[type="number"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-group input[type="email"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-group select,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-option-panels .picky-settings-group textarea,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-group input[type="text"]:not(.wp-color-picker):not(.picky-settings-color),
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-group input[type="number"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-group input[type="email"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-group select,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-group textarea {
+	color: #555;
+}
+
+/* === INTEGRATION STRIPS ===
+ * HubSpot / n8n / Zapier / Make connection + webhook summary rows.
+ * (see Admin::picky_settings_section_integration_strip)
+ */
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-section__integration-strip {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 4px 10px;
+	margin: 0 0 14px;
+	padding: 8px 12px;
+	border-radius: 6px;
+	font-size: 12px;
+	line-height: 1.5;
+	border: 1px solid #3a4759;
+	background: #1b2028;
+	color: #aab2be;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-section__integration-strip--ready {
+	border: none;
+	background: rgba(0, 163, 42, 0.1);
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-section__integration-strip--incomplete {
+	border-color: #8a7220;
+	background: rgba(219, 166, 23, 0.12);
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-section__integration-strip--disabled {
+	border: none;
+	background: #a4acb4;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-section__integration-strip-part {
+	display: inline;
+	min-width: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-section__integration-strip-k {
+	font-weight: 600;
+	color: #e2e8f0;
+	margin-right: 4px;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-section__integration-strip--ready .picky-settings-section__integration-strip-k {
+	color: #1fa574;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-section__integration-strip-v {
+	color: #cbd5e1;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-section__integration-strip-v--muted {
+	color: #717171;
+	font-style: normal;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-section__integration-strip-code {
+	display: inline;
+	margin: 0;
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 11px;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	word-break: break-all;
+	background: rgba(0, 0, 0, 0.35);
+	color: #e2e8f0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-section__integration-strip-sep {
+	color: #717171;
+	user-select: none;
+}
+
+/* ===== Services Library Panel ===== */
+.picky-services-library-panel {
+    margin-top: 16px;
+    background: #fff;
+    border: 1px solid #dce3ec;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.picky-services-library-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.picky-services-library-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.picky-services-library-empty {
+    padding: 12px 16px;
+    color: #717171;
+    margin: 0 !important;
+}
+
+/* Table — same look as bookings/layouts tables */
+.picky-services-library-table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+    background: #fff;
+    margin: 0 !important;
+}
+
+.picky-services-library-table thead th {
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #717171;
+    background: #eef1f4;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.picky-services-library-table tbody td {
+    padding: 10px 12px;
+    vertical-align: middle;
+    color: #1e293b;
+    font-size: 13px;
+    border-top: 1px solid #f1f5f9;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+}
+
+.picky-services-library-table tbody tr:nth-child(even) td {
+    background: #fafbfc;
+}
+
+.picky-services-library-table tbody tr:hover td {
+    background: #f1f5f9;
+}
+
+/* Addon indent arrow */
+.picky-lib-row-addon-indent {
+    color: #94a3b8;
+    margin-right: 3px;
+}
+
+/* Type badges */
+.picky-lib-type-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 9px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+.picky-lib-type-badge--parent {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+.picky-lib-type-badge--addon {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+.picky-lib-type-badge--warning {
+    background: #fef9c3;
+    color: #a16207;
+    border: 1px solid #fde68a;
+}
+
+/* Row action buttons */
+.picky-lib-row-edit,
+.picky-lib-row-delete {
+    font-size: 11px !important;
+    padding: 2px 10px !important;
+    height: auto !important;
+    border-radius: 5px !important;
+    line-height: 1.6 !important;
+}
+.picky-lib-row-delete {
+    color: #dc2626 !important;
+    border-color: #fecaca !important;
+}
+.picky-lib-row-delete:hover {
+    background: #fef2f2 !important;
+    border-color: #dc2626 !important;
+}
+
+/* Inline editor */
+.picky-services-library-editor {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    padding: 16px;
+    margin: 0 !important;
+    border-radius: 0 0 10px 10px;
+    display: none;
+}
+.picky-services-library-editor label {
+    font-size: 11px !important;
+    color: #717171 !important;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 3px;
+}
+
+/* Element editor service chips */
+.picky-field-service-ids-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 1px;
+}
+
+.picky-service-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	border: 0px solid #c3c4c7;
+	border-radius: 84px;
+	padding: 10px 10px;
+	cursor: pointer;
+	font-size: 12px;
+}
+
+.picky-service-chip input[type="checkbox"] {
+    margin: 0;
+}
+
+/* ===== Service hierarchy (parent / add-on) ===== */
+.picky-services-library-table tr.picky-lib-row-addon td:first-child {
+    color: #555;
+}
+
+.picky-lib-row-addon-indent {
+    color: #b0b0b0;
+    margin-right: 4px;
+}
+
+.picky-lib-type-badge {
+    display: inline-block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 2px 6px;
+    border: 1px solid #c3c4c7;
+    border-radius: 10px;
+    color: #555;
+    background: #f6f7f7;
+}
+
+.picky-lib-type-badge--parent {
+    color: #1d4ed8;
+    border-color: #93c5fd;
+    background: #eff6ff;
+}
+
+.picky-lib-type-badge--addon {
+    color: #15803d;
+    border-color: #86efac;
+    background: #f0fdf4;
+}
+
+.picky-lib-type-badge--warning {
+    color: #b91c1c;
+    border-color: #fca5a5;
+    background: #fef2f2;
+}
+
+.picky-service-chip--addon {
+	background: transparent !important;
+	border-style: dashed !important;
+}
+
+.picky-lib-edit-parents-list .picky-lib-edit-parent-chip {
+    user-select: none;
+}
+
+/* Multi-select toggle */
+.picky-layout-multi-select-toggle {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Integrations gallery (Layouts-style cards) */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-intro {
+	max-width: none;
+	background: transparent;
+	box-shadow: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 1.25rem;
+	align-items: start;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card {
+	display: flex;
+	flex-direction: column;
+	background: #fff;
+	border: 1px solid #e5e7eb;
+	border-radius: 14px;
+	overflow: hidden;
+	box-shadow: 0 10px 28px -22px rgba(15, 23, 42, 0.35);
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card:hover {
+	border-color: #79fed1;
+	box-shadow: 0 14px 32px -20px rgba(15, 23, 42, 0.4);
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__preview {
+	position: relative;
+	aspect-ratio: 16 / 10;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	background: #f3f4f6;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--hubspot .picky-int-card__preview { background: #ffeadc; }
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--mailchimp .picky-int-card__preview { background: #fff6c2; }
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--n8n .picky-int-card__preview { background: #fde7ee; }
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--zapier .picky-int-card__preview { background: #ffe4d6; }
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--make .picky-int-card__preview { background: #efe6fb; }
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--gcal .picky-int-card__preview { background: #e8f0fe; }
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--ai .picky-int-card__preview { background: #d8fff0; }
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--stripe .picky-int-card__preview { background: #eef0ff; }
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--woocommerce .picky-int-card__preview { background: #f3e8ff; }
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--pay .picky-int-card__preview { background: #d8fff0; }
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--paypal .picky-int-card__preview { background: #e7f0fb; }
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__preview .picky-settings-section__brand {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__preview img {
+	width: 56px;
+	height: 56px;
+	object-fit: contain;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--stripe .picky-int-card__preview img,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--woocommerce .picky-int-card__preview img {
+	width: 120px;
+	height: 40px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--paypal .picky-int-card__preview img {
+	width: 72px;
+	height: 72px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__logo-fallback {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 56px;
+	height: 56px;
+	padding: 0 12px;
+	border-radius: 12px;
+	background: #111;
+	color: #79fed1;
+	font-size: 1.05rem;
+	font-weight: 800;
+	letter-spacing: -0.04em;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__badge {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	padding: 3px 8px;
+	border-radius: 999px;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	background: #fff;
+	color: #6b7280;
+	border: 1px solid #e5e7eb;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--ready .picky-int-card__badge {
+	background: #ecfdf5;
+	color: #047857;
+	border-color: #a7f3d0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card--incomplete .picky-int-card__badge {
+	background: #fffbeb;
+	color: #b45309;
+	border-color: #fde68a;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__body {
+	padding: 14px 16px 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__title {
+	margin: 0;
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: #111827;
+	letter-spacing: -0.02em;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__desc {
+	margin: 0 0 0.45rem;
+	font-size: 13px;
+	line-height: 1.45;
+	color: #6b7280;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card .picky-settings-section__integration-strip {
+	display: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__summary {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 0.35rem;
+	padding: 8px 14px;
+	border-radius: 999px;
+	border: 1px solid #d1d5db;
+	background: #fff;
+	color: #111827;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	list-style: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__summary::-webkit-details-marker {
+	display: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__config[open] .picky-int-card__summary {
+	background: #111827;
+	color: #fff;
+	border-color: #111827;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__fields {
+	margin-top: 0.85rem;
+	padding-top: 0.35rem;
+	border-top: 1px solid #f3f4f6;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__fields .picky-settings-group,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__fields .picky-integration-test-row {
+	max-width: none;
+	margin: 0;
+	padding: 12px 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__fields .picky-settings-group + .picky-settings-group,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__fields .picky-settings-group + .picky-integration-test-row {
+	border-top: 1px solid #f3f4f6;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__fields .picky-settings-card__title {
+	color: #111827;
+	margin-bottom: 8px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__fields .picky-settings-card__desc,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__fields .description {
+	color: #6b7280;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__fields input[type="text"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__fields input[type="password"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__fields input[type="number"],
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__fields select,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-int-card__fields textarea {
+	width: 100%;
+	max-width: 100%;
+}
+
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-5 .picky-int-card__fields .picky-settings-radio-option {
+	position: relative;
+	margin: 0 0 8px;
+	padding: 12px 14px;
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
+	background: #fff;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-5 .picky-int-card__fields .picky-settings-radio-tile__title {
+	display: block;
+	margin: 0 0 4px;
+	font-weight: 600;
+	color: #111;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-5 .picky-int-card__fields .picky-settings-radio--with-desc .picky-settings-field-desc {
+	margin: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-5 .picky-int-card__fields .picky-settings-radio-option:has(input[type="radio"]:checked) {
+	border-color: #79fed1;
+	background: #f3fffb;
+	box-shadow: 0 0 0 1px #79fed1;
+}
+
+/* Main: radio options as selectable tiles */
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-1 .picky-settings-radio-tiles {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 12px;
+	margin-top: 4px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-1 .picky-settings-group--radios .picky-settings-radio-option {
+	position: relative;
+	margin: 0;
+	height: 100%;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-1 .picky-settings-group--radios .picky-settings-radio.picky-settings-radio--with-desc {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+	gap: 8px;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 16px 18px 18px;
+	box-sizing: border-box;
+	border: 1px solid #e5e7eb;
+	border-radius: 14px;
+	background: #fff;
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+	transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-1 .picky-settings-group--radios .picky-settings-radio-option:hover .picky-settings-radio--with-desc {
+	border-color: #cbd5e1;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-1 .picky-settings-group--radios .picky-settings-radio-option:has(input[type="radio"]:checked) .picky-settings-radio--with-desc,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-1 .picky-settings-group--radios .picky-settings-radio-option:has(input[type="radio"]:focus-visible) .picky-settings-radio--with-desc {
+	border-color: #79fed1;
+	background: #f3fffb;
+	box-shadow: 0 0 0 1px #79fed1, 0 8px 20px -16px rgba(15, 23, 42, 0.35);
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-1 .picky-settings-group--radios .picky-settings-radio--with-desc input[type="radio"] {
+	position: absolute;
+	opacity: 0;
+	width: 1px;
+	height: 1px;
+	margin: 0;
+	pointer-events: none;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-1 .picky-settings-radio-tile__title {
+	display: block;
+	margin: 0;
+	padding-right: 28px;
+	color: #111 !important;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.3;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-1 .picky-settings-group--radios .picky-settings-field-desc {
+	display: block;
+	flex: none;
+	min-width: 0;
+	margin: 0;
+	color: #6b7280 !important;
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 1.45;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-1 .picky-settings-group--radios .picky-settings-help {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	z-index: 2;
+	margin: 0;
+}
+
+/* Layout Colors: compact swatch cards */
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-group--colors.picky-settings-card {
+	margin-top: 12px;
+	border: 1px solid #e8eaed;
+	border-radius: 16px;
+	background: #f8fafc;
+	padding: 18px 20px 20px;
+	overflow: visible;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-colors {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 10px;
+	margin-top: 12px;
+	overflow: visible;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-color-row {
+	align-items: flex-start;
+	gap: 12px;
+	margin: 0;
+	padding: 12px 14px;
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
+	background: #fff;
+	min-height: 64px;
+	box-sizing: border-box;
+	position: relative;
+	overflow: visible;
+	z-index: 1;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-color-row:has(details[open]),
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-color-row:has(.wp-picker-active) {
+	z-index: 50;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-color-row .picky-settings-help {
+	position: relative;
+	top: auto;
+	right: auto;
+	margin: 0;
+	flex: 0 0 auto;
+	z-index: 2;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-color-row .picky-settings-help[open] {
+	z-index: 60;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-color-row .picky-settings-help__content {
+	left: 0;
+	right: auto;
+	top: calc(100% + 8px);
+	bottom: auto;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-section:not(:first-child) {
+	margin-top: 8px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-group--colors .picky-settings-card__title {
+	margin: 0 0 4px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-colors {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 10px;
+	margin-top: 12px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-color-row {
+	align-items: flex-start;
+	gap: 12px;
+	margin: 0;
+	padding: 12px 14px;
+	border: 1px solid #e5e7eb;
+	border-radius: 12px;
+	background: #fff;
+	min-height: 64px;
+	box-sizing: border-box;
+	position: relative;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-color-row__label {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	color: #334155;
+	font-size: 13px;
+	line-height: 1.4;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-color-row__label label {
+	color: #0f172a;
+	font-weight: 600;
+	flex: 1 1 auto;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-color-row .picky-settings-help {
+	position: relative;
+	top: auto;
+	right: auto;
+	margin: 0;
+	flex: 0 0 auto;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-color-row__control {
+	padding-top: 2px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-4 .picky-settings-colors .wp-color-result.button {
+	min-width: 44px !important;
+	min-height: 36px !important;
+	height: 36px !important;
+	border-radius: 8px !important;
+	border: 1px solid #e5e7eb !important;
+}
+
+/* SMS — brand cards */
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-3 .picky-settings-card {
+	background: #fff;
+	border: 1px solid #e8eaed;
+	border-radius: 14px;
+	padding: 16px 18px 18px;
+	margin: 0 0 12px;
+	max-width: 40rem;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-3 .picky-settings-field--send_sms {
+	background: #f3fffb;
+	border-color: #79fed1;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-3 .picky-settings-card__title {
+	margin: 0 0 8px;
+	font-size: 14px;
+	font-weight: 700;
+	color: #0f172a;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-3 .picky-settings-field-desc,
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-3 .picky-settings-card__desc {
+	margin: 0 0 12px;
+	color: #6b7280;
+	font-size: 13px;
+	line-height: 1.45;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-3 .picky-settings-checkbox-with-desc {
+	align-items: center;
+	gap: 16px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-3 .picky-settings-checkbox-wrap {
+	padding: 0;
+	background: transparent;
+	border: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-3 input[type="checkbox"] {
+	width: 18px;
+	height: 18px;
+	accent-color: #111;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-3 .picky-settings-group > p > input[type="text"],
+body.picky-admin #picky-wrap-content.picky-settings-surface #picky-settings-tab-3 .picky-settings-group > p > input[type="password"] {
+	width: 100%;
+	max-width: 28rem;
+}
+
+/* ── Layout Colors: fix broken WP color pickers + floating help "?" ── */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-color-row {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 10px;
+	position: relative;
+	overflow: visible;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-color-row__label {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	position: relative;
+	width: 100%;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-color-row__label label {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-color-row .picky-settings-help {
+	position: relative !important;
+	top: auto !important;
+	right: auto !important;
+	left: auto !important;
+	margin: 0 !important;
+	flex: 0 0 auto;
+	align-self: flex-start;
+	z-index: 2;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-color-row__control {
+	width: 100%;
+	padding-top: 0;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-picker-container {
+	display: block !important;
+	position: relative !important;
+	width: 100% !important;
+	max-width: 220px;
+}
+/* Reset to a readable WP Iris button: left swatch + “Select Color” label */
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-color-result.button {
+	position: relative !important;
+	display: inline-block !important;
+	box-sizing: border-box !important;
+	width: 100% !important;
+	max-width: 220px !important;
+	min-width: 0 !important;
+	min-height: 30px !important;
+	height: 30px !important;
+	padding: 0 0 0 30px !important;
+	margin: 0 !important;
+	border: 1px solid #8c8f94 !important;
+	border-radius: 4px !important;
+	background-image: none !important;
+	box-shadow: none !important;
+	line-height: 2.15384615 !important;
+	font-size: 13px !important;
+	color: #2c3338 !important;
+	overflow: hidden !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-color-result.button::after {
+	content: none !important;
+	display: none !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-color-result-text {
+	position: absolute !important;
+	left: 30px !important;
+	right: 0 !important;
+	top: 0 !important;
+	bottom: 0 !important;
+	display: block !important;
+	height: auto !important;
+	line-height: 28px !important;
+	padding: 0 8px !important;
+	margin: 0 !important;
+	border: 0 !important;
+	border-left: 1px solid #8c8f94 !important;
+	border-radius: 0 !important;
+	background: #f6f7f7 !important;
+	color: #2c3338 !important;
+	font-size: 13px !important;
+	font-weight: 400 !important;
+	text-align: left !important;
+	box-sizing: border-box !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-picker-input-wrap {
+	display: flex !important;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	margin-top: 6px;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-picker-input-wrap label {
+	display: none !important; /* WP adds a hidden label; keep UI clean */
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-picker-input-wrap input[type="text"].wp-color-picker,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors input[type="text"].wp-color-picker {
+	width: 6.5rem !important;
+	max-width: 100% !important;
+	height: 30px !important;
+	min-height: 30px !important;
+	line-height: 1.4 !important;
+	padding: 0 8px !important;
+	border: 1px solid #8c8f94 !important;
+	border-radius: 4px !important;
+	background: #fff !important;
+	color: #2c3338 !important;
+	box-shadow: none !important;
+}
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-picker-input-wrap .button.wp-picker-default,
+body.picky-admin #picky-wrap-content.picky-settings-surface .picky-settings-colors .wp-picker-input-wrap .button.wp-picker-clear {
+	height: 30px !important;
+	min-height: 30px !important;
+	line-height: 28px !important;
+	padding: 0 10px !important;
+	margin: 0 !important;
+}

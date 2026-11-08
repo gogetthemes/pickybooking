@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Build a layout — PickyBooking Docs</title>
+  <meta name="description" content="Step-by-step: create a floor plan, place bookable items, configure appearance and wizard." />
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html" class="is-active">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>How to build a layout</h1>
+          <p>Practical walkthrough: create a floor map, place seats/tables, set appearance, and publish with a shortcode.</p>
+          <div class="badge-row">
+            <span class="badge badge--accent">How-to</span>
+            <span class="badge">~15–40 minutes</span>
+          </div>
+        </header>
+
+        <section class="card">
+          <h2>Before you start</h2>
+          <ul>
+            <li>In <strong>Main</strong>, set item names (Table/Seat…), exclusive vs capacity, and default wizard.</li>
+            <li>In <strong>Work Days</strong>, set open hours so the map has bookable slots.</li>
+            <li>Have a rough sketch of the room (photo, floor plan, or napkin drawing).</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>Step 1 — Create or import</h2>
+          <ol class="steps">
+            <li>
+              <strong>Open Layouts</strong>
+              <span>wp-admin → PickyBooking → <em>Layouts</em>.</span>
+            </li>
+            <li>
+              <strong>Pick a starting point</strong>
+              <span><em>New layout</em> for a blank canvas, or open a bundled preset (Restaurant, Wedding, Cinema, Coworking, Beauty, EV, Football) and customize.</span>
+            </li>
+            <li>
+              <strong>Name it</strong>
+              <span>Use a clear title guests never see — e.g. “Main dining — evening”. Guests only see the published page.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Step 2 — Place bookable items</h2>
+          <ol class="steps">
+            <li>
+              <strong>Add squares or circles</strong>
+              <span>These are the only bookable types. Drag onto the canvas; resize with handles.</span>
+            </li>
+            <li>
+              <strong>Set identity</strong>
+              <span>Select an item → set <em>Custom ID</em> (e.g. T12, L3) and optional <em>Label</em>. Turn “show ID” on if guests should see the code on the map.</span>
+            </li>
+            <li>
+              <strong>Set capacity</strong>
+              <span><em>Max persons</em> matters in Capacity mode and when party size is enabled. For exclusive tables, keep it as the table size for guest guidance.</span>
+            </li>
+            <li>
+              <strong>Style the plate</strong>
+              <span>Solid color or custom image. Opacity for soft zones. Corner radius if you want softer seats.</span>
+            </li>
+            <li>
+              <strong>Rotate / 3D if needed</strong>
+              <span>Use Z-rotate for angled rows or arcs. Use the 3D pad (X/Y) for perspective. Guest avatars follow the same angle.</span>
+            </li>
+            <li>
+              <strong>Duplicate grids</strong>
+              <span>Place one seat correctly → Ctrl/Cmd+D → move copies into rows. Faster than drawing each one.</span>
+            </li>
+          </ol>
+          <div class="callout">
+            <strong>Tip</strong>
+            <p>Keep seats in one grid the same size. Different sizes are fine for VIP / stage, but random sizes look like bugs.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Step 3 — Add non-bookable helpers</h2>
+          <div class="grid-2">
+            <div class="tile">
+              <h3>Walls</h3>
+              <p>Stage edge, aisle barriers, room outline. Freely rotatable.</p>
+            </div>
+            <div class="tile">
+              <h3>Text</h3>
+              <p>Section titles: “Bar”, “Bride’s Family”, “Zone A”. Guests cannot book these.</p>
+            </div>
+            <div class="tile">
+              <h3>Shapes</h3>
+              <p>Rugs, dance floor, zones behind seats.</p>
+            </div>
+            <div class="tile">
+              <h3>Icons</h3>
+              <p>Restroom, exit, bar, VIP — from the icon catalog.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Step 4 — Layout settings (right panel / layout tabs)</h2>
+          <article class="feature">
+            <h3>Appearance</h3>
+            <ul>
+              <li>Canvas background image or color (or transparent for branded pages).</li>
+              <li>Show / hide: seat dots, ID badges, labels, item fill, booked avatars.</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Wizard override</h3>
+            <ul>
+              <li>Leave “site default”, or force Classic / Smart / Smart Map / Simple for this map only.</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Multi-select</h3>
+            <ul>
+              <li>On = guests can pick several seats/tables in one checkout (creates an order + child bookings).</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Event schedule</h3>
+            <ul>
+              <li>For a ceremony or match: switch to one-time event, set date + time, optional label on the booking bar. Calendar picker is hidden.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="card">
+          <h2>Step 5 — Save &amp; publish</h2>
+          <ol class="steps">
+            <li>
+              <strong>Save the layout</strong>
+              <span>Use the builder save control. Confirm the layout appears in the Layouts gallery.</span>
+            </li>
+            <li>
+              <strong>Copy the shortcode</strong>
+              <span>From the gallery card or builder badge: <code>[pickybooking id="123"]</code> (use your real ID).</span>
+            </li>
+            <li>
+              <strong>Paste on a page</strong>
+              <span>Or use Elementor Layout Navigator / WPBakery map element.</span>
+            </li>
+            <li>
+              <strong>Test as a guest</strong>
+              <span>Desktop + mobile. Try a free seat, a booked seat, and (if enabled) multi-select.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Next</h2>
+          <ul>
+            <li><a href="how-to-services.html">Attach services &amp; prices</a> to items</li>
+            <li><a href="booking-flows.html">Pick the right wizard mode</a></li>
+            <li><a href="how-to-bookings.html">Handle bookings in admin</a></li>
+          </ul>
+        </section>
+
+        <div class="footer">
+          <span><a href="getting-started.html">← Getting started</a></span>
+          <span><a href="how-to-services.html">Services &amp; prices →</a></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

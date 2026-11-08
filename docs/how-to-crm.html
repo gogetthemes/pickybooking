@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CRM &amp; automation — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html" class="is-active">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>How to integrate CRM &amp; automation</h1>
+          <p>Send successful bookings to HubSpot, Mailchimp, Google Calendar, or webhooks (n8n / Zapier / Make). All live under the Integrations tab.</p>
+          <div class="badge-row">
+            <span class="badge badge--accent">How-to</span>
+            <span class="badge">Integrations tab</span>
+          </div>
+        </header>
+
+        <section class="card">
+          <p><span class="badge">Pro</span> This guide describes <strong>PickyBooking Pro</strong> capabilities. They are not included in PickyBooking — see <a href="free-vs-pro.html">Free vs Pro</a>.</p>
+        </section>
+
+
+        <section class="card">
+          <h2>Shared requirements</h2>
+          <ul>
+            <li>Booking must complete successfully (including payment return if Pay &amp; Book).</li>
+            <li>Show <strong>email</strong> and/or <strong>phone</strong> on the guest form (Main tab) — CRMs need an identifier.</li>
+            <li>Each section shows a short connection strip + <strong>Test</strong> where available — use it after saving keys.</li>
+          </ul>
+          <div class="callout">
+            <strong>Event name for webhooks</strong>
+            <p>Outbound JSON uses event <code>pickybooking.booking_created</code> plus guest, reservation, payment, and HubSpot IDs if synced.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>HubSpot CRM</h2>
+          <ol class="steps">
+            <li>
+              <strong>Create a private app / access token</strong>
+              <span>In HubSpot: Development → Legacy apps (or a developer project). Scopes for contacts (and deals if you sync deals).</span>
+            </li>
+            <li>
+              <strong>Integrations → HubSpot</strong>
+              <span>Enable “Send new bookings to HubSpot CRM”. Paste the access token.</span>
+            </li>
+            <li>
+              <strong>Optional deals</strong>
+              <span>Turn on “Create a HubSpot deal for each booking”. Optionally paste pipeline / stage IDs; leave blank to auto-pick the first pipeline and stage.</span>
+            </li>
+            <li>
+              <strong>Test Connection</strong>
+              <span>Then place a real booking with email/phone and confirm the contact (and deal) in HubSpot.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Mailchimp</h2>
+          <ol class="steps">
+            <li>
+              <strong>API key + Audience ID</strong>
+              <span>From Mailchimp account → API keys and audience settings.</span>
+            </li>
+            <li>
+              <strong>Enable in Integrations</strong>
+              <span>Paste key and audience. Guests are added/updated as subscribers on successful booking.</span>
+            </li>
+            <li>
+              <strong>Test Connection</strong>
+              <span>Verify credentials, then run a live booking with email filled.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>n8n / Zapier / Make (webhooks)</h2>
+          <ol class="steps">
+            <li>
+              <strong>Create a Catch Hook / Webhook</strong>
+              <span>In your automation tool, create an HTTPS webhook URL.</span>
+            </li>
+            <li>
+              <strong>Paste URL in Integrations</strong>
+              <span>Use the matching section (n8n, Zapier, or Make). Optional HMAC secret if the tool supports signed payloads.</span>
+            </li>
+            <li>
+              <strong>Map fields in the tool</strong>
+              <span>Subscribe to <code>pickybooking.booking_created</code>. Typical fields: guest name/email/phone, date/time, item IDs, services, payment status, layout id.</span>
+            </li>
+            <li>
+              <strong>Trigger a test booking</strong>
+              <span>Confirm the automation run and fix field mapping before going live.</span>
+            </li>
+          </ol>
+          <div class="grid-2 picky-docs-mt">
+            <div class="tile">
+              <h3>Good for</h3>
+              <p>Slack/Telegram alerts, Google Sheets rows, custom CRM, SMS beyond Vonage, follow-up sequences.</p>
+            </div>
+            <div class="tile">
+              <h3>Tip</h3>
+              <p>Use a staging layout shortcode for the first webhook tests so production guests are not affected.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Google Calendar</h2>
+          <ol class="steps">
+            <li>
+              <strong>Service account JSON</strong>
+              <span>Create a Google Cloud service account with Calendar API enabled. Share the target calendar with the service account email.</span>
+            </li>
+            <li>
+              <strong>Paste JSON in Integrations</strong>
+              <span>Enable Google Calendar sync. Optionally invite the guest as attendee when email is present.</span>
+            </li>
+            <li>
+              <strong>Test</strong>
+              <span>Book once and confirm the event appears on the calendar for the reservation time range.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Quick decision guide</h2>
+          <table>
+            <thead><tr><th>Need</th><th>Use</th></tr></thead>
+            <tbody>
+              <tr><td>Sales pipeline + contacts</td><td>HubSpot (+ deals)</td></tr>
+              <tr><td>Newsletter list</td><td>Mailchimp</td></tr>
+              <tr><td>Staff calendar blocks</td><td>Google Calendar</td></tr>
+              <tr><td>Slack / Sheets / custom CRM</td><td>n8n / Zapier / Make webhook</td></tr>
+              <tr><td>Instant staff phone ping</td><td><a href="how-to-notifications.html">SMS</a> (separate from CRM)</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <div class="footer">
+          <span><a href="how-to-notifications.html">← Emails &amp; SMS</a></span>
+          <span><a href="how-to-payments.html">Payments setup →</a></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

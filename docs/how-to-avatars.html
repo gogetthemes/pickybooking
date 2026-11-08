@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Avatars &amp; accounts — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html" class="is-active">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>Avatars &amp; accounts</h1>
+          <p>Show guest photos on booked seats, enable WordPress registration, and understand what visitors see when logged out.</p>
+          <div class="badge-row">
+            <span class="badge badge--accent">How-to</span>
+            <span class="badge">Layout appearance</span>
+          </div>
+        </header>
+
+        <section class="card">
+          <p><span class="badge">Pro</span> This guide describes <strong>PickyBooking Pro</strong> capabilities. They are not included in PickyBooking — see <a href="free-vs-pro.html">Free vs Pro</a>.</p>
+        </section>
+
+
+        <section class="card">
+          <h2>What booked avatars do</h2>
+          <p class="lead">When enabled, a reserved seat can show the booker’s profile photo filling the same tile as an empty seat (same size, same rotation / 3D tilt). Hover can show a name tip.</p>
+        </section>
+
+        <section class="card">
+          <h2>Step 1 — Turn avatars on for the layout</h2>
+          <ol class="steps">
+            <li>
+              <strong>Open the layout builder</strong>
+              <span>Layouts → edit the map.</span>
+            </li>
+            <li>
+              <strong>Appearance</strong>
+              <span>Enable <em>booked avatars</em> (stored as layout meta <code>show_booked_avatars</code>). Save.</span>
+            </li>
+            <li>
+              <strong>Check the public shortcode</strong>
+              <span>The map wrapper must expose <code>data-show-booked-avatars="1"</code> (set by the plugin when meta is on).</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Step 2 — Who gets a photo</h2>
+          <ul>
+            <li><strong>Logged-in WordPress users</strong> — booking stores <code>_picky_booking_user_id</code>; the map uses their avatar URL (Gravatar / local avatar plugins).</li>
+            <li><strong>Guests without accounts</strong> — usually initials / placeholder, or no photo, unless you use demo seeding.</li>
+            <li><strong>Demo sites</strong> — PickyBooking can seed demo users with studio portraits for showcase maps (wedding fill, etc.).</li>
+          </ul>
+          <div class="callout">
+            <strong>Anyone can register</strong>
+            <p>For production avatars from real guests: Settings → General → <em>Anyone can register</em>, and keep the booking account bar so visitors can log in / create an account before booking.</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Step 3 — Account bar on the map</h2>
+          <ol class="steps">
+            <li>
+              <strong>Logged out</strong>
+              <span>Guests see a login / register CTA but can still book as guest (unless you force accounts via your own theme rules).</span>
+            </li>
+            <li>
+              <strong>Logged in</strong>
+              <span>Account strip shows their avatar; new bookings can attach that user for map photos.</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h2>Visual rules (already built in)</h2>
+          <ul>
+            <li>Photo fills the seat tile (not a tiny circle inset).</li>
+            <li>Border radius matches the seat (square radius / circle type).</li>
+            <li>If the seat is rotated or 3D-tilted, the avatar follows the same transform.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>Checklist when photos missing</h2>
+          <ul>
+            <li>Layout appearance: booked avatars = on; layout saved.</li>
+            <li>Booking status is Reserved / blocking occupancy for that slot.</li>
+            <li>Booker is a WP user with an avatar, or demo seed attached a portrait URL.</li>
+            <li>Hard-refresh public page; purge caches.</li>
+            <li>See <a href="troubleshooting.html">Troubleshooting</a> for size/rotation quirks.</li>
+          </ul>
+        </section>
+
+        <div class="footer">
+          <span><a href="how-to-payments.html">← Payments</a></span>
+          <span><a href="how-to-import-export.html">Import / Export →</a></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

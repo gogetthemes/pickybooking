@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin panel — PickyBooking Docs</title>
+  <link rel="stylesheet" href="assets/docs.css" />
+</head>
+<body>
+  <input type="checkbox" id="picky-docs-nav-toggle" class="picky-docs-nav-toggle" />
+  <div class="mobile-bar"><strong>PickyBooking Docs</strong><label for="picky-docs-nav-toggle" class="picky-docs-nav-open">Menu</label></div>
+  <label for="picky-docs-nav-toggle" class="backdrop"></label>
+  <div class="layout">
+    <aside class="sidebar">
+<div class="brand"><strong>PickyBooking</strong><span>Documentation · Lite · free</span></div>
+<nav class="nav" aria-label="Docs">
+            <div class="nav-label">Start</div>
+            <a href="index.html">Overview</a>
+            <a href="getting-started.html">Getting started</a>
+            <a href="features.html">Features catalog</a>
+            <a href="free-vs-pro.html">Free vs Pro</a>
+            <a href="industries.html">Industry recipes</a>
+            <div class="nav-label">How-to guides</div>
+            <a href="how-to-layout.html">Build a layout</a>
+            <a href="how-to-services.html">Services &amp; prices</a>
+            <a href="how-to-bookings.html">Handle bookings</a>
+            <a href="how-to-notifications.html">Emails &amp; SMS</a>
+            <a href="how-to-crm.html">CRM &amp; automation</a>
+            <a href="how-to-payments.html">Payments setup</a>
+            <a href="how-to-avatars.html">Avatars &amp; accounts</a>
+            <a href="how-to-import-export.html">Import / Export</a>
+            <a href="how-to-ai.html">AI in builder</a>
+            <div class="nav-label">Product</div>
+            <a href="builder.html">Layout builder</a>
+            <a href="booking-flows.html">Booking flows</a>
+            <a href="admin.html" class="is-active">Admin panel</a>
+            <a href="integrations.html">Integrations</a>
+            <div class="nav-label">Reference</div>
+            <a href="shortcodes.html">Shortcodes &amp; embeds</a>
+            <a href="troubleshooting.html">Troubleshooting</a>
+            <a href="faq.html">FAQ</a>
+          </nav>
+    </aside>
+    <main class="main">
+      <div class="container">
+        <header class="hero">
+          <h1>Admin panel</h1>
+          <p>Everything lives under the PickyBooking menu in wp-admin. Tabs below are listed in the order most operators use them.</p>
+        </header>
+
+        <section class="card">
+          <h2>Priority tabs</h2>
+          <article class="feature">
+            <h3>Bookings</h3>
+            <p>Day-to-day inbox for reservations and multi-item orders.</p>
+            <ul>
+              <li>Filter and open guest details.</li>
+              <li>Change status: Requested → Reserved / Canceled.</li>
+              <li>See payment state and linked Woo/Stripe references when used.</li>
+              <li>New rows can stay highlighted until marked seen.</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <h3>Calendar</h3>
+            <p>Visual schedule for a selected layout; open the booking editor in context.</p>
+          </article>
+          <article class="feature">
+            <h3>Layouts</h3>
+            <p>Gallery of your maps + bundled presets; open builder; duplicate; delete; copy shortcode; import from library.</p>
+          </article>
+        </section>
+
+        <section class="card">
+          <h2>Configuration tabs</h2>
+          <table>
+            <thead><tr><th>Tab</th><th>What you set</th></tr></thead>
+            <tbody>
+              <tr><td>Main</td><td>Labels, horizon, duration/buffer, exclusive vs capacity, wizard, form fields, mobile map mode, alignment</td></tr>
+              <tr><td>Work Days</td><td>Weekday schedule + optional second window</td></tr>
+              <tr><td>Form &amp; Emails</td><td>Success copy, admin email, customer email, consent</td></tr>
+              <tr><td>Layout Colors</td><td>Public shortcode palette (map, datepicker, form)</td></tr>
+              <tr><td>Payments</td><td>Deposit, amount source, currency, Stripe / WooCommerce</td></tr>
+              <tr><td>SMS</td><td>Vonage/Nexmo staff alerts</td></tr>
+              <tr><td>Integrations</td><td>CRM, webhooks, Google Calendar, AI keys</td></tr>
+              <tr><td>Import / Export</td><td>JSON layouts between environments</td></tr>
+              <tr><td>Documentation</td><td>In-plugin recipes + link to this HTML guide</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="card">
+          <h2>Statuses cheat sheet</h2>
+          <div class="grid-3">
+            <div class="tile"><h3>Requested</h3><p>Pending confirmation or unpaid hold.</p></div>
+            <div class="tile"><h3>Reserved</h3><p>Confirmed (free or paid).</p></div>
+            <div class="tile"><h3>Canceled</h3><p>Released; seat becomes bookable again.</p></div>
+          </div>
+        </section>
+
+        <p class="footer">
+          <span><a href="booking-flows.html">← Booking flows</a></span>
+          <span><a href="integrations.html">Integrations →</a></span>
+        </p>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
