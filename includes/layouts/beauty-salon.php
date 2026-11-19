@@ -49,8 +49,33 @@ if ( ! function_exists( 'picky_get_beauty_salon_layout_payload' ) ) {
 			$data['services_library'] = array();
 		}
 
-		// Bump when the bundled JSON changes.
-		$data['_sample_version'] = '3.2.0';
+		// Preview URLs for relative samples/… paths (install materializes into Media Library).
+		$plugin_root = dirname( dirname( __DIR__ ) );
+		$plugin_url  = plugins_url( '/', $plugin_root . '/pickybooking.php' );
+		foreach ( $data['services_library'] as &$svc ) {
+			if ( ! is_array( $svc ) ) {
+				continue;
+			}
+			$url = isset( $svc['image_url'] ) ? trim( (string) $svc['image_url'] ) : '';
+			if ( $url === '' || preg_match( '#^https?://#i', $url ) ) {
+				continue;
+			}
+			$rel = ltrim( str_replace( '\\', '/', $url ), '/' );
+			if ( strpos( $rel, 'samples/' ) !== 0 ) {
+				continue;
+			}
+			if ( is_readable( $plugin_root . '/' . $rel ) ) {
+				$svc['visual']      = 'image';
+				$svc['image_url']   = $plugin_url . $rel;
+				$svc['image_ratio'] = ! empty( $svc['image_ratio'] ) ? (string) $svc['image_ratio'] : 'square';
+				$svc['image_id']    = 0;
+				$svc['icon']        = '';
+			}
+		}
+		unset( $svc );
+
+		// Bump when the bundled JSON / service images change.
+		$data['_sample_version'] = '3.4.0';
 
 		return $data;
 	}

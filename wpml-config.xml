@@ -1,0 +1,7 @@
+<wpml-config>
+	<custom-types>
+		<custom-type translate="0">picky_layout</custom-type>
+		<custom-type translate="0">picky_booking</custom-type>
+		<custom-type translate="0">picky_order</custom-type>
+	</custom-types>
+</wpml-config>

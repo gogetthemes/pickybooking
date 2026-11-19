@@ -45,6 +45,8 @@ if ( ! defined( 'PICKY_PLUGIN_DIR' ) ) {
 
 require_once PICKY_PLUGIN_DIR . 'includes/class-info.php';
 require_once PICKY_PLUGIN_DIR . 'includes/class-edition.php';
+require_once PICKY_PLUGIN_DIR . 'includes/class-setup-guide.php';
+require_once PICKY_PLUGIN_DIR . 'includes/class-ai-integration.php';
 require_once PICKY_PLUGIN_DIR . 'includes/picky-helpers.php';
 require_once PICKY_PLUGIN_DIR . 'includes/layouts/layout-element-defaults.php';
 require_once PICKY_PLUGIN_DIR . 'includes/layouts/cinema-auditorium.php';

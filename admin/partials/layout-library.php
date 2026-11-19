@@ -21,8 +21,16 @@ if ( ! isset( $picky_preset_layouts ) || ! is_array( $picky_preset_layouts ) ) {
 $picky_library_import_url = admin_url( 'admin-post.php' );
 $picky_layouts_can_add    = current_user_can( 'manage_options' );
 $picky_layouts_add_url    = wp_nonce_url( admin_url( 'post-new.php?post_type=picky_layout' ), 'picky_new_layout' );
-$user_count             = count( $picky_user_layouts );
-$preset_count           = count( $picky_preset_layouts );
+$user_count               = count( $picky_user_layouts );
+$preset_count             = 0;
+foreach ( $picky_preset_layouts as $picky_preset_count_item ) {
+	if ( isset( $picky_preset_count_item['source'] ) && (string) $picky_preset_count_item['source'] === 'blank' ) {
+		continue;
+	}
+	$preset_count++;
+}
+$picky_can_import_pro = ! class_exists( '\\Picky\\Edition' ) || \Picky\Edition::allows( 'preset_import_pro' );
+$picky_pro_url        = class_exists( '\\Picky\\Edition' ) ? \Picky\Edition::PRO_URL : 'https://pickybooking.com/#pricing';
 
 /**
  * Render one layout card.
@@ -30,7 +38,7 @@ $preset_count           = count( $picky_preset_layouts );
  * @param array<string, mixed> $item Card data.
  * @return void
  */
-$picky_render_layout_card = static function ( $item ) use ( $picky_library_import_url ) {
+$picky_render_layout_card = static function ( $item ) use ( $picky_library_import_url, $picky_can_import_pro, $picky_pro_url ) {
 	$item_id     = isset( $item['id'] ) ? (string) $item['id'] : '';
 	$title       = isset( $item['title'] ) ? (string) $item['title'] : '';
 	$desc        = isset( $item['description'] ) ? (string) $item['description'] : '';
@@ -39,29 +47,61 @@ $picky_render_layout_card = static function ( $item ) use ( $picky_library_impor
 	$fill        = isset( $item['preview_item'] ) ? (string) $item['preview_item'] : '#c5bedc';
 	$pid         = isset( $item['preview_id'] ) ? (string) $item['preview_id'] : 'A1';
 	$source      = isset( $item['source'] ) ? (string) $item['source'] : '';
-	$edit_url    = isset( $item['edit_url'] ) ? (string) $item['edit_url'] : '';
-	$layout_id   = isset( $item['layout_id'] ) ? absint( $item['layout_id'] ) : 0;
+	$tier        = isset( $item['tier'] ) ? sanitize_key( (string) $item['tier'] ) : ( $source === 'blank' ? 'free' : 'pro' );
+	if ( $tier !== 'free' ) {
+		$tier = 'pro';
+	}
+	$edit_url      = isset( $item['edit_url'] ) ? (string) $item['edit_url'] : '';
+	$blank_url     = isset( $item['blank_url'] ) ? (string) $item['blank_url'] : $edit_url;
+	$layout_id     = isset( $item['layout_id'] ) ? absint( $item['layout_id'] ) : 0;
 	$delete_url    = isset( $item['delete_url'] ) ? (string) $item['delete_url'] : '';
 	$duplicate_url = isset( $item['duplicate_url'] ) ? (string) $item['duplicate_url'] : '';
 	$is_user       = ( $source === 'layout' );
-	$badge         = $is_user ? __( 'Your layout', 'pickybooking' ) : __( 'Preset', 'pickybooking' );
+	$is_blank      = ( $source === 'blank' );
+	$is_pro_tier   = ( ! $is_user && $tier === 'pro' );
+	$pro_locked    = $is_pro_tier && ! $picky_can_import_pro;
+	$badge         = $is_user
+		? __( 'Your layout', 'pickybooking' )
+		: ( $is_blank ? __( 'Free', 'pickybooking' ) : __( 'Preset', 'pickybooking' ) );
 	$can_delete    = $is_user && $layout_id > 0 && $delete_url !== '' && current_user_can( 'delete_post', $layout_id );
 	$can_duplicate = $is_user && $layout_id > 0 && $duplicate_url !== '' && current_user_can( 'edit_post', $layout_id ) && current_user_can( 'publish_posts' );
+
+	$card_classes = 'picky-layout-library__card';
+	if ( $is_user ) {
+		$card_classes .= ' picky-layout-library__card--user';
+	} elseif ( $is_blank ) {
+		$card_classes .= ' picky-layout-library__card--blank picky-layout-library__card--free';
+	} else {
+		$card_classes .= ' picky-layout-library__card--preset';
+		$card_classes .= $is_pro_tier ? ' picky-layout-library__card--pro' : ' picky-layout-library__card--free';
+	}
+	if ( $pro_locked ) {
+		$card_classes .= ' picky-layout-library__card--pro-locked is-pro-locked';
+	}
 	?>
-	<article class="picky-layout-library__card<?php echo $is_user ? ' picky-layout-library__card--user' : ' picky-layout-library__card--preset'; ?>">
+	<article class="<?php echo esc_attr( $card_classes ); ?>" data-tier="<?php echo esc_attr( $is_user ? 'user' : $tier ); ?>">
 		<?php if ( $is_user && $edit_url !== '' ) : ?>
 			<a class="picky-layout-library__hit" href="<?php echo esc_url( $edit_url ); ?>" aria-label="<?php
 				/* translators: %s: layout title */
 				echo esc_attr( sprintf( __( 'Open %s', 'pickybooking' ), $title ) );
 			?>">
+		<?php elseif ( $is_blank && $blank_url !== '' ) : ?>
+			<a class="picky-layout-library__hit" href="<?php echo esc_url( $blank_url ); ?>" aria-label="<?php echo esc_attr( $title ); ?>">
 		<?php endif; ?>
 			<div class="picky-layout-library__preview" style="background:<?php echo esc_attr( $bg ); ?>;">
 				<?php if ( $preview_url !== '' ) : ?>
 					<img class="picky-layout-library__thumb" src="<?php echo ( strpos( $preview_url, 'data:' ) === 0 ) ? esc_attr( $preview_url ) : esc_url( $preview_url ); ?>" alt="" loading="lazy" decoding="async" />
 				<?php else : ?>
-					<span class="picky-layout-library__preview-item" style="background:<?php echo esc_attr( $fill ); ?>;"><?php echo esc_html( strtolower( $pid ) ); ?></span>
+					<span class="picky-layout-library__preview-item<?php echo $is_blank ? ' picky-layout-library__preview-item--blank' : ''; ?>" style="background:<?php echo esc_attr( $fill ); ?>;"><?php echo esc_html( $is_blank ? '+' : strtolower( $pid ) ); ?></span>
 				<?php endif; ?>
 				<span class="picky-layout-library__badge"><?php echo esc_html( $badge ); ?></span>
+				<?php if ( $is_pro_tier ) : ?>
+					<?php
+					echo class_exists( '\\Picky\\Edition' )
+						? \Picky\Edition::pro_badge_html()
+						: '<span class="picky-pro-badge picky-layout-library__pro-badge"><i class="icon-lock" aria-hidden="true"></i><span class="picky-pro-badge__text">' . esc_html__( 'Pro only', 'pickybooking' ) . '</span></span>';
+					?>
+				<?php endif; ?>
 			</div>
 			<div class="picky-layout-library__body">
 				<h2 class="picky-layout-library__title"><?php echo esc_html( $title ); ?></h2>
@@ -69,7 +109,7 @@ $picky_render_layout_card = static function ( $item ) use ( $picky_library_impor
 					<p class="picky-layout-library__desc"><?php echo esc_html( $desc ); ?></p>
 				<?php endif; ?>
 			</div>
-		<?php if ( $is_user && $edit_url !== '' ) : ?>
+		<?php if ( ( $is_user && $edit_url !== '' ) || ( $is_blank && $blank_url !== '' ) ) : ?>
 			</a>
 		<?php endif; ?>
 		<?php if ( $is_user && $edit_url !== '' ) : ?>
@@ -82,22 +122,34 @@ $picky_render_layout_card = static function ( $item ) use ( $picky_library_impor
 						</a>
 					<?php endif; ?>
 					<?php if ( $can_delete ) : ?>
-						<a class="button picky-layout-library__delete picky-layout-library__delete--icon submitdelete" href="<?php echo esc_url( $delete_url ); ?>" title="<?php esc_attr_e( 'Delete', 'pickybooking' ); ?>" aria-label="<?php esc_attr_e( 'Delete this layout permanently', 'pickybooking' ); ?>" onclick="return confirm('<?php echo esc_js( __( 'Delete this layout permanently? This cannot be undone.', 'pickybooking' ) ); ?>');">
+						<a class="button picky-layout-library__delete picky-layout-library__delete--icon submitdelete" href="<?php echo esc_url( $delete_url ); ?>" title="<?php esc_attr_e( 'Delete', 'pickybooking' ); ?>" aria-label="<?php esc_attr_e( 'Delete this layout permanently', 'pickybooking' ); ?>" data-picky-confirm="<?php echo esc_attr( __( 'Delete this layout permanently? This cannot be undone.', 'pickybooking' ) ); ?>">
 							<i class="icon-trash" aria-hidden="true"></i>
 						</a>
 					<?php endif; ?>
 				</div>
 			</div>
+		<?php elseif ( $is_blank && $blank_url !== '' ) : ?>
+			<div class="picky-layout-library__body picky-layout-library__body--actions">
+				<a class="button button-primary picky-layout-library__import" href="<?php echo esc_url( $blank_url ); ?>">
+					<?php esc_html_e( 'Create blank layout', 'pickybooking' ); ?>
+				</a>
+			</div>
 		<?php elseif ( ! $is_user ) : ?>
 			<div class="picky-layout-library__body picky-layout-library__body--actions">
-				<form method="post" action="<?php echo esc_url( $picky_library_import_url ); ?>" class="picky-layout-library__form">
-					<input type="hidden" name="action" value="picky_library_import">
-					<input type="hidden" name="picky_library_item" value="<?php echo esc_attr( $item_id ); ?>">
-					<?php wp_nonce_field( 'picky_library_import', 'picky_library_import_nonce' ); ?>
-					<button type="submit" class="button button-primary picky-layout-library__import">
+				<?php if ( $pro_locked ) : ?>
+					<button type="button" class="button button-primary picky-layout-library__import picky-layout-library__import--disabled" disabled aria-disabled="true" title="<?php echo esc_attr__( 'Available in PickyBooking Pro', 'pickybooking' ); ?>">
 						<?php esc_html_e( 'Use this layout', 'pickybooking' ); ?>
 					</button>
-				</form>
+				<?php else : ?>
+					<form method="post" action="<?php echo esc_url( $picky_library_import_url ); ?>" class="picky-layout-library__form">
+						<input type="hidden" name="action" value="picky_library_import">
+						<input type="hidden" name="picky_library_item" value="<?php echo esc_attr( $item_id ); ?>">
+						<?php wp_nonce_field( 'picky_library_import', 'picky_library_import_nonce' ); ?>
+						<button type="submit" class="button button-primary picky-layout-library__import">
+							<?php esc_html_e( 'Use this layout', 'pickybooking' ); ?>
+						</button>
+					</form>
+				<?php endif; ?>
 			</div>
 		<?php endif; ?>
 	</article>
@@ -110,13 +162,17 @@ $picky_render_layout_card = static function ( $item ) use ( $picky_library_impor
 	if ( $picky_layout_notice === 'deleted' ) :
 		?>
 		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Layout deleted.', 'pickybooking' ); ?></p></div>
-	<?php endif; ?>
-	<div class="picky-cal-head">
-		<div class="picky-cal-head__main">
-			<div class="picky-cal-head__copy">
-				<div class="picky-cal-head__title-row">
-					<h1 class="picky-app-tab-title"><?php esc_html_e( 'Layouts', 'pickybooking' ); ?></h1>
-				</div>
+		<?php
+	elseif ( $picky_layout_notice === 'imported' ) :
+		?>
+		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Layout imported.', 'pickybooking' ); ?></p></div>
+		<?php
+	endif;
+	?>
+	<div class="picky-cal-head picky-layouts-list-head">
+		<div class="picky-cal-head__title-row">
+			<div class="picky-cal-head__titles">
+				<h1 class="picky-app-tab-title"><?php esc_html_e( 'Layouts', 'pickybooking' ); ?></h1>
 				<p class="picky-cal-subtitle picky-app-tab-subtitle">
 					<?php esc_html_e( 'Open a saved floor plan to edit it, or start from a preset below.', 'pickybooking' ); ?>
 				</p>
@@ -159,16 +215,24 @@ $picky_render_layout_card = static function ( $item ) use ( $picky_library_impor
 	</section>
 
 	<section id="picky-layout-presets" class="picky-layout-library__section" aria-labelledby="picky-layout-presets-heading">
-		<h2 id="picky-layout-presets-heading" class="picky-layout-library__section-title"><?php esc_html_e( 'Presets', 'pickybooking' ); ?></h2>
+		<div class="picky-layout-library__section-head picky-layout-library__section-head--presets">
+			<h2 id="picky-layout-presets-heading" class="picky-layout-library__section-title"><?php esc_html_e( 'Presets', 'pickybooking' ); ?></h2>
+			<div class="picky-preset-tier-switch" role="tablist" aria-label="<?php esc_attr_e( 'Filter presets', 'pickybooking' ); ?>">
+				<button type="button" class="picky-preset-tier-switch__btn is-active" data-preset-tier="all" role="tab" aria-selected="true"><?php esc_html_e( 'All', 'pickybooking' ); ?></button>
+				<button type="button" class="picky-preset-tier-switch__btn" data-preset-tier="free" role="tab" aria-selected="false"><?php esc_html_e( 'Free', 'pickybooking' ); ?></button>
+				<button type="button" class="picky-preset-tier-switch__btn" data-preset-tier="pro" role="tab" aria-selected="false"><?php esc_html_e( 'Pro', 'pickybooking' ); ?></button>
+			</div>
+		</div>
 		<p class="description picky-layout-library__section-lead"><?php esc_html_e( 'Start from a ready-made map. Import creates your own editable copy.', 'pickybooking' ); ?></p>
 		<?php if ( empty( $picky_preset_layouts ) ) : ?>
 			<p class="description"><?php esc_html_e( 'No presets available.', 'pickybooking' ); ?></p>
 		<?php else : ?>
-			<div class="picky-layout-library__grid">
+			<div class="picky-layout-library__grid picky-layout-library__grid--presets">
 				<?php foreach ( $picky_preset_layouts as $item ) : ?>
 					<?php $picky_render_layout_card( $item ); ?>
 				<?php endforeach; ?>
 			</div>
+			<p class="description picky-layout-library__tier-empty" hidden><?php esc_html_e( 'No presets in this filter.', 'pickybooking' ); ?></p>
 		<?php endif; ?>
 	</section>
 </div>

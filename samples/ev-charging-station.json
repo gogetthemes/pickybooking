@@ -13,13 +13,87 @@
     "show_item_fill": "",
     "show_booked_avatars": "",
     "shortcode_layout": "",
-    "multi_select": "0",
+    "multi_select": "1",
     "event_mode": "",
     "event_date": "",
     "event_time": "",
     "event_show_label": "",
     "booking_item_icon": "parking",
-    "services_library": [],
+    "services_library": [
+        {
+            "sid": "svc_charge_standard",
+            "name": "Standard Charge",
+            "price": 15,
+            "duration": 60,
+            "description": "AC charging session for your EV.",
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/ev-charging-images/svc_charge_standard.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_charge_fast",
+            "name": "Fast Charge",
+            "price": 25,
+            "duration": 30,
+            "description": "DC fast charging session.",
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/ev-charging-images/svc_charge_fast.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_addon_cable",
+            "name": "Cable Adapter",
+            "price": 5,
+            "duration": 1,
+            "description": "Type-2 / CCS adapter loan.",
+            "parent_sids": [
+                "svc_charge_standard",
+                "svc_charge_fast"
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/ev-charging-images/svc_addon_cable.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_addon_parking",
+            "name": "Bay Parking",
+            "price": 3,
+            "duration": 1,
+            "description": "Parking while charging.",
+            "parent_sids": [
+                "svc_charge_standard",
+                "svc_charge_fast"
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/ev-charging-images/svc_addon_parking.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_addon_priority",
+            "name": "Priority Bay",
+            "price": 8,
+            "duration": 1,
+            "description": "Priority access to a fast bay.",
+            "parent_sids": [
+                "svc_charge_fast"
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/ev-charging-images/svc_addon_priority.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        }
+    ],
     "elements": [
         {
             "x": 134,
@@ -62,7 +136,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 69,
@@ -578,7 +658,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 351,
@@ -750,7 +836,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 554,
@@ -922,7 +1014,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 756,
@@ -1094,7 +1192,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 956,
@@ -1266,7 +1370,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 155,
@@ -1352,7 +1462,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 358,
@@ -1438,7 +1554,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 561,
@@ -1524,7 +1646,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 763,
@@ -1610,7 +1738,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 963,
@@ -2169,7 +2303,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 154,
@@ -2255,7 +2395,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 357,
@@ -2341,7 +2487,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 560,
@@ -2427,7 +2579,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 762,
@@ -2513,7 +2671,13 @@
             "square_radius": "10",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_charge_standard",
+                "svc_charge_fast",
+                "svc_addon_cable",
+                "svc_addon_parking",
+                "svc_addon_priority"
+            ]
         },
         {
             "x": 962,
@@ -2946,5 +3110,6 @@
             "service_ids": []
         }
     ],
-    "source_post_id": 296
+    "source_post_id": 296,
+    "_sample_version": "1.1.0"
 }

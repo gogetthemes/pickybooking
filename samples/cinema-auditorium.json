@@ -26,7 +26,12 @@
             "price": 12,
             "duration": 150,
             "description": "General admission seat (rows Au2013B).",
-            "parent_sids": []
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/cinema-images/svc_ticket_standard.jpg"
         },
         {
             "sid": "svc_ticket_premium",
@@ -34,7 +39,12 @@
             "price": 18,
             "duration": 150,
             "description": "Premium mid/back seat (rows Cu2013I).",
-            "parent_sids": []
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/cinema-images/svc_ticket_premium.jpg"
         },
         {
             "sid": "svc_addon_popcorn",
@@ -45,7 +55,12 @@
             "parent_sids": [
                 "svc_ticket_standard",
                 "svc_ticket_premium"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/cinema-images/svc_addon_popcorn.jpg"
         },
         {
             "sid": "svc_addon_drink",
@@ -56,7 +71,12 @@
             "parent_sids": [
                 "svc_ticket_standard",
                 "svc_ticket_premium"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/cinema-images/svc_addon_drink.jpg"
         },
         {
             "sid": "svc_addon_3d_glasses",
@@ -67,7 +87,12 @@
             "parent_sids": [
                 "svc_ticket_standard",
                 "svc_ticket_premium"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/cinema-images/svc_addon_3d_glasses.jpg"
         },
         {
             "sid": "svc_addon_lounge",
@@ -77,7 +102,12 @@
             "description": "Pre-show lounge with complimentary water.",
             "parent_sids": [
                 "svc_ticket_premium"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/cinema-images/svc_addon_lounge.jpg"
         }
     ],
     "elements": [
@@ -6170,5 +6200,6 @@
             "service_ids": []
         }
     ],
-    "source_post_id": 290
+    "source_post_id": 290,
+    "_sample_version": "2.4.0"
 }

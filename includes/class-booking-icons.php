@@ -87,7 +87,7 @@ class Booking_Icons {
 				class="picky-bicon-picker-value <?php echo esc_attr( $input_class ); ?>"
 				value="<?php echo esc_attr( $selected ); ?>" />
 			<div class="picky-bicon-picker-toolbar">
-				<button type="button" class="button picky-bicon-picker-none<?php echo $selected === '' ? ' is-active' : ''; ?>" data-picky-bicon="">
+				<button type="button" class="button picky-bicon-picker-none<?php echo esc_attr( $selected === '' ? ' is-active' : '' ); ?>" data-picky-bicon="">
 					<?php esc_html_e( 'None', 'pickybooking' ); ?>
 				</button>
 				<button type="button" class="button picky-bicon-picker-toggle" aria-expanded="false">
@@ -109,7 +109,7 @@ class Booking_Icons {
 						<div class="picky-bicon-picker-group-icons">
 							<?php foreach ( $icons as $icon ) : ?>
 								<button type="button"
-									class="picky-bicon-picker-btn<?php echo ( $selected === $icon['key'] ) ? ' is-selected' : ''; ?>"
+									class="picky-bicon-picker-btn<?php echo esc_attr( ( $selected === $icon['key'] ) ? ' is-selected' : '' ); ?>"
 									data-picky-bicon="<?php echo esc_attr( $icon['key'] ); ?>"
 									title="<?php echo esc_attr( $icon['label'] ); ?>"
 									aria-label="<?php echo esc_attr( $icon['label'] ); ?>">

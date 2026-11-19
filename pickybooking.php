@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name:       PickyBooking
+ * Plugin Name:       PickyBooking – Visual Booking Map
  * Plugin URI:        https://pickybooking.com/
  * Description:       Free visual booking plugin: drag-and-drop floor plans with bookable items, guest booking shortcode, and email notifications. Upgrade to PickyBooking Pro for payments, integrations, decorative layers, and more.
- * Version:           1.0.18
+ * Version:           1.0.26
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            GoGetThemes

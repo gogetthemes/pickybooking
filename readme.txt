@@ -1,58 +1,71 @@
-=== PickyBooking ===
+=== PickyBooking – Visual Booking Map ===
 Contributors: gogetthemes
 Donate link: https://pickybooking.com/
 Tags: booking, reservation, floor plan, table booking, appointment
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.18
+Stable tag: 1.0.26
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Free visual floor-plan booking for WordPress. Design bookable layouts, embed with a shortcode, and manage reservations by email.
+Visual floor-plan bookings for tables, seats, desks, and more. Embed with a shortcode and manage reservations by email.
 
 == Description ==
 
-**PickyBooking** is the free WordPress.org edition of PickyBooking. It gives you everything needed for a working visual booking flow:
+**PickyBooking** turns a floor plan into a booking page. Guests pick a table, seat, desk, chair, or other bookable item on a visual map, choose a time, and send a reservation — all on your WordPress site.
 
-* Drag-and-drop layout builder with **bookable items** (square and circle)
-* Guest booking UI via the `[pickybooking id="LAYOUT_ID"]` shortcode
-* Booking modes: Classic, Smart, Smart Map, and Simple
-* Work days, time slots, form fields, and layout colors
-* Admin calendar + bookings list
-* Email notifications (WordPress `wp_mail`)
-* Bundled layout presets (restaurant, cinema, coworking, and more)
+Live demos (open any industry map and book as a guest):
 
-This plugin is a **complete free product**. Premium features are **not** included as locked/trial code (WordPress.org guideline). They ship separately in the commercial **PickyBooking Pro** plugin.
+* **[Restaurant](https://pickybooking.com/restaurant-demo-booking/)** — floor plan with table picking, party size, and time slots
+* **[Coworking](https://pickybooking.com/coworking-booking/)** — desks and rooms on one interactive layout
+* **[Cinema](https://pickybooking.com/cinema-demo/)** — auditorium seat map with live availability
+* **[Wedding ceremony](https://pickybooking.com/wedding-ceremony-demo-booking/)** — numbered seats and ceremony seating chart
+* **[Beauty salon](https://pickybooking.com/beauty-salon-demo-booking/)** — chairs, services, and appointment flow
+* **[Football / sports](https://pickybooking.com/football-match-player-demo-booking/)** — field or player-spot booking with schedules
+* **[EV charging](https://pickybooking.com/ev-charging-station-booking-map-demo/)** — reserve a charging bay on a station map
 
-= What is free =
+More demos: [pickybooking.com/demos](https://pickybooking.com/demos/)
 
-* Visual builder (bookable items)
-* Layouts and bookings (subject to your hosting)
-* Shortcode embed
-* Email notifications
-* Layout library presets
+= Free features (this plugin) =
 
-= PickyBooking Pro (separate product) =
+Everything below works without a license key or time limit:
 
-* Stripe / WooCommerce deposits and payments
+* Drag-and-drop layout builder for **bookable** items (square and circle)
+* Guest booking shortcode: `[pickybooking id="LAYOUT_ID"]`
+* Booking wizards: **Classic** (pick item first) and **Simple** (no map, time only)
+* Exclusive or capacity booking modes
+* Weekly opening hours, booking horizon, default duration, and buffers
+* Form fields (name, email, phone, party size, notes, consent, and more)
+* Layout colors / appearance settings
+* Mobile map modes (scaled map, list, or hide map)
+* Admin calendar and bookings list
+* Email notifications via WordPress `wp_mail`
+* Start from a blank layout (free curated demos can be added over time)
+* In-plugin documentation and Setup Checklist
+* WPML-ready UI strings (text domain `pickybooking`; layouts stay shared across languages)
+
+= PickyBooking Pro (separate plugin) =
+
+Pro is **not** locked inside this free zip. It is a separate commercial plugin with extra features:
+
+* Smart and Smart Map booking wizards
+* Curated Pro layout presets (restaurant, cinema, coworking, salon, EV, wedding, sports, and more)
+* Stripe Checkout and WooCommerce deposits / payments
 * Decorative builder layers (walls, text, shapes, icons)
-* SMS (Vonage), booked guest avatars, and layout drafting tools
-* HubSpot, Mailchimp, Zapier, Make, n8n, Google Calendar
-* Layout JSON import/export, Elementor widget
+* Booked guest avatars on the map
+* SMS notifications (Vonage)
+* AI layout drafting helpers
+* HubSpot, Mailchimp, Google Calendar, Zapier, Make, and n8n webhooks
+* Layout JSON import / export
+* Elementor widget
 * White-label admin branding
 
-Buy Pro: [pickybooking.com](https://pickybooking.com/#pricing)
+Get Pro: [pickybooking.com/#pricing](https://pickybooking.com/#pricing)
 
 = Privacy =
 
-Booking data is stored in your WordPress database. Emails use WordPress `wp_mail`.
-
-Payments, CRM, calendar, and SMS services exist only in the separate **Pro** product (sold on [pickybooking.com](https://pickybooking.com/#pricing)) and require explicit admin configuration there.
-
-== External services ==
-
-This free plugin does not connect to third-party APIs. Booking data stays on your site. Bundled documentation uses system fonts only (no Google Fonts or other remote stylesheets).
+Booking data stays in your WordPress database. Emails use `wp_mail`. This free plugin does not call third-party APIs. Bundled docs use system fonts only (no Google Fonts or remote stylesheets).
 
 == Installation ==
 
@@ -84,11 +97,38 @@ No. Every feature listed as free works without a license key or time limit. Pro 
 
 == Screenshots ==
 
-1. Guest booking: pick a seat, desk, or table on the floor plan.
-2. Booking form with date, time, and optional services.
-3. Admin reservations calendar.
+1. Layout builder — drag bookable items onto a floor plan (Beauty Salon example) and copy the shortcode.
+2. Guest map — interactive floor plan with stations, rooms, and waiting areas.
+3. Classic booking — pick a spot on the map, then date and time in the wizard.
+4. Simple booking — date and time without choosing a specific map item.
+5. Date & time step — calendar and time-slot grid in the booking wizard.
+6. Layouts library — your saved floor plans, Start from blank, and Pro preset previews.
 
 == Changelog ==
+
+= 1.0.26 =
+* Fix admin menu icon/label spacing and keep the settings rail on-screen in narrow Playground viewports.
+
+= 1.0.25 =
+* Use a short admin menu / settings-rail label so the long WP.org Plugin Name no longer wraps and overlaps the sidebar.
+
+= 1.0.24 =
+* Plugin Check: clarify nonce verification on frontend POST helpers; omit hidden files from the distribution zip.
+
+= 1.0.23 =
+* Final EscapeOutput pass: remove phpcs:ignore escapes, confirm dialogs via data-picky-confirm, and wp_kses for settings shell markup.
+
+= 1.0.22 =
+* Escape embedded admin list markup with wp_kses instead of phpcs:ignore.
+
+= 1.0.21 =
+* WordPress.org review follow-up: escape remaining builder/frontend attribute ternaries and related late-output strings.
+
+= 1.0.20 =
+* WordPress.org review follow-up: escape remaining admin/frontend HTML attributes, verify settings and booking nonces before other POST reads, and check edit-redirect nonces before reading post IDs.
+
+= 1.0.19 =
+* WordPress.org review: verify nonces before reading POST/GET on admin AJAX and form handlers, and escape plugin font URLs in inline CSS.
 
 = 1.0.18 =
 * Plugin Check: sanitize the query string with wp_strip_all_tags() before it is parsed. Each parameter is still passed through sanitize_text_field().

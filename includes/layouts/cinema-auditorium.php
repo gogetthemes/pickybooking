@@ -25,7 +25,7 @@ if ( ! function_exists( 'picky_get_cinema_layout_payload' ) ) {
 				'version'         => 2,
 				'title'           => 'Cinema Auditorium',
 				'elements'        => array(),
-				'_sample_version' => '2.3.0',
+				'_sample_version' => '2.4.0',
 			);
 		}
 
@@ -36,7 +36,7 @@ if ( ! function_exists( 'picky_get_cinema_layout_payload' ) ) {
 				'version'         => 2,
 				'title'           => 'Cinema Auditorium',
 				'elements'        => array(),
-				'_sample_version' => '2.3.0',
+				'_sample_version' => '2.4.0',
 			);
 		}
 
@@ -48,7 +48,7 @@ if ( ! function_exists( 'picky_get_cinema_layout_payload' ) ) {
 		}
 
 		// Bump when the bundled JSON changes so the seeded WP post re-applies.
-		$data['_sample_version'] = '2.3.0';
+		$data['_sample_version'] = '2.4.0';
 
 		return $data;
 	}
@@ -92,6 +92,9 @@ if ( ! function_exists( 'picky_apply_cinema_layout_meta' ) ) {
 		$services = isset( $payload['services_library'] ) && is_array( $payload['services_library'] )
 			? $payload['services_library']
 			: array();
+		if ( function_exists( 'picky_services_library_materialize_images' ) ) {
+			$services = picky_services_library_materialize_images( $services, $layout_id );
+		}
 		update_post_meta( $layout_id, '_picky_layout_services_library', wp_json_encode( $services ) );
 		update_post_meta( $layout_id, '_picky_sample_key', 'cinema' );
 

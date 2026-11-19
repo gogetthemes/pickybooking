@@ -27,6 +27,7 @@ class Layout_Library {
 		$presets = array(
 			array(
 				'key'          => 'restaurant',
+				'tier'         => 'pro',
 				'title'        => __( 'Restaurant', 'pickybooking' ),
 				'description'  => __( 'Dining floor with tables, booths, and bar zones — ready for table reservations.', 'pickybooking' ),
 				'file'         => $dir . 'restaurant.json',
@@ -36,6 +37,7 @@ class Layout_Library {
 			),
 			array(
 				'key'          => 'wedding',
+				'tier'         => 'pro',
 				'title'        => __( 'Wedding Ceremony', 'pickybooking' ),
 				'description'  => __( 'Ceremony seat map with aisle, altar party, and guest grids — great for showing booked avatars.', 'pickybooking' ),
 				'file'         => $dir . 'wedding-ceremony.json',
@@ -45,6 +47,7 @@ class Layout_Library {
 			),
 			array(
 				'key'          => 'football_match',
+				'tier'         => 'pro',
 				'title'        => __( 'Football Match Player Booking', 'pickybooking' ),
 				'description'  => __( 'Pitch layout with player positions — book spots for a match or training session.', 'pickybooking' ),
 				'file'         => $dir . 'football-match-player-booking.json',
@@ -54,6 +57,7 @@ class Layout_Library {
 			),
 			array(
 				'key'          => 'beauty_salon',
+				'tier'         => 'pro',
 				'title'        => __( 'Beauty Salon', 'pickybooking' ),
 				'description'  => __( 'Nail stations, styling, spa beds, and private rooms — with services bound by zone.', 'pickybooking' ),
 				'file'         => $dir . 'beauty-salon.json',
@@ -63,6 +67,7 @@ class Layout_Library {
 			),
 			array(
 				'key'          => 'cinema',
+				'tier'         => 'pro',
 				'title'        => __( 'Cinema Auditorium', 'pickybooking' ),
 				'description'  => __( 'Seat map with walls and centre aisles — ideal for theaters and cinemas.', 'pickybooking' ),
 				'file'         => $dir . 'cinema-auditorium.json',
@@ -72,6 +77,7 @@ class Layout_Library {
 			),
 			array(
 				'key'          => 'coworking',
+				'tier'         => 'pro',
 				'title'        => __( 'Coworking', 'pickybooking' ),
 				'description'  => __( 'Hot desks, private offices, and meeting rooms in a soft sage palette.', 'pickybooking' ),
 				'file'         => $dir . 'coworking-floor.json',
@@ -81,6 +87,7 @@ class Layout_Library {
 			),
 			array(
 				'key'          => 'ev_charging',
+				'tier'         => 'pro',
 				'title'        => __( 'EV Charging Station', 'pickybooking' ),
 				'description'  => __( 'Charging bays with driveway cues — EV / parking floor plan.', 'pickybooking' ),
 				'file'         => $dir . 'ev-charging-station.json',
@@ -202,6 +209,7 @@ class Layout_Library {
 			'show_item_fill'         => (string) get_post_meta( $layout_id, '_picky_layout_show_item_fill', true ),
 			'show_booked_avatars'    => (string) get_post_meta( $layout_id, '_picky_layout_show_booked_avatars', true ),
 			'shortcode_layout'       => (string) get_post_meta( $layout_id, '_picky_layout_shortcode_layout', true ),
+			'simple_show_services'   => (string) get_post_meta( $layout_id, '_picky_layout_simple_show_services', true ),
 			'multi_select'           => (string) get_post_meta( $layout_id, '_picky_layout_multi_select', true ),
 			'event_mode'             => (string) get_post_meta( $layout_id, '_picky_layout_event_mode', true ),
 			'event_date'             => (string) get_post_meta( $layout_id, '_picky_layout_event_date', true ),
@@ -414,12 +422,39 @@ class Layout_Library {
 	}
 
 	/**
-	 * Bundled preset cards.
+	 * Free CTA card: start from a blank layout (not a JSON preset).
+	 *
+	 * @return array<string, mixed>
+	 */
+	public static function blank_start_item() {
+		$add_url = wp_nonce_url( admin_url( 'post-new.php?post_type=picky_layout' ), 'picky_new_layout' );
+		return array(
+			'id'           => 'blank:start',
+			'source'       => 'blank',
+			'key'          => 'start_blank',
+			'tier'         => 'free',
+			'title'        => __( 'Start from blank', 'pickybooking' ),
+			'description'  => __( 'Create an empty floor plan and place your own bookable items.', 'pickybooking' ),
+			'preview_bg'   => '#f8fafc',
+			'preview_item' => '#cbd5e1',
+			'preview_id'   => '+',
+			'preview_url'  => '',
+			'file'         => '',
+			'php_payload'  => '',
+			'layout_id'    => 0,
+			'edit_url'     => $add_url,
+			'blank_url'    => $add_url,
+		);
+	}
+
+	/**
+	 * Bundled preset cards (plus free Start from blank).
 	 *
 	 * @return array<int, array<string, mixed>>
 	 */
 	public static function get_preset_items() {
-		$items = array();
+		$items   = array();
+		$items[] = self::blank_start_item();
 
 		foreach ( self::bundled_presets() as $preset ) {
 			$file        = isset( $preset['file'] ) ? (string) $preset['file'] : '';
@@ -434,10 +469,15 @@ class Layout_Library {
 			if ( $has_file && class_exists( '\\Picky\\Layout_Preview' ) ) {
 				$preview_url = Layout_Preview::url_for_json_file( $file, $bg );
 			}
+			$tier = isset( $preset['tier'] ) ? sanitize_key( (string) $preset['tier'] ) : 'pro';
+			if ( $tier !== 'free' ) {
+				$tier = 'pro';
+			}
 			$items[] = array(
 				'id'           => 'bundled:' . (string) $preset['key'],
 				'source'       => 'bundled',
 				'key'          => (string) $preset['key'],
+				'tier'         => $tier,
 				'title'        => (string) $preset['title'],
 				'description'  => isset( $preset['description'] ) ? (string) $preset['description'] : '',
 				'preview_bg'   => $bg,
@@ -452,6 +492,27 @@ class Layout_Library {
 		}
 
 		return $items;
+	}
+
+	/**
+	 * Whether a library item may be imported in this edition.
+	 *
+	 * @param array<string, mixed> $item Item from get_item / get_preset_items.
+	 * @return bool
+	 */
+	public static function can_import_item( $item ) {
+		if ( ! is_array( $item ) ) {
+			return false;
+		}
+		$source = isset( $item['source'] ) ? (string) $item['source'] : '';
+		if ( $source === 'blank' ) {
+			return false;
+		}
+		$tier = isset( $item['tier'] ) ? sanitize_key( (string) $item['tier'] ) : 'pro';
+		if ( $tier === 'pro' && class_exists( __NAMESPACE__ . '\\Edition' ) && ! Edition::allows( 'preset_import_pro' ) ) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -530,6 +591,12 @@ class Layout_Library {
 		$item = self::get_item( $item_id );
 		if ( ! $item ) {
 			return new \WP_Error( 'picky_library_missing', __( 'Layout preset not found.', 'pickybooking' ) );
+		}
+		if ( ! self::can_import_item( $item ) ) {
+			return new \WP_Error(
+				'picky_library_pro',
+				__( 'This preset is available in PickyBooking Pro.', 'pickybooking' )
+			);
 		}
 
 		if ( (string) $item['source'] === 'bundled' ) {
@@ -641,6 +708,7 @@ class Layout_Library {
 			'show_booked_avatars'=> '_picky_layout_show_booked_avatars',
 			'multi_select'       => '_picky_layout_multi_select',
 			'shortcode_layout'   => '_picky_layout_shortcode_layout',
+			'simple_show_services' => '_picky_layout_simple_show_services',
 			'event_mode'         => '_picky_layout_event_mode',
 			'event_date'         => '_picky_layout_event_date',
 			'event_time'         => '_picky_layout_event_time',
@@ -680,7 +748,11 @@ class Layout_Library {
 			}
 		}
 		if ( isset( $decoded['services_library'] ) && is_array( $decoded['services_library'] ) ) {
-			update_post_meta( $layout_id, '_picky_layout_services_library', wp_json_encode( $decoded['services_library'] ) );
+			$services = $decoded['services_library'];
+			if ( function_exists( 'picky_services_library_materialize_images' ) ) {
+				$services = picky_services_library_materialize_images( $services, $layout_id );
+			}
+			update_post_meta( $layout_id, '_picky_layout_services_library', wp_json_encode( $services ) );
 		} else {
 			update_post_meta( $layout_id, '_picky_layout_services_library', wp_json_encode( array() ) );
 		}
@@ -741,6 +813,7 @@ class Layout_Library {
 			'_picky_layout_event_time',
 			'_picky_layout_event_show_label',
 			'_picky_layout_shortcode_layout',
+			'_picky_layout_simple_show_services',
 			'_picky_layout_services_library',
 			Booking_Icons::META_KEY,
 			Layout_Preview::META_SVG,

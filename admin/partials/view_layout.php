@@ -5,13 +5,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 $picky_layout_embedded      = ! empty( $picky_layout_embedded );
 $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' : 'picky-wrap-content';
 ?>
-<div class="picky-root picky-wrap<?php echo $picky_layout_embedded ? ' picky-wrap--layout-embedded' : ''; ?>" data-picky-context="<?php echo $picky_layout_embedded ? 'builder-embedded' : 'builder'; ?>">
+<div class="picky-root picky-wrap<?php echo esc_attr( $picky_layout_embedded ? ' picky-wrap--layout-embedded' : '' ); ?>" data-picky-context="<?php echo esc_attr( $picky_layout_embedded ? 'builder-embedded' : 'builder' ); ?>">
     <?php if ( ! $picky_layout_embedded ) : ?>
     <h1 class="picky-h1"><?php echo esc_html( (string)$heading ); ?> — <span id="picky-layout-title-display"><?php echo esc_html( (string)$layout_title ); ?></span></h1>
     <?php else : ?>
     <h2 class="picky-h1 screen-reader-text"><?php echo esc_html( (string)$heading ); ?> — <span id="picky-layout-title-display"><?php echo esc_html( (string)$layout_title ); ?></span></h2>
     <?php endif; ?>
-    <div id="<?php echo esc_attr( (string) $picky_builder_surface_id ); ?>"<?php echo $picky_layout_embedded ? ' class="picky-builder-surface"' : ''; ?>>
+    <div id="<?php echo esc_attr( (string) $picky_builder_surface_id ); ?>"<?php
+    if ( $picky_layout_embedded ) {
+        echo ' class="' . esc_attr( 'picky-builder-surface' ) . '"';
+    }
+    ?>>
 
         <?php $picky_layout_notice = ( isset( $this ) && is_object( $this ) && method_exists( $this, 'picky_layout_notice' ) ) ? $this->picky_layout_notice() : ''; ?>
         <?php if ( $picky_layout_notice === 'saved' ): ?>
@@ -27,7 +31,7 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
         <form class="picky-form picky-form-options-save" id="picky-options-save" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
             <input type="hidden" name="action"    value="picky_save_layout">
             <input type="hidden" name="layout_id" value="<?php echo esc_attr( (string)$layout_id ); ?>">
-            <?php wp_nonce_field( 'picky_save_layout_' . $layout_id, 'picky_layout_nonce' ); ?>
+            <?php wp_nonce_field( 'picky_save_layout', 'picky_layout_nonce' ); ?>
             <input type="hidden" id="picky-position-input" name="picky_layout_position" value="<?php echo esc_attr( (string)$layout_position ); ?>">
             <?php
             $picky_transparent_canvas = isset( $layout_id ) && (int) $layout_id > 0
@@ -53,6 +57,9 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
             $picky_layout_shortcode_layout_meta = ( isset( $layout_id ) && (int) $layout_id > 0 )
                 ? (string) get_post_meta( (int) $layout_id, '_picky_layout_shortcode_layout', true )
                 : '';
+            $picky_layout_simple_show_services_meta = ( isset( $layout_id ) && (int) $layout_id > 0 )
+                ? (string) get_post_meta( (int) $layout_id, '_picky_layout_simple_show_services', true )
+                : '';
             if ( $picky_layout_show_seats_meta !== '0' && $picky_layout_show_seats_meta !== '1' ) {
                 $picky_layout_show_seats_meta = '';
             }
@@ -73,6 +80,9 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
             }
             if ( ! in_array( $picky_layout_shortcode_layout_meta, array( '1', '2', '3', '4' ), true ) ) {
                 $picky_layout_shortcode_layout_meta = '';
+            }
+            if ( $picky_layout_simple_show_services_meta !== '1' ) {
+                $picky_layout_simple_show_services_meta = '0';
             }
             $picky_builder_show_people = isset( $options['show_people'] ) && (string) $options['show_people'] === '1';
             $picky_builder_show_seats  = isset( $options['show_seats'] ) && (string) $options['show_seats'] === '1';
@@ -135,16 +145,28 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                 $postion     = urldecode( (string)$layout_position );
                 $jsonIterator = json_decode( (string)$postion, TRUE );
 
-                // Categorize items
+                // Categorize items (decorative shown in Lite with Pro lock).
                 $categories = [
                     'tables' => [
                         'title' => __('Bookable Items', 'pickybooking'),
                         'items' => []
                     ],
+                    'decorative' => [
+                        'title' => __('Decorative', 'pickybooking'),
+                        'items' => []
+                    ],
                 ];
 
                 foreach ($tables as $table) {
-                    $categories['tables']['items'][] = $table;
+                    $dtype = isset( $table['data-type'] ) ? (string) $table['data-type'] : '';
+                    if ( class_exists( '\\Picky\\Edition' ) && \Picky\Edition::is_decorative_type( $dtype ) ) {
+                        $categories['decorative']['items'][] = $table;
+                    } else {
+                        $categories['tables']['items'][] = $table;
+                    }
+                }
+                if ( empty( $categories['decorative']['items'] ) ) {
+                    unset( $categories['decorative'] );
                 }
                 ?>
                 <div class="picky-tables-wrap picky-loading picky-tables-size-<?php echo esc_attr( (string)$settings['canvas_elements_size'] ); ?>">
@@ -194,13 +216,32 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                                 ?>
                                                 <?php
                                                 // No data-square-radius on presets — missing attr = CSS default (8px).
+                                                $picky_deco_pro = class_exists( '\\Picky\\Edition' )
+                                                    && \Picky\Edition::is_decorative_type( (string) $table['data-type'] )
+                                                    && ! \Picky\Edition::allows( 'decorative' );
+                                                $picky_wrap_cls = 'picky-element-sidebar-wrap' . ( $picky_deco_pro ? ' picky-element-sidebar-wrap--pro-locked is-pro-locked' : '' );
+                                                $picky_wrap_title = $picky_preset_title . ( $picky_deco_pro ? ' — ' . __( 'Available in PickyBooking Pro', 'pickybooking' ) : '' );
                                                 ?>
-                                                <div class="picky-element-sidebar-wrap" data-type="<?php echo esc_attr( (string)$table['data-type'] ); ?>" title="<?php echo esc_attr($picky_preset_title); ?>">
+                                                <div class="<?php echo esc_attr( $picky_wrap_cls ); ?>" data-type="<?php echo esc_attr( (string)$table['data-type'] ); ?>" title="<?php echo esc_attr( $picky_wrap_title ); ?>"<?php echo $picky_deco_pro ? ' data-picky-pro-locked="1"' : ''; ?>>
+                                                    <?php if ( $picky_deco_pro ) : ?>
+                                                        <?php
+                                                        // Compact "Pro" — "Pro only" overflows these small palette tiles.
+                                                        echo \Picky\Edition::pro_badge_html( '', __( 'Pro', 'pickybooking' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in helper.
+                                                        ?>
+                                                    <?php endif; ?>
                                                     <div class="picky-sidebar-icon"></div>
-                                                    <div class="picky-element <?php echo esc_attr( (string)$table['data-type'] ); ?>" data-show-id="1" data-max-seats="<?php echo esc_attr( (string)$table['data-max-seats'] ); ?>" data-seats="<?php echo esc_attr( (string)$table['data-seats'] ); ?>" data-label="<?php echo esc_attr( (string)$picky_preset_title ); ?>" data-label-position="bottom" data-label-font-size="12" data-label-color="#333333" data-label-font-weight="normal" data-big-side="<?php echo esc_attr( (string)$table['data-big-side'] ); ?>" data-type="<?php echo esc_attr( (string)$table['data-type'] ); ?>" data-rotate="1" data-rotate-z="0" data-rotate-x="0" data-rotate-y="0" data-opacity="1" data-text="<?php echo esc_attr((string)$picky_preset_title); ?>" data-text-color="#333333" data-text-color-mode="custom" data-font-size="16" data-line-height="" data-font-family="inherit" data-font-weight="normal" data-shape-type="<?php echo esc_attr($picky_shape_type); ?>" data-shape-border-width="0" data-shape-border-color="#333333" data-icon="<?php echo esc_attr( $picky_preset_icon ); ?>"<?php echo $picky_preset_color !== '' ? ' data-color="' . esc_attr( $picky_preset_color ) . '"' : ''; ?>>
+                                                    <div class="picky-element <?php echo esc_attr( (string)$table['data-type'] ); ?>" data-show-id="1" data-max-seats="<?php echo esc_attr( (string)$table['data-max-seats'] ); ?>" data-seats="<?php echo esc_attr( (string)$table['data-seats'] ); ?>" data-label="<?php echo esc_attr( (string)$picky_preset_title ); ?>" data-label-position="bottom" data-label-font-size="12" data-label-color="#333333" data-label-font-weight="normal" data-big-side="<?php echo esc_attr( (string)$table['data-big-side'] ); ?>" data-type="<?php echo esc_attr( (string)$table['data-type'] ); ?>" data-rotate="1" data-rotate-z="0" data-rotate-x="0" data-rotate-y="0" data-opacity="1" data-text="<?php echo esc_attr((string)$picky_preset_title); ?>" data-text-color="#333333" data-text-color-mode="custom" data-font-size="16" data-line-height="" data-font-family="inherit" data-font-weight="normal" data-shape-type="<?php echo esc_attr($picky_shape_type); ?>" data-shape-border-width="0" data-shape-border-color="#333333" data-icon="<?php echo esc_attr( $picky_preset_icon ); ?>"<?php
+                                                    if ( $picky_preset_color !== '' ) {
+                                                        echo ' data-color="' . esc_attr( $picky_preset_color ) . '"';
+                                                    }
+                                                    ?>>
                                                         <div class="picky-element-table-wrap">
                                                             <div class="picky-element-table">
-                                                                <div class="picky-element-shape"<?php echo $picky_preset_color !== '' && (string) $table['data-type'] === 'type-icon' ? ' style="color:' . esc_attr( $picky_preset_color ) . ';background:transparent;"' : ''; ?>>
+                                                                <div class="picky-element-shape"<?php
+                                                                if ( $picky_preset_color !== '' && (string) $table['data-type'] === 'type-icon' ) {
+                                                                    echo ' style="' . esc_attr( 'color:' . $picky_preset_color . ';background:transparent;' ) . '"';
+                                                                }
+                                                                ?>>
                                                                     <?php if( (string)$table['data-type'] === 'type-text'){ ?>
                                                                         <div class="picky-element-text-content" style="color:#333;font-size:14px;--picky-text-line-height:14px;line-height:14px;"><?php echo esc_html((string)$picky_preset_title); ?></div>
                                                                     <?php } elseif ( (string) $table['data-type'] === 'type-icon' ) { ?>
@@ -225,7 +266,7 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                                                     <input type="number" min="0" step="1" value="<?php echo esc_attr( (string)$table['data-max-seats'] ); ?>" class="picky-element-edit-max-persons-input picky-input">
                                                                 </div>
                                                                 <div class="picky-element-edit-field picky-field-label">
-                                                                    <div class="picky-element-edit-field-title<?php echo ( class_exists( '\\Picky\\Edition' ) && \Picky\Edition::allows( 'ai' ) ) ? ' picky-ai-field-title' : ''; ?>">
+                                                                    <div class="picky-element-edit-field-title<?php echo esc_attr( ( class_exists( '\\Picky\\Edition' ) && \Picky\Edition::allows( 'ai' ) ) ? ' picky-ai-field-title' : '' ); ?>">
                                                                         <span><?php esc_html_e('Name', 'pickybooking'); ?></span>
                                                                         <?php if ( class_exists( '\\Picky\\Edition' ) && \Picky\Edition::allows( 'ai' ) ) : ?>
                                                                         <button type="button" class="button button-small picky-ai-element-copy-btn" data-picky-ai-mode="label" title="<?php esc_attr_e( 'Generate name with AI', 'pickybooking' ); ?>"><?php esc_html_e( 'AI', 'pickybooking' ); ?></button>
@@ -327,10 +368,7 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                                                 </div>
                                                                 <div class="picky-element-edit-field picky-icon-only-field">
                                                                     <div class="picky-element-edit-field-title"><?php esc_html_e( 'Icon', 'pickybooking' ); ?></div>
-                                                                    <?php
-                                                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- picker escapes its own output
-                                                                    echo wp_kses( \Picky\Booking_Icons::render_picker( '', '', 'star', 'picky-element-edit-icon-input' ), \Picky\Booking_Icons::kses_allowed() );
-                                                                    ?>
+                                                                    <?php echo wp_kses( \Picky\Booking_Icons::render_picker( '', '', 'star', 'picky-element-edit-icon-input' ), \Picky\Booking_Icons::kses_allowed() ); ?>
                                                                 </div>
                                                                 <div class="picky-element-edit-field picky-text-only-field">
                                                                     <div class="picky-element-edit-field-title">
@@ -411,7 +449,7 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                     <a class="button picky-header-duplicate-btn" href="<?php echo esc_url( (string) $picky_duplicate_href ); ?>"><?php esc_html_e( 'Duplicate', 'pickybooking' ); ?></a>
                                 <?php endif; ?>
                                 <?php if ( $picky_delete_href !== '' ) : ?>
-                                    <a class="button picky-header-delete-btn submitdelete" href="<?php echo esc_url( (string) $picky_delete_href ); ?>" onclick="return confirm('<?php echo esc_js( __( 'Delete this layout permanently? This cannot be undone.', 'pickybooking' ) ); ?>');"><?php esc_html_e( 'Delete', 'pickybooking' ); ?></a>
+                                    <a class="button picky-header-delete-btn submitdelete" href="<?php echo esc_url( (string) $picky_delete_href ); ?>" data-picky-confirm="<?php echo esc_attr( __( 'Delete this layout permanently? This cannot be undone.', 'pickybooking' ) ); ?>"><?php esc_html_e( 'Delete', 'pickybooking' ); ?></a>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -425,7 +463,7 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                     </div><!-- /.picky-builder-left-col-slot -->
 
                     <div class="picky-draggable-wrap-all">
-                        <div class="picky-draggable-wrap<?php echo $picky_transparent_canvas ? ' picky-canvas-transparent-bg' : ''; ?>">
+                        <div class="picky-draggable-wrap<?php echo esc_attr( $picky_transparent_canvas ? ' picky-canvas-transparent-bg' : '' ); ?>">
                             <div class="picky-canvas-controls picky-canvas-controls--overlay">
                                 <button type="button" id="picky-undo" class="picky-undo-btn" title="<?php esc_attr_e('Undo', 'pickybooking'); ?>"><i class="icon-rotate-ccw"></i></button>
                                 <div class="picky-zoom-controls" role="group" aria-label="<?php esc_attr_e( 'Canvas zoom', 'pickybooking' ); ?>">
@@ -434,7 +472,7 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                     <button type="button" id="picky-zoom-in" title="<?php esc_attr_e('Zoom In', 'pickybooking'); ?>"><i class="icon-plus"></i></button>
                                 </div>
                             </div>
-                            <div class="picky-draggable<?php echo $picky_transparent_canvas ? ' picky-canvas-transparent-bg' : ''; ?>" style="<?php if($options['canvas_width']){ ?>width:<?php echo esc_attr( (string)$options['canvas_width'] );} ?>px;<?php if($options['canvas_height']){ ?>height:<?php echo esc_attr( (string)$options['canvas_height'] );} ?>px;">
+                            <div class="picky-draggable<?php echo esc_attr( $picky_transparent_canvas ? ' picky-canvas-transparent-bg' : '' ); ?>" style="<?php if($options['canvas_width']){ ?>width:<?php echo esc_attr( (string)$options['canvas_width'] );} ?>px;<?php if($options['canvas_height']){ ?>height:<?php echo esc_attr( (string)$options['canvas_height'] );} ?>px;">
                                 <?php
                                 if(isset($jsonIterator) && !empty($jsonIterator)){
                                     foreach ($jsonIterator as $key => $val) {
@@ -476,10 +514,9 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                                 $picky_custom_id = sanitize_text_field( (string) $val['custom_id'] );
                                             }
                                             $picky_display_id = $picky_custom_id !== '' ? $picky_custom_id : ( isset( $val['id'] ) ? (string) $val['id'] : '' );
-                                            $picky_shape_radius      = '';
-                                            $picky_shape_bw          = 0;
-                                            $picky_shape_bc          = '#333333';
-                                            $picky_shape_outer_attrs = '';
+                                            $picky_shape_radius = '';
+                                            $picky_shape_bw     = 0;
+                                            $picky_shape_bc     = '#333333';
                                             if ( isset( $val['class'] ) && $val['class'] === 'type-shape' ) {
                                                 $picky_shape_radius = ( isset( $val['shape_radius'] ) && (string) $val['shape_radius'] !== '' ) ? (string) max( 0, min( 120, intval( $val['shape_radius'] ) ) ) : '';
                                                 $picky_shape_bw     = isset( $val['shape_border_width'] ) ? max( 0, min( 32, intval( $val['shape_border_width'] ) ) ) : 0;
@@ -489,38 +526,32 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                                 if ( ! is_string( $picky_shape_bc ) || $picky_shape_bc === '' ) {
                                                     $picky_shape_bc = '#333333';
                                                 }
-                                                $picky_shape_outer_attrs = ' data-shape-radius="' . esc_attr( $picky_shape_radius ) . '" data-shape-border-width="' . esc_attr( (string) $picky_shape_bw ) . '" data-shape-border-color="' . esc_attr( $picky_shape_bc ) . '"';
                                             }
-                                            $picky_square_radius      = '';
-                                            $picky_square_outer_attrs = '';
-                                            $picky_saved_class        = isset( $val['class'] ) ? (string) $val['class'] : '';
+                                            $picky_square_radius = '';
+                                            $picky_saved_class   = isset( $val['class'] ) ? (string) $val['class'] : '';
                                             if ( $picky_saved_class !== '' && ! in_array( $picky_saved_class, array( 'type-wall', 'type-text', 'type-shape', 'type-4', 'type-circle' ), true ) ) {
                                                 $picky_square_radius = ( isset( $val['square_radius'] ) && (string) $val['square_radius'] !== '' ) ? (string) max( 0, min( 120, intval( $val['square_radius'] ) ) ) : '';
                                                 // Only output positive radius; 0/empty = CSS default (8px).
-                                                if ( $picky_square_radius !== '' && (int) $picky_square_radius > 0 ) {
-                                                    $picky_square_outer_attrs = ' data-square-radius="' . esc_attr( $picky_square_radius ) . '"';
-                                                } else {
+                                                if ( $picky_square_radius === '' || (int) $picky_square_radius <= 0 ) {
                                                     $picky_square_radius = '';
                                                 }
                                             }
-                                            $picky_wall_radius      = '';
-                                            $picky_wall_outer_attrs = '';
+                                            $picky_wall_radius = '';
                                             if ( $picky_saved_class === 'type-wall' ) {
                                                 // Empty = CSS default (2px). Explicit 0 = sharp. 1–120 = override.
                                                 if ( isset( $val['wall_radius'] ) && (string) $val['wall_radius'] !== '' ) {
                                                     $picky_wall_radius = (string) max( 0, min( 120, intval( $val['wall_radius'] ) ) );
-                                                    $picky_wall_outer_attrs = ' data-wall-radius="' . esc_attr( $picky_wall_radius ) . '"';
                                                 }
                                             }
                                             ?>
                                             <div
-                                            class="picky-element <?php echo isset( $val['class'] ) ? esc_attr( (string)$val['class'] ) : ''; ?> <?php echo ( isset( $val['rotate'] ) && (string)$val['rotate'] !== '' ) ? esc_attr( 'rotate-' . (string)$val['rotate'] ) : ''; ?>"
+                                            class="picky-element <?php echo esc_attr( isset( $val['class'] ) ? (string) $val['class'] : '' ); ?> <?php echo esc_attr( ( isset( $val['rotate'] ) && (string) $val['rotate'] !== '' ) ? 'rotate-' . (string) $val['rotate'] : '' ); ?>"
                                             data-id="<?php echo esc_attr(isset($val['id']) ? (string)$val['id'] : ''); ?>"
                                             data-show-id="<?php echo esc_attr( $picky_show_id ); ?>"
                                             data-unique="<?php echo esc_attr( isset($val['unique']) ? (string)$val['unique'] : '' ); ?>"
                                             data-seats="<?php echo esc_attr( isset($val['seats']) ? (string)$val['seats'] : '' ); ?>"
                                             data-max-seats="<?php echo esc_attr( isset($val['max_seats']) ? (string)$val['max_seats'] : '' ); ?>"
-                                            data-label="<?php echo isset($val['label']) ? esc_attr((string)$val['label']) : ''; ?>"
+                                            data-label="<?php echo esc_attr( isset( $val['label'] ) ? (string) $val['label'] : '' ); ?>"
                                             data-label-position="<?php echo esc_attr( $picky_label_position ); ?>"
                                             data-label-font-size="<?php echo esc_attr( (string) $picky_label_font_size ); ?>"
                                             data-label-color="<?php echo esc_attr( $picky_label_color ); ?>"
@@ -528,21 +559,32 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                             data-big-side="<?php echo esc_attr( isset($val['big_side']) ? (string)$val['big_side'] : '' ); ?>"
                                             data-type="<?php echo esc_attr( isset($val['class']) ? (string)$val['class'] : '' ); ?>"
                                             data-rotate="<?php echo esc_attr( isset($val['rotate']) ? (string)$val['rotate'] : '' ); ?>"
-                                            data-rotate-z="<?php echo isset($val['rotate_z']) ? esc_attr((string)$val['rotate_z']) : '0'; ?>"
-                                            data-rotate-x="<?php echo isset($val['rotate_x']) ? esc_attr((string)$val['rotate_x']) : '0'; ?>"
-                                            data-rotate-y="<?php echo isset($val['rotate_y']) ? esc_attr((string)$val['rotate_y']) : '0'; ?>"
+                                            data-rotate-z="<?php echo esc_attr( isset( $val['rotate_z'] ) ? (string) $val['rotate_z'] : '0' ); ?>"
+                                            data-rotate-x="<?php echo esc_attr( isset( $val['rotate_x'] ) ? (string) $val['rotate_x'] : '0' ); ?>"
+                                            data-rotate-y="<?php echo esc_attr( isset( $val['rotate_y'] ) ? (string) $val['rotate_y'] : '0' ); ?>"
                                             data-z-index="<?php echo esc_attr( (string) ( isset( $val['z_index'] ) ? max( 1, intval( $val['z_index'] ) ) : ( 10 + (int) $key ) ) ); ?>"
-                                            data-custom-url="<?php echo isset($val['custom_url']) ? esc_attr((string)$val['custom_url']) : ''; ?>"
-                                            data-color="<?php echo isset($val['color']) ? esc_attr((string)$val['color']) : ''; ?>"
-                                            data-text-color="<?php echo isset($val['text_color']) ? esc_attr((string)$val['text_color']) : '#333333'; ?>"
-                                            data-text-color-mode="<?php echo ( isset( $val['text_color_mode'] ) && (string) $val['text_color_mode'] === 'theme' ) ? 'theme' : 'custom'; ?>"
-                                            data-opacity="<?php echo isset($val['opacity']) ? esc_attr((string)$val['opacity']) : '1'; ?>"
-                                            data-text="<?php echo isset($val['text']) ? esc_attr((string)$val['text']) : ''; ?>"
-                                            data-font-size="<?php echo isset($val['font_size']) ? esc_attr((string)$val['font_size']) : '16'; ?>"
-                                            data-line-height="<?php echo ( isset( $val['line_height'] ) && (string) $val['line_height'] !== '' ) ? esc_attr( (string) max( 8, min( 400, intval( $val['line_height'] ) ) ) ) : ''; ?>"
-                                            data-font-family="<?php echo isset($val['font_family']) ? esc_attr((string)$val['font_family']) : 'inherit'; ?>"
-                                            data-font-weight="<?php echo isset($val['font_weight']) ? esc_attr((string)$val['font_weight']) : 'normal'; ?>"
-                                            data-shape-type="<?php echo isset($val['shape_type']) ? esc_attr((string)$val['shape_type']) : 'rectangle'; ?>"<?php echo $picky_shape_outer_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with esc_attr. ?><?php echo $picky_square_outer_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with esc_attr. ?><?php echo $picky_wall_outer_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with esc_attr. ?>
+                                            data-custom-url="<?php echo esc_attr( isset( $val['custom_url'] ) ? (string) $val['custom_url'] : '' ); ?>"
+                                            data-color="<?php echo esc_attr( isset( $val['color'] ) ? (string) $val['color'] : '' ); ?>"
+                                            data-text-color="<?php echo esc_attr( isset( $val['text_color'] ) ? (string) $val['text_color'] : '#333333' ); ?>"
+                                            data-text-color-mode="<?php echo esc_attr( ( isset( $val['text_color_mode'] ) && (string) $val['text_color_mode'] === 'theme' ) ? 'theme' : 'custom' ); ?>"
+                                            data-opacity="<?php echo esc_attr( isset( $val['opacity'] ) ? (string) $val['opacity'] : '1' ); ?>"
+                                            data-text="<?php echo esc_attr( isset( $val['text'] ) ? (string) $val['text'] : '' ); ?>"
+                                            data-font-size="<?php echo esc_attr( isset( $val['font_size'] ) ? (string) $val['font_size'] : '16' ); ?>"
+                                            data-line-height="<?php echo esc_attr( ( isset( $val['line_height'] ) && (string) $val['line_height'] !== '' ) ? (string) max( 8, min( 400, intval( $val['line_height'] ) ) ) : '' ); ?>"
+                                            data-font-family="<?php echo esc_attr( isset( $val['font_family'] ) ? (string) $val['font_family'] : 'inherit' ); ?>"
+                                            data-font-weight="<?php echo esc_attr( isset( $val['font_weight'] ) ? (string) $val['font_weight'] : 'normal' ); ?>"
+                                            data-shape-type="<?php echo esc_attr( isset($val['shape_type']) ? (string)$val['shape_type'] : 'rectangle' ); ?>"
+                                            <?php if ( isset( $val['class'] ) && $val['class'] === 'type-shape' ) : ?>
+                                            data-shape-radius="<?php echo esc_attr( $picky_shape_radius ); ?>"
+                                            data-shape-border-width="<?php echo esc_attr( (string) $picky_shape_bw ); ?>"
+                                            data-shape-border-color="<?php echo esc_attr( $picky_shape_bc ); ?>"
+                                            <?php endif; ?>
+                                            <?php if ( $picky_square_radius !== '' && (int) $picky_square_radius > 0 ) : ?>
+                                            data-square-radius="<?php echo esc_attr( $picky_square_radius ); ?>"
+                                            <?php endif; ?>
+                                            <?php if ( $picky_wall_radius !== '' ) : ?>
+                                            data-wall-radius="<?php echo esc_attr( $picky_wall_radius ); ?>"
+                                            <?php endif; ?>
                                             data-icon="<?php echo esc_attr( isset( $val['icon_key'] ) ? \Picky\Booking_Icons::sanitize( $val['icon_key'] ) : '' ); ?>"
                                             <?php
                                             $picky_svc_json = ( isset( $val['services'] ) && is_array( $val['services'] ) && count( $val['services'] ) > 0 )
@@ -580,8 +622,8 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                                                      --picky-text-line-height: <?php echo intval( $picky_lh_render ); ?>px;
                                                                      line-height: <?php echo intval( $picky_lh_render ); ?>px;
                                                                      font-family: <?php echo esc_attr( $picky_ff_render ); ?>;
-                                                                     font-weight: <?php echo isset($val['font_weight']) ? esc_attr($val['font_weight']) : 'normal'; ?>;
-                                                                    color: <?php echo ( isset( $val['text_color_mode'] ) && (string) $val['text_color_mode'] === 'theme' ) ? 'inherit' : ( isset($val['text_color']) ? esc_attr($val['text_color']) : '#333333' ); ?>;
+                                                                     font-weight: <?php echo esc_attr( isset( $val['font_weight'] ) ? (string) $val['font_weight'] : 'normal' ); ?>;
+                                                                    color: <?php echo esc_attr( ( isset( $val['text_color_mode'] ) && (string) $val['text_color_mode'] === 'theme' ) ? 'inherit' : ( isset( $val['text_color'] ) ? (string) $val['text_color'] : '#333333' ) ); ?>;
                                                                      padding: <?php echo isset($val['padding']) ? intval($val['padding']) : 10; ?>px;
                                                                  "><?php echo esc_html( $val['text'] ); ?></div>
                                                              <?php elseif ( isset( $val['class'] ) && $val['class'] === 'type-icon' ) : ?>
@@ -601,7 +643,7 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                                     <button type="button" class="picky-element-edit" aria-label="<?php esc_attr_e('Edit element', 'pickybooking'); ?>"></button>
                                                     <div class="picky-element-id" data-default="<?php echo esc_attr( isset($val['id']) ? (string)$val['id'] : '' ); ?>"<?php if ( ! $picky_builder_show_ids ) : ?> style="display:none;" aria-hidden="true"<?php endif; ?>><?php echo esc_html( $picky_display_id ); ?></div>
                                                     <div class="picky-element-seats"<?php if ( ! $picky_builder_show_seats ) : ?> style="display:none;" aria-hidden="true"<?php endif; ?>><?php echo esc_html( isset($val['seats']) ? (string)$val['seats'] : '' ); ?></div>
-                                                    <div class="picky-element-label"<?php if ( ! $picky_builder_show_labels ) : ?> style="display:none;" aria-hidden="true"<?php endif; ?>><?php echo isset($val['label']) ? esc_html((string)$val['label']) : ''; ?></div>
+                                                    <div class="picky-element-label"<?php if ( ! $picky_builder_show_labels ) : ?> style="display:none;" aria-hidden="true"<?php endif; ?>><?php echo esc_html( isset( $val['label'] ) ? (string) $val['label'] : '' ); ?></div>
                                                 </div>
 
                                                     <div class="picky-element-seats-wrap"></div>
@@ -611,16 +653,16 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                                     <div class="picky-element-edit-fields">
                                                         <div class="picky-element-edit-field picky-field-max-seats">
                                                             <div class="picky-element-edit-field-title"><?php esc_html_e('Max persons', 'pickybooking'); ?></div>
-                                                            <input type="number" min="0" step="1" value="<?php echo (isset($val['max_seats']) && intval($val['max_seats']) > 0) ? esc_attr((string)$val['max_seats']) : ''; ?>" class="picky-element-edit-max-persons-input picky-input">
+                                                            <input type="number" min="0" step="1" value="<?php echo esc_attr( ( isset( $val['max_seats'] ) && intval( $val['max_seats'] ) > 0 ) ? (string) $val['max_seats'] : '' ); ?>" class="picky-element-edit-max-persons-input picky-input">
                                                         </div>
                                                         <div class="picky-element-edit-field picky-field-label">
-                                                            <div class="picky-element-edit-field-title<?php echo ( class_exists( '\\Picky\\Edition' ) && \Picky\Edition::allows( 'ai' ) ) ? ' picky-ai-field-title' : ''; ?>">
+                                                            <div class="picky-element-edit-field-title<?php echo esc_attr( ( class_exists( '\\Picky\\Edition' ) && \Picky\Edition::allows( 'ai' ) ) ? ' picky-ai-field-title' : '' ); ?>">
                                                                 <span><?php esc_html_e('Name', 'pickybooking'); ?></span>
                                                                 <?php if ( class_exists( '\\Picky\\Edition' ) && \Picky\Edition::allows( 'ai' ) ) : ?>
                                                                 <button type="button" class="button button-small picky-ai-element-copy-btn" data-picky-ai-mode="label" title="<?php esc_attr_e( 'Generate name with AI', 'pickybooking' ); ?>"><?php esc_html_e( 'AI', 'pickybooking' ); ?></button>
                                                                 <?php endif; ?>
                                                             </div>
-                                                            <input type="text" value="<?php echo isset($val['label']) ? esc_attr((string)$val['label']) : ''; ?>" class="picky-element-edit-label-input picky-input">
+                                                            <input type="text" value="<?php echo esc_attr( isset( $val['label'] ) ? (string) $val['label'] : '' ); ?>" class="picky-element-edit-label-input picky-input">
                                                         </div>
                                                         <div class="picky-element-edit-field picky-field-label-position">
                                                             <div class="picky-element-edit-field-title"><?php esc_html_e( 'Name position', 'pickybooking' ); ?></div>
@@ -639,17 +681,17 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                                         </div>
                                                         <div class="picky-element-edit-field picky-field-custom-id picky-bookable-only-field">
                                                             <div class="picky-element-edit-field-title"><?php esc_html_e('Custom ID (optional)', 'pickybooking'); ?></div>
-                                                            <input type="text" value="<?php echo isset($val['custom_id']) ? esc_attr((string)$val['custom_id']) : ''; ?>" class="picky-element-edit-custom-id-input picky-input" placeholder="<?php esc_attr_e('Leave blank to use auto-ID', 'pickybooking'); ?>" maxlength="64">
+                                                            <input type="text" value="<?php echo esc_attr( isset( $val['custom_id'] ) ? (string) $val['custom_id'] : '' ); ?>" class="picky-element-edit-custom-id-input picky-input" placeholder="<?php esc_attr_e('Leave blank to use auto-ID', 'pickybooking'); ?>" maxlength="64">
                                                         </div>
                                                         <div class="picky-element-edit-field picky-type-1-only-field picky-field-square-radius">
                                                             <div class="picky-element-edit-field-title"><?php esc_html_e( 'Corner radius (px)', 'pickybooking' ); ?></div>
-                                                            <input type="number" min="0" max="120" step="1" value="<?php echo ( $picky_saved_class !== '' && ! in_array( $picky_saved_class, array( 'type-wall', 'type-text', 'type-shape', 'type-4', 'type-circle' ), true ) && isset( $val['square_radius'] ) && (string) $val['square_radius'] !== '' && intval( $val['square_radius'] ) > 0 ) ? esc_attr( (string) max( 1, min( 120, intval( $val['square_radius'] ) ) ) ) : ''; ?>" class="picky-element-edit-square-radius-input picky-input" placeholder="<?php esc_attr_e( 'Default', 'pickybooking' ); ?>" title="<?php esc_attr_e( 'Leave empty for default rounding (8px). Enter 1–120 to override.', 'pickybooking' ); ?>" />
+                                                            <input type="number" min="0" max="120" step="1" value="<?php echo esc_attr( ( $picky_saved_class !== '' && ! in_array( $picky_saved_class, array( 'type-wall', 'type-text', 'type-shape', 'type-4', 'type-circle' ), true ) && isset( $val['square_radius'] ) && (string) $val['square_radius'] !== '' && intval( $val['square_radius'] ) > 0 ) ? (string) max( 1, min( 120, intval( $val['square_radius'] ) ) ) : '' ); ?>" class="picky-element-edit-square-radius-input picky-input" placeholder="<?php esc_attr_e( 'Default', 'pickybooking' ); ?>" title="<?php esc_attr_e( 'Leave empty for default rounding (8px). Enter 1–120 to override.', 'pickybooking' ); ?>" />
                                                         </div>
                                                         <div class="picky-element-edit-field picky-text-only-field">
                                                             <div class="picky-element-edit-field-title">
                                                                 <span><?php esc_html_e('Text Content', 'pickybooking'); ?></span>
                                                             </div>
-                                                            <input type="text" class="picky-element-edit-text-input picky-input" placeholder="<?php esc_attr_e( 'Edit text field', 'pickybooking' ); ?>" value="<?php echo isset($val['text']) ? esc_attr((string)$val['text']) : ''; ?>" />
+                                                            <input type="text" class="picky-element-edit-text-input picky-input" placeholder="<?php esc_attr_e( 'Edit text field', 'pickybooking' ); ?>" value="<?php echo esc_attr( isset( $val['text'] ) ? (string) $val['text'] : '' ); ?>" />
                                                         </div>
                                                         <div class="picky-element-edit-field picky-text-only-field picky-field-font-size">
                                                             <div class="picky-element-edit-field-title"><?php esc_html_e('Font Size', 'pickybooking'); ?></div>
@@ -695,7 +737,7 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                                         </div>
                                                         <div class="picky-element-edit-field picky-text-only-field">
                                                             <div class="picky-element-edit-field-title"><?php esc_html_e('Text Color', 'pickybooking'); ?></div>
-                                                            <input type="text" value="<?php echo isset($val['text_color']) ? esc_attr((string)$val['text_color']) : '#333333'; ?>" class="picky-element-edit-text-color-input picky-input" />
+                                                            <input type="text" value="<?php echo esc_attr( isset( $val['text_color'] ) ? (string) $val['text_color'] : '#333333' ); ?>" class="picky-element-edit-text-color-input picky-input" />
                                                         </div>
                                                         <div class="picky-element-edit-field picky-text-only-field">
                                                             <div class="picky-element-edit-field-title"><?php esc_html_e('Text Color Source', 'pickybooking'); ?></div>
@@ -719,7 +761,7 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                                         </div>
                                                         <div class="picky-element-edit-field picky-shape-only-field picky-field-shape-radius">
                                                             <div class="picky-element-edit-field-title"><?php esc_html_e( 'Corner radius (px)', 'pickybooking' ); ?></div>
-                                                            <input type="number" min="0" max="120" step="1" value="<?php echo $picky_shape_radius === '' ? '' : esc_attr( $picky_shape_radius ); ?>" class="picky-element-edit-shape-radius-input picky-input" placeholder="<?php esc_attr_e( 'Auto', 'pickybooking' ); ?>" title="<?php esc_attr_e( 'Leave empty to use the preset for the selected shape type.', 'pickybooking' ); ?>" />
+                                                            <input type="number" min="0" max="120" step="1" value="<?php echo esc_attr( $picky_shape_radius ); ?>" class="picky-element-edit-shape-radius-input picky-input" placeholder="<?php esc_attr_e( 'Auto', 'pickybooking' ); ?>" title="<?php esc_attr_e( 'Leave empty to use the preset for the selected shape type.', 'pickybooking' ); ?>" />
                                                         </div>
                                                         <div class="picky-element-edit-field picky-shape-only-field picky-field-shape-border-width">
                                                             <div class="picky-element-edit-field-title"><?php esc_html_e( 'Outline width (px)', 'pickybooking' ); ?></div>
@@ -736,7 +778,6 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                                             if ( $picky_saved_icon === '' && isset( $val['class'] ) && $val['class'] === 'type-icon' ) {
                                                                 $picky_saved_icon = 'star';
                                                             }
-                                                            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- picker escapes its own output
                                                             echo wp_kses( \Picky\Booking_Icons::render_picker( '', '', $picky_saved_icon, 'picky-element-edit-icon-input' ), \Picky\Booking_Icons::kses_allowed() );
                                                             ?>
                                                         </div>
@@ -751,7 +792,7 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                                                         </div>
                                                         <div class="picky-element-edit-field picky-wall-only-field picky-field-wall-radius">
                                                             <div class="picky-element-edit-field-title"><?php esc_html_e( 'Corner radius (px)', 'pickybooking' ); ?></div>
-                                                            <input type="number" min="0" max="120" step="1" value="<?php echo ( $picky_saved_class === 'type-wall' && $picky_wall_radius !== '' ) ? esc_attr( $picky_wall_radius ) : ''; ?>" class="picky-element-edit-wall-radius-input picky-input" placeholder="<?php esc_attr_e( 'Default (2)', 'pickybooking' ); ?>" title="<?php esc_attr_e( 'Leave empty for default rounding (2px). Enter 0 for sharp ends, or 1–120 to override.', 'pickybooking' ); ?>" />
+                                                            <input type="number" min="0" max="120" step="1" value="<?php echo esc_attr( ( $picky_saved_class === 'type-wall' && $picky_wall_radius !== '' ) ? $picky_wall_radius : '' ); ?>" class="picky-element-edit-wall-radius-input picky-input" placeholder="<?php esc_attr_e( 'Default (2)', 'pickybooking' ); ?>" title="<?php esc_attr_e( 'Leave empty for default rounding (2px). Enter 0 for sharp ends, or 1–120 to override.', 'pickybooking' ); ?>" />
                                                         </div>
                                                         <div class="picky-element-edit-field picky-field-opacity">
                                                             <div class="picky-element-edit-field-title"><?php esc_html_e('Opacity', 'pickybooking'); ?></div>
@@ -862,13 +903,40 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                     </div>
                     <p class="picky-lib-edit-parents-empty description" style="display:none;margin:0;color:#94a3b8;"><?php esc_html_e( 'No top-level services available yet — create one first to allow add-ons.', 'pickybooking' ); ?></p>
                 </div>
-                <div class="picky-lib-edit-icon-wrap" style="margin-top:12px;padding-top:12px;border-top:1px solid #e2e8f0;">
-                    <label for="picky_lib_edit_icon"><strong><?php esc_html_e( 'Booking popup icon', 'pickybooking' ); ?></strong></label>
-                    <p class="description" style="margin:0 0 6px;font-size:11px;"><?php esc_html_e( 'Optional icon shown beside this service in the booking confirmation popup.', 'pickybooking' ); ?></p>
-                    <?php
-                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- picker escapes its own output
-                    echo wp_kses( \Picky\Booking_Icons::render_picker( '', 'picky_lib_edit_icon', '', 'picky-lib-edit-icon' ), \Picky\Booking_Icons::kses_allowed() );
-                    ?>
+                <div class="picky-lib-edit-visual-wrap" style="margin-top:12px;padding-top:12px;border-top:1px solid #e2e8f0;">
+                    <label><strong><?php esc_html_e( 'Booking popup visual', 'pickybooking' ); ?></strong></label>
+                    <p class="description" style="margin:0 0 8px;font-size:11px;"><?php esc_html_e( 'Choose either an icon or an image — not both. Image formats suit staff photos (portrait), banners (landscape), or logos (square).', 'pickybooking' ); ?></p>
+                    <div class="picky-lib-edit-visual-switch" role="group" aria-label="<?php esc_attr_e( 'Visual type', 'pickybooking' ); ?>" style="display:inline-flex;gap:0;margin-bottom:10px;border:1px solid #c3c4c7;border-radius:6px;overflow:hidden;">
+                        <button type="button" class="button picky-lib-edit-visual-btn is-active" data-visual="icon" style="margin:0;border:0;border-radius:0;box-shadow:none;"><?php esc_html_e( 'Icon', 'pickybooking' ); ?></button>
+                        <button type="button" class="button picky-lib-edit-visual-btn" data-visual="image" style="margin:0;border:0;border-left:1px solid #c3c4c7;border-radius:0;box-shadow:none;"><?php esc_html_e( 'Image', 'pickybooking' ); ?></button>
+                    </div>
+                    <input type="hidden" class="picky-lib-edit-visual" value="icon">
+                    <div class="picky-lib-edit-visual-panel picky-lib-edit-visual-icon">
+                        <p class="description" style="margin:0 0 6px;font-size:11px;"><?php esc_html_e( 'Optional icon shown beside this service in the booking popup.', 'pickybooking' ); ?></p>
+                        <?php echo wp_kses( \Picky\Booking_Icons::render_picker( '', 'picky_lib_edit_icon', '', 'picky-lib-edit-icon' ), \Picky\Booking_Icons::kses_allowed() ); ?>
+                    </div>
+                    <div class="picky-lib-edit-visual-panel picky-lib-edit-visual-image" style="display:none;">
+                        <div class="picky-lib-edit-image-row" style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;">
+                            <div class="picky-lib-edit-image-preview-wrap" style="width:72px;height:72px;border:1px dashed #c3c4c7;border-radius:8px;background:#f6f7f7;display:flex;align-items:center;justify-content:center;overflow:hidden;flex:0 0 auto;">
+                                <img class="picky-lib-edit-image-preview" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;">
+                                <span class="picky-lib-edit-image-placeholder description" style="font-size:11px;text-align:center;padding:4px;"><?php esc_html_e( 'No image', 'pickybooking' ); ?></span>
+                            </div>
+                            <div style="flex:1;min-width:180px;">
+                                <input type="hidden" class="picky-lib-edit-image-id" value="">
+                                <input type="hidden" class="picky-lib-edit-image-url" value="">
+                                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+                                    <button type="button" class="button picky-lib-edit-image-upload"><?php esc_html_e( 'Select image', 'pickybooking' ); ?></button>
+                                    <button type="button" class="button picky-lib-edit-image-clear" style="display:none;"><?php esc_html_e( 'Remove', 'pickybooking' ); ?></button>
+                                </div>
+                                <label for="picky_lib_edit_image_ratio" style="display:block;margin-bottom:4px;"><?php esc_html_e( 'Image format', 'pickybooking' ); ?></label>
+                                <select id="picky_lib_edit_image_ratio" class="picky-lib-edit-image-ratio" style="max-width:220px;">
+                                    <option value="square"><?php esc_html_e( 'Square', 'pickybooking' ); ?></option>
+                                    <option value="portrait"><?php esc_html_e( 'Portrait (vertical)', 'pickybooking' ); ?></option>
+                                    <option value="landscape"><?php esc_html_e( 'Landscape (horizontal)', 'pickybooking' ); ?></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div style="margin-top:12px;text-align:right;display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;">
                     <button type="button" class="button picky-lib-edit-cancel"><?php esc_html_e( 'Cancel', 'pickybooking' ); ?></button>
@@ -964,10 +1032,7 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                     <div class="picky-layout-booking-item-icon-field">
                         <label for="picky_layout_booking_item_icon"><strong><?php esc_html_e( 'Booking popup icon', 'pickybooking' ); ?></strong></label>
                         <p class="description"><?php esc_html_e( 'Shown next to selected items in the booking confirmation popup only — not on the map.', 'pickybooking' ); ?></p>
-                        <?php
-                        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- picker escapes its own output
-                        echo wp_kses( \Picky\Booking_Icons::render_picker( 'picky_layout_booking_item_icon', 'picky_layout_booking_item_icon', $picky_booking_item_icon ), \Picky\Booking_Icons::kses_allowed() );
-                        ?>
+                        <?php echo wp_kses( \Picky\Booking_Icons::render_picker( 'picky_layout_booking_item_icon', 'picky_layout_booking_item_icon', $picky_booking_item_icon ), \Picky\Booking_Icons::kses_allowed() ); ?>
                     </div>
                 </div>
 
@@ -1034,10 +1099,30 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                         <select id="picky_layout_shortcode_layout" name="picky_layout_shortcode_layout" class="regular-text" form="picky-options-save">
                             <option value="" <?php selected( $picky_layout_shortcode_layout_meta, '' ); ?>><?php esc_html_e( 'Use site default', 'pickybooking' ); ?></option>
                             <option value="1" <?php selected( $picky_layout_shortcode_layout_meta, '1' ); ?>><?php esc_html_e( 'Classic — pick item first', 'pickybooking' ); ?></option>
-                            <option value="2" <?php selected( $picky_layout_shortcode_layout_meta, '2' ); ?>><?php esc_html_e( 'Smart — date & time first', 'pickybooking' ); ?></option>
-                            <option value="4" <?php selected( $picky_layout_shortcode_layout_meta, '4' ); ?>><?php esc_html_e( 'Smart Map — layout first', 'pickybooking' ); ?></option>
+                            <?php if ( class_exists( '\\Picky\\Edition' ) && \Picky\Edition::allows( 'wizard_smart' ) ) : ?>
+                                <option value="2" <?php selected( $picky_layout_shortcode_layout_meta, '2' ); ?>><?php esc_html_e( 'Smart — date & time first', 'pickybooking' ); ?></option>
+                            <?php else : ?>
+                                <option value="2" disabled><?php esc_html_e( 'Smart — date & time first (Pro)', 'pickybooking' ); ?></option>
+                            <?php endif; ?>
+                            <?php if ( class_exists( '\\Picky\\Edition' ) && \Picky\Edition::allows( 'wizard_smart_map' ) ) : ?>
+                                <option value="4" <?php selected( $picky_layout_shortcode_layout_meta, '4' ); ?>><?php esc_html_e( 'Smart Map — layout first', 'pickybooking' ); ?></option>
+                            <?php else : ?>
+                                <option value="4" disabled><?php esc_html_e( 'Smart Map — layout first (Pro)', 'pickybooking' ); ?></option>
+                            <?php endif; ?>
                             <option value="3" <?php selected( $picky_layout_shortcode_layout_meta, '3' ); ?>><?php esc_html_e( 'Simple — no map, time only', 'pickybooking' ); ?></option>
                         </select>
+                        <?php if ( class_exists( '\\Picky\\Edition' ) && \Picky\Edition::is_lite() ) : ?>
+                            <p class="description"><?php echo wp_kses_post( \Picky\Edition::pro_tip_html( __( 'Smart and Smart Map wizards are part of PickyBooking Pro.', 'pickybooking' ) ) ); ?></p>
+                        <?php endif; ?>
+                    </p>
+                    <p class="picky-layout-simple-show-services-wrap" style="<?php echo esc_attr( ( $picky_layout_shortcode_layout_meta === '3' || $picky_layout_shortcode_layout_meta === '' ) ? '' : 'display:none;' ); ?>">
+                        <input type="hidden" name="picky_layout_simple_show_services" value="0" form="picky-options-save" />
+                        <label for="picky_layout_simple_show_services">
+                            <input type="checkbox" id="picky_layout_simple_show_services" name="picky_layout_simple_show_services" value="1" form="picky-options-save" <?php checked( $picky_layout_simple_show_services_meta, '1' ); ?> />
+                            <?php esc_html_e( 'Show services on step 2 (Simple)', 'pickybooking' ); ?>
+                        </label>
+                        <br />
+                        <span class="description"><?php esc_html_e( 'Guests can pick services from this layout’s library on the Booking options step. Only applies when Wizard order is Simple.', 'pickybooking' ); ?></span>
                     </p>
                 </div>
 
@@ -1064,7 +1149,7 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                             <span><?php esc_html_e( 'One-time event — fixed date and time', 'pickybooking' ); ?></span>
                         </label>
                     </div>
-                    <div class="picky-layout-event-once-fields" style="<?php echo ( $picky_event_mode === 'once' ) ? 'display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:10px;' : 'display:none;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:10px;'; ?>">
+                    <div class="picky-layout-event-once-fields" style="<?php echo esc_attr( ( $picky_event_mode === 'once' ) ? 'display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:10px;' : 'display:none;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:10px;' ); ?>">
                         <p style="margin:0;">
                             <label for="picky_layout_event_date"><strong><?php esc_html_e( 'Event date', 'pickybooking' ); ?></strong></label><br />
                             <input type="date" id="picky_layout_event_date" name="picky_layout_event_date" form="picky-options-save" value="<?php echo esc_attr( $picky_event_date_html ); ?>" />
@@ -1119,10 +1204,20 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
             $bg_table_val = get_post_meta( $layout_id, '_picky_layout_bg_table', true );
             $picky_canvas_bg_color_css = picky_layout_canvas_bg_color( (int) $layout_id );
             $picky_item_bg_color_css   = picky_layout_item_bg_color( (int) $layout_id );
-            $canvas_style            = 'background-color: ' . esc_attr( $picky_canvas_bg_color_css ) . ';';
+            $picky_canvas_bg_color_css = sanitize_hex_color( (string) $picky_canvas_bg_color_css );
+            if ( ! is_string( $picky_canvas_bg_color_css ) || $picky_canvas_bg_color_css === '' ) {
+                $picky_canvas_bg_color_css = '#ffffff';
+            }
+            $picky_item_bg_color_css = sanitize_hex_color( (string) $picky_item_bg_color_css );
+            if ( ! is_string( $picky_item_bg_color_css ) || $picky_item_bg_color_css === '' ) {
+                $picky_item_bg_color_css = '#ffffff';
+            }
+            $canvas_style = 'background-color: ' . $picky_canvas_bg_color_css . ';';
             if ( $bg_canvas_val ) {
                 $bg_canvas_url = esc_url( (string) ( is_numeric( $bg_canvas_val ) ? wp_get_attachment_url( $bg_canvas_val ) : $bg_canvas_val ) );
-                $canvas_style .= "background-image: url({$bg_canvas_url});";
+                if ( $bg_canvas_url !== '' ) {
+                    $canvas_style .= 'background-image: url("' . esc_url( $bg_canvas_url ) . '");';
+                }
                 $picky_bg_size_map = array(
                     'cover'    => 'background-size: cover; background-repeat: no-repeat; background-position: center center;',
                     'contain'  => 'background-size: contain; background-repeat: no-repeat; background-position: center center;',
@@ -1136,8 +1231,10 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
                     : 'background-size: auto; background-repeat: repeat; background-position: top left;';
             }
             if ( $bg_table_val ) {
-                $bg_table_url  = esc_url( (string) ( is_numeric( $bg_table_val ) ? wp_get_attachment_url( $bg_table_val ) : $bg_table_val ) );
-                $element_style = "background-image: url({$bg_table_url});";
+                $bg_table_url = esc_url( (string) ( is_numeric( $bg_table_val ) ? wp_get_attachment_url( $bg_table_val ) : $bg_table_val ) );
+                if ( $bg_table_url !== '' ) {
+                    $element_style = 'background-image: url("' . esc_url( $bg_table_url ) . '");';
+                }
             }
             ?>
             <div class="picky-layout-bottom-actions">
@@ -1149,12 +1246,12 @@ $picky_builder_surface_id   = $picky_layout_embedded ? 'picky-builder-surface' :
         </form>
 
         <?php
-        /* Canvas background color and image are attached with wp_add_inline_style. */
-        $picky_appearance_css  = '.picky-draggable-wrap:not(.picky-canvas-transparent-bg){background-color:' . esc_attr( $picky_canvas_bg_color_css ) . ' !important;}';
-        $picky_appearance_css .= '.picky-draggable:not(.no-bg):not(.picky-canvas-transparent-bg){' . esc_attr( $canvas_style ) . '}';
-        $picky_appearance_css .= '.picky-draggable .picky-element:not(.type-text):not(.type-wall):not(.type-shape):not(.type-icon):not(.no-bg-table) .picky-element-shape:not([style*="background-image"]):not([style*="background-color"]){background-color:' . esc_attr( $picky_item_bg_color_css ) . ' !important;}';
+        /* Canvas background via wp_add_inline_style — values sanitized above (hex / esc_url). */
+        $picky_appearance_css  = '.picky-draggable-wrap:not(.picky-canvas-transparent-bg){background-color:' . $picky_canvas_bg_color_css . ' !important;}';
+        $picky_appearance_css .= '.picky-draggable:not(.no-bg):not(.picky-canvas-transparent-bg){' . $canvas_style . '}';
+        $picky_appearance_css .= '.picky-draggable .picky-element:not(.type-text):not(.type-wall):not(.type-shape):not(.type-icon):not(.no-bg-table) .picky-element-shape:not([style*="background-image"]):not([style*="background-color"]){background-color:' . $picky_item_bg_color_css . ' !important;}';
         if ( $element_style ) {
-            $picky_appearance_css .= '.picky-element:not(.type-text):not(.type-wall):not(.type-shape):not(.type-icon):not(.no-bg-table) .picky-element-shape{' . esc_attr( $element_style ) . '}';
+            $picky_appearance_css .= '.picky-element:not(.type-text):not(.type-wall):not(.type-shape):not(.type-icon):not(.no-bg-table) .picky-element-shape{' . $element_style . '}';
         }
         $picky_appearance_ver = class_exists( '\Picky\Info' ) ? \Picky\Info::VERSION : '1.0.2';
         wp_register_style( 'picky-layout-appearance', false, array(), $picky_appearance_ver );

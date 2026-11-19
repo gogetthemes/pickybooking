@@ -26,7 +26,12 @@
             "price": 45,
             "duration": 60,
             "description": "Wash, cut, and blow-dry finish.",
-            "parent_sids": []
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/beauty-salon-images/cut-style.jpg",
+            "image_ratio": "square",
+            "icon": ""
         },
         {
             "sid": "svc_color",
@@ -34,7 +39,12 @@
             "price": 85,
             "duration": 90,
             "description": "Full color or highlight service.",
-            "parent_sids": []
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/beauty-salon-images/color.jpg",
+            "image_ratio": "square",
+            "icon": ""
         },
         {
             "sid": "svc_shampoo",
@@ -42,7 +52,12 @@
             "price": 30,
             "duration": 40,
             "description": "Shampoo with styled blow-dry.",
-            "parent_sids": []
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/beauty-salon-images/shampoo-blowout.jpg",
+            "image_ratio": "square",
+            "icon": ""
         },
         {
             "sid": "svc_manicure",
@@ -50,7 +65,12 @@
             "price": 35,
             "duration": 45,
             "description": "Classic manicure with polish.",
-            "parent_sids": []
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/beauty-salon-images/manicure.jpg",
+            "image_ratio": "square",
+            "icon": ""
         },
         {
             "sid": "svc_pedicure",
@@ -58,7 +78,12 @@
             "price": 40,
             "duration": 50,
             "description": "Classic pedicure with polish.",
-            "parent_sids": []
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/beauty-salon-images/pedicure.jpg",
+            "image_ratio": "square",
+            "icon": ""
         },
         {
             "sid": "svc_spa_massage",
@@ -66,7 +91,12 @@
             "price": 70,
             "duration": 60,
             "description": "Relaxing body massage in the spa room.",
-            "parent_sids": []
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/beauty-salon-images/spa-massage.jpg",
+            "image_ratio": "square",
+            "icon": ""
         },
         {
             "sid": "svc_spa_facial",
@@ -74,7 +104,12 @@
             "price": 65,
             "duration": 50,
             "description": "Custom facial for skin type.",
-            "parent_sids": []
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/beauty-salon-images/facial.jpg",
+            "image_ratio": "square",
+            "icon": ""
         },
         {
             "sid": "svc_addon_mask",
@@ -86,7 +121,12 @@
                 "svc_cut_style",
                 "svc_color",
                 "svc_shampoo"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/beauty-salon-images/addon-hair-mask.jpg"
         },
         {
             "sid": "svc_addon_nail_art",
@@ -97,7 +137,12 @@
             "parent_sids": [
                 "svc_manicure",
                 "svc_pedicure"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/beauty-salon-images/addon-nail-art.jpg"
         },
         {
             "sid": "svc_addon_aromatherapy",
@@ -108,7 +153,12 @@
             "parent_sids": [
                 "svc_spa_massage",
                 "svc_spa_facial"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/beauty-salon-images/addon-aromatherapy.jpg"
         }
     ],
     "elements": [
@@ -2964,5 +3014,6 @@
             "service_ids": []
         }
     ],
-    "source_post_id": 227
+    "source_post_id": 227,
+    "_sample_version": "3.4.0"
 }

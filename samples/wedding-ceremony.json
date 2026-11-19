@@ -27,6 +27,10 @@
             "duration": 180,
             "description": "Reserved seat for the ceremony.",
             "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/wedding-images/svc_ceremony_seat.jpg",
+            "image_ratio": "square",
             "icon": ""
         },
         {
@@ -38,6 +42,55 @@
             "parent_sids": [
                 "svc_ceremony_seat"
             ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/wedding-images/svc_addon_program.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_addon_flowers",
+            "name": "Flower Petals",
+            "price": 8,
+            "duration": 1,
+            "description": "Petal toss pack for guests.",
+            "parent_sids": [
+                "svc_ceremony_seat"
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/wedding-images/svc_addon_flowers.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_addon_parking",
+            "name": "Guest Parking",
+            "price": 10,
+            "duration": 1,
+            "description": "Reserved guest parking spot.",
+            "parent_sids": [
+                "svc_ceremony_seat"
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/wedding-images/svc_addon_parking.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_addon_livestream",
+            "name": "Livestream Access",
+            "price": 15,
+            "duration": 1,
+            "description": "Private livestream link for remote guests.",
+            "parent_sids": [
+                "svc_ceremony_seat"
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/wedding-images/svc_addon_livestream.jpg",
+            "image_ratio": "square",
             "icon": ""
         }
     ],
@@ -4175,5 +4228,6 @@
             ]
         }
     ],
-    "source_post_id": 3065
+    "source_post_id": 3065,
+    "_sample_version": "1.4.0"
 }

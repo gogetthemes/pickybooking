@@ -171,17 +171,27 @@ class Frontend
      * @return string
      */
     private function sanitize_post_text_field( $key, $default = '' ) {
-        if ( isset( $_POST['picky_nonce'] ) ) {
-            if ( ! is_scalar( $_POST['picky_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['picky_nonce'] ) ), 'picky_send_book_action' ) ) {
-                return $default;
-            }
-        } elseif ( ! isset( $_POST['_wpnonce'] ) || ! is_scalar( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['_wpnonce'] ) ), 'send_book' ) ) {
+        if ( ! $this->picky_booking_request_nonce_ok() ) {
             return $default;
         }
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce verified by picky_booking_request_nonce_ok() above.
         if ( ! isset( $_POST[ $key ] ) || ! is_scalar( $_POST[ $key ] ) ) {
-            return $default;
+            $value = null;
+        } else {
+            $value = sanitize_text_field( wp_unslash( (string) $_POST[ $key ] ) );
         }
-        return sanitize_text_field( wp_unslash( (string) $_POST[ $key ] ) );
+        // phpcs:enable WordPress.Security.NonceVerification.Missing
+        return null === $value ? $default : $value;
+    }
+
+    /**
+     * True when the request carries a valid booking nonce (wizard or legacy form field).
+     *
+     * @return bool
+     */
+    private function picky_booking_request_nonce_ok() {
+        return $this->verify_post_nonce_scalar( 'picky_nonce', 'picky_send_book_action' )
+            || $this->verify_post_nonce_scalar( '_wpnonce', 'send_book' );
     }
 
     /**
@@ -237,17 +247,16 @@ class Frontend
      * @return string
      */
     private function sanitize_post_email_field( $key, $default = '' ) {
-        if ( isset( $_POST['picky_nonce'] ) ) {
-            if ( ! is_scalar( $_POST['picky_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['picky_nonce'] ) ), 'picky_send_book_action' ) ) {
-                return $default;
-            }
-        } elseif ( ! isset( $_POST['_wpnonce'] ) || ! is_scalar( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['_wpnonce'] ) ), 'send_book' ) ) {
+        if ( ! $this->picky_booking_request_nonce_ok() ) {
             return $default;
         }
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce verified by picky_booking_request_nonce_ok() above.
         if ( ! isset( $_POST[ $key ] ) || ! is_scalar( $_POST[ $key ] ) ) {
-            return $default;
+            $email = '';
+        } else {
+            $email = sanitize_email( wp_unslash( (string) $_POST[ $key ] ) );
         }
-        $email = sanitize_email( wp_unslash( (string) $_POST[ $key ] ) );
+        // phpcs:enable WordPress.Security.NonceVerification.Missing
         return $email !== '' ? $email : $default;
     }
 
@@ -257,17 +266,17 @@ class Frontend
      * @return int
      */
     private function sanitize_post_absint( $key, $default = 0 ) {
-        if ( isset( $_POST['picky_nonce'] ) ) {
-            if ( ! is_scalar( $_POST['picky_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['picky_nonce'] ) ), 'picky_send_book_action' ) ) {
-                return absint( $default );
-            }
-        } elseif ( ! isset( $_POST['_wpnonce'] ) || ! is_scalar( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['_wpnonce'] ) ), 'send_book' ) ) {
+        if ( ! $this->picky_booking_request_nonce_ok() ) {
             return absint( $default );
         }
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce verified by picky_booking_request_nonce_ok() above.
         if ( ! isset( $_POST[ $key ] ) || ! is_scalar( $_POST[ $key ] ) ) {
-            return absint( $default );
+            $value = null;
+        } else {
+            $value = absint( wp_unslash( (string) $_POST[ $key ] ) );
         }
-        return absint( wp_unslash( (string) $_POST[ $key ] ) );
+        // phpcs:enable WordPress.Security.NonceVerification.Missing
+        return null === $value ? absint( $default ) : $value;
     }
 
     /**
@@ -631,8 +640,8 @@ class Frontend
 
         $front_css = plugin_dir_path(__FILE__).'css/picky-frontend.css';
         $front_js  = plugin_dir_path(__FILE__).'js/picky-frontend.js';
-        $front_css_ver = $this->version;
-        $front_js_ver  = $this->version;
+        $front_css_ver = file_exists( $front_css ) ? (string) filemtime( $front_css ) : $this->version;
+        $front_js_ver  = file_exists( $front_js ) ? (string) filemtime( $front_js ) : $this->version;
 
         $tokens_css = plugin_dir_path( dirname( __FILE__ ) ) . 'assets/css/picky-tokens.css';
         $tokens_ver = $this->version;
@@ -676,6 +685,8 @@ class Frontend
                 'i18n' => array(
                     /* translators: %s: configurable item name singular (e.g. Table, Room, Court) */
                     'table_prefix'      => esc_html( sprintf( __( '%s #', 'pickybooking' ), $this->picky_item_label() ) ),
+                    /* Singular reservable name from Settings (e.g. Table, Room). */
+                    'item_label'        => esc_html( $this->picky_item_label() ),
                     'generic_error'     => esc_html__( 'Error', 'pickybooking' ),
                     'fill_required'     => esc_html__( 'Please fill in all required fields.', 'pickybooking' ),
                     'pick_date_time'    => esc_html__( 'Please select a date and time, then try again.', 'pickybooking' ),
@@ -686,6 +697,24 @@ class Frontend
                     'em_dash'           => esc_html__( "\u{2014}", 'pickybooking' ),
                     /* translators: %s: the time (HH:MM) the next reservation starts */
                     'time_limit_notice' => esc_html__( 'Note: the next reservation starts at %s. Your visit will be limited to that time.', 'pickybooking' ),
+                    'continue_label'    => esc_html__( 'Continue', 'pickybooking' ),
+                    'book_label'        => esc_html__( 'Pay & Book', 'pickybooking' ),
+                    'book_now_label'    => esc_html__( 'Book Now', 'pickybooking' ),
+                    'payment_success'   => esc_html__( 'Payment successful. Your booking is confirmed.', 'pickybooking' ),
+                    'payment_cancel'    => esc_html__( 'Payment was cancelled. Booking is not confirmed.', 'pickybooking' ),
+                    'payment_failed'    => esc_html__( 'Payment verification failed. Please try again.', 'pickybooking' ),
+                    'booking_controls'  => esc_html__( 'Booking controls', 'pickybooking' ),
+                    'select_date_slots' => esc_html__( 'Select a date to see available times', 'pickybooking' ),
+                    'loading_slots'     => esc_html__( 'Loading available times…', 'pickybooking' ),
+                    'no_slots'          => esc_html__( 'No available times for this date', 'pickybooking' ),
+                    'select_at_least'   => esc_html__( 'Please select at least one item', 'pickybooking' ),
+                    /* translators: %s: comma-separated list of unavailable item labels */
+                    'removed_unavailable' => esc_html__( 'Removed (unavailable): %s', 'pickybooking' ),
+                    'select_on_map'     => esc_html__( 'Select on the map', 'pickybooking' ),
+                    /* translators: %s: formatted price with currency */
+                    'from_price'        => esc_html__( 'from %s', 'pickybooking' ),
+                    /* translators: %1$d: count, %2$s: item label (singular/plural) */
+                    'items_selected'    => esc_html__( '%1$d %2$s selected', 'pickybooking' ),
                 ),
             )
         );
@@ -1489,7 +1518,7 @@ class Frontend
 
     public function get_available_tables() {
         // Basic nonce check (same nonce field name used in forms)
-        if ( ! isset( $_POST['_wpnonce'] ) || ! is_scalar( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['_wpnonce'] ) ), 'send_book' ) ) {
+        if ( ! $this->picky_booking_request_nonce_ok() ) {
             wp_send_json_error( array( 'message' => esc_html__( 'Invalid nonce', 'pickybooking' ) ), 403 );
         }
 
@@ -1565,7 +1594,7 @@ class Frontend
      * AJAX: valid start times (some table free for default duration) and valid end times given a start (interval booking UX).
      */
     public function interval_slot_hints() {
-        if ( ! isset( $_POST['_wpnonce'] ) || ! is_scalar( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['_wpnonce'] ) ), 'send_book' ) ) {
+        if ( ! $this->picky_booking_request_nonce_ok() ) {
             wp_send_json_error( array( 'message' => esc_html__( 'Invalid nonce', 'pickybooking' ) ), 403 );
         }
 
@@ -1600,8 +1629,15 @@ class Frontend
         }
 
         $json_hints = $this->picky_layout_elements_for_slot_hints( $json, $hints_unique );
+        // Synthetic Simple unique (no canvas item) must not zero out all starts.
         if ( $hints_unique !== '' && empty( $json_hints ) ) {
-            wp_send_json_success( array( 'valid_starts' => array(), 'valid_ends' => array() ) );
+            $is_simple_synth = (bool) preg_match( '/^simple\d*_/i', $hints_unique );
+            if ( $is_simple_synth ) {
+                $hints_unique = '';
+                $json_hints   = $json;
+            } else {
+                wp_send_json_success( array( 'valid_starts' => array(), 'valid_ends' => array() ) );
+            }
         }
 
         $booked_by_unique = $this->picky_booked_intervals_by_unique_for_date( $date, $options, $dur_h, $layout_id );
@@ -1619,10 +1655,15 @@ class Frontend
         }
         // Multi-select: every chosen table must be free for the full window.
         // Single / "any table": keep legacy any-free behavior when no unique filter.
-        $require_all = ( $hints_unique !== '' && count( $json_hints ) > 1 );
-        $slot_ok     = function( $s, $e ) use ( $require_all, $json_hints, $booked_by_unique, $options, $booking_mode, $before_h, $after_h, $req_people, $date ) {
+        // Empty layout (Simple with no map items): work hours + duration only.
+        $no_map_items = empty( $json_hints );
+        $require_all  = ( $hints_unique !== '' && count( $json_hints ) > 1 );
+        $slot_ok      = function( $s, $e ) use ( $require_all, $no_map_items, $json_hints, $booked_by_unique, $options, $booking_mode, $before_h, $after_h, $req_people, $date ) {
             if ( ! $this->picky_interval_within_work_windows( $date, $options, $s, $e ) ) {
                 return false;
+            }
+            if ( $no_map_items ) {
+                return true;
             }
             if ( $require_all ) {
                 return $this->picky_all_hinted_tables_available_for_window( $json_hints, $booked_by_unique, $s, $e, $options, $booking_mode, $before_h, $after_h, $req_people );
@@ -1791,6 +1832,23 @@ class Frontend
                 }
             }
         }
+        $icon = isset( $svc['icon'] ) ? \Picky\Booking_Icons::sanitize( (string) $svc['icon'] ) : '';
+        $visual = isset( $svc['visual'] ) ? sanitize_key( (string) $svc['visual'] ) : '';
+        $image_id = isset( $svc['image_id'] ) ? absint( $svc['image_id'] ) : 0;
+        $image_url = isset( $svc['image_url'] ) ? esc_url_raw( (string) $svc['image_url'] ) : '';
+        $image_ratio = isset( $svc['image_ratio'] ) ? sanitize_key( (string) $svc['image_ratio'] ) : 'square';
+        if ( ! in_array( $image_ratio, array( 'square', 'portrait', 'landscape' ), true ) ) {
+            $image_ratio = 'square';
+        }
+        if ( $visual === 'image' && $image_url !== '' ) {
+            $icon = '';
+        } else {
+            $visual      = 'icon';
+            $image_id    = 0;
+            $image_url   = '';
+            $image_ratio = 'square';
+        }
+
         return array(
             'sid'         => isset( $svc['sid'] ) ? (string) $svc['sid'] : '',
             'name'        => isset( $svc['name'] ) ? (string) $svc['name'] : '',
@@ -1798,6 +1856,11 @@ class Frontend
             'duration'    => isset( $svc['duration'] ) ? max( 0, (int) $svc['duration'] ) : 0,
             'description' => isset( $svc['description'] ) ? (string) $svc['description'] : '',
             'parent_sids' => $parent_sids,
+            'icon'        => $icon,
+            'visual'      => $visual,
+            'image_id'    => $image_id,
+            'image_url'   => $image_url,
+            'image_ratio' => $image_ratio,
         );
     }
 
@@ -1903,17 +1966,15 @@ class Frontend
      * @return array<int, array<string,mixed>>
      */
     private function picky_parse_posted_items() {
-        if ( isset( $_POST['picky_nonce'] ) ) {
-            if ( ! is_scalar( $_POST['picky_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['picky_nonce'] ) ), 'picky_send_book_action' ) ) {
-                return array();
-            }
-        } elseif ( ! isset( $_POST['_wpnonce'] ) || ! is_scalar( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['_wpnonce'] ) ), 'send_book' ) ) {
+        if ( ! $this->picky_booking_request_nonce_ok() ) {
             return array();
         }
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce verified by picky_booking_request_nonce_ok() above.
         if ( ! isset( $_POST['picky_items'] ) || ! is_array( $_POST['picky_items'] ) ) {
             return array();
         }
         $posted_items = map_deep( wp_unslash( $_POST['picky_items'] ), 'sanitize_text_field' );
+        // phpcs:enable WordPress.Security.NonceVerification.Missing
         $items = array();
         foreach ( $posted_items as $raw_item ) {
             if ( ! is_array( $raw_item ) ) {
@@ -2597,7 +2658,7 @@ class Frontend
         // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query, WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- Booking availability queries require meta lookups / exclude
         // phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce verified at start of send_book; remaining POST reads sanitized
         // 1. Nonce Verification (CSRF Protection) - CRITICAL for CodeCanyon approval
-        if ( ! isset( $_POST['picky_nonce'] ) || ! is_scalar( $_POST['picky_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['picky_nonce'] ) ), 'picky_send_book_action' ) ) {
+        if ( ! $this->picky_booking_request_nonce_ok() ) {
             wp_send_json(
                 array(
                     'echo'  => 0,
@@ -3165,17 +3226,15 @@ class Frontend
                 }
 
                 $echo = array(
-                    'echo'         => $post_id,
-                    'test'         => $sms_content,
-                    'nexmo'        => $sms_message,
+                    'echo'             => $post_id,
                     'payment_required' => $payment_required ? 1 : 0,
                     'payment_provider' => $payment_required ? $this->picky_payment_provider( $options ) : 'none',
-                    'redirect_url' => $payment_required ? $payment_result['redirect_url'] : '',
-                    'order_id'     => $payment_required ? absint( $payment_result['order_id'] ) : 0,
-                    'mail_warning' => ( ! $admin_mail_sent || ! $customer_mail_sent )
+                    'redirect_url'     => $payment_required ? $payment_result['redirect_url'] : '',
+                    'order_id'         => $payment_required ? absint( $payment_result['order_id'] ) : 0,
+                    'mail_warning'     => ( ! $admin_mail_sent || ! $customer_mail_sent )
                         ? esc_html__( 'Reservation was saved, but email delivery failed. Please check WordPress mail/SMTP settings.', 'pickybooking' )
                         : '',
-                    'time_limit_until' => ! empty( $booking_time_limit_until ) ? esc_html( $booking_time_limit_until ) : '',
+                    'time_limit_until' => esc_html( ! empty( $booking_time_limit_until ) ? (string) $booking_time_limit_until : '' ),
                 );
             } else {
                 $echo = array( 'echo' => 0, 'error' => esc_html__( 'Not added', 'pickybooking' ) );

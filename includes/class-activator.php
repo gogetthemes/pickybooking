@@ -44,6 +44,54 @@ class Activator
         foreach ( $default_options as $key => $value ) {
             $new_options[ $key ] = isset( $current[ $key ] ) ? $current[ $key ] : $value;
         }
+        if ( isset( $new_options['shortcode_layout'] ) && class_exists( __NAMESPACE__ . '\\Edition' ) ) {
+            $new_options['shortcode_layout'] = Edition::clamp_wizard_layout( (string) $new_options['shortcode_layout'] );
+        }
         update_option( $option_name, $new_options );
+
+        self::migrate_lite_wizard_layouts();
+    }
+
+    /**
+     * Lite: collapse Smart / Smart Map settings and layout overrides to Classic.
+     *
+     * @return void
+     */
+    public static function migrate_lite_wizard_layouts() {
+        if ( ! class_exists( __NAMESPACE__ . '\\Edition' ) || ! Edition::is_lite() ) {
+            return;
+        }
+        if ( get_option( 'picky_lite_wizard_migrated', '' ) === '1' ) {
+            return;
+        }
+
+        $opts = get_option( Info::OPTION_NAME );
+        if ( is_array( $opts ) && isset( $opts['shortcode_layout'] ) ) {
+            $clamped = Edition::clamp_wizard_layout( (string) $opts['shortcode_layout'] );
+            if ( (string) $opts['shortcode_layout'] !== $clamped ) {
+                $opts['shortcode_layout'] = $clamped;
+                update_option( Info::OPTION_NAME, $opts );
+            }
+        }
+
+        $layouts = get_posts(
+            array(
+                'post_type'              => 'picky_layout',
+                'post_status'            => 'any',
+                'posts_per_page'         => -1,
+                'fields'                 => 'ids',
+                'no_found_rows'          => true,
+                'update_post_meta_cache' => false,
+                'update_post_term_cache' => false,
+            )
+        );
+        foreach ( $layouts as $lid ) {
+            $raw = (string) get_post_meta( (int) $lid, '_picky_layout_shortcode_layout', true );
+            if ( $raw === '2' || $raw === '4' ) {
+                update_post_meta( (int) $lid, '_picky_layout_shortcode_layout', Edition::clamp_wizard_layout( $raw ) );
+            }
+        }
+
+        update_option( 'picky_lite_wizard_migrated', '1', false );
     }
 }

@@ -29,7 +29,23 @@
     });
   };
 
-  var clipboard = new ClipboardJS('.picky-instructions-shortcode-btn, .picky-shortcode-badge');
+  var clipboard = null;
+  try {
+    if (typeof ClipboardJS === 'function') {
+      clipboard = new ClipboardJS('.picky-instructions-shortcode-btn, .picky-shortcode-badge');
+    }
+  } catch (clipErr) {
+    clipboard = null;
+  }
+
+  // Confirm dialogs without inline onclick (keeps markup wp_kses-safe).
+  $(document).on('click', 'a[data-picky-confirm], button[data-picky-confirm]', function (e) {
+    var msg = $(this).attr('data-picky-confirm');
+    if (msg && !window.confirm(msg)) {
+      e.preventDefault();
+      return false;
+    }
+  });
   
   // State variables for dragging and collision detection
   var coordinates = {};
@@ -318,7 +334,9 @@
       '9': 'is-tab-layouts',
       '10': 'is-tab-import-export',
       '11': 'is-tab-documentation',
-      '12': 'is-tab-integrations'
+      '12': 'is-tab-integrations',
+      '13': 'is-tab-orders',
+      '14': 'is-tab-setup'
     };
     var t = String(tab || '');
     return map[t] || 'is-tab-unknown';
@@ -364,7 +382,14 @@
 
   /* Delegated: header nav may be re-rendered or not present on first script pass. */
   $(document).on('click', '.picky-settings-tabs-header-btn', function(e){
-    var tab = $(this).attr('data-tab');
+    var $btn = $(this);
+    var tab = $btn.attr('data-tab');
+    var href = ($btn.attr('href') || '').toString();
+
+    // External / non-tab links (e.g. Go Pro) must navigate normally.
+    if (!tab || $btn.hasClass('picky-settings-tabs-header-btn--pro') || $btn.attr('target') === '_blank' || /^https?:\/\//i.test(href)) {
+      return;
+    }
 
     // Always open the main layouts page (the list) if "Layouts" (Tab 9) is clicked while 
     // a specific layout builder is currently rendered/active in the DOM.
@@ -534,7 +559,7 @@
       }
     } catch(e){}
 
-    var allowedTabs = { '1':1,'2':1,'3':1,'4':1,'5':1,'6':1,'7':1,'8':1,'9':1,'10':1,'11':1,'12':1 };
+    var allowedTabs = { '1':1,'2':1,'3':1,'4':1,'5':1,'6':1,'7':1,'8':1,'9':1,'10':1,'11':1,'12':1,'13':1,'14':1 };
     if(!tab || !allowedTabs[tab]){
       tab = null;
     }
@@ -853,12 +878,20 @@
       }
     }
     if(left < 0){ left = 0; }
+    /*
+     * Playground / odd viewports can report a huge menu right edge (menu wrap
+     * stretched). Cap so the fixed rail + content padding cannot push the UI
+     * entirely off-screen (blank white admin canvas).
+     */
+    var maxMenuEdge = 240;
+    if(left > maxMenuEdge){ left = document.body.classList.contains('folded') ? 36 : 160; }
     headerEl.style.left = left + 'px';
 
     var sr = surfaceEl.getBoundingClientRect();
     /* Document X of surface left ≈ viewport left + scrollX; rail left is viewport-fixed. */
     var offset = Math.round(left - (sr.left + scrollX));
     if(offset < 0){ offset = 0; }
+    if(offset > maxMenuEdge){ offset = 0; }
 
     rootEl.style.setProperty('--picky-rail-pad-offset', offset + 'px');
     surfaceEl.style.removeProperty('padding-left');
@@ -2606,7 +2639,7 @@
       }
     });
 
-    $(".picky-element-sidebar-wrap").draggable({
+    $(".picky-element-sidebar-wrap").not('[data-picky-pro-locked="1"]').draggable({
       helper: function() {
         var $wrap = $(this);
         if(pickySidebarWrapUsesFullElementDragHelper($wrap)){
@@ -2655,6 +2688,21 @@
         $(this).closest('.picky-element-sidebar-wrap').css('z-index', '2');
       },
     }); 
+
+    $('.picky-element-sidebar-wrap[data-picky-pro-locked="1"]').on('click.pickyProLocked', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if(window.pickyLayoutData && pickyLayoutData.pro_url){
+        window.open(pickyLayoutData.pro_url, '_blank', 'noopener,noreferrer');
+      }
+    });
+
+    // Wizard Pro tiles + locked integration cards: hard-block interaction.
+    $(document).on('click.pickyProLockedUi keydown.pickyProLockedUi', '.picky-settings-radio-option.is-pro-locked, .picky-int-card--pro-locked', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    });
 
     $('.picky-tables-wrap').removeClass('picky-loading');
 
@@ -7548,6 +7596,15 @@
     $(document).on('change', 'input[name="picky_layout_event_mode"]', pickySyncLayoutEventScheduleFields);
     pickySyncLayoutEventScheduleFields();
 
+    function pickySyncSimpleShowServicesOption() {
+      var $wrap = $('.picky-layout-simple-show-services-wrap');
+      if (!$wrap.length) { return; }
+      var wizard = String($('#picky_layout_shortcode_layout').val() || '');
+      $wrap.toggle(wizard === '3' || wizard === '');
+    }
+    $(document).on('change', '#picky_layout_shortcode_layout', pickySyncSimpleShowServicesOption);
+    pickySyncSimpleShowServicesOption();
+
     /* Drop loading shim immediately so ::after / white layers cannot block interaction if init throws. */
     $('.picky-tables-wrap').removeClass('picky-loading');
     try { restoreSettingsControls(); } catch (ex) {}
@@ -7776,7 +7833,9 @@
         if (isAddon) { $tr.addClass('picky-lib-row-addon'); }
 
         var nameCell = pickyEscHtml(s.name || '');
-        if (s.icon) {
+        if (String(s.visual || '') === 'image' && s.image_url) {
+          nameCell = '<span class="picky-lib-row-image picky-lib-row-image--' + pickyEscAttr(s.image_ratio || 'square') + '"><img src="' + pickyEscAttr(s.image_url) + '" alt=""></span>' + nameCell;
+        } else if (s.icon) {
           nameCell = '<span class="picky-lib-row-icon">' + pickyBiconSvg(s.icon) + '</span>' + nameCell;
         }
         if (isAddon) {
@@ -7906,6 +7965,26 @@
       cleanParents.push(pid);
     }
 
+    var visual = String(data.visual || 'icon').trim() === 'image' ? 'image' : 'icon';
+    var imageId = parseInt(data.image_id, 10) || 0;
+    var imageUrl = String(data.image_url || '').trim();
+    var imageRatio = String(data.image_ratio || 'square').trim();
+    if (['square', 'portrait', 'landscape'].indexOf(imageRatio) < 0) { imageRatio = 'square'; }
+    var icon = String(data.icon || '').trim();
+    var payload = (typeof pickyLayoutData !== 'undefined' && pickyLayoutData.bookingIcons) ? pickyLayoutData.bookingIcons : null;
+    if (!payload || !payload.icons || !payload.icons[icon]) { icon = ''; }
+
+    // Mutually exclusive visual modes.
+    if (visual === 'image') {
+      icon = '';
+      if (!imageUrl) { visual = 'icon'; imageId = 0; imageRatio = 'square'; }
+    } else {
+      visual = 'icon';
+      imageId = 0;
+      imageUrl = '';
+      imageRatio = 'square';
+    }
+
     var entry = {
       sid: sid,
       name: String(data.name || '').trim(),
@@ -7913,11 +7992,13 @@
       duration: parseInt(data.duration, 10) || 30,
       description: String(data.description || '').substring(0, 200),
       parent_sids: cleanParents,
-      icon: String(data.icon || '').trim()
+      icon: icon,
+      visual: visual,
+      image_id: imageId,
+      image_url: imageUrl,
+      image_ratio: imageRatio
     };
     if (!entry.name) { return false; }
-    var payload = (typeof pickyLayoutData !== 'undefined' && pickyLayoutData.bookingIcons) ? pickyLayoutData.bookingIcons : null;
-    if (!payload || !payload.icons || !payload.icons[entry.icon]) { entry.icon = ''; }
 
     // Anti-promotion-of-parent: if we're saving a service that currently has
     // ANY other service pointing at it as a parent, we cannot turn it into an
@@ -7947,6 +8028,52 @@
     return true;
   }
 
+  function pickyLibSetVisualMode($editor, visual) {
+    visual = String(visual || 'icon') === 'image' ? 'image' : 'icon';
+    $editor.find('.picky-lib-edit-visual').val(visual);
+    $editor.find('.picky-lib-edit-visual-btn').each(function(){
+      $(this).toggleClass('is-active', String($(this).attr('data-visual') || '') === visual);
+    });
+    $editor.find('.picky-lib-edit-visual-icon').toggle(visual === 'icon');
+    $editor.find('.picky-lib-edit-visual-image').toggle(visual === 'image');
+    if (visual === 'icon') {
+      // Switching to icon clears image fields so both cannot be saved.
+      pickyLibSetImageFields($editor, 0, '');
+    } else {
+      pickyBiconSetPickerValue($editor.find('[data-picky-bicon-picker]'), '');
+    }
+  }
+
+  function pickyLibSetImageFields($editor, id, url) {
+    id = parseInt(id, 10) || 0;
+    url = String(url || '').trim();
+    $editor.find('.picky-lib-edit-image-id').val(id || '');
+    $editor.find('.picky-lib-edit-image-url').val(url);
+    var $img = $editor.find('.picky-lib-edit-image-preview');
+    var $ph = $editor.find('.picky-lib-edit-image-placeholder');
+    var $clear = $editor.find('.picky-lib-edit-image-clear');
+    if (url) {
+      $img.attr('src', url).show();
+      $ph.hide();
+      $clear.show();
+    } else {
+      $img.attr('src', '').hide();
+      $ph.show();
+      $clear.hide();
+    }
+  }
+
+  function pickyScrollToServicesLibraryEditor($editor) {
+    if (!$editor || !$editor.length) { return; }
+    $editor.show();
+    window.setTimeout(function() {
+      var el = $editor.get(0);
+      if (el && typeof el.scrollIntoView === 'function') {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 40);
+  }
+
   // Library UI events
   $(document).on('click', '.picky-services-library-add-btn', function(){
     var $editor = $('.picky-services-library-editor');
@@ -7957,12 +8084,48 @@
     $editor.find('.picky-lib-edit-duration').val(30);
     $editor.find('.picky-lib-edit-description').val('');
     pickyBiconSetPickerValue($editor.find('[data-picky-bicon-picker]'), '');
+    pickyLibSetImageFields($editor, 0, '');
+    $editor.find('.picky-lib-edit-image-ratio').val('square');
+    pickyLibSetVisualMode($editor, 'icon');
     pickyRenderLibEditParents($editor, newSid, []);
-    $editor.show();
+    pickyScrollToServicesLibraryEditor($editor);
   });
 
   $(document).on('click', '.picky-lib-edit-cancel', function(){
     $(this).closest('.picky-services-library-editor').hide();
+  });
+
+  $(document).on('click', '.picky-lib-edit-visual-btn', function(e){
+    e.preventDefault();
+    var $editor = $(this).closest('.picky-services-library-editor');
+    pickyLibSetVisualMode($editor, $(this).attr('data-visual') || 'icon');
+  });
+
+  $(document).on('click', '.picky-lib-edit-image-upload', function(e){
+    e.preventDefault();
+    var $editor = $(this).closest('.picky-services-library-editor');
+    if (typeof wp === 'undefined' || !wp.media) { return; }
+    var frame = wp.media({
+      title: 'Select service image',
+      button: { text: 'Use image' },
+      multiple: false,
+      library: { type: 'image' }
+    });
+    frame.on('select', function(){
+      var attachment = frame.state().get('selection').first().toJSON();
+      var url = (attachment.sizes && attachment.sizes.medium && attachment.sizes.medium.url)
+        ? attachment.sizes.medium.url
+        : (attachment.url || '');
+      pickyLibSetImageFields($editor, attachment.id || 0, url);
+      pickyLibSetVisualMode($editor, 'image');
+    });
+    frame.open();
+  });
+
+  $(document).on('click', '.picky-lib-edit-image-clear', function(e){
+    e.preventDefault();
+    var $editor = $(this).closest('.picky-services-library-editor');
+    pickyLibSetImageFields($editor, 0, '');
   });
 
   $(document).on('click', '.picky-lib-edit-save', function(){
@@ -7974,7 +8137,11 @@
       duration: $editor.find('.picky-lib-edit-duration').val(),
       description: $editor.find('.picky-lib-edit-description').val(),
       parent_sids: pickyReadLibEditParents($editor),
-      icon: $editor.find('.picky-lib-edit-icon').val() || ''
+      visual: $editor.find('.picky-lib-edit-visual').val() || 'icon',
+      icon: $editor.find('.picky-lib-edit-icon').val() || '',
+      image_id: $editor.find('.picky-lib-edit-image-id').val() || 0,
+      image_url: $editor.find('.picky-lib-edit-image-url').val() || '',
+      image_ratio: $editor.find('.picky-lib-edit-image-ratio').val() || 'square'
     });
     if (ok) { $editor.hide(); }
   });
@@ -7989,9 +8156,19 @@
     $editor.find('.picky-lib-edit-price').val(s.price);
     $editor.find('.picky-lib-edit-duration').val(s.duration);
     $editor.find('.picky-lib-edit-description').val(s.description || '');
-    pickyBiconSetPickerValue($editor.find('[data-picky-bicon-picker]'), s.icon || '');
+    var visual = (String(s.visual || '') === 'image' && s.image_url) ? 'image' : 'icon';
+    pickyBiconSetPickerValue($editor.find('[data-picky-bicon-picker]'), visual === 'icon' ? (s.icon || '') : '');
+    pickyLibSetImageFields($editor, s.image_id || 0, s.image_url || '');
+    $editor.find('.picky-lib-edit-image-ratio').val(s.image_ratio || 'square');
+    // Set mode without clearing the fields we just loaded.
+    $editor.find('.picky-lib-edit-visual').val(visual);
+    $editor.find('.picky-lib-edit-visual-btn').each(function(){
+      $(this).toggleClass('is-active', String($(this).attr('data-visual') || '') === visual);
+    });
+    $editor.find('.picky-lib-edit-visual-icon').toggle(visual === 'icon');
+    $editor.find('.picky-lib-edit-visual-image').toggle(visual === 'image');
     pickyRenderLibEditParents($editor, s.sid, pickyLibParentSids(s));
-    $editor.show();
+    pickyScrollToServicesLibraryEditor($editor);
   });
 
   $(document).on('click', '.picky-lib-row-delete', function(){
@@ -9383,6 +9560,105 @@
       $result.text(pickyAiMsg('error')).css('color', '#d63638');
     });
   });
+
+  /* Layout presets: All / Free / Pro filter. */
+  function pickyApplyPresetTierFilter(tier){
+    tier = String(tier || 'all');
+    if(tier !== 'free' && tier !== 'pro'){ tier = 'all'; }
+    var $section = $('#picky-layout-presets');
+    if(!$section.length){ return; }
+    var $cards = $section.find('.picky-layout-library__grid--presets .picky-layout-library__card[data-tier]');
+    var visible = 0;
+    $cards.each(function(){
+      var t = String($(this).attr('data-tier') || '');
+      var show = (tier === 'all') || (t === tier);
+      $(this).toggle(show);
+      if(show){ visible++; }
+    });
+    $section.find('.picky-layout-library__tier-empty').prop('hidden', visible > 0);
+    $section.find('.picky-preset-tier-switch__btn').each(function(){
+      var active = String($(this).attr('data-preset-tier') || '') === tier;
+      $(this).toggleClass('is-active', active).attr('aria-selected', active ? 'true' : 'false');
+    });
+    try { localStorage.setItem('picky_preset_tier_filter', tier); } catch(e){}
+  }
+  $(document).on('click', '.picky-preset-tier-switch__btn', function(e){
+    e.preventDefault();
+    pickyApplyPresetTierFilter($(this).attr('data-preset-tier'));
+  });
+  $(function(){
+    if(!$('#picky-layout-presets').length){ return; }
+    var saved = 'all';
+    try { saved = localStorage.getItem('picky_preset_tier_filter') || 'all'; } catch(e){}
+    pickyApplyPresetTierFilter(saved);
+  });
+
+  /* Setup checklist — mark soft steps done (Freemius-style). */
+  $(document).on('click', '[data-picky-setup-mark]', function(e){
+    e.preventDefault();
+    var $btn = $(this);
+    if($btn.data('busy')){ return; }
+    var step = String($btn.attr('data-picky-setup-mark') || '');
+    if(!step){ return; }
+    var $root = $btn.closest('[data-picky-setup]');
+    var nonce = ($root.attr('data-nonce') || (typeof pickyLayoutData !== 'undefined' ? pickyLayoutData.nonce_setup : '') || '').toString();
+    var url = (typeof pickyLayoutData !== 'undefined' && pickyLayoutData.ajax_url) ? pickyLayoutData.ajax_url : (typeof ajaxurl !== 'undefined' ? ajaxurl : '');
+    if(!url || !nonce){ return; }
+    $btn.data('busy', 1).prop('disabled', true);
+    $.post(url, {
+      action: 'picky_setup_mark_done',
+      nonce: nonce,
+      step: step
+    }).done(function(res){
+      if(!res || !res.success){
+        $btn.data('busy', 0).prop('disabled', false);
+        return;
+      }
+      var $step = $btn.closest('.picky-setup__step');
+      $step.removeClass('is-pending').addClass('is-done');
+      $step.find('.picky-setup__status').html('<span class="picky-setup__check">&#10003;</span>');
+      $btn.remove();
+      var done = res.data && typeof res.data.done !== 'undefined' ? String(res.data.done) : '';
+      var pending = res.data && typeof res.data.pending !== 'undefined' ? String(res.data.pending) : '';
+      if(done !== ''){ $('[data-picky-setup-done]').text(done); }
+      if(pending !== ''){
+        $('[data-picky-setup-pending]').text(pending);
+        var $badge = $('.picky-settings-tabs-header-btn[data-tab="14"] .picky-settings-nav-badge');
+        if(parseInt(pending, 10) > 0){
+          if($badge.length){ $badge.text(pending); }
+          else {
+            $('.picky-settings-tabs-header-btn[data-tab="14"]').append(
+              $('<span class="picky-settings-nav-badge"/>').text(pending)
+            );
+          }
+        } else {
+          $badge.remove();
+        }
+      }
+    }).fail(function(){
+      $btn.data('busy', 0).prop('disabled', false);
+    });
+  });
+
+  /* Payments tab — show only the selected provider card (or Pro teaser when none / Lite). */
+  function pickySyncPayProviderCards(){
+    var $grid = $('#picky-pay-provider-grid');
+    if(!$grid.length){ return; }
+    var $checked = $('#picky-settings-tab-5 input[name*="[payment_provider]"]:checked:not(:disabled)');
+    var provider = $checked.length ? String($checked.val() || 'none') : 'none';
+    if(!provider){ provider = 'none'; }
+    var showTeaser = (provider === 'none');
+    $grid.find('[data-picky-pay-teaser]').toggle(showTeaser);
+    $grid.find('article[data-picky-pay-provider]').each(function(){
+      var cardProvider = String($(this).attr('data-picky-pay-provider') || '');
+      // PayPal stays visible as a "soon" teaser only when Stripe/Woo is selected? Plan: only matching card.
+      // When none — hide all provider cards (Lite teaser covers upsell).
+      var show = (!showTeaser && cardProvider === provider);
+      $(this).toggle(show);
+    });
+  }
+  $(document).on('change', '#picky-settings-tab-5 input[name*="[payment_provider]"]', pickySyncPayProviderCards);
+  $(function(){ pickySyncPayProviderCards(); });
 
 
 })(jQuery);

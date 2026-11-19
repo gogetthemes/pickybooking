@@ -13,13 +13,88 @@
     "show_item_fill": "",
     "show_booked_avatars": "",
     "shortcode_layout": "",
-    "multi_select": "0",
+    "multi_select": "1",
     "event_mode": "",
     "event_date": "",
     "event_time": "",
     "event_show_label": "",
     "booking_item_icon": "",
-    "services_library": [],
+    "services_library": [
+        {
+            "sid": "svc_player_spot",
+            "name": "Player Spot",
+            "price": 20,
+            "duration": 90,
+            "description": "Book a player position for the match.",
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/football-images/svc_player_spot.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_captain_spot",
+            "name": "Captain Spot",
+            "price": 30,
+            "duration": 90,
+            "description": "Captain position with kit priority.",
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/football-images/svc_captain_spot.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_addon_kit",
+            "name": "Training Kit",
+            "price": 15,
+            "duration": 1,
+            "description": "Club training kit rental.",
+            "parent_sids": [
+                "svc_player_spot",
+                "svc_captain_spot"
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/football-images/svc_addon_kit.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_addon_photo",
+            "name": "Match Photo Pack",
+            "price": 10,
+            "duration": 1,
+            "description": "Digital photo pack after the match.",
+            "parent_sids": [
+                "svc_player_spot",
+                "svc_captain_spot"
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/football-images/svc_addon_photo.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_addon_drink",
+            "name": "Sports Drink",
+            "price": 4,
+            "duration": 1,
+            "description": "Electrolyte drink at kickoff.",
+            "parent_sids": [
+                "svc_player_spot",
+                "svc_captain_spot"
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/football-images/svc_addon_drink.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        }
+    ],
     "elements": [
         {
             "x": 440,
@@ -922,7 +997,12 @@
             "square_radius": "",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_captain_spot",
+                "svc_addon_kit",
+                "svc_addon_photo",
+                "svc_addon_drink"
+            ]
         },
         {
             "x": 235,
@@ -965,7 +1045,12 @@
             "square_radius": "",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_captain_spot",
+                "svc_addon_kit",
+                "svc_addon_photo",
+                "svc_addon_drink"
+            ]
         },
         {
             "x": 858,
@@ -1008,7 +1093,12 @@
             "square_radius": "",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_player_spot",
+                "svc_addon_kit",
+                "svc_addon_photo",
+                "svc_addon_drink"
+            ]
         },
         {
             "x": 391,
@@ -1051,7 +1141,12 @@
             "square_radius": "",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_player_spot",
+                "svc_addon_kit",
+                "svc_addon_photo",
+                "svc_addon_drink"
+            ]
         },
         {
             "x": 709,
@@ -1094,7 +1189,12 @@
             "square_radius": "",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_player_spot",
+                "svc_addon_kit",
+                "svc_addon_photo",
+                "svc_addon_drink"
+            ]
         },
         {
             "x": 393,
@@ -1137,7 +1237,12 @@
             "square_radius": "",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_player_spot",
+                "svc_addon_kit",
+                "svc_addon_photo",
+                "svc_addon_drink"
+            ]
         },
         {
             "x": 707,
@@ -1180,7 +1285,12 @@
             "square_radius": "",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_player_spot",
+                "svc_addon_kit",
+                "svc_addon_photo",
+                "svc_addon_drink"
+            ]
         },
         {
             "x": 250,
@@ -1223,7 +1333,12 @@
             "square_radius": "",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_player_spot",
+                "svc_addon_kit",
+                "svc_addon_photo",
+                "svc_addon_drink"
+            ]
         },
         {
             "x": 495,
@@ -1395,7 +1510,12 @@
             "square_radius": "",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_player_spot",
+                "svc_addon_kit",
+                "svc_addon_photo",
+                "svc_addon_drink"
+            ]
         },
         {
             "x": 547,
@@ -1438,8 +1558,14 @@
             "square_radius": "",
             "wall_radius": "",
             "padding": "10",
-            "service_ids": []
+            "service_ids": [
+                "svc_player_spot",
+                "svc_addon_kit",
+                "svc_addon_photo",
+                "svc_addon_drink"
+            ]
         }
     ],
-    "source_post_id": 326
+    "source_post_id": 326,
+    "_sample_version": "1.1.0"
 }

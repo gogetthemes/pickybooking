@@ -1,3 +1,4 @@
+/* Lite build: Smart / Smart Map frontend omitted (Pro only). */
 (function ($) {
  'use strict';
 
@@ -54,6 +55,18 @@
   var pickyI18n = (window.pickyAjax && window.pickyAjax.i18n) ? window.pickyAjax.i18n : {};
   var pickyEmDash = (pickyI18n.em_dash !== undefined && String(pickyI18n.em_dash) !== '') ? String(pickyI18n.em_dash) : '\u2014';
   var pickyTablePrefix = (pickyI18n.table_prefix !== undefined) ? String(pickyI18n.table_prefix) : '';
+  var pickyItemLabelSingular = (pickyI18n.item_label !== undefined && String(pickyI18n.item_label) !== '')
+    ? String(pickyI18n.item_label)
+    : 'Table';
+
+  /** Chip text for a selected item, e.g. "Table: S2" from Settings → Singular name. */
+  function pickyItemChipText(displayId, itemLabel) {
+    var singular = pickyItemLabelSingular;
+    if (arguments.length > 1 && itemLabel) {
+      singular = String(itemLabel);
+    }
+    return singular + ': ' + String(displayId == null ? '' : displayId);
+  }
   function pickyUsesBookableSquareRadiusFe($el){
     if(!$el || !$el.length){ return false; }
     var dt = ($el.attr('data-type') || '').toString().trim();
@@ -63,83 +76,7 @@
     if($el.hasClass('type-4') || $el.hasClass('type-circle')){ return false; }
     return true;
   }
-  function pickyShowPaymentReturnNotice(){
-    var params;
-    try {
-      params = new URLSearchParams(window.location.search || '');
-    } catch(e){
-      return;
-    }
-    var payment = (params.get('picky_payment') || '').toLowerCase();
-    if(!payment){ return; }
-    var msg = '';
-    var isSuccess = false;
-    if(payment === 'success'){
-      msg = 'Payment successful. Your booking is confirmed.';
-      isSuccess = true;
-    } else if(payment === 'cancel'){
-      msg = 'Payment was cancelled. Booking is not confirmed.';
-    } else {
-      msg = 'Payment verification failed. Please try again.';
-    }
-    $('.picky-tables-wrap').each(function(){
-      var wrap = $(this);
-      
-      if(isSuccess){
-        // Show the success popup and refresh
-        wrap.find('.picky-form-booking').hide();
-        wrap.find('.picky-selection-tray').hide();
-        
-        var thx = wrap.find('.picky-form-thx');
-        // Update the thank you title or add a message
-        var titleElem = thx.find('.picky-form-thx-title');
-        if(titleElem.length){
-          thx.find('.picky-payment-thx-msg').remove();
-          titleElem.after('<p class="picky-payment-thx-msg" style="color:#16a34a;margin-top:10px;font-weight:bold;text-align:center;">' + msg + '</p>');
-        }
-        
-        // Show overlay if needed
-        if(wrap.hasClass('picky-smart-booking-overlay')){
-          wrap.attr('aria-hidden', 'false');
-          if(!wrap.hasClass('picky-tables-wrap-second')){
-             wrap.find('.picky-form-back').show();
-          }
-          pickySetBookingModalOpen(true);
-        } else if (wrap.find('.picky-smart-booking-overlay').length) {
-          wrap.find('.picky-smart-booking-overlay').attr('aria-hidden', 'false');
-          wrap.find('.picky-form-back').show();
-          pickySetBookingModalOpen(true);
-        }
-        
-        thx.fadeIn(150);
-        
-        // Auto refresh after 6 seconds to update calendar
-        window.pickyPaymentRefreshTimeout = setTimeout(function() {
-          try {
-            var currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.delete('picky_payment');
-            currentUrl.searchParams.delete('picky_booking_id');
-            window.location.href = currentUrl.toString();
-          } catch(e) {
-            window.location.href = window.location.pathname;
-          }
-        }, 6000);
-      } else {
-        // Show error notice
-        wrap.find('.picky-payment-return-notice').remove();
-        var cls = 'picky-payment-return-error';
-        var notice = $('<div class="picky-payment-return-notice '+cls+'" role="status" aria-live="polite"></div>').text(msg);
-        wrap.prepend(notice);
-        notice.hide().fadeIn(150);
-        
-        var firstNotice = $('.picky-payment-return-notice').first();
-        if(firstNotice.length){
-          pickySmoothScrollTo(firstNotice, 20);
-        }
-      }
-    });
-  }
-
+  
   // Map an HH:MM string to "minutes since midnight" for END-of-window times.
   // "00:00" / "24:00" become 1440 so 23:30 → 00:00 stays a valid one-day slot.
   // For start times keep the regular parser — start can never legitimately be 1440.
@@ -159,7 +96,7 @@
     if($(window).width() > 767){
       return;
     }
-    $('.picky-tables-wrap.picky-tables-wrap-default, .picky-tables-wrap.picky-tables-wrap-second').each(function(){
+    $('.picky-tables-wrap.picky-tables-wrap-default').each(function(){
       var $w = $(this);
       var hasCanvasMode = $w.hasClass('picky-mobile-canvas') || $w.hasClass('picky-mobile-dropdown');
       if(hasCanvasMode){
@@ -310,139 +247,16 @@
     pickySmoothScrollTo($target, pad);
   }
 
-  function pickySmartPickHintsClear(wrap){
-    if(!wrap || !wrap.length){ return; }
-    wrap.find('.picky-draggable .picky-element').removeClass('picky-smart-pick-hint picky-smart-pick-hint-animate');
-  }
-
-  function pickySmartAvailabilityNoteSet(wrap, shouldShow){
-    if(!wrap || !wrap.length){ return; }
-    var $note = wrap.find('.picky-smart-availability-note');
-    if(!$note.length){ return; }
-    var canShow = !!shouldShow && wrap.hasClass('picky-smart-table-picker-visible');
-    if(canShow){
-      $note.stop(true, true).fadeIn(120);
-    } else {
-      $note.stop(true, true).hide();
-    }
-  }
-
-  function pickySmartPickHintsApply(wrap){
-    if(!wrap || !wrap.length || !wrap.hasClass('picky-tables-wrap-second')){ return; }
-    pickySmartPickHintsClear(wrap);
-    var dt = wrap.find('#picky_booking_date').val();
-    var tm = wrap.find('#picky_booking_time').val();
-    if(!dt || !tm){
-      pickySmartAvailabilityNoteSet(wrap, false);
-      return;
-    }
-    // Only real bookable tables (same non-bookable set as admin / refreshAvailableTablesSecond).
-    // Walls are skipped in refresh so they never get .disabled — must not pulse here.
-    var hasAvailable = false;
-    wrap.find('.picky-draggable .picky-element').each(function(){
-      var $el = $(this);
-      var t = ($el.attr('data-type') || '').toString();
-      if(t === 'type-wall' || t === 'type-text' || t === 'type-shape' || t === 'type-icon'){ return; }
-      if($el.hasClass('disabled')){ return; }
-      if(!String($el.attr('data-unique') || '').trim()){ return; }
-      hasAvailable = true;
-    });
-    pickySmartAvailabilityNoteSet(wrap, hasAvailable);
-  }
-
-  function pickySmartScrollToTime(wrap){
-    if(!wrap || !wrap.length || !wrap.hasClass('picky-tables-wrap-second')){ return; }
-    // Smart Map keeps date/time in a sticky bottom bar — no scroll needed.
-    if(pickyIsSmartMapLayout(wrap)){ return; }
-    var $t = wrap.find('.picky-wizard-datetime-slots, .picky-input-wrap-time').first();
-    if(!$t.length || !$t.is(':visible')){ return; }
-    var pad = pickyScrollPadWithAdminBar(20);
-    try {
-      var el = $t[0];
-      var r = el.getBoundingClientRect();
-      var vh = window.innerHeight || document.documentElement.clientHeight || 0;
-      var margin = 16;
-      if(r.top >= pad - 10 && r.bottom <= vh - margin){
-        return;
-      }
-    } catch (e) {}
-    pickyScrollToTarget($t, pad);
-  }
-
+  
+  
+  
+  
   /** Match slot grid height to the calendar card beside it (Smart + Classic wizard). */
-  function pickySmartSyncDatetimeHeights(wrap) {
-    if (!wrap || !wrap.length) { return; }
-    if (pickyIsSmartMapLayout(wrap)) { return; }
-    var $dt = wrap.find('.picky-smart-datetime, .picky-classic-datetime').first();
-    if (!$dt.length) { $dt = wrap.find('.picky-wizard .picky-wizard-datetime').first(); }
-    if (!$dt.length) { return; }
-    // Measure the visible calendar card (.picky-datepicker).
-    var $cal = $dt.find('.picky-wizard-datetime-cal .picky-datepicker').first();
-    if (!$cal.length) {
-      $cal = $dt.find('.picky-wizard-datetime-cal > .picky-calendar-left, .picky-wizard-datetime-cal > .picky-input-wrap-datepicker').first();
-    }
-    var $grid = $dt.find('.picky-slot-grid[data-slot-role="start"]').first();
-    if (!$cal.length || !$grid.length || !$grid.is(':visible')) { return; }
-    if (window.matchMedia && window.matchMedia('(max-width: 767px)').matches) {
-      $grid.css({ height: '', 'max-height': '', 'overflow-y': '', 'overflow-x': '' });
-      return;
-    }
-    var h = Math.round($cal.outerHeight() || 0);
-    if (h < 80) { return; }
-    // Exact calendar height — scroll inside the grid when slots overflow.
-    $grid.css({
-      'height': h + 'px',
-      'max-height': h + 'px',
-      'overflow-y': 'auto',
-      'overflow-x': 'hidden'
-    });
-  }
-
-  function pickySmartFocusStartTime(wrap){
-    if(!wrap || !wrap.length){ return; }
-    var $time = wrap.find('#picky_booking_time_fake');
-    if(!$time.length){ return; }
-    if($time.hasClass('picky-smart-time-native')){
-      $time.trigger('focus');
-      return;
-    }
-    // Select2 focus target for accessibility + keyboard open.
-    var $sel2 = $time.next('.select2');
-    if($sel2.length){
-      var $focusEl = $sel2.find('.select2-selection').first();
-      if($focusEl.length){
-        $focusEl.trigger('focus');
-        return;
-      }
-    }
-    $time.trigger('focus');
-  }
-
+  
+  
   /** Smart layout: use native <select> on mobile, Select2 on desktop for attached dropdown look. */
-  function pickyIsSmartLayoutNativeTimeSelect(wrap, $sel){
-    if(!wrap || !wrap.length || !$sel || !$sel.length){ return false; }
-    if(!wrap.hasClass('picky-tables-wrap-second')){ return false; }
-    var id = $sel.attr('id') || '';
-    if(id !== 'picky_booking_time_fake' && id !== 'picky_booking_time_to'){
-      return false;
-    }
-    // Smart Map dock: always native <select> — Select2 caret positioning is unreliable in the fixed bar.
-    if(pickyIsSmartMapLayout(wrap)){
-      return true;
-    }
-    var isMobileViewport = false;
-    try {
-      isMobileViewport = window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
-    } catch(e){}
-    // Important: wrapper can keep "picky-mobile-*" classes from settings even on desktop.
-    // Native select is desired only on real mobile viewport; desktop must use Select2.
-    return !!isMobileViewport;
-  }
-
-  function pickyIsSmartMapLayout(wrap){
-    return !!(wrap && wrap.length && wrap.hasClass('picky-tables-wrap-smart-map'));
-  }
-
+  
+  
   function pickyIsOnceEvent(wrap){
     if(!wrap || !wrap.length){ return false; }
     if(String(wrap.attr('data-event-mode') || '') !== 'once'){ return false; }
@@ -452,94 +266,11 @@
   }
 
   /** One-time event: lock date/time from layout meta and skip the calendar. */
-  function pickyApplyOnceEvent(wrap){
-    if(!pickyIsOnceEvent(wrap)){ return false; }
-    var dt = String(wrap.attr('data-event-date') || '').trim();
-    var tm = String(wrap.attr('data-event-time') || '').trim();
-    wrap.addClass('picky-event-once picky-smart-table-picker-visible');
-    wrap.find('#picky_booking_date').val(dt);
-    wrap.find('.picky-smart-map-date-input').val(dt);
-    wrap.find('input#picky_booking_time').val(tm);
-    var $fake = wrap.find('select#picky_booking_time_fake, select#picky_booking_time');
-    if($fake.length){
-      if(typeof pickyEnsureStartTimeOption === 'function'){
-        pickyEnsureStartTimeOption(wrap, $fake.first(), tm);
-      }
-      $fake.val(tm);
-    }
-    if(typeof pickyLockSmartBookingTime === 'function'){
-      pickyLockSmartBookingTime(wrap, tm);
-    }
-    wrap.find('.picky-chip-date').text(dt);
-    wrap.find('.picky-chip-time').text(tm);
-    wrap.find('.picky-booking-datetime-chip').addClass('picky-chip-visible');
-    return true;
-  }
-
+  
   /** Smart Map: sticky booking bar that stays in view while scrolling, clamped to the canvas. */
-  function pickyInitSmartMapDock(wrap){
-    if(!pickyIsSmartMapLayout(wrap)){ return; }
-    var $rel = wrap.find('> .picky-relative').first();
-    if(!$rel.length){ return; }
-    var $bar = $rel.find('.picky-smart-map-bar-wrap').first();
-    if(!$bar.length){ return; }
-
-    var $track = $rel.children('.picky-smart-map-sticky-track').first();
-    if(!$track.length){
-      $track = $rel.find('.picky-smart-map-sticky-track').first();
-    }
-    if(!$track.length){
-      $track = $('<div class="picky-smart-map-sticky-track" aria-hidden="true"></div>');
-    }
-    if(!$track.parent().is($rel)){
-      $rel.append($track);
-    }
-
-    var $dock = $track.children('.picky-smart-map-dock').first();
-    if(!$dock.length){
-      $dock = $rel.find('.picky-smart-map-dock').first();
-    }
-    if(!$dock.length){
-      $dock = $('<div class="picky-smart-map-dock" aria-label="Booking controls"></div>');
-    }
-    if(!$dock.parent().is($track)){
-      $track.append($dock);
-    }
-    if(!$bar.parent().hasClass('picky-smart-map-dock')){
-      $dock.append($bar);
-    }
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        $dock.addClass('is-entered');
-      });
-    });
-    // Time row is for calendar layouts only; one-time events keep hidden inputs.
-    if(pickyIsOnceEvent(wrap)){
-      wrap.find('.picky-smart-map-times, .picky-smart-map-field-date').css('display', 'none');
-    } else {
-      wrap.find('.picky-smart-map-times').css('display', 'flex');
-    }
-    wrap.find('#picky_booking_time_fake, #picky_booking_time_to').each(function(){
-      var $sel = $(this);
-      pickyStripSelect2Shell($sel);
-      $sel.addClass('picky-smart-time-native picky-smart-map-select');
-      pickySyncSmartTimeNativeEmptyClass($sel);
-    });
-  }
-
+  
   /** Smart Map: enable Pay & Book only when date + time + ≥1 table are set. */
-  function pickySyncSmartMapBookButton(wrap){
-    if(!pickyIsSmartMapLayout(wrap)){ return; }
-    var $btn = wrap.find('.picky-smart-map-actions .picky-selection-tray-book-btn').first();
-    if(!$btn.length){ return; }
-    var hasDate = !!(wrap.find('#picky_booking_date').val() || wrap.find('.picky-smart-map-date-input').val());
-    var hasTime = !!(pickyGetSmartBookingTime(wrap) || wrap.find('#picky_booking_time_fake').val());
-    var items = pickyGetSelectedItems(wrap);
-    var ready = hasDate && hasTime && items.length > 0;
-    $btn.prop('disabled', !ready).attr('aria-disabled', ready ? 'false' : 'true');
-    wrap.find('.picky-smart-map-actions').toggleClass('is-ready', ready).toggleClass('has-selection', items.length > 0);
-  }
-
+  
   function pickyStripSelect2Shell($sel){
     if(!$sel || !$sel.length){ return; }
     try{
@@ -565,7 +296,7 @@
     var isTimeSelect = sid === 'picky_booking_time_fake' || sid === 'picky_booking_time' || sid === 'picky_booking_time_to';
     var $wrap = $sel.closest('.picky-tables-wrap');
     // Smart Map dock is fixed — attach Select2 to body so the menu isn't clipped.
-    if($wrap.hasClass('picky-tables-wrap-smart-map') && isTimeSelect){
+    if($wrap.hasClass("picky-tables-wrap-smart-map--omitted") && isTimeSelect){
       opts.dropdownParent = $(document.body);
       opts.allowClear = false;
       return opts;
@@ -582,7 +313,7 @@
   // Tag Smart Map time dropdowns (on body) so wizard-like styles apply; open above the dock.
   $(document).on('select2:open', function(e){
     var $sel = $(e.target);
-    if(!$sel.closest('.picky-tables-wrap-smart-map').length){ return; }
+    if(!$sel.closest(".picky-tables-wrap-smart-map--omitted").length){ return; }
     var id = ($sel.attr('id') || '').toString();
     if(id !== 'picky_booking_time_fake' && id !== 'picky_booking_time_to'){ return; }
     setTimeout(function(){
@@ -606,94 +337,13 @@
     }, 0);
   });
 
-  function pickySyncSmartTimeNativeEmptyClass($sel){
-    if(!$sel || !$sel.length || !$sel.hasClass('picky-smart-time-native')){ return; }
-    $sel.toggleClass('picky-time-native-empty', !$sel.val());
-  }
-
+  
   /** After the user picks a time, bring the smart availability hint into view (above the canvas). */
-  function pickySmartScrollToAvailabilityNote(wrap){
-    if(!wrap || !wrap.length || !wrap.hasClass('picky-tables-wrap-second')){ return; }
-    if(!wrap.hasClass('picky-smart-table-picker-visible')){ return; }
-    var $note = wrap.find('.picky-smart-availability-note').first();
-    if(!$note.length){ return; }
-    // ~20px breathing room below the viewport top; add fixed #wpadminbar height when present.
-    var pad = 20;
-    try {
-      var $ab = $('#wpadminbar');
-      if($ab.length && $ab.is(':visible')){
-        var pos = String($ab.css('position') || '').toLowerCase();
-        if(pos === 'fixed' || pos === 'sticky'){
-          pad += Math.round($ab.outerHeight() || 0);
-        }
-      }
-    } catch (e) {}
-    var padFinal = pad;
-    // Wait for note fade (120ms) and AJAX "complete" applyCanvasScale; then 2x rAF
-    // so offset() matches final layout. Do not call applyCanvasScale here — that reflows
-    // right before scroll and fights native smooth scroll.
-    setTimeout(function(){
-      requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-          pickyScrollToTarget($note, padFinal);
-        });
-      });
-    }, 200);
-  }
-
+  
   /** Smart: compact booking meta (table / datetime / max seats) below services. */
-  function pickyClearSmartMobileCanvasTableSummary(wrap){
-    if(!wrap || !wrap.length){ return; }
-    var $meta = wrap.find('.picky-booking-meta-compact');
-    if($meta.length){
-      $meta.hide();
-      $meta.find('.picky-table-summary-id').text('');
-      $meta.find('.picky-table-summary-datetime').text('');
-      $meta.find('.picky-table-summary-max').text('');
-    }
-    pickySetFreePeopleAmount(wrap, null);
-  }
-
-  function pickyGetSmartSelectionDateTimeText(wrap){
-    if(!wrap || !wrap.length){ return ''; }
-    var dt = wrap.find('#picky_booking_date').val() || '';
-    var tm = wrap.find('#picky_booking_time').val() || '';
-    var tmTo = wrap.find('#picky_booking_time_to').val() || '';
-    if(!dt && !tm){ return ''; }
-    if(dt && tm){
-      if(tmTo){ return dt + ' ' + tm + ' - ' + tmTo; }
-      return dt + ' ' + tm;
-    }
-    return dt || tm;
-  }
-
-  function pickySetSmartMobileCanvasTableSummary(wrap, $el){
-    if(!wrap || !wrap.length || !$el || !$el.length){ return; }
-    var $meta = wrap.find('.picky-booking-meta-compact');
-    if(!$meta.length){ return; }
-    var tid = $el.attr('data-id');
-    if(tid === undefined || tid === null || tid === ''){ return; }
-    var prefix = pickyTablePrefix;
-    // Prefer the admin-set custom display ID (mirrors canvas badge + booking
-    // title); fall back to the immutable data-id when no custom value is set.
-    var displayTid = (typeof pickyItemDisplayId === 'function') ? pickyItemDisplayId($el) : tid;
-    $meta.find('.picky-table-summary-id').text(prefix + String(displayTid || tid));
-    var maxS = $el.attr('data-max-seats');
-    var maxStr = '';
-    var m = parseInt(maxS, 10);
-    if(isNaN(m) || maxS === undefined || maxS === ''){
-      maxStr = pickyEmDash;
-    } else if(m <= 0){
-      maxStr = (pickyI18n.unlimited_seats !== undefined && String(pickyI18n.unlimited_seats) !== '') ? String(pickyI18n.unlimited_seats) : pickyEmDash;
-    } else {
-      maxStr = String(m);
-    }
-    var dtText = pickyGetSmartSelectionDateTimeText(wrap);
-    $meta.find('.picky-table-summary-datetime').text(dtText || pickyEmDash);
-    $meta.find('.picky-table-summary-max').text(maxStr);
-    $meta.show();
-  }
-
+  
+  
+  
   function pickySetFreePeopleAmount(wrap, freeSpots){
     if(!wrap || !wrap.length){ return; }
     var $txt = wrap.find('.picky-free-people-amount-text');
@@ -1612,7 +1262,7 @@
             'margin-right': ''
           });
           /* Smart Map: leave room for the absolute dock on the canvas bottom. */
-          var dockPadFull = $wrap.hasClass('picky-tables-wrap-smart-map') ? 84 : 0;
+          var dockPadFull = $wrap.hasClass("picky-tables-wrap-smart-map--omitted") ? 84 : 0;
           if(dockPadFull > 0){
             $wrapInner.css({
               'height': '',
@@ -1627,7 +1277,7 @@
           return;
         }
 
-        var dockPad = $wrap.hasClass('picky-tables-wrap-smart-map') ? 84 : 0;
+        var dockPad = $wrap.hasClass("picky-tables-wrap-smart-map--omitted") ? 84 : 0;
         var wrapH = Math.max(1, Math.ceil(extentH * scale) + 2 + dockPad);
         $draggable.css({
           'transform-origin': '0 0',
@@ -1679,7 +1329,7 @@
           $wrap.find('#picky_booking_time_to').closest('.picky-input-wrap').find('.picky-error').hide();
           reInitForm('', $dp, $wrap);
         }
-      } else if($wrap.hasClass('picky-tables-wrap-second')){
+      } else if($wrap.hasClass("picky-tables-wrap-second--omitted")){
         initFormSecond($dp, $wrap);
         pickyInitSmartMapDock($wrap);
         if(pickyIsSmartMapLayout($wrap)){
@@ -1739,7 +1389,7 @@
             wrap.find('#picky_booking_time_to').closest('.picky-input-wrap').find('.picky-error').hide();
             reInitForm('', $dp, wrap);
           }
-        } else if(wrap.hasClass('picky-tables-wrap-second')){
+        } else if(wrap.hasClass("picky-tables-wrap-second--omitted")){
           if(mobileStateChanged){
             initFormSecond($dp, wrap);
           }
@@ -1895,194 +1545,7 @@
   }
 
   // init datapicker on load for second type layout
-  function initFormSecond(datapicker, wrap){
-    var array_exclude_dates = [];
-    var array_exclude_times = [];
-    var array_exclude_dates_settings = [];
-    var array_exclude_times_settings = [];
-    var plusDate = 30;
-    var isSmartMap = pickyIsSmartMapLayout(wrap);
-    
-    array_exclude_times_settings = pickyParseExcludeAttr(datapicker.attr('data-time'));
-
-    if(datapicker.attr('data-maxdate') && datapicker.attr('data-maxdate').length > 0){
-      plusDate = parseInt(datapicker.attr('data-maxdate'));
-      if(typeof plusDate != 'number' || isNaN(plusDate)){
-        plusDate = 30;
-      }
-    }
-
-    datapicker.datepicker({ 
-      minDate: 0, 
-      maxDate: "+"+plusDate-1,
-      dateFormat: "mm/dd/yy",
-      setDate: false,
-      autoUpdateInput: false,
-      firstDay: 1,
-      showAnim: '',
-      duration: 0,
-      beforeShow: function(input, inst) {
-        if(!isSmartMap){ return; }
-        // Popup calendar is appended to <body>, outside .picky-tables-wrap — tag it for wizard styles.
-        var $dp = inst && inst.dpDiv ? $(inst.dpDiv) : $('#ui-datepicker-div');
-        $dp.addClass('picky-smart-map-datepicker picky-datepicker');
-        $dp.css({ zIndex: 300001, visibility: 'visible', display: 'block', maxWidth: '320px' });
-        setTimeout(function(){
-          $dp.addClass('picky-smart-map-datepicker picky-datepicker');
-          $dp.css({ visibility: 'visible', maxWidth: '320px' });
-          // Anchor above the bottom dock so the popup stays on-screen.
-          var $bar = wrap.find('.picky-smart-map-bar').first();
-          if(!$bar.length){ $bar = wrap.find('.picky-smart-map-dock').first(); }
-          if(!$bar.length || !$bar[0].getBoundingClientRect){ return; }
-          var br = $bar[0].getBoundingClientRect();
-          var dw = $dp.outerWidth() || 300;
-          var dh = $dp.outerHeight() || 300;
-          var left = Math.round(br.left + (br.width - dw) / 2);
-          left = Math.max(12, Math.min(left, window.innerWidth - dw - 12));
-          var top = Math.round(br.top - dh - 12);
-          if(top < 12){ top = Math.min(window.innerHeight - dh - 12, Math.round(br.bottom + 12)); }
-          $dp.css({ position: 'fixed', left: left + 'px', top: top + 'px', right: 'auto' });
-        }, 0);
-      },
-      onClose: function() {
-        if(!isSmartMap){ return; }
-        // Keep .picky-smart-map-datepicker forever after first open — removing it while
-        // jQuery UI still has a large computed width caused a one-frame “giant calendar” flash.
-        var $dp = $('#ui-datepicker-div');
-        $dp.addClass('picky-smart-map-datepicker picky-datepicker');
-        $dp.hide().css({
-          display: 'none',
-          visibility: 'hidden',
-          top: '-9999px',
-          left: '-9999px',
-          width: '',
-          maxWidth: '320px'
-        });
-      },
-      onSelect: function(dt) {
-        if(isSmartMap){
-          // Close + hide before any layout work so no unstyled redraw can flash.
-          try { datapicker.datepicker('hide'); } catch (eHide) {}
-          var $dpHide = $('#ui-datepicker-div');
-          $dpHide.addClass('picky-smart-map-datepicker picky-datepicker');
-          $dpHide.hide().css({ display: 'none', visibility: 'hidden', top: '-9999px', left: '-9999px' });
-        }
-        pickyClearSmartMobileCanvasTableSummary(wrap);
-        pickySmartAvailabilityNoteSet(wrap, false);
-        if(!isSmartMap){
-          wrap.removeClass('picky-smart-table-picker-visible');
-        }
-        // Scope selectors to current shortcode wrap (IDs are duplicated across shortcodes)
-        wrap.find('#picky_booking_date').removeClass('picky-error-input');
-        wrap.find('.picky-datepicker, .picky-smart-map-date-input').removeClass('picky-error-input');
-        // The jQuery UI datepicker altField can update the wrong shortcode when multiple instances exist.
-        // Always force the chosen date into the current wrap's hidden input.
-        wrap.find('#picky_booking_date').val(dt).trigger('change');
-        wrap.find('#picky_booking_date').closest('.picky-input-wrap').find('.picky-error.picky-error-empty').fadeOut(100);
-        wrap.find('.picky-smart-map-field-date .picky-error.picky-error-empty').fadeOut(100);
-        wrap.find('#picky_booking_time_fake').removeClass('picky-error-input');
-        wrap.find('#picky_booking_time_fake').closest('.picky-input-wrap').find('.picky-error.picky-error-empty').fadeOut(100);
-        wrap.find('.picky-smart-map-field-time .picky-error.picky-error-empty').fadeOut(100);
-        wrap.find('.picky-slot-error-start').fadeOut(80);
-
-        // wrap.find('#picky_booking_time_fake option').show();
-
-        initSelect('second',array_exclude_times_settings, dt, wrap);
-        wrap.removeData('pickyLockedBookingTime');
-        if(pickyWrapUsesSlotHints(wrap)){
-          pickyFetchIntervalSlotHints(wrap, '');
-        } else {
-          pickySyncAllSlotGrids(wrap);
-        }
-
-        var fake_val = wrap.find('#picky_booking_time_fake').val();
-        if(fake_val){
-          if(wrap.find('#picky_booking_time').val() === ''){
-            wrap.find('#picky_booking_time').val(fake_val).trigger('change');
-            wrap.find('#picky_booking_time_fake').val(fake_val);
-          }
-        } else {
-          wrap.find('#picky_booking_time').val('');
-        }
-
-        var $slots = wrap.find('.picky-wizard-datetime-slots, .picky-input-wrap-time');
-        if(pickyIsOnceEvent(wrap)){
-          $slots.css('display', 'none');
-          wrap.find('.picky-smart-map-field-date').css('display', 'none');
-          pickySyncSmartMapBookButton(wrap);
-        } else if(isSmartMap){
-          $slots.css('display', 'flex');
-          pickySyncSmartMapBookButton(wrap);
-        } else {
-          $slots.show();
-        }
-        // wrap.find('#picky_booking_time_to').closest('.picky-input-wrap').show();
-        setTimeout(function(){ pickySmartSyncDatetimeHeights(wrap); }, 0);
-
-        refreshAvailableTablesSecond(wrap, false);
-
-        // Floor plan is hidden until we have a time; date pick may sync hidden time without firing the fake select change.
-        // Smart Map keeps the canvas visible from the start.
-        if(wrap.hasClass('picky-tables-wrap-second')){
-          var tAfterPick = wrap.find('#picky_booking_time').val();
-          if(tAfterPick || isSmartMap){
-            wrap.addClass('picky-smart-table-picker-visible');
-            setTimeout(function(){
-              try { applyCanvasScaleToContainer(); } catch(e) {}
-            }, 100);
-          }
-        }
-
-        // Scroll after Select2 + time row layout (do not auto-focus time: delayed focus races
-        // dropdown open and can look like an instant wrong selection on first click).
-        setTimeout(function(){
-          requestAnimationFrame(function(){
-            requestAnimationFrame(function(){
-              pickySmartSyncDatetimeHeights(wrap);
-              pickySmartScrollToTime(wrap);
-            });
-          });
-        }, 320);
-
-      },
-      beforeShowDay: function(dt) {
-
-        array_exclude_dates_settings = decodeURIComponent(datapicker.attr('data-date'));
-        array_exclude_dates_settings = JSON.parse(array_exclude_dates_settings);
-        array_exclude_dates = array_exclude_dates.concat(array_exclude_dates_settings);
-        
-        var dateString = $.datepicker.formatDate('mm/dd/yy', dt);
-        return [array_exclude_dates.indexOf(dateString) == -1];
-      }, 
-    });
-
-    if(pickyIsOnceEvent(wrap)){
-      pickyApplyOnceEvent(wrap);
-      refreshAvailableTablesSecond(wrap, false);
-      wrap.addClass('picky-smart-table-picker-visible');
-      pickySyncSmartMapBookButton(wrap);
-      return;
-    }
-
-    datapicker.datepicker( "setDate", null );
-    if(datapicker.is('input')){
-      datapicker.val('');
-      // setDate/_updateDatepicker fills #ui-datepicker-div; keep the popup hidden until open.
-      try { $('#ui-datepicker-div').hide().css({ display: 'none', visibility: 'hidden', top: '-9999px', left: '-9999px' }); } catch (eHideDp) {}
-    }
-    wrap.find('#picky_booking_date').val('');
-    pickyClearSmartMobileCanvasTableSummary(wrap);
-    pickySmartAvailabilityNoteSet(wrap, false);
-    if(isSmartMap){
-      wrap.addClass('picky-smart-table-picker-visible');
-      setTimeout(function(){
-        try { applyCanvasScaleToContainer(); } catch(e) {}
-      }, 80);
-    } else {
-      wrap.removeClass('picky-smart-table-picker-visible');
-    }
-  }
-
+  
   // init datapicker form default type layout/ itit on element click
   function reInitForm(element = null, datapicker, wrap){
     var array_exclude_dates = [];
@@ -2239,8 +1702,11 @@
     var $btn = wrap.find('.picky-wizard .picky-wizard-cta').first();
     if (!$btn.length) { return; }
     step = parseInt(step, 10);
-    var cont = $btn.attr('data-label-continue') || 'Continue';
-    var book = $btn.attr('data-label-book') || 'Pay & Book';
+    var cont = $btn.attr('data-label-continue')
+      || (pickyI18n.continue_label ? String(pickyI18n.continue_label) : '');
+    var book = $btn.attr('data-label-book')
+      || (pickyI18n.book_label ? String(pickyI18n.book_label) : '')
+      || (pickyI18n.book_now_label ? String(pickyI18n.book_now_label) : '');
     if (step >= 3) {
       $btn.addClass('picky-send-booking is-book');
       $btn.find('.picky-wizard-cta-text').text(book);
@@ -2313,6 +1779,21 @@
     var $viewport = $wiz.find('.picky-wizard-steps-viewport').first();
     var $active = $wiz.find('.picky-wizard-step.is-active').first();
     if (!$viewport.length || !$active.length) { return; }
+
+    /* Modal wizards (Map/Smart): do not lock viewport to content height — that
+       expands past max-height and traps wheel inside the stage so the footer
+       CTA is unreachable. CSS flex keeps the footer sticky; stage scrolls.
+       Simple (third) desktop: same — let the page scroll instead. */
+    var $wrap = $wiz.closest('.picky-tables-wrap');
+    var inModal = !!$wiz.closest('.picky-form-booking, .picky-smart-booking-overlay').length;
+    var simpleDesktop = $wrap.hasClass('picky-tables-wrap-third')
+      && typeof window.matchMedia === 'function'
+      && window.matchMedia('(min-width: 768px)').matches;
+    if (inModal || simpleDesktop) {
+      $viewport.css({ height: '', maxHeight: '', transition: '' });
+      return;
+    }
+
     var el = $active[0];
     /* Natural content height (inactive siblings are collapsed via CSS). */
     var h = Math.ceil(Math.max(
@@ -2329,6 +1810,33 @@
     } else {
       $viewport.css('height', h + 'px');
     }
+  }
+
+  /** Remeasure wizard stage after late-loading service images (avoids clipped/trapped scroll). */
+  function pickyWizardWatchStepMedia($wiz) {
+    if (!$wiz || !$wiz.length) { return; }
+    var $active = $wiz.find('.picky-wizard-step.is-active').first();
+    if (!$active.length) { return; }
+    var imgs = $active.find('img');
+    if (!imgs.length) {
+      pickyWizardSyncViewportHeight($wiz, true);
+      return;
+    }
+    var left = imgs.length;
+    var done = function() {
+      left -= 1;
+      if (left <= 0) {
+        pickyWizardSyncViewportHeight($wiz, true);
+      }
+    };
+    imgs.each(function() {
+      if (this.complete) {
+        done();
+      } else {
+        $(this).one('load error', done);
+      }
+    });
+    window.setTimeout(function() { pickyWizardSyncViewportHeight($wiz, false); }, 320);
   }
 
   function pickyWizardGo(wrap, step) {
@@ -2386,11 +1894,14 @@
 
     /* Paint step-2 lists before measuring, otherwise viewport stays empty/tall. */
     if (step === 2) {
+      try { pickyEnsureSimpleServicesItem(wrap); } catch (eSimple) {}
       try { pickyRenderSelectedItemsList(wrap); } catch (eList) {}
       try { pickyRenderBottomServicesPanel(wrap); } catch (eSvc) {}
-      wrap.find('.picky-items-summary-wrap').filter(function() {
-        return $(this).find('.picky-selected-item-row, .picky-tile').length > 0;
-      }).show();
+      if (!(wrap.hasClass('picky-tables-wrap-third') && String(wrap.attr('data-simple-services') || '') === '1')) {
+        wrap.find('.picky-items-summary-wrap').filter(function() {
+          return $(this).find('.picky-selected-item-row, .picky-tile').length > 0;
+        }).show();
+      }
     }
 
     if (step === 3) {
@@ -2403,6 +1914,9 @@
 
     window.setTimeout(function() { pickyWizardSyncViewportHeight($wiz, step === 3 ? false : true); }, 40);
     window.setTimeout(function() { pickyWizardSyncViewportHeight($wiz, false); }, 200);
+    if (step === 2) {
+      window.setTimeout(function() { pickyWizardWatchStepMedia($wiz); }, 60);
+    }
 
     $wiz.find('.picky-wizard-dot').each(function() {
       var $d = $(this);
@@ -2439,67 +1953,8 @@
     });
   });
 
-  function pickyWizardInit(wrap) {
-    if (!pickyBookingFormUsesStepFlow(wrap)) { return; }
-    var $wiz = pickyWizardRoot(wrap);
-    var start = parseInt($wiz.attr('data-picky-start-step'), 10);
-    if (isNaN(start) || start < 1) { start = 1; }
-    // Smart: date/time already set outside → land on services (step 2).
-    if (wrap.hasClass('picky-tables-wrap-second') || $wiz.closest('form').attr('data-picky-wizard-smart') === '1') {
-      start = 2;
-      var dt = (wrap.find('#picky_booking_date').val() || '').toString();
-      var tm = pickyGetSmartBookingTime(wrap);
-      var $chip = $wiz.find('.picky-booking-datetime-chip');
-      if ($chip.length) {
-        $chip.addClass('picky-chip-visible');
-        $chip.find('.picky-chip-date').text(dt);
-        $chip.find('.picky-chip-time').text(tm);
-      }
-    }
-    pickyWizardGo(wrap, start);
-    // Prefer server slot hints over painting the full select (avoids flash).
-    if (pickyWrapUsesSlotHints(wrap) && pickyBookingFormUsesStepFlow(wrap)) {
-      /* Remember map/form start BEFORE clearing wizard selects. */
-      var stInit = (typeof pickyGetSmartBookingTime === 'function' ? pickyGetSmartBookingTime(wrap) : '')
-        || (typeof pickyGetWizardStartTime === 'function' ? pickyGetWizardStartTime(wrap) : '')
-        || (wrap.find('select#picky_booking_time_fake').val() || '').toString()
-        || (wrap.data('pickyLockedBookingTime') || '').toString();
-      if (stInit) {
-        pickyLockSmartBookingTime(wrap, stInit);
-        wrap.find('input#picky_booking_time').val(stInit);
-      }
-      pickyClearWizardTimeSelectOptions(wrap);
-      if (wrap.find('#picky_booking_date').val()) {
-        /* Always pass the known start so hints refresh does not wipe the clock. */
-        pickyFetchIntervalSlotHints(wrap, stInit);
-      } else {
-        pickySlotGridShowIdle(wrap);
-      }
-    } else {
-      pickySyncAllSlotGrids(wrap);
-    }
-    setTimeout(function(){ pickySmartSyncDatetimeHeights(wrap); }, 50);
-  }
-
-  function pickyResetBookingStepFlow(wrap) {
-    if (!pickyBookingFormUsesStepFlow(wrap)) { return; }
-    var $wiz = pickyWizardRoot(wrap);
-    var start = parseInt($wiz.attr('data-picky-start-step'), 10);
-    if (wrap.hasClass('picky-tables-wrap-second') || $wiz.closest('form').attr('data-picky-wizard-smart') === '1') {
-      start = 2;
-    } else if (isNaN(start) || start < 1) {
-      start = 1;
-    }
-    pickyWizardGo(wrap, start);
-    if (pickyIsOnceEvent(wrap)) {
-      pickyApplyOnceEvent(wrap);
-      return;
-    }
-    wrap.find('.picky-booking-datetime-chip').removeClass('picky-chip-visible').attr('aria-expanded', 'false');
-    wrap.find('.picky-booking-datetime-chip .picky-chip-date').text('');
-    wrap.find('.picky-booking-datetime-chip .picky-chip-time').text('');
-  }
-
+  
+  
   function pickyFormatSlotLabel(t) {
     return String(t || '');
   }
@@ -2515,7 +1970,7 @@
     wrap.removeData('pickySlotHintsLoading');
     $grid.removeClass('is-loading').removeAttr('aria-busy').empty()
       .append($('<div class="picky-slot-grid-status picky-slot-grid-idle"></div>')
-        .text('Select a date to see available times'));
+        .text(pickyI18n.select_date_slots ? String(pickyI18n.select_date_slots) : ''));
   }
 
   function pickySlotGridSetLoading(wrap, on) {
@@ -2528,7 +1983,9 @@
         .append(
           $('<div class="picky-slot-grid-status picky-slot-grid-loading" role="status"></div>')
             .append('<span class="picky-slot-spinner" aria-hidden="true"></span>')
-            .append($('<span class="picky-slot-loading-text"></span>').text('Loading available times…'))
+            .append($('<span class="picky-slot-loading-text"></span>').text(
+              pickyI18n.loading_slots ? String(pickyI18n.loading_slots) : ''
+            ))
         );
     } else {
       wrap.removeData('pickySlotHintsLoading');
@@ -2537,6 +1994,10 @@
   }
 
   function pickyHintsUniqueForRequest(wrap) {
+    // Simple has no map selection — synthetic service uniques must not filter slots.
+    if (wrap && wrap.hasClass('picky-tables-wrap-third')) {
+      return '';
+    }
     var items = pickyGetSelectedItems(wrap);
     if (items && items.length) {
       var parts = [];
@@ -2606,7 +2067,7 @@
     if (role === 'start' && count === 0) {
       $grid.append(
         $('<div class="picky-slot-grid-status picky-slot-grid-empty"></div>')
-          .text('No available times for this date')
+          .text(pickyI18n.no_slots ? String(pickyI18n.no_slots) : '')
       );
     }
     var $block = $grid.closest('.picky-slot-picker-block');
@@ -2644,7 +2105,7 @@
       if ($wiz.length) { $wiz.attr('data-picky-selected-end', value); }
     } else {
       // Smart outer tiles: drive #picky_booking_time_fake (canvas). Classic wizard: form select.
-      if (wrap.hasClass('picky-tables-wrap-second') && wrap.find('select#picky_booking_time_fake').length) {
+      if (wrap.hasClass("picky-tables-wrap-second--omitted") && wrap.find('select#picky_booking_time_fake').length) {
         $sel = wrap.find('select#picky_booking_time_fake').first();
       } else {
         $sel = wrap.find('.picky-wizard select#picky_booking_time, .picky-slot-select-fallback select#picky_booking_time').first();
@@ -2717,9 +2178,8 @@
         var items = pickyGetSelectedItems(wrap);
         if (!items.length && wrap.find('.picky-draggable .picky-element').length) {
           wrap.find('.picky-items-selection-notice').text(
-            (window.pickyAjax && window.pickyAjax.i18n && window.pickyAjax.i18n.select_item)
-              ? window.pickyAjax.i18n.select_item
-              : 'Please select at least one item'
+            (pickyI18n.select_at_least ? String(pickyI18n.select_at_least) : '')
+              || (pickyI18n.select_item ? String(pickyI18n.select_item) : '')
           ).show();
           return false;
         }
@@ -2788,29 +2248,9 @@
   }
 
   /** Smart layout: read chosen start time (hidden field, then visible select, then lock). */
-  function pickyGetSmartBookingTime(wrap){
-    if(!wrap || !wrap.length){ return ''; }
-    var tm = (wrap.find('input#picky_booking_time').val() || '').toString();
-    if(tm === ''){
-      tm = (wrap.find('select#picky_booking_time_fake').val() || '').toString();
-    }
-    if(tm === ''){
-      tm = (wrap.data('pickyLockedBookingTime') || '').toString();
-    }
-    return tm;
-  }
-
+  
   /** Remember the user's chosen start so slot-hint rebuilds cannot wipe it. */
-  function pickyLockSmartBookingTime(wrap, tm){
-    if(!wrap || !wrap.length){ return; }
-    tm = (tm || '').toString();
-    if(tm){
-      wrap.data('pickyLockedBookingTime', tm);
-    } else {
-      wrap.removeData('pickyLockedBookingTime');
-    }
-  }
-
+  
   /**
    * Ensure a start-time <select> keeps `tm` selected (append option if needed).
    * Used when slot hints refresh ends/duration without intending to change start.
@@ -2839,47 +2279,11 @@
   }
 
   /** Smart layout: keep hidden #picky_booking_time aligned with the visible time select. */
-  function pickySyncSmartHiddenBookingTime(wrap){
-    if(!wrap || !wrap.length){ return ''; }
-    var $fake = wrap.find('select#picky_booking_time_fake');
-    var tm = ($fake.val() || '').toString();
-    if(!tm){
-      /* Do not blank a still-valid hidden/locked time when the visible select
-         was emptied by a slot-options rebuild. */
-      tm = (wrap.find('input#picky_booking_time').val()
-        || wrap.data('pickyLockedBookingTime')
-        || '').toString();
-      if(tm && $fake.length){
-        pickyEnsureStartTimeOption(wrap, $fake, tm);
-      }
-    } else {
-      wrap.find('input#picky_booking_time').val(tm);
-      pickyLockSmartBookingTime(wrap, tm);
-    }
-    return (wrap.find('input#picky_booking_time').val() || tm || '').toString();
-  }
-
+  
   /**
    * Resolve current booking date + start time for any layout (Smart / Classic / Third).
    */
-  function pickyGetCanvasBookingDateTime(wrap){
-    var dt = (wrap.find('#picky_booking_date').val() || '').toString();
-    var timeVal = '';
-    if(wrap.hasClass('picky-tables-wrap-second') && typeof pickyGetSmartBookingTime === 'function'){
-      timeVal = (pickyGetSmartBookingTime(wrap) || '').toString();
-    }
-    if(!timeVal){
-      timeVal = (wrap.find('select#picky_booking_time_fake').val() || '').toString();
-    }
-    if(!timeVal){
-      timeVal = (wrap.find('.picky-wizard select#picky_booking_time, .picky-slot-select-fallback select#picky_booking_time, select#picky_booking_time').not('#picky_booking_time_fake').first().val() || '').toString();
-    }
-    if(!timeVal){
-      timeVal = (wrap.find('input#picky_booking_time').val() || '').toString();
-    }
-    return { date: dt, time: timeVal };
-  }
-
+  
   /**
    * Disable canvas spots for the chosen date/time (Smart + Classic + Third).
    * serverAllowedMap: optional map unique→true from get_available_tables; when omitted, only
@@ -2936,10 +2340,7 @@
   }
 
   /** @deprecated Use pickyApplyCanvasAvailability — kept for existing Smart call sites. */
-  function pickyApplySmartCanvasAvailability(wrap, serverAllowedMap){
-    pickyApplyCanvasAvailability(wrap, serverAllowedMap);
-  }
-
+  
   function pickyParseOccupants(wrap){
     var live = wrap.data('pickyOccupants');
     if(Array.isArray(live)){ return live; }
@@ -3128,232 +2529,9 @@
   }
 
   /** Run a deferred canvas refresh after slot-hint DOM updates (see pickySmartAvailRefreshPending). */
-  function pickyFlushSmartAvailabilityRefresh(wrap){
-    if(!wrap || !wrap.length || !wrap.hasClass('picky-tables-wrap-second')){ return; }
-    var pending = wrap.data('pickySmartAvailRefreshPending');
-    if(pending === undefined){ return; }
-    wrap.removeData('pickySmartAvailRefreshPending');
-    pickySyncSmartHiddenBookingTime(wrap);
-    refreshAvailableTablesSecond(wrap, pending === true);
-  }
-
-  function pickyApplyAllowedSlotOptions(wrap, $sel, allowed){
-    if(!$sel || !$sel.length || !Array.isArray(allowed)){ return; }
-    wrap.data('pickyApplyingSlotHints', 1);
-    try {
-      var ph = $sel.attr('data-placeholder') || '';
-      var prev = ($sel.val() || '').toString();
-      /* Fall back to hidden / remembered / locked start so rebuilds don't wipe the clock. */
-      if(!prev && ($sel.is('#picky_booking_time_fake') || $sel.is('#picky_booking_time'))){
-        prev = (wrap.find('input#picky_booking_time').val() || '').toString();
-        if(!prev && typeof pickyGetSmartBookingTime === 'function'){
-          prev = (pickyGetSmartBookingTime(wrap) || '').toString();
-        }
-        if(!prev){
-          prev = (wrap.data('pickyLockedBookingTime') || '').toString();
-        }
-      }
-      var isStartSel = $sel.is('#picky_booking_time_fake') || $sel.is('#picky_booking_time');
-      var locked = isStartSel ? (wrap.data('pickyLockedBookingTime') || '').toString() : '';
-      if(isStartSel && !prev && locked){ prev = locked; }
-      pickyStripSelect2Shell($sel);
-      $sel.empty();
-      $sel.append($('<option>', { value: '', text: ph || '' }));
-      if(allowed.length === 0){
-        /* Keep the user's start even when the filtered list is empty
-           (e.g. longer service duration temporarily narrows valid_starts). */
-        if(isStartSel && prev){
-          $sel.append($('<option>', { value: prev, text: prev }));
-          $sel.val(prev);
-          wrap.find('input#picky_booking_time').val(prev);
-          pickyLockSmartBookingTime(wrap, prev);
-        }
-        if(pickyIsSmartLayoutNativeTimeSelect(wrap, $sel) || $sel.closest('.picky-slot-select-fallback').length){
-          $sel.addClass('picky-smart-time-native');
-          pickyStripSelect2Shell($sel);
-        } else {
-          $sel.removeClass('picky-smart-time-native');
-          $sel.select2(pickyBuildTimeSelect2Options($sel, ph));
-        }
-        pickySyncSmartTimeNativeEmptyClass($sel);
-        return;
-      }
-      var i, v;
-      for(i = 0; i < allowed.length; i++){
-        v = String(allowed[i]);
-        $sel.append($('<option>', { value: v, text: v }));
-      }
-      // Prefer wizard-stored selection when AJAX rebuilds options.
-      var $wiz = pickyWizardRoot(wrap);
-      var remembered = '';
-      if ($sel.is('#picky_booking_time_to')) {
-        remembered = ($wiz.attr('data-picky-selected-end') || '').toString();
-      } else {
-        remembered = ($wiz.attr('data-picky-selected-start') || locked || '').toString();
-      }
-      if(remembered && allowed.indexOf(remembered) !== -1){
-        $sel.val(remembered);
-      } else if(prev && allowed.indexOf(prev) !== -1){
-        $sel.val(prev);
-      } else if(isStartSel && prev){
-        /* Preserve chosen start even if not in the new intersection list. */
-        $sel.append($('<option>', { value: prev, text: prev }));
-        $sel.val(prev);
-      } else {
-        $sel.val('');
-        if ($sel.is('#picky_booking_time_to')) {
-          $wiz.removeAttr('data-picky-selected-end');
-        } else if (isStartSel) {
-          $wiz.removeAttr('data-picky-selected-start');
-        }
-      }
-      if(isStartSel && $sel.val()){
-        wrap.find('input#picky_booking_time').val($sel.val());
-        pickyLockSmartBookingTime(wrap, $sel.val());
-        if($wiz.length){ $wiz.attr('data-picky-selected-start', $sel.val()); }
-      }
-      if(pickyIsSmartLayoutNativeTimeSelect(wrap, $sel) || $sel.closest('.picky-slot-select-fallback').length){
-        $sel.addClass('picky-smart-time-native');
-        pickyStripSelect2Shell($sel);
-      } else {
-        $sel.removeClass('picky-smart-time-native');
-        $sel.select2(pickyBuildTimeSelect2Options($sel, ph));
-      }
-      pickySyncSmartTimeNativeEmptyClass($sel);
-    } finally {
-      setTimeout(function(){
-        wrap.removeData('pickyApplyingSlotHints');
-        wrap.data('pickySlotHintsReady', 1);
-        wrap.removeData('pickySlotHintsLoading');
-        pickyFlushSmartAvailabilityRefresh(wrap);
-        pickySyncAllSlotGrids(wrap);
-      }, 0);
-    }
-  }
-
-  function pickyFetchIntervalSlotHints(wrap, timeStartStr){
-    if(!pickyWrapUsesSlotHints(wrap)){ return; }
-    var dt = wrap.find('#picky_booking_date').val();
-    if(!dt){ return; }
-    var ppl = parseInt(wrap.find('#picky_booking_people').val(), 10);
-    if(isNaN(ppl) || ppl <= 0){ ppl = 1; }
-    // All selected tables (comma-separated). Server requires every one free
-    // for multi-select; a single last-unique was wrongly optimistic or empty.
-    var hintsUnique = pickyHintsUniqueForRequest(wrap);
-    var durationMin = (typeof pickyHintsDurationMinutes === 'function') ? pickyHintsDurationMinutes(wrap) : 0;
-    var reqGen = (parseInt(wrap.data('pickySlotHintsGen'), 10) || 0) + 1;
-    wrap.data('pickySlotHintsGen', reqGen);
-    if ((pickyBookingFormUsesStepFlow(wrap) || wrap.find('.picky-slot-grid').length || pickyIsSmartMapLayout(wrap)) && !timeStartStr) {
-      pickySlotGridSetLoading(wrap, true);
-    }
-    $.ajax({
-      type: 'POST',
-      url: (window.pickyAjax && window.pickyAjax.url) ? window.pickyAjax.url : '',
-      dataType: 'json',
-      data: {
-        action: 'picky_interval_slot_hints',
-        _wpnonce: wrap.find('input[name="_wpnonce"]').val(),
-        picky_layout_id: wrap.find('input[name="picky_layout_id"]').val() || '',
-        date: dt,
-        time_start: timeStartStr || '',
-        people: ppl,
-        hints_unique: hintsUnique,
-        duration_min: durationMin > 0 ? durationMin : ''
-      },
-      success: function(resp){
-        if (reqGen !== wrap.data('pickySlotHintsGen')) { return; }
-        if(!resp || !resp.success || !resp.data){
-          wrap.removeData('pickySlotHintsLoading');
-          wrap.removeData('pickySlotHintsSkipCanvas');
-          wrap.data('pickySlotHintsReady', 1);
-          pickySlotGridSetLoading(wrap, false);
-          pickySyncAllSlotGrids(wrap);
-          return;
-        }
-        var vs = resp.data.valid_starts || [];
-        var ve = resp.data.valid_ends || [];
-        // When a start is already chosen (timeStartStr), only refresh end options /
-        // keep that start — rebuilding valid_starts would clear the user's time
-        // (services duration / multi-select intersection).
-        if (timeStartStr) {
-          wrap.find('select#picky_booking_time_fake').each(function(){
-            pickyEnsureStartTimeOption(wrap, $(this), timeStartStr);
-          });
-          wrap.find('select#picky_booking_time').each(function(){
-            var $t = $(this);
-            if ($t.attr('id') === 'picky_booking_time_fake') { return; }
-            pickyEnsureStartTimeOption(wrap, $t, timeStartStr);
-          });
-          wrap.find('input#picky_booking_time').val(timeStartStr);
-          pickyLockSmartBookingTime(wrap, timeStartStr);
-          if (pickyWrapHasIntervalBooking(wrap)) {
-            wrap.find('select#picky_booking_time_to').each(function(){
-              pickyApplyAllowedSlotOptions(wrap, $(this), ve);
-            });
-          }
-          wrap.data('pickySlotHintsReady', 1);
-          wrap.removeData('pickySlotHintsLoading');
-          pickySlotGridSetLoading(wrap, false);
-          pickySyncAllSlotGrids(wrap);
-        } else {
-          // Server valid_starts is the source of truth (work hours + duration +
-          // buffers + selected tables). Do not paint client options first.
-          wrap.find('select#picky_booking_time_fake').each(function(){
-            pickyApplyAllowedSlotOptions(wrap, $(this), vs);
-          });
-          wrap.find('select#picky_booking_time').each(function(){
-            var $t = $(this);
-            if($t.attr('id') === 'picky_booking_time_fake'){ return; }
-            pickyApplyAllowedSlotOptions(wrap, $t, vs);
-          });
-          if(pickyWrapHasIntervalBooking(wrap)){
-            wrap.find('select#picky_booking_time_to').each(function(){
-              var $t = $(this);
-              var cached = $t.data('picky-orig-html');
-              if(typeof cached === 'undefined' || cached === ''){ return; }
-              wrap.data('pickyApplyingSlotHints', 1);
-              try {
-                pickyStripSelect2Shell($t);
-                $t.html(cached);
-                $t.val('');
-                if(pickyIsSmartLayoutNativeTimeSelect(wrap, $t)){
-                  $t.addClass('picky-smart-time-native');
-                  pickySyncSmartTimeNativeEmptyClass($t);
-                } else {
-                  $t.removeClass('picky-smart-time-native');
-                  $t.select2(pickyBuildTimeSelect2Options($t, $t.attr('data-placeholder') || ''));
-                }
-              } finally {
-                setTimeout(function(){ wrap.removeData('pickyApplyingSlotHints'); }, 0);
-              }
-            });
-          }
-        }
-        if(wrap.hasClass('picky-tables-wrap-second')){
-          wrap.removeData('pickySmartAvailRefreshPending');
-          pickySyncSmartHiddenBookingTime(wrap);
-          /* Service toggles only need slot/end options refreshed — not a
-             canvas reload (that flashes the floor plan behind the panel). */
-          if (wrap.data('pickySlotHintsSkipCanvas')) {
-            wrap.removeData('pickySlotHintsSkipCanvas');
-          } else {
-            refreshAvailableTablesSecond(wrap, false);
-          }
-        } else {
-          wrap.removeData('pickySlotHintsSkipCanvas');
-        }
-      },
-      error: function(){
-        if (reqGen !== wrap.data('pickySlotHintsGen')) { return; }
-        wrap.removeData('pickySlotHintsLoading');
-        wrap.removeData('pickySlotHintsSkipCanvas');
-        wrap.data('pickySlotHintsReady', 1);
-        pickySlotGridSetLoading(wrap, false);
-        pickySyncAllSlotGrids(wrap);
-      }
-    });
-  }
-
+  
+  
+  
   // Legacy client-side disable (per-element data-time); used as AJAX fallback.
   function reInitElementsSecond(wrap, datapicker){
     if(!datapicker || !datapicker.length){ datapicker = wrap.find('.picky-datepicker'); }
@@ -3365,7 +2543,7 @@
   // This keeps frontend consistent with server rules (duration, before/after buffer, capacity mode).
   function refreshAvailableTablesSecond(wrap, scrollToFloor){
     if(!wrap || wrap.length === 0){ return; }
-    if(!wrap.hasClass('picky-tables-wrap-second')){ return; }
+    if(!wrap.hasClass("picky-tables-wrap-second--omitted")){ return; }
     var doScroll = scrollToFloor === true;
 
     var dt = wrap.find('#picky_booking_date').val();
@@ -3458,7 +2636,7 @@
    */
   function refreshAvailableTablesClassic(wrap){
     if(!wrap || !wrap.length){ return; }
-    if(wrap.hasClass('picky-tables-wrap-second')){ return; }
+    if(wrap.hasClass("picky-tables-wrap-second--omitted")){ return; }
     if(!wrap.hasClass('picky-tables-wrap-default') && !wrap.hasClass('picky-tables-wrap-third')){ return; }
 
     var slot = pickyGetCanvasBookingDateTime(wrap);
@@ -3535,7 +2713,7 @@
       pickySyncSmartMapBookButton(wrap);
     }
     var userTimeStep = !pickySuppressSmartTableReveal;
-    if(wrap.hasClass('picky-tables-wrap-second')){
+    if(wrap.hasClass("picky-tables-wrap-second--omitted")){
       if(tm){
         pickyApplySmartCanvasAvailability(wrap, null);
       }
@@ -3563,7 +2741,7 @@
     var wrap = $(this).closest('.picky-tables-wrap');
     if(wrap.data('pickyApplyingSlotHints')){ return; }
     if(!pickyWrapUsesSlotHints(wrap)){ return; }
-    if(wrap.hasClass('picky-tables-wrap-second')){ return; }
+    if(wrap.hasClass("picky-tables-wrap-second--omitted")){ return; }
     pickyFetchIntervalSlotHints(wrap, $(this).val() || '');
   });
 
@@ -3572,7 +2750,7 @@
     pickySyncSmartTimeNativeEmptyClass($(this));
     var wrap = $(this).closest('.picky-tables-wrap');
     pickyFetchSelectedCapacityInfo(wrap);
-    if(wrap.hasClass('picky-tables-wrap-second')){
+    if(wrap.hasClass("picky-tables-wrap-second--omitted")){
       refreshAvailableTablesSecond(wrap, false);
     } else if(wrap.hasClass('picky-tables-wrap-default') || wrap.hasClass('picky-tables-wrap-third')){
       refreshAvailableTablesClassic(wrap);
@@ -3602,6 +2780,43 @@
 
   function pickySetSelectedItems(wrap, items) {
     wrap.data('pickySelectedItems', items);
+  }
+
+  /**
+   * Simple wizard has no map items. When the layout option is on, seed one
+   * synthetic booking item so the services panel / picky_items[] POST path works.
+   * Unique is per page-load so same-day Simple bookings do not collide.
+   */
+  function pickyEnsureSimpleServicesItem(wrap) {
+    if (!wrap || !wrap.length) { return; }
+    if (!wrap.hasClass('picky-tables-wrap-third')) { return; }
+    if (String(wrap.attr('data-simple-services') || '') !== '1') { return; }
+    var lib = pickyGetLibrary(wrap);
+    if (!lib.length) { return; }
+    var items = pickyGetSelectedItems(wrap);
+    if (items.length) { return; }
+    var unique = wrap.data('pickySimpleUnique');
+    if (!unique) {
+      var lid = String(wrap.find('input[name="picky_layout_id"]').val() || '0');
+      unique = 'simple' + lid + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+      wrap.data('pickySimpleUnique', unique);
+    }
+    var services = [];
+    for (var i = 0; i < lib.length; i++) {
+      if (lib[i] && lib[i].sid) { services.push(lib[i]); }
+    }
+    pickySetSelectedItems(wrap, [{
+      unique: unique,
+      id: '1',
+      displayId: '1',
+      label: '',
+      maxSeats: 0,
+      services: services,
+      defaultService: '',
+      selectedServiceIds: []
+    }]);
+    wrap.find('#picky_booking_unique').val(unique);
+    wrap.find('#picky_booking_id').val('1');
   }
 
   /**
@@ -3720,42 +2935,78 @@
     return '<svg class="picky-bicon" aria-hidden="true" focusable="false"><use href="' + href + '" xlink:href="' + href + '"></use></svg>';
   }
 
+  /**
+   * Full-bleed left media for a parent service card: image as background
+   * (cover + ratio class) or icon centered in the same panel.
+   */
+  function pickySvcVisualHtml(svc) {
+    svc = svc || {};
+    var visual = String(svc.visual || '').trim();
+    var url = String(svc.image_url || '').trim();
+    if (visual === 'image' && url) {
+      var ratio = String(svc.image_ratio || 'square').trim();
+      if (['square', 'portrait', 'landscape'].indexOf(ratio) < 0) { ratio = 'square'; }
+      return '<span class="picky-svc-media picky-svc-media--image picky-svc-media--'
+        + pickyEscAttr(ratio) + '" style="background-image:url(' + pickyEscAttr(url) + ')" role="img" aria-hidden="true"></span>';
+    }
+    var iconHtml = pickyBiconHtml(svc.icon || '');
+    if (!iconHtml) { return ''; }
+    return '<span class="picky-svc-media picky-svc-media--icon picky-svc-media--square" aria-hidden="true">'
+      + '<span class="picky-svc-bicon">' + iconHtml + '</span>'
+      + '</span>';
+  }
+
+  function pickySvcPriceLabel(svc, currency) {
+    if (svc.price > 0) {
+      return (currency || '$') + Number(svc.price).toFixed(2) + (svc.duration ? ' / ' + svc.duration + ' min' : '');
+    }
+    return svc.duration ? (svc.duration + ' min') : '';
+  }
+
+  /** Addon row: checkbox + text only (media belongs to the parent card). */
   function pickyBuildSvcCardHtml(item, svc, isAddon, currency, selectedIds, cbClass) {
     var checked = selectedIds.indexOf(svc.sid) >= 0 ? ' checked' : '';
     var isOn = checked.indexOf('checked') >= 0;
-    var priceLabel = svc.price > 0
-      ? (currency || '$') + Number(svc.price).toFixed(2) + (svc.duration ? ' / ' + svc.duration + ' min' : '')
-      : (svc.duration ? svc.duration + ' min' : '');
+    var priceLabel = pickySvcPriceLabel(svc, currency);
     var addonCls = isAddon ? ' ' + cbClass + '-addon' : '';
     var parentsAttr = isAddon ? ' data-parent-sids="' + pickyEscAttr(JSON.stringify(svc.parent_sids || [])) + '"' : '';
-    var iconHtml = pickyBiconHtml(svc.icon || '');
 
     if (isAddon) {
       var h = '<label class="picky-svc-addon-row' + (isOn ? ' is-selected' : '') + '">';
       h += '<input type="checkbox" class="' + cbClass + addonCls + '" data-unique="' + pickyEscAttr(item.unique) + '" value="' + pickyEscAttr(svc.sid) + '"' + checked + parentsAttr + '>';
-      if (iconHtml) { h += '<span class="picky-svc-bicon">' + iconHtml + '</span>'; }
+      h += '<span class="picky-svc-addon-text">';
       h += '<span class="picky-svc-addon-name">' + pickyEscHtml(svc.name) + '</span>';
       if (priceLabel) {
         h += '<span class="picky-svc-addon-meta">' + pickyEscHtml(priceLabel) + '</span>';
       }
-      h += '</label>';
+      h += '</span></label>';
       return h;
     }
 
-    var card = '<div class="picky-svc-card' + (isOn ? ' is-selected' : '') + '" data-parent-sid="' + pickyEscAttr(svc.sid) + '">';
+    // Standalone parent without addons path (rare); keep same shell as list builder.
+    var visualHtml = pickySvcVisualHtml(svc);
+    var mediaMod = '';
+    if (visualHtml) {
+      mediaMod = visualHtml.indexOf('picky-svc-media--icon') >= 0 ? ' has-media has-icon' : ' has-media has-image';
+    }
+    var card = '<div class="picky-svc-card' + (isOn ? ' is-selected' : '') + mediaMod + '" data-parent-sid="' + pickyEscAttr(svc.sid) + '">';
+    if (visualHtml) { card += visualHtml; }
+    card += '<div class="picky-svc-card-content">';
     card += '<label class="picky-svc-card-main">';
     card += '<input type="checkbox" class="' + cbClass + '" data-unique="' + pickyEscAttr(item.unique) + '" value="' + pickyEscAttr(svc.sid) + '"' + checked + '>';
-    if (iconHtml) { card += '<span class="picky-svc-bicon">' + iconHtml + '</span>'; }
     card += '<span class="picky-svc-card-text">';
     card += '<span class="picky-svc-card-name">' + pickyEscHtml(svc.name) + '</span>';
     if (priceLabel) {
       card += '<span class="picky-svc-card-meta">' + pickyEscHtml(priceLabel) + '</span>';
     }
-    card += '</span>';
-    card += '</label>';
+    card += '</span></label></div></div>';
     return card;
   }
 
+  /**
+   * Parent cards: left media + right column (main row + addons).
+   * Matches: [ image/icon ] | checkbox + title / meta ; dashed ; addon rows.
+   */
   function pickyBuildServicesCardsHtml(item, currency, cbClass) {
     var services = item.services || [];
     if (!services.length) { return ''; }
@@ -3766,14 +3017,17 @@
       var par = split.parents[i];
       var parChecked = selectedIds.indexOf(par.sid) >= 0 ? ' checked' : '';
       var parOn = parChecked.indexOf('checked') >= 0;
-      var parPrice = par.price > 0
-        ? (currency || '$') + Number(par.price).toFixed(2) + (par.duration ? ' / ' + par.duration + ' min' : '')
-        : (par.duration ? par.duration + ' min' : '');
-      var parIcon = pickyBiconHtml(par.icon || '');
-      html += '<div class="picky-svc-card' + (parOn ? ' is-selected' : '') + '" data-parent-sid="' + pickyEscAttr(par.sid) + '">';
+      var parPrice = pickySvcPriceLabel(par, currency);
+      var parVisual = pickySvcVisualHtml(par);
+      var parMediaMod = '';
+      if (parVisual) {
+        parMediaMod = parVisual.indexOf('picky-svc-media--icon') >= 0 ? ' has-media has-icon' : ' has-media has-image';
+      }
+      html += '<div class="picky-svc-card' + (parOn ? ' is-selected' : '') + parMediaMod + '" data-parent-sid="' + pickyEscAttr(par.sid) + '">';
+      if (parVisual) { html += parVisual; }
+      html += '<div class="picky-svc-card-content">';
       html += '<label class="picky-svc-card-main">';
       html += '<input type="checkbox" class="' + cbClass + '" data-unique="' + pickyEscAttr(item.unique) + '" value="' + pickyEscAttr(par.sid) + '"' + parChecked + '>';
-      if (parIcon) { html += '<span class="picky-svc-bicon">' + parIcon + '</span>'; }
       html += '<span class="picky-svc-card-text">';
       html += '<span class="picky-svc-card-name">' + pickyEscHtml(par.name) + '</span>';
       if (parPrice) { html += '<span class="picky-svc-card-meta">' + pickyEscHtml(parPrice) + '</span>'; }
@@ -3791,7 +3045,7 @@
         html += addonHtml;
         html += '</div>';
       }
-      html += '</div>';
+      html += '</div></div>';
     }
     return html;
   }
@@ -3807,7 +3061,10 @@
     html += '<button type="button" class="picky-deselect-item-btn" data-unique="' + pickyEscAttr(item.unique) + '" title="' + pickyEscAttr('Remove') + '" aria-label="' + pickyEscAttr('Remove') + '">&times;</button>';
     html += '<div class="picky-selected-item-header">';
     if (itemIconHtml) { html += '<span class="picky-item-bicon">' + itemIconHtml + '</span>'; }
-    html += '<span class="picky-selected-item-label picky-tile-label picky-item-chip-id">id: ' + pickyEscHtml(String(rowDisplayId)) + (item.label ? ' ' + pickyEscHtml(item.label) : '') + '</span>';
+    html += '<span class="picky-selected-item-label picky-tile-label picky-item-chip-id">'
+      + pickyEscHtml(pickyItemChipText(rowDisplayId))
+      + (item.label ? ' ' + pickyEscHtml(item.label) : '')
+      + '</span>';
     html += '</div>';
     if (services.length > 0) {
       html += '<div class="picky-selected-item-services picky-tile-services">';
@@ -4023,7 +3280,12 @@
       return;
     }
 
-    $summaryWrap.show();
+    // Simple: services panel only — keep the items list for hidden-field sync.
+    if (wrap.hasClass('picky-tables-wrap-third') && String(wrap.attr('data-simple-services') || '') === '1') {
+      $summaryWrap.hide();
+    } else {
+      $summaryWrap.show();
+    }
     pickyUpdateBookingFormTitle(wrap);
 
     for (var i = 0; i < items.length; i++) {
@@ -4119,6 +3381,9 @@
     $wrapPanel.show();
     pickySyncAddonVisibility($panel, 'picky-bottom-svc-checkbox');
     pickyUpdateWizardTotal(wrap);
+    if (pickyBookingFormUsesStepFlow(wrap)) {
+      pickyWizardWatchStepMedia(wrap.find('.picky-wizard').first());
+    }
   }
 
   /**
@@ -4155,7 +3420,7 @@
     });
     $scope.find('.picky-svc-card').each(function(){
       var $card = $(this);
-      var on = $card.children('.picky-svc-card-main').find('input:checked').length > 0;
+      var on = $card.find('> .picky-svc-card-content > .picky-svc-card-main input:checked, > .picky-svc-card-main input:checked').length > 0;
       $card.toggleClass('is-selected', on);
     });
   }
@@ -4164,7 +3429,7 @@
     if (!$root || !$root.length) return;
     $root.find('.picky-svc-card').each(function(){
       var $card = $(this);
-      var on = $card.children('.picky-svc-card-main').find('input:checked').length > 0;
+      var on = $card.find('> .picky-svc-card-content > .picky-svc-card-main input:checked, > .picky-svc-card-main input:checked').length > 0;
       $card.toggleClass('is-selected', on);
     });
     $root.find('.picky-svc-addon-row').each(function(){
@@ -4343,7 +3608,7 @@
         var pruneDid = (items[i].displayId !== undefined && items[i].displayId !== null && items[i].displayId !== '')
           ? items[i].displayId
           : items[i].id;
-        removed.push(items[i].label || ('id: ' + pruneDid));
+        removed.push(items[i].label || pickyItemChipText(pruneDid));
         $el.removeClass('picky-selected');
       } else {
         remaining.push(items[i]);
@@ -4354,7 +3619,11 @@
       pickyRenderSelectedItemsList(wrap);
       pickyUpdateSelectionTray(wrap);
       var notice = wrap.find('.picky-items-selection-notice');
-      notice.text('Removed (unavailable): ' + removed.join(', ')).show();
+      notice.text(
+        (pickyI18n.removed_unavailable
+          ? String(pickyI18n.removed_unavailable).replace('%s', removed.join(', '))
+          : removed.join(', '))
+      ).show();
       setTimeout(function(){ notice.fadeOut(600); }, 4000);
     }
   }
@@ -4417,7 +3686,10 @@
 
     if (items.length === 0) {
       if (pickyIsSmartMapLayout(wrap)) {
-        $count.text($count.data('empty-label') || 'Select on the map');
+        $count.text(
+          $count.data('empty-label')
+            || (pickyI18n.select_on_map ? String(pickyI18n.select_on_map) : '')
+        );
         $tot.hide();
         $tray.addClass('is-visible').css('display', 'flex');
         pickySyncSmartMapBookButton(wrap);
@@ -4431,7 +3703,15 @@
       ? (wrap.find('.picky-form-booking').data('item-label-singular') || 'item')
       : (wrap.find('.picky-form-booking').data('item-label-plural') || 'items');
 
-    $count.text(items.length + ' ' + itemWord + ' selected');
+    if (pickyI18n.items_selected) {
+      $count.text(
+        String(pickyI18n.items_selected)
+          .replace('%1$d', String(items.length))
+          .replace('%2$s', itemWord)
+      );
+    } else {
+      $count.text(items.length + ' ' + itemWord + ' selected');
+    }
 
     // Compute indicative total using the first service of each item (or 0 if none)
     var total = 0;
@@ -4444,7 +3724,12 @@
       }
     }
     if (anyPrice) {
-      $tot.text('from ' + currency + total.toFixed(2)).show();
+      var priceStr = currency + total.toFixed(2);
+      $tot.text(
+        pickyI18n.from_price
+          ? String(pickyI18n.from_price).replace('%s', priceStr)
+          : priceStr
+      ).show();
     } else {
       $tot.hide();
     }
@@ -4487,7 +3772,7 @@
     if (pickyBookingFormUsesStepFlow(wrap)) {
       /* Ensure map date/time are in the form before the wizard opens. */
       try {
-        if (wrap.hasClass('picky-tables-wrap-second')) {
+        if (wrap.hasClass("picky-tables-wrap-second--omitted")) {
           var openDt = (wrap.find('.picky-smart-map-date-input').val() || wrap.find('#picky_booking_date').val() || '').toString();
           if (openDt) { _form.find('#picky_booking_date').val(openDt); }
           if (typeof pickySyncSmartHiddenBookingTime === 'function') {
@@ -4517,7 +3802,7 @@
       var wrap = $(this).closest('.picky-tables-wrap');
 
       // Smart layout: require date + time first, then choose an available table.
-      if(wrap.hasClass('picky-tables-wrap-second')){
+      if(wrap.hasClass("picky-tables-wrap-second--omitted")){
         var dt = (wrap.find('#picky_booking_date').val() || '').toString();
         var tm = pickyGetSmartBookingTime(wrap);
         if(!dt){
@@ -4550,7 +3835,7 @@
           wrap.find('.picky-max-people-amount-text').hide();
         }
       }
-      if(wrap.hasClass('picky-tables-wrap-second')){
+      if(wrap.hasClass("picky-tables-wrap-second--omitted")){
         pickySmartPickHintsClear(wrap);
       }
       // Multi-select: toggle this element in the selected items list
@@ -4569,7 +3854,7 @@
       // item's display ID, not just the last-clicked element.
 
       wrap.find('.picky-form-booking').find('#picky_booking_time').closest('.picky-input-wrap').hide();
-      if(!wrap.hasClass('picky-tables-wrap-second')){// quick fix
+      if(!wrap.hasClass("picky-tables-wrap-second--omitted")){// quick fix
         wrap.find('.picky-form-booking').find('#picky_booking_time_to').closest('.picky-input-wrap').hide();
       } else {
         wrap.find('.picky-form-booking').find('#picky_booking_time_to').closest('.picky-input-wrap').show();
@@ -4587,7 +3872,7 @@
         // so the user can select more items before opening the form.
         pickyUpdateSelectionTray(wrap);
 
-      } else if(wrap.hasClass('picky-tables-wrap-second')){
+      } else if(wrap.hasClass("picky-tables-wrap-second--omitted")){
         var uq = $(this).attr('data-unique');
         var $mob = wrap.find('select.picky-mobile-table-select');
         if($mob.length && uq){
@@ -4635,7 +3920,7 @@
       clearTimeout(window.pickyPaymentRefreshTimeout);
     }
     var wrap = $(this).closest('.picky-tables-wrap');
-    if (pickyBookingFormUsesStepFlow(wrap) && !wrap.hasClass('picky-tables-wrap-second') && !pickyIsOnceEvent(wrap)) {
+    if (pickyBookingFormUsesStepFlow(wrap) && !wrap.hasClass("picky-tables-wrap-second--omitted") && !pickyIsOnceEvent(wrap)) {
       wrap.find('#picky_booking_date').val('');
       wrap.find('#picky_booking_time').val('');
       try { wrap.find('#picky_booking_time').trigger('change.select2'); } catch (e) {}
@@ -4693,7 +3978,7 @@
     var wrap = $(this).closest('.picky-tables-wrap');
     if (!pickyBookingFormUsesStepFlow(wrap)) { return; }
     wrap.find('.picky-booking-datetime-chip').attr('aria-expanded', 'false');
-    if (wrap.hasClass('picky-tables-wrap-second')) {
+    if (wrap.hasClass("picky-tables-wrap-second--omitted")) {
       wrap.find('.picky-form-booking .picky-close').trigger('click');
       return;
     }
@@ -4744,7 +4029,7 @@
   // Mobile table select (Smart): list from server + sync with canvas taps (canvas & dropdown modes)
   function initMobileTableDropdown(wrap){
     if(!wrap || wrap.length === 0){ return; }
-    if(!wrap.hasClass('picky-tables-wrap-second')){ return; }
+    if(!wrap.hasClass("picky-tables-wrap-second--omitted")){ return; }
     if(!wrap.hasClass('picky-mobile-canvas') && !wrap.hasClass('picky-mobile-dropdown')){ return; }
     var $select = wrap.find('select.picky-mobile-table-select');
     if($select.length === 0){ return; }
@@ -4929,7 +4214,7 @@
 
     /* Smart Map: date/time live on the canvas bar — sync into form hiddens before validate. */
     try {
-      if (wrap.hasClass('picky-tables-wrap-second')) {
+      if (wrap.hasClass("picky-tables-wrap-second--omitted")) {
         var mapDt = (wrap.find('.picky-smart-map-date-input').val() || wrap.find('#picky_booking_date').val() || '').toString();
         if (mapDt) { form.find('#picky_booking_date').val(mapDt); }
         if (typeof pickySyncSmartHiddenBookingTime === 'function') {
@@ -5045,7 +4330,7 @@
 
     if(time.length > 0){
       var timeVal = (time.val() || '').toString();
-      if (!timeVal && wrap.hasClass('picky-tables-wrap-second')) {
+      if (!timeVal && wrap.hasClass("picky-tables-wrap-second--omitted")) {
         timeVal = (typeof pickyGetSmartBookingTime === 'function' ? pickyGetSmartBookingTime(wrap) : '')
           || (wrap.data('pickyLockedBookingTime') || '').toString();
         if (timeVal) {
@@ -5076,7 +4361,7 @@
           error = 1;
           time_to.addClass('picky-error-input');
           time_to.closest('.picky-input-wrap').find('.picky-error').fadeIn(100);
-          if(wrap.hasClass('picky-tables-wrap-second')){
+          if(wrap.hasClass("picky-tables-wrap-second--omitted")){
             $errBox.text(time_to.closest('.picky-input-wrap').find('.picky-error').attr('data-error-text'));
             $errBox.fadeIn(100);
           }
@@ -5094,24 +4379,32 @@
       }
     }
 
-    /* Multi-item: require at least one selected table/item. */
+    /* Map/multi-item required except plain Simple (no services). */
     var itemsNow = [];
     try { itemsNow = pickyGetSelectedItems(wrap) || []; } catch (eItems) { itemsNow = []; }
-    if ((!form.find('#picky_booking_unique').val() && (!itemsNow || !itemsNow.length))
+    var requireMapItem = true;
+    if (wrap.hasClass('picky-tables-wrap-third')) {
+      try { pickyEnsureSimpleServicesItem(wrap); } catch (eSeedSubmit) {}
+      try { itemsNow = pickyGetSelectedItems(wrap) || []; } catch (eItems2) { itemsNow = []; }
+      requireMapItem = String(wrap.attr('data-simple-services') || '') === '1'
+        && pickyGetLibrary(wrap).length > 0;
+    }
+    if (requireMapItem
+        && (!form.find('#picky_booking_unique').val() && (!itemsNow || !itemsNow.length))
         && wrap.find('#picky_items_container input[name^="picky_items"]').length === 0) {
       error = 1;
       errorMsgs.push('item');
     }
 
     if(error != 0){
-      var i18n = (window.pickyAjax && window.pickyAjax.i18n) ? window.pickyAjax.i18n : {};
-      var msg = i18n.fill_required || 'Please fill in all required fields.';
+      var i18n = pickyI18n || {};
+      var msg = i18n.fill_required ? String(i18n.fill_required) : '';
       if (errorMsgs.indexOf('date') >= 0 || errorMsgs.indexOf('time') >= 0) {
-        msg = i18n.pick_date_time || 'Please select a date and time, then try again.';
+        msg = i18n.pick_date_time ? String(i18n.pick_date_time) : msg;
       } else if (errorMsgs.indexOf('confirm') >= 0 && errorMsgs.length === 1) {
-        msg = i18n.check_confirm || 'Please confirm that we may use your personal data.';
+        msg = i18n.check_confirm ? String(i18n.check_confirm) : msg;
       } else if (errorMsgs.indexOf('item') >= 0) {
-        msg = i18n.select_item || 'Please select an item first.';
+        msg = i18n.select_item ? String(i18n.select_item) : msg;
       }
       $errBox.text(msg).fadeIn(120);
       return false;
@@ -5155,7 +4448,7 @@
       });
 
       // if second add time to if need
-      if(wrap.hasClass('picky-tables-wrap-second')){
+      if(wrap.hasClass("picky-tables-wrap-second--omitted")){
         if(time_to.length > 0 && time.length > 0){
           if(time_to.val() == "" || time_to.val() == null || time.val() == "" || time.val() == null){
 
@@ -5198,7 +4491,7 @@
         self.prop('disabled', false).removeAttr('aria-busy');
         self.find('.picky-btn-spinner').remove();
         self.addClass('picky-sended-error');
-        $errBox.text((window.pickyAjax && window.pickyAjax.i18n && window.pickyAjax.i18n.generic_error) ? window.pickyAjax.i18n.generic_error : 'Error').fadeIn(100);
+        $errBox.text(pickyI18n.generic_error ? String(pickyI18n.generic_error) : '').fadeIn(100);
         return false;
       }
 
@@ -5265,7 +4558,7 @@
               hideOption(wrap, time, date, '');
 
               wrap.find('.picky-datepicker').datepicker( "setDate", null );
-              if(!wrap.hasClass('picky-tables-wrap-second')){
+              if(!wrap.hasClass("picky-tables-wrap-second--omitted")){
                 wrap.find('.picky-form-back').fadeIn(100);
                 pickySetBookingModalOpen(true);
               }
@@ -5292,7 +4585,7 @@
         error: function(){
           self.removeClass('picky-sended');
           self.addClass('picky-sended-error');
-          var genericError = (window.pickyAjax && window.pickyAjax.i18n && window.pickyAjax.i18n.generic_error) ? window.pickyAjax.i18n.generic_error : 'Error';
+          var genericError = pickyI18n.generic_error ? String(pickyI18n.generic_error) : '';
           $errBox.text(genericError).fadeIn(100);
         },
         // Always release the reentrancy guard, both on success and on
@@ -5364,6 +4657,7 @@
   $(function() {
     $('.picky-tables-wrap-third .picky-wizard[data-picky-wizard]').each(function() {
       var wrap = $(this).closest('.picky-tables-wrap');
+      try { pickyEnsureSimpleServicesItem(wrap); } catch (eSeed) {}
       pickyWizardInit(wrap);
     });
   });

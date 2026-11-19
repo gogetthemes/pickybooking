@@ -334,24 +334,14 @@ class Admin
             }
             return array( 'ready', __( 'Ready', 'pickybooking' ) );
         }
-        if ( 'picky_sec_pay_collect' === $sec_slug ) {
-            if ( ! $on( 'deposit_enabled' ) ) {
-                return array( 'disabled', __( 'Off', 'pickybooking' ) );
+                if ( 'picky_sec_pay_woocommerce' === $sec_slug ) {
+            if ( $val( 'payment_provider' ) !== 'woocommerce' ) {
+                return array( 'disabled', __( 'Idle', 'pickybooking' ) );
             }
-            return array( 'ready', __( 'On', 'pickybooking' ) );
-        }
-        if ( 'picky_sec_pay_method' === $sec_slug ) {
-            $p = $val( 'payment_provider' );
-            if ( $p === '' || $p === 'none' ) {
-                return array( 'disabled', __( 'Free', 'pickybooking' ) );
+            if ( ! class_exists( 'WooCommerce' ) ) {
+                return array( 'incomplete', __( 'Setup', 'pickybooking' ) );
             }
-            if ( $p === 'stripe' ) {
-                return array( 'ready', __( 'Stripe', 'pickybooking' ) );
-            }
-            if ( $p === 'woocommerce' ) {
-                return array( 'ready', __( 'Woo', 'pickybooking' ) );
-            }
-            return array( 'incomplete', __( 'Setup', 'pickybooking' ) );
+            return array( 'ready', __( 'Ready', 'pickybooking' ) );
         }
         if ( 'picky_sec_pay_stripe' === $sec_slug ) {
             $pk = $val( 'stripe_publishable_key' );
@@ -393,7 +383,13 @@ class Admin
                 $desc = rtrim( substr( $desc, 0, 137 ) ) . '…';
             }
         }
-        list( $state, $badge ) = $this->picky_integration_status( $sec_slug, $settings );
+        $pro_locked = Edition::is_pro_locked_section( $sec_slug );
+        if ( $pro_locked ) {
+            $state = 'pro';
+            $badge = __( 'Pro', 'pickybooking' );
+        } else {
+            list( $state, $badge ) = $this->picky_integration_status( $sec_slug, $settings );
+        }
         $brand_key = preg_replace( '/[^a-z0-9_-]/', '', strtolower( $brand ) );
         $brand_cls = $brand_key !== '' ? ' picky-int-card--' . $brand_key : '';
         $logo      = $brand !== '' ? $this->picky_settings_section_brand_img_tag( $brand, 56 ) : '';
@@ -401,20 +397,32 @@ class Admin
             $fallback = '';
             if ( $sec_slug === 'picky_sec_ai' ) {
                 $fallback = 'AI';
-            } elseif ( $sec_slug === 'picky_sec_pay_collect' ) {
-                $fallback = '$';
-            } elseif ( $sec_slug === 'picky_sec_pay_method' ) {
-                $fallback = 'Pay';
+            } elseif ( $sec_slug === 'picky_sec_sms' || $brand_key === 'vonage' ) {
+                $fallback = 'SMS';
             }
             if ( $fallback !== '' ) {
                 $logo = '<span class="picky-int-card__logo-fallback" aria-hidden="true">' . esc_html( $fallback ) . '</span>';
             }
         }
 
-        $html  = '<article class="picky-int-card picky-int-card--' . esc_attr( $state ) . $brand_cls . '" id="' . esc_attr( 'picky-section-' . $sec_slug ) . '">';
+        $card_cls = 'picky-int-card picky-int-card--' . $state . $brand_cls . ( $pro_locked ? ' picky-int-card--pro-locked is-pro-locked' : '' );
+        $pay_provider_map = array(
+            'picky_sec_pay_woocommerce' => 'woocommerce',
+            'picky_sec_pay_stripe'       => 'stripe',
+            'picky_sec_pay_paypal'       => 'paypal',
+        );
+        $pay_provider_attr = isset( $pay_provider_map[ $sec_slug ] )
+            ? ' data-picky-pay-provider="' . esc_attr( $pay_provider_map[ $sec_slug ] ) . '"'
+            : '';
+        $html  = '<article class="' . esc_attr( $card_cls ) . '" id="' . esc_attr( 'picky-section-' . $sec_slug ) . '"' . $pay_provider_attr . ( $pro_locked ? ' data-picky-pro-locked="1" inert' : '' ) . '>';
         $html .= '<div class="picky-int-card__preview">';
         $html .= $logo;
-        $html .= '<span class="picky-int-card__badge">' . esc_html( $badge ) . '</span>';
+        // Single corner badge only — Pro lock OR connection status, never both.
+        if ( $pro_locked ) {
+            $html .= Edition::pro_badge_html();
+        } else {
+            $html .= '<span class="picky-int-card__badge">' . esc_html( $badge ) . '</span>';
+        }
         $html .= '</div>';
         $html .= '<div class="picky-int-card__body">';
         if ( $title !== '' ) {
@@ -423,7 +431,10 @@ class Admin
         if ( $desc !== '' ) {
             $html .= '<p class="picky-int-card__desc">' . esc_html( $desc ) . '</p>';
         }
-        $html .= $this->picky_settings_section_integration_strip( $sec_slug, $settings );
+        if ( ! $pro_locked ) {
+            $html .= $this->picky_settings_section_integration_strip( $sec_slug, $settings );
+        }
+        // Keep real Configure control (inactive via inert / CSS when Pro-locked).
         $html .= '<details class="picky-int-card__config">';
         $html .= '<summary class="picky-int-card__summary">' . esc_html__( 'Configure', 'pickybooking' ) . '</summary>';
         $html .= '<div class="picky-int-card__fields">';
@@ -443,11 +454,12 @@ class Admin
                 'picky_sec_main_labels'   => __( 'Set how your bookable thing is named everywhere in the plugin, and how far into the future the calendar opens.', 'pickybooking' ),
                 'picky_sec_main_capacity' => __( 'Control headcount and which parts of the form and map visitors see. Capacity mode needs party size when items share one area.', 'pickybooking' ),
                 'picky_sec_main_ux'       => __( 'Choose the step order on the frontend, how phones behave, and how the widget sits in the page.', 'pickybooking' ),
-                'picky_sec_payments'      => __( 'Turn on paid bookings and pick Stripe Checkout or WooCommerce. Keys here are only for direct Stripe; Woo uses its own store gateways.', 'pickybooking' ),
-                'picky_sec_pay_collect'   => __( 'When this is on, the slot is held only after the guest pays. Choose a fixed amount, services total, or both.', 'pickybooking' ),
-                'picky_sec_pay_method'    => __( 'None skips checkout. Stripe uses the keys in the Stripe card. WooCommerce sends guests to your shop checkout.', 'pickybooking' ),
-                'picky_sec_pay_stripe'    => __( 'Used only when the provider is Stripe Checkout (direct). WooCommerce Stripe plugins do not use these keys.', 'pickybooking' ),
-                'picky_sec_pay_paypal'    => __( 'Reserved for a future PayPal flow. These fields are unused until that integration ships.', 'pickybooking' ),
+                'picky_sec_payments'         => __( 'Set how booking totals are calculated (available in Free). Online card checkout via Stripe or WooCommerce is a Pro feature.', 'pickybooking' ),
+                'picky_sec_pay_pricing'      => __( 'These values calculate the booking total shown to guests and saved on the booking. They do not charge a card by themselves.', 'pickybooking' ),
+                'picky_sec_pay_online'        => __( 'Require a card payment before the booking is confirmed. Choose a provider below; credentials live in the matching card.', 'pickybooking' ),
+                'picky_sec_pay_woocommerce'  => __( 'No API keys here — WooCommerce owns gateways and credentials. Select WooCommerce above, then configure payments in your store.', 'pickybooking' ),
+                'picky_sec_pay_stripe'       => __( 'Used only when the provider is Stripe Checkout (direct). WooCommerce Stripe plugins do not use these keys.', 'pickybooking' ),
+                'picky_sec_pay_paypal'       => __( 'Reserved for a future PayPal flow. These fields are unused until that integration ships.', 'pickybooking' ),
                 'picky_sec_schedule'      => __( 'Bookings are only accepted inside the green windows you enable. Use the second window for split shifts.', 'pickybooking' ),
                 'picky_sec_form_copy'     => __( 'Copy shown on the public form and where admin / customer emails go.', 'pickybooking' ),
                 'picky_sec_sms'           => __( 'Optional SMS to your staff phone via Vonage. Test credentials in dashboard first; failed SMS shows a settings notice.', 'pickybooking' ),
@@ -489,11 +501,11 @@ class Admin
                     $items_label
                 ),
                 'container_align'            => __( 'CSS alignment of the shortcode wrapper: useful inside full-width themes where you want the widget centered.', 'pickybooking' ),
-                'deposit_enabled'            => __( 'When on, the booking is not final until payment succeeds. Failed payment frees the slot again. The amount comes from "Payment amount source" below.', 'pickybooking' ),
-                'deposit_amount'             => __( 'Used when "Payment amount source" is Fixed amount (or as a fallback). Use the same currency as your Stripe account or WooCommerce store.', 'pickybooking' ),
-                'deposit_currency'           => __( 'ISO 4217 code. Mismatched currency vs Stripe/Woo will cause declines or wrong totals.', 'pickybooking' ),
-                'payment_amount_source'      => __( 'Where to read the charge amount from: a fixed value, the sum of selected services, or both with services taking priority.', 'pickybooking' ),
-                'payment_provider'           => __( 'None = free booking only. Direct Stripe uses the keys below. WooCommerce creates an order and uses whatever gateways you enabled in Woo.', 'pickybooking' ),
+                'deposit_enabled'            => __( 'When on, the booking is not final until payment succeeds. Failed payment frees the slot again. The amount comes from the booking price calculation above.', 'pickybooking' ),
+                'deposit_amount'             => __( 'Used when amount source is Fixed amount (or as a fallback). Same units as your prices / currency below.', 'pickybooking' ),
+                'deposit_currency'           => __( 'ISO 4217 code for price display and (in Pro) for Stripe/Woo charges.', 'pickybooking' ),
+                'payment_amount_source'      => __( 'How to calculate the booking total from a fixed amount, selected services, or both with services taking priority.', 'pickybooking' ),
+                'payment_provider'           => __( 'None = save the booking with a calculated total but no card checkout. Stripe / WooCommerce collect payment online (Pro).', 'pickybooking' ),
                 'stripe_publishable_key'     => __( 'Public key safe for browsers. Only needed for Direct Stripe mode (not for Woo’s own Stripe gateway).', 'pickybooking' ),
                 'stripe_secret_key'          => __( 'Secret key — never share. Store stays in wp_options; restrict admin users. Rotate if leaked.', 'pickybooking' ),
                 'paypal_client_id'           => __( 'Reserved for a future PayPal flow; currently unused by the booking payment logic.', 'pickybooking' ),
@@ -609,7 +621,7 @@ class Admin
                 'days_ahead'       => __( 'Tip: include your busiest booking horizon only—very large values slow down calendar generation.', 'pickybooking' ),
                 'deposit_amount'   => __( 'Use the same major-unit amount your gateway expects (e.g. 25.00, not cents, unless your store is configured otherwise).', 'pickybooking' ),
                 'deposit_enabled'  => __( 'Guests who abandon payment do not keep a confirmed booking; the time slot is released.', 'pickybooking' ),
-                'payment_amount_source' => __( 'Choose Selected services total when each bookable item exposes priced services and the customer’s total should equal the sum of what they picked.', 'pickybooking' ),
+                'payment_amount_source' => __( 'Choose Selected services total when each bookable item exposes priced services and the booking total should equal the sum of what they picked.', 'pickybooking' ),
                 'shop_people_amount'   => __( 'In capacity mode this field is required so the plugin can subtract the right headcount from each item.', 'pickybooking' ),
                 'animate_bookable_items' => __( 'Entrance and hover motion only — availability colors and selection still work when this is off.', 'pickybooking' ),
                 'picky_group_display_options' => __( 'Toggle email and phone on the public form, map visibility elements (“max persons”, center badge, ID badge, label), and the optional end-time field. If you hide email, turn off “email confirmation to guest” below.', 'pickybooking' ),
@@ -657,6 +669,9 @@ class Admin
         $picky_int_grid_open = false;
         $picky_pay_card_open = false;
         $picky_pay_grid_open = false;
+        $picky_sms_card_open = false;
+        $picky_sms_grid_open = false;
+        $picky_field_pro_locked = false;
 
         foreach ($field_args as $key_field => $field) {
             // clear output
@@ -682,6 +697,9 @@ class Admin
                 if ( $tab === '5' && $sec_slug === 'picky_sec_payments' ) {
                     $section_classes .= ' picky-int-intro picky-pay-intro';
                 }
+                if ( $tab === '3' && $sec_slug === 'picky_sec_sms_intro' ) {
+                    $section_classes .= ' picky-int-intro picky-sms-intro';
+                }
                 if ( $tab === '12' && $sec_slug !== 'picky_sec_integrations' ) {
                     if ( $picky_int_card_open ) {
                         $output_tab_12_fake .= '</div></details></div></article>';
@@ -691,27 +709,60 @@ class Admin
                         $output_tab_12_fake .= '<div class="picky-int-grid">';
                         $picky_int_grid_open = true;
                     }
+                    $picky_field_pro_locked = Edition::is_pro_locked_section( $sec_slug );
                     $output .= $this->picky_integration_card_open_html( $field, $settings, $section_help );
                     $picky_int_card_open = true;
-                } elseif ( $tab === '5' && $sec_slug !== 'picky_sec_payments' ) {
+                } elseif ( $tab === '5' && in_array( $sec_slug, array( 'picky_sec_pay_woocommerce', 'picky_sec_pay_stripe', 'picky_sec_pay_paypal' ), true ) ) {
                     if ( $picky_pay_card_open ) {
                         $output_tab_5_fake .= '</div></details></div></article>';
                         $picky_pay_card_open = false;
                     }
                     if ( ! $picky_pay_grid_open ) {
-                        $output_tab_5_fake .= '<div class="picky-int-grid picky-pay-grid">';
+                        $output_tab_5_fake .= '<div class="picky-int-grid picky-pay-grid" id="picky-pay-provider-grid">';
+                        if ( ! Edition::allows( 'payments' ) ) {
+                            $output_tab_5_fake .= '<div class="picky-pay-pro-teaser" data-picky-pay-teaser="1">';
+                            $output_tab_5_fake .= '<p class="picky-pay-pro-teaser__title">' . esc_html__( 'Online checkout is a Pro feature', 'pickybooking' ) . '</p>';
+                            $output_tab_5_fake .= '<p class="picky-pay-pro-teaser__text">' . esc_html__( 'Free keeps amount calculation and saves bookings with a total. Upgrade to collect card payments via Stripe or WooCommerce.', 'pickybooking' ) . '</p>';
+                            $output_tab_5_fake .= '<p class="picky-pay-pro-teaser__actions"><a class="button button-primary" href="' . esc_url( Edition::PRO_URL ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Go Pro', 'pickybooking' ) . '</a></p>';
+                            $output_tab_5_fake .= '</div>';
+                        }
                         $picky_pay_grid_open = true;
                     }
+                    $picky_field_pro_locked = Edition::is_pro_locked_section( $sec_slug );
                     $output .= $this->picky_integration_card_open_html( $field, $settings, $section_help );
                     $picky_pay_card_open = true;
+                } elseif ( $tab === '3' && $sec_slug !== 'picky_sec_sms_intro' ) {
+                    if ( ! empty( $picky_sms_card_open ) ) {
+                        $output_tab_3_fake .= '</div></details></div></article>';
+                        $picky_sms_card_open = false;
+                    }
+                    if ( empty( $picky_sms_grid_open ) ) {
+                        $output_tab_3_fake .= '<div class="picky-int-grid picky-sms-grid">';
+                        $picky_sms_grid_open = true;
+                    }
+                    $picky_field_pro_locked = Edition::is_pro_locked_section( $sec_slug );
+                    $output .= $this->picky_integration_card_open_html( $field, $settings, $section_help );
+                    $picky_sms_card_open = true;
                 } else {
-                $output .= '<div class="' . esc_attr( $section_classes ) . '" id="' . esc_attr( 'picky-section-' . $sec_slug ) . '">';
+                $sec_pro_locked = Edition::is_pro_locked_section( $sec_slug );
+                // Online payment zone: badge/tip only — children use field-level / pro_values locks
+                // so "None" and pricing fields stay usable in Free.
+                $sec_pro_badge_only = ( $sec_slug === 'picky_sec_pay_online' && ! Edition::allows( 'payments' ) );
+                $picky_field_pro_locked = $sec_pro_locked;
+                if ( $sec_pro_locked ) {
+                    $section_classes .= ' picky-settings-section--pro-locked is-pro-locked';
+                }
+                $output .= '<div class="' . esc_attr( $section_classes ) . '" id="' . esc_attr( 'picky-section-' . $sec_slug ) . '"' . ( $sec_pro_locked ? ' data-picky-pro-locked="1"' : '' ) . '>';
                 $output .= '<div class="picky-settings-section__head">';
                 if ( isset( $field['brand'] ) && (string) $field['brand'] !== '' ) {
                     $output .= $this->picky_settings_section_brand_img_tag( (string) $field['brand'] );
                 }
                 if ( ! empty( $field['title'] ) ) {
-                    $output .= '<h2 class="picky-settings-section__title">' . esc_html( (string) $field['title'] ) . '</h2>';
+                    $output .= '<h2 class="picky-settings-section__title">' . esc_html( (string) $field['title'] );
+                    if ( $sec_pro_locked || $sec_pro_badge_only ) {
+                        $output .= ' ' . Edition::pro_badge_html();
+                    }
+                    $output .= '</h2>';
                 }
                 $output .= '</div>';
                 $sec_desc = '';
@@ -723,17 +774,70 @@ class Admin
                 if ( $sec_desc !== '' ) {
                     $output .= '<p class="picky-settings-section__desc">' . wp_kses_post( $sec_desc ) . '</p>';
                 }
-                $output .= $this->picky_settings_section_integration_strip( $sec_slug, $settings );
+                if ( $sec_pro_locked || $sec_pro_badge_only ) {
+                    $output .= '<p class="picky-settings-section__pro-note">' . Edition::pro_tip_html(
+                        __( 'Available in PickyBooking Pro.', 'pickybooking' )
+                    ) . '</p>';
+                } else {
+                    $output .= $this->picky_settings_section_integration_strip( $sec_slug, $settings );
+                }
                 $output .= '</div>';
                 if ( $tab === '12' && $sec_slug === 'picky_sec_integrations' ) {
                     $output .= '<div class="picky-int-grid">';
                     $picky_int_grid_open = true;
                 }
-                if ( $tab === '5' && $sec_slug === 'picky_sec_payments' ) {
-                    $output .= '<div class="picky-int-grid picky-pay-grid">';
-                    $picky_pay_grid_open = true;
+                if ( $tab === '3' && $sec_slug === 'picky_sec_sms_intro' ) {
+                    $output .= '<div class="picky-int-grid picky-sms-grid">';
+                    $picky_sms_grid_open = true;
                 }
                 }
+                if ( $tab === '1' ) {
+                    $output_tab_1_fake .= $output;
+                } elseif ( $tab === '2' ) {
+                    $output_tab_2_fake .= $output;
+                } elseif ( $tab === '3' ) {
+                    $output_tab_3_fake .= $output;
+                } elseif ( $tab === '4' ) {
+                    $output_tab_4_fake .= $output;
+                } elseif ( $tab === '5' ) {
+                    $output_tab_5_fake .= $output;
+                } elseif ( $tab === '6' ) {
+                    $output_tab_6_fake .= $output;
+                } elseif ( $tab === '12' ) {
+                    $output_tab_12_fake .= $output;
+                } elseif ( $tab === '' ) {
+                    $output_all .= $output;
+                }
+                continue;
+            }
+
+            if ( 'settings_note' === $ftype ) {
+                $tab = '';
+                if ( isset( $field['tab'] ) && $field['tab'] !== '' ) {
+                    $tab = (string) $field['tab'];
+                }
+                $note_class = 'picky-settings-note';
+                if ( $tab !== '5' && $tab !== '12' && $tab !== '3' ) {
+                    $note_class = 'picky-settings-card ' . $note_class;
+                }
+                $output .= '<div class="' . esc_attr( $note_class ) . '">';
+                if ( ! empty( $field['description'] ) ) {
+                    $output .= '<p class="description" style="margin:0 0 10px;">' . wp_kses_post( (string) $field['description'] ) . '</p>';
+                }
+                $link_page  = isset( $field['link_page'] ) ? (string) $field['link_page'] : '';
+                $link_label = isset( $field['link_label'] ) ? (string) $field['link_label'] : '';
+                if ( $link_page !== '' && $link_label !== '' ) {
+                    if ( $link_page === 'wc-settings' && ! class_exists( 'WooCommerce' ) ) {
+                        $output .= '<p class="description" style="margin:0;">' . esc_html__( 'Install and activate WooCommerce to manage store payment gateways.', 'pickybooking' ) . '</p>';
+                    } else {
+                        $link_args = array( 'page' => $link_page );
+                        if ( ! empty( $field['link_tab'] ) ) {
+                            $link_args['tab'] = (string) $field['link_tab'];
+                        }
+                        $output .= '<a class="button button-secondary" href="' . esc_url( admin_url( 'admin.php?' . http_build_query( $link_args ) ) ) . '">' . esc_html( $link_label ) . '</a>';
+                    }
+                }
+                $output .= '</div>';
                 if ( $tab === '1' ) {
                     $output_tab_1_fake .= $output;
                 } elseif ( $tab === '2' ) {
@@ -771,7 +875,7 @@ class Admin
                 if ( ! empty( $field['description'] ) ) {
                     $output .= '<p class="description" style="margin:0 0 10px;">' . wp_kses_post( (string) $field['description'] ) . '</p>';
                 }
-                $output .= '<button type="button" class="button button-secondary picky-test-integration-btn picky-test-integration-btn--' . esc_attr( $integration_name ) . '">' . $btn_label . '</button>';
+                $output .= '<button type="button" class="button button-secondary picky-test-integration-btn picky-test-integration-btn--' . esc_attr( $integration_name ) . '"' . ( ! empty( $picky_field_pro_locked ) ? ' disabled' : '' ) . '>' . $btn_label . '</button>';
                 $output .= ' <span class="picky-test-integration-result" style="margin-left:8px;font-weight:600;font-size:13px;"></span>';
                 $output .= '</div>';
                 if ( $tab === '1' ) {
@@ -795,7 +899,6 @@ class Admin
             }
 
             if ( 'ai_form_copy_button' === $ftype ) {
-                // Pro-only UI — omitted entirely in Lite (no locked/disabled AI controls).
                 if ( ! \Picky\Edition::allows( 'ai' ) ) {
                     continue;
                 }
@@ -858,7 +961,7 @@ class Admin
                     $output .= '<li class="picky-settings-checkbox-stack__item">';
                     $output .= '<div class="picky-settings-toggle-row">';
                     $output .= '<label class="picky-settings-toggle-row__main" for="' . esc_attr( $checkbox_name ) . '">';
-                    $output .= '<input type="checkbox" id="' . esc_attr( $checkbox_name ) . '" name="' . esc_attr( $checkbox_name ) . '" ' . $checked . ' value="1"/>';
+                    $output .= '<input type="checkbox" id="' . esc_attr( $checkbox_name ) . '" name="' . esc_attr( $checkbox_name ) . '" ' . esc_attr( $checked ) . ' value="1"/>';
                     $output .= '<span class="picky-settings-toggle-row__text">' . esc_html( $item_label ) . '</span>';
                     $output .= '</label>';
                     if ( $ih !== '' ) {
@@ -913,9 +1016,22 @@ class Admin
             if ( $tab !== '12' ) {
                 $field_classes .= ' picky-settings-card';
             }
-            $output .= '<div id="picky-settings-field--' . esc_attr( (string) $slug ) . '" class="' . trim( $field_classes ) . '">';
+            // Section lock carries forward; individual fields may also set 'pro' => true.
+            $field_is_pro_locked = ! empty( $picky_field_pro_locked )
+                || ( ! empty( $field['pro'] ) && ! \Picky\Edition::allows( 'payments' ) && (string) ( $field['tab'] ?? '' ) === '5' )
+                || ( ! empty( $field['pro'] ) && ! empty( $field['pro_feature'] ) && ! \Picky\Edition::allows( (string) $field['pro_feature'] ) );
+            if ( $field_is_pro_locked ) {
+                $field_classes .= ' is-pro-locked picky-settings-field--pro-locked';
+            }
+            $picky_disabled_attr = $field_is_pro_locked ? ' disabled' : '';
+            $output .= '<div id="picky-settings-field--' . esc_attr( (string) $slug ) . '" class="' . trim( $field_classes ) . '"' . ( $field_is_pro_locked ? ' data-picky-pro-locked="1"' : '' ) . '>';
             $output .= '<div class="picky-settings-card__head">';
-            $output .= '<h3 class="picky-settings-card__title"><label for="' . esc_attr( (string) $setting ) . '">' . esc_html( (string) $label ) . '</label></h3>';
+            $output .= '<h3 class="picky-settings-card__title"><label for="' . esc_attr( (string) $setting ) . '">' . esc_html( (string) $label );
+            if ( $field_is_pro_locked && empty( $picky_field_pro_locked ) ) {
+                // Field-level Pro lock (section itself may be Free).
+                $output .= ' ' . Edition::pro_badge_html();
+            }
+            $output .= '</label></h3>';
             $output .= '</div>';
             // Checkbox descriptions are rendered beside the control (see checkbox branch).
             if ( $field['type'] !== 'checkbox' && isset( $field['description'] ) && ! empty( $field['description'] ) ) {
@@ -934,8 +1050,13 @@ class Admin
             
 
             if ($field['type'] === 'text') { // text
+                $ac = isset( $field['autocomplete'] ) ? (string) $field['autocomplete'] : '';
+                if ( $ac === '' && ( false !== strpos( $slug, 'secret' ) || false !== strpos( $slug, '_key' ) || false !== strpos( $slug, 'token' ) ) ) {
+                    $ac = 'new-password';
+                }
+                $ac_attr = $ac !== '' ? ' autocomplete="' . esc_attr( $ac ) . '"' : '';
                 $output .= '<p>';
-                $output .= '<input type="text" id="'.esc_attr((string)$setting).'" name="'.esc_attr((string)$setting).'" value="'.esc_attr((string)$settings[$slug]).'">';
+                $output .= '<input type="text" id="'.esc_attr((string)$setting).'" name="'.esc_attr((string)$setting).'" value="'.esc_attr((string)$settings[$slug]).'"' . $ac_attr . $picky_disabled_attr . '>';
                 if($after !== ''){
                     $output .= '<span class="picky-settings-input-suffix">'.esc_html((string)$after).'</span>';
                 }
@@ -954,12 +1075,14 @@ class Admin
                     $default_ph = __( 'Paste Groq API key (gsk_…)', 'pickybooking' );
                 } elseif ( strpos( $slug, 'stripe_secret' ) !== false ) {
                     $default_ph = __( 'Paste Stripe Secret key', 'pickybooking' );
+                } elseif ( strpos( $slug, 'paypal_client_secret' ) !== false ) {
+                    $default_ph = __( 'Paste PayPal client secret', 'pickybooking' );
                 }
 
                 $ph       = $stored !== ''
                     ? __( 'Enter a new key/token to replace the stored one', 'pickybooking' )
                     : $default_ph;
-                $output .= '<input type="password" id="' . esc_attr( (string) $setting ) . '" name="' . esc_attr( (string) $setting ) . '" value="" autocomplete="new-password" placeholder="' . esc_attr( $ph ) . '" class="regular-text" />';
+                $output .= '<input type="password" id="' . esc_attr( (string) $setting ) . '" name="' . esc_attr( (string) $setting ) . '" value="" autocomplete="new-password" placeholder="' . esc_attr( $ph ) . '" class="regular-text"' . $picky_disabled_attr . ' />';
                 if ( $stored !== '' ) {
                     $output .= '<span class="picky-settings-input-suffix description">' . esc_html__( 'A token is already saved (hidden). Leave blank to keep it.', 'pickybooking' ) . '</span>';
                 }
@@ -969,27 +1092,27 @@ class Admin
                 $output .= '</p>';
             } elseif ($field['type'] === 'textarea') { // textarea
                 $output .= '<p>';
-                $output .= '<textarea id="'.esc_attr((string)$setting).'" name="'.esc_attr((string)$setting).'" rows="10">'.esc_textarea((string)$settings[$slug]).'</textarea>';
+                $output .= '<textarea id="'.esc_attr((string)$setting).'" name="'.esc_attr((string)$setting).'" rows="10"' . $picky_disabled_attr . '>'.esc_textarea((string)$settings[$slug]).'</textarea>';
                 if($after !== ''){
                     $output .= '<span class="picky-settings-input-suffix">'.esc_html((string)$after).'</span>';
                 }
                 $output .= '</p>';
             } elseif ($field['type'] === 'number') { // number
                 $output .= '<p>';
-                $output .= '<input id="'.esc_attr((string)$setting).'" name="'.esc_attr((string)$setting).'" type="number" min="0" value="'.esc_attr((string)$settings[$slug]).'">';
+                $output .= '<input id="'.esc_attr((string)$setting).'" name="'.esc_attr((string)$setting).'" type="number" min="0" value="'.esc_attr((string)$settings[$slug]).'"' . $picky_disabled_attr . '>';
                 if($after !== ''){
                     $output .= '<span class="picky-settings-input-suffix">'.esc_html((string)$after).'</span>';
                 }
                 $output .= '</p>';
             } elseif ($field['type'] === 'select') { // select
                 $output .= '<p>';
-                    $output .= '<select id="'.esc_attr((string)$setting).'" name="'.esc_attr((string)$setting).'">'; // value в select
+                    $output .= '<select id="'.esc_attr((string)$setting).'" name="'.esc_attr((string)$setting).'"' . $picky_disabled_attr . '>'; // value в select
                         foreach ($field['options'] as $key => $value) {
                             // Associative: key = value, value = label. List: value = value = label.
                             $opt_value = is_string( $key ) ? (string) $key : (string) $value;
                             $opt_label = (string) $value;
                             $selected  = ( (string) $settings[ $slug ] === $opt_value ) ? 'selected' : '';
-                            $output   .= '<option ' . $selected . ' value="' . esc_attr( $opt_value ) . '">' . esc_html( $opt_label ) . '</option>';
+                            $output   .= '<option ' . esc_attr( $selected ) . ' value="' . esc_attr( $opt_value ) . '">' . esc_html( $opt_label ) . '</option>';
                         }
                     $output .= '</select>';
                     if($after !== ''){
@@ -998,22 +1121,43 @@ class Admin
                 $output .= '</p>';
             } else if($field['type'] === 'radio'){ // radio
                 $output .= '<div class="picky-settings-radio-tiles">';
+                $wizard_allowed = ( $slug === 'shortcode_layout' )
+                    ? \Picky\Edition::allowed_wizard_layouts()
+                    : null;
+                $pro_values = ( isset( $field['pro_values'] ) && is_array( $field['pro_values'] ) )
+                    ? array_map( 'strval', $field['pro_values'] )
+                    : array();
                 foreach ($field['inputs'] as $key => $input) {
+                    $input_val = (string) $input['value'];
+                    $pro_locked = ( is_array( $wizard_allowed ) && ! in_array( $input_val, $wizard_allowed, true ) )
+                        || ( ! empty( $pro_values ) && in_array( $input_val, $pro_values, true ) && ! \Picky\Edition::allows( 'payments' ) );
                     $checked = '';
-                    if($settings[$slug] === $input['value']){
+                    if ( ! $pro_locked && (string) $settings[ $slug ] === $input_val ) {
                         $checked = 'checked';
                     }
                     $rid = esc_attr( (string)$setting . '_' . (string)$key );
-                    $output .= '<div class="picky-settings-radio-option">';
-                    $output .= '<label class="picky-settings-radio picky-settings-radio--with-desc" for="' . $rid . '">';
-                    $output .= '<input type="radio" id="' . $rid . '" name="' . esc_attr( (string) $setting ) . '" value="' . esc_attr( (string) $input['value'] ) . '" ' . $checked . '>';
+                    $opt_class = 'picky-settings-radio-option' . ( $pro_locked ? ' is-pro-locked picky-pro-stub' : '' );
+                    $output .= '<div class="' . esc_attr( $opt_class ) . '"' . ( $pro_locked ? ' data-picky-pro-locked="1" aria-disabled="true"' : '' ) . '>';
+                    if ( $pro_locked ) {
+                        $output .= \Picky\Edition::pro_badge_html();
+                    }
+                    // Pro-locked tiles are not selectable — no for=/name binding that could still toggle.
+                    if ( $pro_locked ) {
+                        $output .= '<div class="picky-settings-radio picky-settings-radio--with-desc">';
+                        $output .= '<input type="radio" disabled tabindex="-1" aria-hidden="true" value="' . esc_attr( $input_val ) . '">';
+                    } else {
+                        $output .= '<label class="picky-settings-radio picky-settings-radio--with-desc" for="' . $rid . '">';
+                        $output .= '<input type="radio" id="' . $rid . '" name="' . esc_attr( (string) $setting ) . '" value="' . esc_attr( $input_val ) . '" ' . esc_attr( $checked ) . '>';
+                    }
+                    $output .= '<span class="picky-settings-radio-copy">';
                     $output .= '<span class="picky-settings-radio-tile__title">' . esc_html( (string) $input['title'] ) . '</span>';
                     if ( ! empty( $input['description'] ) ) {
                         $output .= '<span class="picky-settings-field-desc">' . wp_kses_post( $input['description'] ) . '</span>';
                     }
-                    $output .= '</label>';
+                    $output .= '</span>';
+                    $output .= $pro_locked ? '</div>' : '</label>';
                     $rh = '';
-                    if ( isset( $radio_help[ $slug ] ) && is_array( $radio_help[ $slug ] ) && isset( $radio_help[ $slug ][ (int) $key ] ) ) {
+                    if ( ! $pro_locked && isset( $radio_help[ $slug ] ) && is_array( $radio_help[ $slug ] ) && isset( $radio_help[ $slug ][ (int) $key ] ) ) {
                         $rh = (string) $radio_help[ $slug ][ (int) $key ];
                     }
                     if ( $rh !== '' ) {
@@ -1066,7 +1210,7 @@ class Admin
                                                     $selected = 'selected';
                                                 }
                                             }
-                                            $output .= '<option ' . $selected . ' value="' . esc_attr( (string)$value1 ) . '">' . esc_html( (string)$value1 ) . '</option>';
+                                            $output .= '<option ' . esc_attr( $selected ) . ' value="' . esc_attr( (string)$value1 ) . '">' . esc_html( (string)$value1 ) . '</option>';
                                         }
                                     $output .= '</select>';
 
@@ -1094,7 +1238,7 @@ class Admin
                                     $output .= '<div class="picky-more-time-wrap picky-inline">';
                                         $output .= '<span class="more-time-interval-label">' . esc_html__( 'Second time window', 'pickybooking' ) . '</span>';
                                         $output .= '<input type="hidden" name="'.esc_attr((string)$checkbox_name_more).'" value="0" />';
-                                        $output .= '<input type="checkbox" id="'.esc_attr((string)$checkbox_name_more).'" name="'.esc_attr((string)$checkbox_name_more).'" '.$checked_more.' value="1"/>';
+                                        $output .= '<input type="checkbox" id="'.esc_attr((string)$checkbox_name_more).'" name="'.esc_attr((string)$checkbox_name_more).'" '.esc_attr( $checked_more ).' value="1"/>';
                                     $output .= '</div>';
 
                                     $output .= '<div class="picky-more-time-selects-wrap picky-inline" style="';
@@ -1119,7 +1263,7 @@ class Admin
                                                             $selected = 'selected';
                                                         }
                                                     }
-                                                    $output .= '<option ' . $selected . ' value="' . esc_attr((string)$value1) . '">' . esc_html((string)$value1) . ' </option>';
+                                                    $output .= '<option ' . esc_attr( $selected ) . ' value="' . esc_attr((string)$value1) . '">' . esc_html((string)$value1) . ' </option>';
                                                 }
                                             $output .= '</select>';
                                         }
@@ -1130,7 +1274,7 @@ class Admin
                             $output .= '<div class="picky-inline">';
                                 $output .= '<span class="picky-workday-open-label">' . esc_html__( 'Open', 'pickybooking' ) . '</span>';
                                 $output .= '<input type="hidden" name="'.esc_attr((string)$checkbox_name).'" value="0" />';
-                                $output .= '<input type="checkbox" id="'.esc_attr((string)$checkbox_name).'" name="'.esc_attr((string)$checkbox_name).'" '.$checked.' value="1"/>';
+                                $output .= '<input type="checkbox" id="'.esc_attr((string)$checkbox_name).'" name="'.esc_attr((string)$checkbox_name).'" '.esc_attr( $checked ).' value="1"/>';
                             $output .= '</div>';
                         $output .= '</div>';
                     }  
@@ -1153,12 +1297,12 @@ class Admin
                 $has_desc = ! empty( $field['description'] );
                 if ( $has_desc ) {
                     $output .= '<div class="picky-settings-checkbox-with-desc">';
-                    $output .= '<div class="picky-settings-card__desc picky-settings-field-desc">' . wp_kses_post( $field['description'] ) . '</div>';
                 }
                 $output .= '<p class="picky-settings-checkbox-wrap">';
-                $output .= '<input type="checkbox" id="' . esc_attr( (string)$checkbox_name ) . '" name="' . esc_attr( (string)$checkbox_name ) . '" ' . $checked . ' value="1"/>';
+                $output .= '<input type="checkbox" id="' . esc_attr( (string)$checkbox_name ) . '" name="' . esc_attr( (string)$checkbox_name ) . '" ' . esc_attr( $checked ) . ' value="1"' . $picky_disabled_attr . '/>';
                 $output .= '</p>';
                 if ( $has_desc ) {
+                    $output .= '<div class="picky-settings-card__desc picky-settings-field-desc">' . wp_kses_post( $field['description'] ) . '</div>';
                     $output .= '</div>';
                 }
             } else if($field['type'] === 'colors'){ // colors
@@ -1239,9 +1383,18 @@ class Admin
             $output_tab_5_fake .= '</div>';
             $picky_pay_grid_open = false;
         }
+        if ( $picky_sms_card_open ) {
+            $output_tab_3_fake .= '</div></details></div></article>';
+            $picky_sms_card_open = false;
+        }
+        if ( $picky_sms_grid_open ) {
+            $output_tab_3_fake .= '</div>';
+            $picky_sms_grid_open = false;
+        }
             
         if($output_all === ""){
-            $plugin_title = Info::get_plugin_title();
+            $plugin_title      = Info::get_plugin_title();
+            $plugin_menu_title = Info::get_plugin_menu_title();
             $output_tab .= '<div class="picky-settings-tabs-wrap picky-settings-tabs-wrap--surface">';
             $output_tab .= '<div class="picky-settings-tabs-header">';
             $output_tab .= '<div class="picky-settings-rail__top">';
@@ -1255,7 +1408,7 @@ class Admin
             $output_tab .= '<button type="button" class="picky-settings-nav-toggle picky-settings-nav-toggle--expand-hit" aria-label="' . esc_attr__( 'Expand sidebar', 'pickybooking' ) . '" title="' . esc_attr__( 'Expand sidebar', 'pickybooking' ) . '">';
             $output_tab .= '<span class="picky-settings-nav-toggle__icon" aria-hidden="true"><svg class="picky-sidebar-toggle-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3.75" y="4.75" width="16.5" height="14.5" rx="2.25" stroke="currentColor" stroke-width="1.6"/><path d="M9.25 5v14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>';
             $output_tab .= '<span class="picky-settings-nav-toggle__label screen-reader-text">' . esc_html__( 'Expand sidebar', 'pickybooking' ) . '</span></button>';
-            $output_tab .= '<span class="picky-settings-rail__product-name">' . esc_html( (string) $plugin_title ) . '</span>';
+            $output_tab .= '<span class="picky-settings-rail__product-name">' . esc_html( (string) $plugin_menu_title ) . '</span>';
             $output_tab .= '</div>';
             $output_tab .= '</div>';
             /* Expanded: collapse control on the right of the header (not an edge tab). */
@@ -1264,7 +1417,7 @@ class Admin
             $output_tab .= '<span class="picky-settings-nav-toggle__label screen-reader-text">' . esc_html__( 'Collapse sidebar', 'pickybooking' ) . '</span></button>';
             $output_tab .= '</div>';
 
-            $active_tab = '13';
+            $active_tab = Setup_Guide::should_land_on_setup() ? '14' : '13';
             $candidate  = $this->picky_request_picky_tab_value();
             if ( $candidate !== '' ) {
                 // Legacy redirect: Reservations tab (7) was removed in favor of the unified Bookings (orders) tab.
@@ -1279,7 +1432,7 @@ class Admin
                 $active_tab_state_class .= ' builder-opened';
             }
 
-            for ( $ti = 1; $ti <= 13; $ti++ ) {
+            for ( $ti = 1; $ti <= 14; $ti++ ) {
                 $an = 'active_' . $ti;
                 $tn = 'tab_' . $ti;
                 $$an = '';
@@ -1290,6 +1443,17 @@ class Admin
             $$an = 'active';
             $$tn = '';
 
+            $setup_progress = Setup_Guide::get_progress();
+            $setup_pending  = (int) $setup_progress['pending'];
+            $setup_badge    = '';
+            if ( $setup_pending > 0 ) {
+                $setup_badge = '<span class="picky-settings-nav-badge" aria-label="' . esc_attr( sprintf(
+                    /* translators: %d: number of pending setup steps */
+                    _n( '%d pending setup step', '%d pending setup steps', $setup_pending, 'pickybooking' ),
+                    $setup_pending
+                ) ) . '">' . esc_html( (string) $setup_pending ) . '</span>';
+            }
+
             /* Scrollable nav (logo + rail-edge stay outside so the collapse tab is not clipped). */
             $output_tab .= '<nav class="picky-settings-tabs-header__nav" aria-label="' . esc_attr__( 'Plugin settings', 'pickybooking' ) . '">';
             $output_tab .= '<a href="#picky-settings-tab-13" data-tab="13" class="picky-settings-tabs-header-btn ' . esc_attr( (string) $active_13 ) . '" title="' . esc_attr__( 'Bookings', 'pickybooking' ) . '"><i class="icon-list"></i><span>' . esc_html__( 'Bookings', 'pickybooking' ) . '</span></a>';
@@ -1298,22 +1462,23 @@ class Admin
 
             $output_tab .= '<div class="picky-settings-tabs-nav-divider" role="presentation"><span class="picky-settings-tabs-nav-divider__label">' . esc_html__( 'Settings', 'pickybooking' ) . '</span></div>';
 
+            $output_tab .= '<a href="#picky-settings-tab-14" data-tab="14" class="picky-settings-tabs-header-btn picky-settings-tabs-header-btn--option ' . esc_attr( (string) $active_14 ) . '" title="' . esc_attr__( 'Setup Checklist', 'pickybooking' ) . '"><i class="icon-check-square" aria-hidden="true"></i><span>' . esc_html__( 'Setup Checklist', 'pickybooking' ) . '</span>' . $setup_badge . '</a>';
             if ( $output_tab_1_fake !== '' ) {
                 $output_tab .= '<a href="#picky-settings-tab-1" data-tab="1" class="picky-settings-tabs-header-btn picky-settings-tabs-header-btn--option ' . esc_attr( (string) $active_1 ) . '" title="' . esc_attr__( 'Main', 'pickybooking' ) . '"><i class="icon-settings"></i><span>' . esc_html__( 'Main', 'pickybooking' ) . '</span></a>';
             }
             if ( $output_tab_2_fake !== '' ) {
                 $output_tab .= '<a href="#picky-settings-tab-2" data-tab="2" class="picky-settings-tabs-header-btn picky-settings-tabs-header-btn--option ' . esc_attr( (string) $active_2 ) . '" title="' . esc_attr__( 'Work Days', 'pickybooking' ) . '"><i class="icon-calendar"></i><span>' . esc_html__( 'Work Days', 'pickybooking' ) . '</span></a>';
             }
-            if ( $output_tab_3_fake !== '' && \Picky\Edition::allows( 'sms' ) ) {
+            if ( $output_tab_3_fake !== '' ) {
                 $output_tab .= '<a href="#picky-settings-tab-3" data-tab="3" class="picky-settings-tabs-header-btn picky-settings-tabs-header-btn--option ' . esc_attr( (string) $active_3 ) . '" title="' . esc_attr__( 'SMS', 'pickybooking' ) . '"><i class="icon-smartphone"></i><span>' . esc_html__( 'SMS', 'pickybooking' ) . '</span></a>';
             }
             if ( $output_tab_4_fake !== '' ) {
                 $output_tab .= '<a href="#picky-settings-tab-4" data-tab="4" class="picky-settings-tabs-header-btn picky-settings-tabs-header-btn--option ' . esc_attr( (string) $active_4 ) . '" title="' . esc_attr__( 'Layout Colors', 'pickybooking' ) . '"><i class="icon-droplet"></i><span>' . esc_html__( 'Layout Colors', 'pickybooking' ) . '</span></a>';
             }
-            if ( $output_tab_5_fake !== '' && \Picky\Edition::allows( 'payments' ) ) {
+            if ( $output_tab_5_fake !== '' ) {
                 $output_tab .= '<a href="#picky-settings-tab-5" data-tab="5" class="picky-settings-tabs-header-btn picky-settings-tabs-header-btn--option ' . esc_attr( (string) $active_5 ) . '" title="' . esc_attr__( 'Payments', 'pickybooking' ) . '"><i class="icon-credit-card"></i><span>' . esc_html__( 'Payments', 'pickybooking' ) . '</span></a>';
             }
-            if ( $output_tab_12_fake !== '' && \Picky\Edition::allows( 'integrations' ) ) {
+            if ( $output_tab_12_fake !== '' ) {
                 $output_tab .= '<a href="#picky-settings-tab-12" data-tab="12" class="picky-settings-tabs-header-btn picky-settings-tabs-header-btn--option ' . esc_attr( (string) $active_12 ) . '" title="' . esc_attr__( 'Integrations', 'pickybooking' ) . '"><i class="icon-code" aria-hidden="true"></i><span>' . esc_html__( 'Integrations', 'pickybooking' ) . '</span></a>';
             }
             if ( $output_tab_6_fake !== '' ) {
@@ -1324,7 +1489,7 @@ class Admin
             }
             $output_tab .= '<a href="#picky-settings-tab-11" data-tab="11" class="picky-settings-tabs-header-btn picky-settings-tabs-header-btn--option ' . esc_attr( (string) $active_11 ) . '" title="' . esc_attr__( 'Documentation', 'pickybooking' ) . '"><i class="icon-life-buoy"></i><span>' . esc_html__( 'Documentation', 'pickybooking' ) . '</span></a>';
             if ( \Picky\Edition::is_lite() ) {
-                $output_tab .= '<a href="' . esc_url( \Picky\Edition::PRO_URL ) . '" class="picky-settings-tabs-header-btn picky-settings-tabs-header-btn--option picky-settings-tabs-header-btn--pro" target="_blank" rel="noopener noreferrer" title="' . esc_attr__( 'PickyBooking Pro', 'pickybooking' ) . '"><i class="icon-star"></i><span>' . esc_html__( 'Go Pro', 'pickybooking' ) . '</span></a>';
+                $output_tab .= '<a href="' . esc_url( \Picky\Edition::PRO_URL ) . '" class="picky-settings-tabs-header-btn picky-settings-tabs-header-btn--option picky-settings-tabs-header-btn--pro" target="_blank" rel="noopener noreferrer" title="' . esc_attr__( 'Upgrade to PickyBooking Pro', 'pickybooking' ) . '"><i class="icon-zap" aria-hidden="true"></i><span>' . esc_html__( 'Go Pro', 'pickybooking' ) . '</span></a>';
             }
             $output_tab .= '</nav>';
             $output_tab .= '</div>';
@@ -1345,9 +1510,10 @@ class Admin
                             $output_tab .= $output_tab_2_fake;
                         $output_tab .= '</div>';
                     }
-                    if ( $output_tab_3_fake !== '' && \Picky\Edition::allows( 'sms' ) ) {
-                        $output_tab .= '<div style="' . esc_attr( (string)$tab_3 ) . '" data-tab="3" id="picky-settings-tab-3" class="picky-settings-tab picky-settings-tab-3 picky-settings-tab-panel">';
-                            $output_tab .= $output_tab_3_fake;
+                    if ( $output_tab_3_fake !== '' ) {
+                        $panel_class = 'picky-settings-tab picky-settings-tab-3 picky-settings-tab-panel' . ( \Picky\Edition::allows( 'sms' ) ? '' : ' picky-pro-locked-panel' );
+                        $output_tab .= '<div style="' . esc_attr( (string) $tab_3 ) . '" data-tab="3" id="picky-settings-tab-3" class="' . esc_attr( $panel_class ) . '">';
+                        $output_tab .= $output_tab_3_fake;
                         $output_tab .= '</div>';
                     }
                     if($output_tab_4_fake !== ""){
@@ -1355,14 +1521,16 @@ class Admin
                             $output_tab .= $output_tab_4_fake;
                         $output_tab .= '</div>';
                     }
-                    if ( $output_tab_5_fake !== '' && \Picky\Edition::allows( 'payments' ) ) {
-                        $output_tab .= '<div style="' . esc_attr( (string)$tab_5 ) . '" data-tab="5" id="picky-settings-tab-5" class="picky-settings-tab picky-settings-tab-5 picky-settings-tab-panel">';
-                            $output_tab .= $output_tab_5_fake;
+                    if ( $output_tab_5_fake !== '' ) {
+                        // Granular Free pricing vs Pro checkout locks — do not fade the whole tab.
+                        $panel_class = 'picky-settings-tab picky-settings-tab-5 picky-settings-tab-panel';
+                        $output_tab .= '<div style="' . esc_attr( (string) $tab_5 ) . '" data-tab="5" id="picky-settings-tab-5" class="' . esc_attr( $panel_class ) . '">';
+                        $output_tab .= $output_tab_5_fake;
                         $output_tab .= '</div>';
                     }
-                    if ( $output_tab_12_fake !== '' && \Picky\Edition::allows( 'integrations' ) ) {
-                        $output_tab .= '<div style="' . esc_attr( (string)$tab_12 ) . '" data-tab="12" id="picky-settings-tab-12" class="picky-settings-tab picky-settings-tab-12 picky-settings-tab-panel">';
-                            $output_tab .= $output_tab_12_fake;
+                    if ( $output_tab_12_fake !== '' ) {
+                        $output_tab .= '<div style="' . esc_attr( (string) $tab_12 ) . '" data-tab="12" id="picky-settings-tab-12" class="picky-settings-tab picky-settings-tab-12 picky-settings-tab-panel">';
+                        $output_tab .= $output_tab_12_fake;
                         $output_tab .= '</div>';
                     }
                     if($output_tab_6_fake !== ""){
@@ -1505,13 +1673,17 @@ class Admin
      * Mirrors `redirect_edit_layout` so old bookmarks / external integrations still land in the SPA.
      */
     public function redirect_edit_order() {
-        $action  = sanitize_key( picky_request_query_value( 'action' ) );
-        $post_id = absint( picky_request_query_value( 'post' ) );
-        if ( $action !== 'edit' || get_post_type( $post_id ) !== 'picky_order' ) {
+        $action = sanitize_key( picky_request_query_value( 'action' ) );
+        if ( $action !== 'edit' ) {
             return;
         }
-        if ( ! isset( $_GET['_wpnonce'] ) || ! is_scalar( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_GET['_wpnonce'] ) ), 'picky_edit_picky_order_' . $post_id ) ) {
-            wp_die( esc_html__( 'Security check failed.', 'pickybooking' ) );
+        $nonce = picky_request_query_value( '_wpnonce' );
+        if ( $nonce === '' || ! wp_verify_nonce( $nonce, 'picky_edit_picky_order' ) ) {
+            return;
+        }
+        $post_id = absint( picky_request_query_value( 'post' ) );
+        if ( get_post_type( $post_id ) !== 'picky_order' ) {
+            return;
         }
         if ( ! current_user_can( 'edit_post', $post_id ) ) {
             wp_die( esc_html__( 'Insufficient permissions.', 'pickybooking' ) );
@@ -1586,10 +1758,10 @@ class Admin
                 data-picky-status-entity="order"
                 data-picky-entity-id="<?php echo esc_attr( (string) $order_id ); ?>"
                 data-picky-saved-status="<?php echo esc_attr( $status_now ); ?>"
-                data-picky-status-nonce="<?php echo esc_attr( wp_create_nonce( 'picky_ajax_order_status_' . $order_id ) ); ?>">
+                data-picky-status-nonce="<?php echo esc_attr( wp_create_nonce( 'picky_ajax_order_status' ) ); ?>">
                 <input type="hidden" name="action" value="picky_save_order_embedded" />
                 <input type="hidden" name="order_id" value="<?php echo esc_attr( (string) $order_id ); ?>" />
-                <?php wp_nonce_field( 'picky_save_order_' . $order_id, 'picky_order_nonce' ); ?>
+                <?php wp_nonce_field( 'picky_save_order', 'picky_order_nonce' ); ?>
 
                 <div class="picky-order-editor">
 
@@ -1681,7 +1853,7 @@ class Admin
                                 <div class="picky-oe-status-pills" role="group" aria-label="<?php esc_attr_e( 'Quick status', 'pickybooking' ); ?>">
                                     <?php foreach ( $status_map as $st_key => $st_label ) : ?>
                                         <button type="button"
-                                            class="picky-oe-pill picky-oe-pill--<?php echo esc_attr( $st_key ); ?><?php echo $status_now === $st_key ? ' is-active' : ''; ?>"
+                                            class="picky-oe-pill picky-oe-pill--<?php echo esc_attr( $st_key ); ?><?php echo esc_attr( $status_now === $st_key ? ' is-active' : '' ); ?>"
                                             data-picky-status-pill="<?php echo esc_attr( $st_key ); ?>"
                                             data-picky-target="picky-order-post-status">
                                             <?php echo esc_html( $st_label ); ?>
@@ -1696,7 +1868,7 @@ class Admin
                             <div class="picky-oe-card__footer">
                                 <a class="picky-oe-delete-link"
                                    href="<?php echo esc_url( (string) $delete_url ); ?>"
-                                   onclick="return confirm(<?php echo esc_attr( wp_json_encode( __( 'Delete this order? Child bookings will also be removed.', 'pickybooking' ) ) ); ?>);">
+                                   data-picky-confirm="<?php echo esc_attr( __( 'Delete this order? Child bookings will also be removed.', 'pickybooking' ) ); ?>">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 11v6M14 11v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M9 6V4h6v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                     <?php esc_html_e( 'Delete order', 'pickybooking' ); ?>
                                 </a>
@@ -1749,8 +1921,8 @@ class Admin
      */
     public function save_order_embedded() {
         // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Admin list/filter queries require meta_query
+        check_admin_referer( 'picky_save_order', 'picky_order_nonce' );
         $order_id = isset( $_POST['order_id'] ) && is_scalar( $_POST['order_id'] ) ? absint( wp_unslash( (string) $_POST['order_id'] ) ) : 0;
-        check_admin_referer( 'picky_save_order_' . $order_id, 'picky_order_nonce' );
         if ( $order_id <= 0 || get_post_type( $order_id ) !== 'picky_order' ) {
             wp_die( esc_html__( 'Invalid order.', 'pickybooking' ), '', array( 'response' => 400 ) );
         }
@@ -1826,7 +1998,7 @@ class Admin
         }
         $url = admin_url( add_query_arg( $args, 'admin.php' ) );
         if ( $booking_id > 0 ) {
-            $url = wp_nonce_url( $url, 'picky_open_booking_' . $booking_id );
+            $url = wp_nonce_url( $url, 'picky_open_booking' );
         }
         return $url;
     }
@@ -1854,13 +2026,17 @@ class Admin
      * Intercept native WP "Edit" requests for picky_booking: redirect to the embedded calendar editor.
      */
     public function redirect_edit_booking() {
-        $action  = sanitize_key( picky_request_query_value( 'action' ) );
-        $post_id = absint( picky_request_query_value( 'post' ) );
-        if ( $action !== 'edit' || get_post_type( $post_id ) !== 'picky_booking' ) {
+        $action = sanitize_key( picky_request_query_value( 'action' ) );
+        if ( $action !== 'edit' ) {
             return;
         }
-        if ( ! isset( $_GET['_wpnonce'] ) || ! is_scalar( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_GET['_wpnonce'] ) ), 'picky_edit_picky_booking_' . $post_id ) ) {
-            wp_die( esc_html__( 'Security check failed.', 'pickybooking' ) );
+        $nonce = picky_request_query_value( '_wpnonce' );
+        if ( $nonce === '' || ! wp_verify_nonce( $nonce, 'picky_edit_picky_booking' ) ) {
+            return;
+        }
+        $post_id = absint( picky_request_query_value( 'post' ) );
+        if ( get_post_type( $post_id ) !== 'picky_booking' ) {
+            return;
         }
         if ( ! current_user_can( 'edit_post', $post_id ) ) {
             wp_die( esc_html__( 'Insufficient permissions.', 'pickybooking' ) );
@@ -1892,7 +2068,7 @@ class Admin
             return;
         }
 
-        if ( current_user_can( 'manage_options' ) && isset( $_GET['_wpnonce'] ) && is_scalar( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_GET['_wpnonce'] ) ), 'picky_open_booking_' . $booking_id ) ) {
+        if ( current_user_can( 'manage_options' ) && isset( $_GET['_wpnonce'] ) && is_scalar( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_GET['_wpnonce'] ) ), 'picky_open_booking' ) ) {
             update_post_meta( $booking_id, '_picky_admin_seen', '1' );
         }
 
@@ -1939,10 +2115,10 @@ class Admin
                 data-picky-status-entity="booking"
                 data-picky-entity-id="<?php echo esc_attr( (string) $booking_id ); ?>"
                 data-picky-saved-status="<?php echo esc_attr( $status_now ); ?>"
-                data-picky-status-nonce="<?php echo esc_attr( wp_create_nonce( 'picky_ajax_booking_status_' . $booking_id ) ); ?>">
+                data-picky-status-nonce="<?php echo esc_attr( wp_create_nonce( 'picky_ajax_booking_status' ) ); ?>">
                 <input type="hidden" name="action" value="picky_save_booking_embedded" />
                 <input type="hidden" name="booking_id" value="<?php echo esc_attr( (string) $booking_id ); ?>" />
-                <?php wp_nonce_field( 'picky_save_booking_' . $booking_id, 'picky_booking_nonce' ); ?>
+                <?php wp_nonce_field( 'picky_save_booking', 'picky_booking_nonce' ); ?>
 
                 <div class="picky-order-editor">
 
@@ -2050,7 +2226,7 @@ class Admin
                                 <div class="picky-oe-status-pills" role="group" aria-label="<?php esc_attr_e( 'Quick status', 'pickybooking' ); ?>">
                                     <?php foreach ( $status_map as $st_key => $st_label ) : ?>
                                         <button type="button"
-                                            class="picky-oe-pill picky-oe-pill--<?php echo esc_attr( $st_key ); ?><?php echo $status_now === $st_key ? ' is-active' : ''; ?>"
+                                            class="picky-oe-pill picky-oe-pill--<?php echo esc_attr( $st_key ); ?><?php echo esc_attr( $status_now === $st_key ? ' is-active' : '' ); ?>"
                                             data-picky-status-pill="<?php echo esc_attr( $st_key ); ?>"
                                             data-picky-target="picky-booking-post-status">
                                             <?php echo esc_html( $st_label ); ?>
@@ -2085,7 +2261,7 @@ class Admin
                                     <div class="picky-oe-payment-pills" role="group" aria-label="<?php esc_attr_e( 'Quick payment status', 'pickybooking' ); ?>">
                                         <?php foreach ( $payment_map as $pay_key => $pay_label ) : ?>
                                             <button type="button"
-                                                class="picky-oe-pill picky-oe-pill--pay-<?php echo esc_attr( $pay_key ); ?><?php echo $payment_now === $pay_key ? ' is-active' : ''; ?>"
+                                                class="picky-oe-pill picky-oe-pill--pay-<?php echo esc_attr( $pay_key ); ?><?php echo esc_attr( $payment_now === $pay_key ? ' is-active' : '' ); ?>"
                                                 data-picky-payment-pill="<?php echo esc_attr( $pay_key ); ?>">
                                                 <?php echo esc_html( $pay_label ); ?>
                                             </button>
@@ -2100,7 +2276,7 @@ class Admin
                             <div class="picky-oe-card__footer">
                                 <a class="picky-oe-delete-link"
                                    href="<?php echo esc_url( (string) $delete_url ); ?>"
-                                   onclick="return confirm(<?php echo esc_attr( wp_json_encode( __( 'Delete this reservation?', 'pickybooking' ) ) ); ?>);">
+                                   data-picky-confirm="<?php echo esc_attr( __( 'Delete this reservation?', 'pickybooking' ) ); ?>">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 11v6M14 11v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M9 6V4h6v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                     <?php esc_html_e( 'Delete reservation', 'pickybooking' ); ?>
                                 </a>
@@ -2131,8 +2307,8 @@ class Admin
      * @return void
      */
     public function save_booking_embedded() {
+        check_admin_referer( 'picky_save_booking', 'picky_booking_nonce' );
         $booking_id = isset( $_POST['booking_id'] ) && is_scalar( $_POST['booking_id'] ) ? absint( wp_unslash( (string) $_POST['booking_id'] ) ) : 0;
-        check_admin_referer( 'picky_save_booking_' . $booking_id, 'picky_booking_nonce' );
         if ( $booking_id <= 0 || get_post_type( $booking_id ) !== 'picky_booking' ) {
             wp_die( esc_html__( 'Invalid reservation.', 'pickybooking' ), '', array( 'response' => 400 ) );
         }
@@ -2193,8 +2369,8 @@ class Admin
      * AJAX: save booking status immediately from the embedded editor.
      */
     public function ajax_save_booking_status() {
+        check_ajax_referer( 'picky_ajax_booking_status', 'nonce' );
         $booking_id = isset( $_POST['booking_id'] ) && is_scalar( $_POST['booking_id'] ) ? absint( wp_unslash( (string) $_POST['booking_id'] ) ) : 0;
-        check_ajax_referer( 'picky_ajax_booking_status_' . $booking_id, 'nonce' );
         if ( $booking_id <= 0 || get_post_type( $booking_id ) !== 'picky_booking' ) {
             wp_send_json_error( array( 'message' => __( 'Invalid reservation.', 'pickybooking' ) ), 400 );
         }
@@ -2289,8 +2465,8 @@ class Admin
      */
     public function ajax_save_order_status() {
         // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Admin list/filter queries require meta_query
+        check_ajax_referer( 'picky_ajax_order_status', 'nonce' );
         $order_id = isset( $_POST['order_id'] ) && is_scalar( $_POST['order_id'] ) ? absint( wp_unslash( (string) $_POST['order_id'] ) ) : 0;
-        check_ajax_referer( 'picky_ajax_order_status_' . $order_id, 'nonce' );
         if ( $order_id <= 0 || get_post_type( $order_id ) !== 'picky_order' ) {
             wp_send_json_error( array( 'message' => __( 'Invalid order.', 'pickybooking' ) ), 400 );
         }
@@ -2353,7 +2529,7 @@ class Admin
         $layouts_add_url  = $this->picky_new_layout_url();
 
         $out  = '<div class="picky-settings-tabs-header-item picky-settings-tabs-header-item--layouts">';
-        $out .= '<a href="#picky-settings-tab-9" data-tab="9" class="picky-settings-tabs-header-btn ' . esc_attr( (string) $active_class ) . '" title="' . esc_attr__( 'Layouts', 'pickybooking' ) . '" aria-haspopup="true" aria-expanded="' . ( $active_tab === '9' ? 'true' : 'false' ) . '"><i class="icon-layers" aria-hidden="true"></i><span>' . esc_html__( 'Layouts', 'pickybooking' ) . '</span></a>';
+        $out .= '<a href="#picky-settings-tab-9" data-tab="9" class="picky-settings-tabs-header-btn ' . esc_attr( (string) $active_class ) . '" title="' . esc_attr__( 'Layouts', 'pickybooking' ) . '" aria-haspopup="true" aria-expanded="' . esc_attr( $active_tab === '9' ? 'true' : 'false' ) . '"><i class="icon-layers" aria-hidden="true"></i><span>' . esc_html__( 'Layouts', 'pickybooking' ) . '</span></a>';
         $out .= '<ul class="picky-settings-tabs-submenu picky-settings-tabs-submenu--flat" role="list" aria-label="' . esc_attr__( 'Open or switch layout', 'pickybooking' ) . '">';
         foreach ( $layouts as $p ) {
             $lid    = (int) $p->ID;
@@ -2364,7 +2540,7 @@ class Admin
             }
             $sub_active = ( $active_tab === '9' && $current_layout === $lid );
             $out       .= '<li class="picky-settings-tabs-submenu__item">';
-            $out       .= '<a class="picky-settings-tabs-submenu__link' . ( $sub_active ? ' is-active' : '' ) . '" href="' . esc_url( $this->picky_layout_dashboard_url( $lid ) ) . '" title="' . esc_attr( (string) $title ) . '">' . esc_html( (string) $title ) . '</a>';
+            $out       .= '<a class="picky-settings-tabs-submenu__link' . esc_attr( $sub_active ? ' is-active' : '' ) . '" href="' . esc_url( $this->picky_layout_dashboard_url( $lid ) ) . '" title="' . esc_attr( (string) $title ) . '">' . esc_html( (string) $title ) . '</a>';
             $out       .= '</li>';
         }
         if ( $can_add_layout ) {
@@ -2412,7 +2588,7 @@ class Admin
 
         $settings = $options;
         $option_name    = INFO::OPTION_NAME;
-        $heading        = Info::get_plugin_title();
+        $heading        = Info::get_plugin_menu_title();
         $submit_text    = __( 'Save Layout', 'pickybooking' );
         $tables         = \Picky\Edition::tables_palette();
         $builder_font_family_options = $this->picky_builder_font_family_options();
@@ -2466,7 +2642,7 @@ class Admin
      * @return string Allowed tab id or '' if absent/invalid.
      */
     private function picky_request_picky_tab_value() {
-        $allowed = array( '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13' );
+        $allowed = array( '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14' );
         $bag     = picky_request_query_bag();
         $raw = isset( $bag['picky-tab'] ) ? $bag['picky-tab'] : '';
         if ( is_array( $raw ) ) {
@@ -2501,17 +2677,472 @@ class Admin
             '11' => 'is-tab-documentation',
             '12' => 'is-tab-integrations',
             '13' => 'is-tab-orders',
+            '14' => 'is-tab-setup',
         );
         return isset( $map[ $tab ] ) ? $map[ $tab ] : 'is-tab-unknown';
     }
 
     /**
-     * Rewrite list-table links so embedded lists stay on admin.php?page=picky_settings.
-     * WP_Posts_List_Table::get_views() uses edit.php — clicks otherwise leave Settings (wrong tab/context).
+     * Escape trusted admin shell HTML with wp_kses, preserving data:image URIs
+     * (layout library preset thumbs). Core kses strips the data: protocol.
      *
-     * @param string               $html             Fragment HTML (views + table).
-     * @param array<string, mixed> $canonical_query  Embed sandbox query (page, post_type, picky-tab, filters).
+     * @param string $html Raw plugin-generated admin HTML.
      * @return string
+     */
+    public function picky_escape_admin_shell_html( $html ) {
+        $html = (string) $html;
+        if ( $html === '' ) {
+            return '';
+        }
+        $allowed = $this->picky_kses_allowed_admin_list_html();
+        $map     = array();
+        $that    = $this;
+        // Park full <style> blocks so wp_kses cannot strip the tags and leak CSS as visible text.
+        $html = preg_replace_callback(
+            '/<style\b([^>]*)>(.*?)<\/style>/is',
+            static function ( $m ) use ( &$map, $that ) {
+                $token         = 'pickystyleblock' . count( $map ) . 'end';
+                $map[ $token ] = $that->picky_rebuild_safe_admin_style_block( $m[1], $m[2] );
+                return $token;
+            },
+            $html
+        );
+        // Same for inline <script> (calendar drawer, etc.): otherwise tags are stripped and JS shows as text.
+        $html = preg_replace_callback(
+            '/<script\b([^>]*)>(.*?)<\/script>/is',
+            static function ( $m ) use ( &$map, $that ) {
+                $token         = 'pickyscriptblock' . count( $map ) . 'end';
+                $map[ $token ] = $that->picky_rebuild_safe_admin_script_block( $m[1], $m[2] );
+                return $token;
+            },
+            $html
+        );
+        $html = preg_replace_callback(
+            '/\s(src|href)=([\'"])(data:[^\'"]+)\2/i',
+            static function ( $m ) use ( &$map ) {
+                $token         = 'pickydatauri' . count( $map ) . 'end';
+                $map[ $token ] = $m[3];
+                return ' ' . $m[1] . '=' . $m[2] . $token . $m[2];
+            },
+            $html
+        );
+        $html = wp_kses( (string) $html, $allowed );
+        if ( ! empty( $map ) ) {
+            $html = strtr( $html, $map );
+        }
+        return $html;
+    }
+
+    /**
+     * Rebuild a plugin admin inline <script> block (no external src).
+     *
+     * @param string $attrs_raw Raw attribute string from the opening <script> tag.
+     * @param string $js_raw    Raw JavaScript body.
+     * @return string Safe <script>...</script> or empty string when nothing usable remains.
+     */
+    private function picky_rebuild_safe_admin_script_block( $attrs_raw, $js_raw ) {
+        $attrs_raw = is_string( $attrs_raw ) ? $attrs_raw : '';
+        $js_raw    = is_string( $js_raw ) ? $js_raw : '';
+
+        // Never restore external scripts through the shell escaper.
+        if ( preg_match( '/\bsrc\s*=/i', $attrs_raw ) ) {
+            return '';
+        }
+
+        $safe_attrs = array();
+        if ( preg_match( '/\bid\s*=\s*([\'"])([^\'"]*)\1/i', $attrs_raw, $m ) ) {
+            $id = sanitize_html_class( $m[2] );
+            if ( $id !== '' && strpos( $id, 'picky-' ) === 0 ) {
+                $safe_attrs[] = 'id="' . esc_attr( $id ) . '"';
+            }
+        }
+        if ( preg_match( '/\btype\s*=\s*([\'"])([^\'"]*)\1/i', $attrs_raw, $m ) ) {
+            $type = strtolower( trim( (string) $m[2] ) );
+            if ( $type === 'text/javascript' || $type === 'application/javascript' || $type === 'module' ) {
+                $safe_attrs[] = 'type="' . esc_attr( $type ) . '"';
+            }
+        }
+
+        // Prevent script-tag breakout while keeping plugin-owned calendar/admin JS intact.
+        $js = str_ireplace( array( '</script', '<!--', '-->' ), '', $js_raw );
+        $js = trim( $js );
+        if ( $js === '' ) {
+            return '';
+        }
+
+        $open = '<script';
+        if ( ! empty( $safe_attrs ) ) {
+            $open .= ' ' . implode( ' ', $safe_attrs );
+        }
+        return $open . '>' . $js . '</script>';
+    }
+
+    /**
+     * Rebuild a plugin admin <style> block with allowlisted attributes and sanitized CSS.
+     *
+     * @param string $attrs_raw Raw attribute string from the opening <style> tag.
+     * @param string $css_raw   Raw CSS body.
+     * @return string Safe <style>...</style> or empty string when nothing usable remains.
+     */
+    private function picky_rebuild_safe_admin_style_block( $attrs_raw, $css_raw ) {
+        $attrs_raw = is_string( $attrs_raw ) ? $attrs_raw : '';
+        $css_raw   = is_string( $css_raw ) ? $css_raw : '';
+
+        $safe_attrs = array();
+        if ( preg_match( '/\bid\s*=\s*([\'"])([^\'"]*)\1/i', $attrs_raw, $m ) ) {
+            $id = sanitize_html_class( $m[2] );
+            if ( $id === '' || strpos( $id, 'picky-' ) === 0 ) {
+                $safe_attrs[] = 'id="' . esc_attr( $id ) . '"';
+            }
+        }
+        if ( preg_match( '/\bclass\s*=\s*([\'"])([^\'"]*)\1/i', $attrs_raw, $m ) ) {
+            $classes = preg_split( '/\s+/', (string) $m[2] );
+            $keep    = array();
+            if ( is_array( $classes ) ) {
+                foreach ( $classes as $class ) {
+                    $class = sanitize_html_class( $class );
+                    if ( $class !== '' && strpos( $class, 'picky-' ) === 0 ) {
+                        $keep[] = $class;
+                    }
+                }
+            }
+            if ( ! empty( $keep ) ) {
+                $safe_attrs[] = 'class="' . esc_attr( implode( ' ', $keep ) ) . '"';
+            }
+        }
+        if ( preg_match( '/\btype\s*=\s*([\'"])([^\'"]*)\1/i', $attrs_raw, $m ) ) {
+            $type = strtolower( trim( (string) $m[2] ) );
+            if ( $type === 'text/css' ) {
+                $safe_attrs[] = 'type="text/css"';
+            }
+        }
+
+        $css = $this->picky_sanitize_admin_inline_css( $css_raw );
+        if ( $css === '' ) {
+            return '';
+        }
+
+        $open = '<style';
+        if ( ! empty( $safe_attrs ) ) {
+            $open .= ' ' . implode( ' ', $safe_attrs );
+        }
+        return $open . '>' . $css . '</style>';
+    }
+
+    /**
+     * Sanitize inline CSS used in trusted admin <style> blocks.
+     *
+     * @param string $css Raw CSS.
+     * @return string
+     */
+    private function picky_sanitize_admin_inline_css( $css ) {
+        $css = (string) $css;
+        if ( $css === '' ) {
+            return '';
+        }
+        $css = str_ireplace( array( '</style', '<script', '</script', '<!--', '-->' ), '', $css );
+        $css = wp_strip_all_tags( $css );
+        $css = preg_replace( '/@import\b[^;]*;?/i', '', $css );
+        $css = preg_replace( '/expression\s*\(/i', '', $css );
+        $css = preg_replace( '/-moz-binding\s*:/i', '', $css );
+        $css = preg_replace( '/\bbehavior\s*:/i', '', $css );
+        $css = preg_replace( '/javascript\s*:/i', '', $css );
+        $css = preg_replace( '/vbscript\s*:/i', '', $css );
+        $css = preg_replace( '/data\s*:\s*text\/html/i', '', $css );
+        $css = preg_replace(
+            '/[^a-zA-Z0-9_\-\.#,:;{}()%\s\!\'\"\/\\\\\[\]\*=>~+@]/',
+            '',
+            (string) $css
+        );
+        return is_string( $css ) ? trim( $css ) : '';
+    }
+
+    /**
+     * Allowed tags/attrs for trusted admin markup (lists, settings shell, builder panels).
+     *
+     * @return array<string, array<string, bool|array>>
+     */
+    public function picky_kses_allowed_admin_list_html() {
+        $allowed = wp_kses_allowed_html( 'post' );
+        $common  = array(
+            'class'          => true,
+            'id'             => true,
+            'style'          => true,
+            'title'          => true,
+            'role'           => true,
+            'hidden'         => true,
+            'aria-label'     => true,
+            'aria-hidden'    => true,
+            'aria-current'   => true,
+            'aria-expanded'  => true,
+            'tabindex'       => true,
+            'for'            => true,
+            'name'           => true,
+            'value'          => true,
+            'type'           => true,
+            'method'         => true,
+            'action'         => true,
+            'form'           => true,
+            'disabled'       => true,
+            'checked'        => true,
+            'selected'       => true,
+            'readonly'       => true,
+            'placeholder'    => true,
+            'autocomplete'   => true,
+            'maxlength'      => true,
+            'min'            => true,
+            'max'            => true,
+            'step'           => true,
+            'size'           => true,
+            'multiple'       => true,
+            'colspan'        => true,
+            'rowspan'        => true,
+            'scope'          => true,
+            'cellspacing'    => true,
+            'cellpadding'    => true,
+            'border'         => true,
+            'width'          => true,
+            'height'         => true,
+            'loading'        => true,
+            'decoding'       => true,
+            'alt'            => true,
+            'src'            => true,
+            'href'           => true,
+            'target'         => true,
+            'rel'            => true,
+            'open'           => true,
+            // Explicit data attrs (WP 5.8-safe).
+            'data-wp-lists'  => true,
+            'data-colname'   => true,
+            'data-tab'       => true,
+            'data-sort'      => true,
+            'data-order'     => true,
+            'data-orderby'   => true,
+            'data-picky-confirm' => true,
+            'data-background'=> true,
+            'data-big-side'  => true,
+            'data-clipboard-text' => true,
+            'data-color'     => true,
+            'data-custom-id' => true,
+            'data-custom-url'=> true,
+            'data-default'   => true,
+            'data-default-color' => true,
+            'data-default-service' => true,
+            'data-font-family' => true,
+            'data-font-size' => true,
+            'data-font-weight' => true,
+            'data-icon'      => true,
+            'data-id'        => true,
+            'data-label'     => true,
+            'data-label-color' => true,
+            'data-label-font-size' => true,
+            'data-label-font-weight' => true,
+            'data-label-position' => true,
+            'data-layout'    => true,
+            'data-line-height' => true,
+            'data-link'      => true,
+            'data-max-seats' => true,
+            'data-opacity'   => true,
+            'data-payment'   => true,
+            'data-people'    => true,
+            'data-picky-ai-mode' => true,
+            'data-picky-align' => true,
+            'data-picky-context' => true,
+            'data-picky-entity-id' => true,
+            'data-picky-payment-booking-id' => true,
+            'data-picky-payment-nonce' => true,
+            'data-picky-payment-pill' => true,
+            'data-picky-saved-payment' => true,
+            'data-picky-saved-status' => true,
+            'data-picky-status-entity' => true,
+            'data-picky-status-nonce' => true,
+            'data-picky-status-pill' => true,
+            'data-picky-target' => true,
+            'data-picky-tip' => true,
+            'data-picky-settings-url' => true,
+            'data-picky-setup' => true,
+            'data-picky-setup-mark' => true,
+            'data-picky-setup-done' => true,
+            'data-picky-setup-pending' => true,
+            'data-picky-pro-tip' => true,
+            'data-preset-tier' => true,
+            'data-tier'      => true,
+            'data-step-id'   => true,
+            'data-nonce'     => true,
+            'data-rotate'    => true,
+            'data-rotate-x'  => true,
+            'data-rotate-y'  => true,
+            'data-rotate-z'  => true,
+            'data-saving-label' => true,
+            'data-seats'     => true,
+            'data-service-ids' => true,
+            'data-services'  => true,
+            'data-shape-border-color' => true,
+            'data-shape-border-width' => true,
+            'data-shape-radius' => true,
+            'data-shape-type'=> true,
+            'data-show-id'   => true,
+            'data-square-radius' => true,
+            'data-status'    => true,
+            'data-text'      => true,
+            'data-text-color'=> true,
+            'data-text-color-mode' => true,
+            'data-time'      => true,
+            'data-title'     => true,
+            'data-title-collapsed' => true,
+            'data-title-expanded' => true,
+            'data-type'      => true,
+            'data-unique'    => true,
+            'data-wall-radius' => true,
+            'data-z-index'   => true,
+            'data-picky-bicon' => true,
+            'data-picky-bicon-picker' => true,
+        );
+        $allowed['form'] = array_merge(
+            $common,
+            array(
+                'method' => true,
+                'action' => true,
+                'name'   => true,
+            )
+        );
+        $allowed['input'] = array_merge(
+            $common,
+            array(
+                'type'        => true,
+                'name'        => true,
+                'value'       => true,
+                'checked'     => true,
+                'disabled'    => true,
+                'readonly'    => true,
+                'placeholder' => true,
+                'autocomplete'=> true,
+                'size'        => true,
+                'min'         => true,
+                'max'         => true,
+                'step'        => true,
+            )
+        );
+        $allowed['select'] = array_merge(
+            $common,
+            array(
+                'name'     => true,
+                'multiple' => true,
+                'disabled' => true,
+                'size'     => true,
+            )
+        );
+        $allowed['option'] = array(
+            'value'    => true,
+            'selected' => true,
+            'disabled' => true,
+            'class'    => true,
+            'label'    => true,
+        );
+        $allowed['optgroup'] = array(
+            'label'    => true,
+            'disabled' => true,
+            'class'    => true,
+        );
+        $allowed['button'] = array_merge(
+            $common,
+            array(
+                'type'     => true,
+                'name'     => true,
+                'value'    => true,
+                'disabled' => true,
+            )
+        );
+        $allowed['label'] = array_merge(
+            $common,
+            array(
+                'for' => true,
+            )
+        );
+        $allowed['table'] = array_merge(
+            $common,
+            array(
+                'cellspacing' => true,
+                'cellpadding' => true,
+                'border'      => true,
+                'width'       => true,
+            )
+        );
+        $allowed['thead'] = $common;
+        $allowed['tbody'] = $common;
+        $allowed['tfoot'] = $common;
+        $allowed['tr']    = $common;
+        $allowed['th']    = array_merge(
+            $common,
+            array(
+                'scope'   => true,
+                'colspan' => true,
+                'rowspan' => true,
+            )
+        );
+        $allowed['td'] = array_merge(
+            $common,
+            array(
+                'colspan' => true,
+                'rowspan' => true,
+            )
+        );
+        $allowed['div']  = $common;
+        $allowed['span'] = $common;
+        $allowed['nav']  = $common;
+        $allowed['ul']   = $common;
+        $allowed['ol']   = $common;
+        $allowed['li']   = $common;
+        $allowed['p']    = $common;
+        $allowed['h1']   = $common;
+        $allowed['h2']   = $common;
+        $allowed['h3']   = $common;
+        $allowed['hr']   = $common;
+        $allowed['br']   = array();
+        $allowed['strong'] = $common;
+        $allowed['em']     = $common;
+        $allowed['small']  = $common;
+        $allowed['code']   = $common;
+        $allowed['a']      = array_merge(
+            isset( $allowed['a'] ) && is_array( $allowed['a'] ) ? $allowed['a'] : array(),
+            $common,
+            array(
+                'href'   => true,
+                'target' => true,
+                'rel'    => true,
+            )
+        );
+        $allowed['i']      = $common;
+        $allowed['img']    = $common;
+        $allowed['details']= $common;
+        $allowed['summary']= $common;
+        $allowed['aside']  = $common;
+        $allowed['section']= $common;
+        $allowed['article']= $common;
+        $allowed['header'] = $common;
+        $allowed['footer'] = $common;
+        $allowed['main']   = $common;
+        $allowed['fieldset'] = $common;
+        $allowed['legend'] = $common;
+        $allowed['textarea'] = $common;
+        // Merge SVG / icon-picker tags.
+        foreach ( \Picky\Booking_Icons::kses_allowed() as $tag => $attrs ) {
+            $allowed[ $tag ] = array_merge(
+                isset( $allowed[ $tag ] ) && is_array( $allowed[ $tag ] ) ? $allowed[ $tag ] : array(),
+                is_array( $attrs ) ? $attrs : array(),
+                $common
+            );
+        }
+        return $allowed;
+    }
+
+    /**
+     * Rewrite list-table links so embedded lists stay on admin.php?page=picky_settings.
+     * WP_Posts_List_Table::get_views() uses edit.php — clicks otherwise leave Settings.
+     *
+     * @param string               $html            Captured list HTML.
+     * @param array<string, mixed> $canonical_query Embed sandbox query.
+     * @return string Raw HTML with rewritten hrefs (escape with wp_kses at echo).
      */
     private function picky_rewrite_embedded_posts_list_html( $html, array $canonical_query ) {
         $html = (string) $html;
@@ -2522,9 +3153,9 @@ class Admin
         return (string) preg_replace_callback(
             '/\bhref\s*=\s*(["\'])([^"\']*)\1/i',
             static function ( array $m ) use ( $that, $canonical_query ) : string {
-                $quo = $m[1];
+                $quo  = $m[1];
                 $href = $m[2];
-                $new = $that->picky_canonicalize_embedded_list_href( $href, $canonical_query );
+                $new  = $that->picky_canonicalize_embedded_list_href( $href, $canonical_query );
                 if ( $new === null ) {
                     return $m[0];
                 }
@@ -2642,7 +3273,7 @@ class Admin
          */
         $active_tab_for_embed = $this->picky_request_picky_tab_value();
         if ( $active_tab_for_embed === '' ) {
-            $active_tab_for_embed = '13';
+            $active_tab_for_embed = Setup_Guide::should_land_on_setup() ? '14' : '13';
         }
         // Tab 7 (Reservations) folded into tab 13 (Bookings/Orders).
         if ( $active_tab_for_embed === '7' ) {
@@ -2809,8 +3440,10 @@ class Admin
             $picky_embed_query = $embed_query;
             $picky_found_posts = isset( $wp_query->found_posts ) ? (int) $wp_query->found_posts : 0;
             include __DIR__ . '/partials/reservations-list-custom.php';
-            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- rewritten admin list HTML from WP_List_Table; URLs rebuilt via esc_url.
-            echo $this->picky_rewrite_embedded_posts_list_html( ob_get_clean(), $embed_query );
+            echo wp_kses(
+                $this->picky_rewrite_embedded_posts_list_html( ob_get_clean(), $embed_query ),
+                $this->picky_kses_allowed_admin_list_html()
+            );
             echo '</div>';
 
             $_SERVER['REQUEST_URI'] = $backup_uri;
@@ -2845,8 +3478,10 @@ class Admin
             $picky_embed_query = $embed_query;
             $picky_found_posts = isset( $wp_query->found_posts ) ? (int) $wp_query->found_posts : 0;
             include __DIR__ . '/partials/layouts-list-custom.php';
-            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- rewritten admin list HTML from WP_List_Table; URLs rebuilt via esc_url.
-            echo $this->picky_rewrite_embedded_posts_list_html( ob_get_clean(), $embed_query );
+            echo wp_kses(
+                $this->picky_rewrite_embedded_posts_list_html( ob_get_clean(), $embed_query ),
+                $this->picky_kses_allowed_admin_list_html()
+            );
             echo '</div>';
 
             $_SERVER['REQUEST_URI'] = $backup_uri;
@@ -2877,8 +3512,10 @@ class Admin
         $wp_list_table->search_box( $pto->labels->search_items, 'post' );
         $wp_list_table->display();
         $list_markup = ob_get_clean();
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- rewritten admin list HTML from WP_List_Table; URLs rebuilt via esc_url.
-        echo $this->picky_rewrite_embedded_posts_list_html( $list_markup, $embed_query );
+        echo wp_kses(
+            $this->picky_rewrite_embedded_posts_list_html( $list_markup, $embed_query ),
+            $this->picky_kses_allowed_admin_list_html()
+        );
         echo '</form></div>';
 
         $_SERVER['REQUEST_URI'] = $backup_uri;
@@ -2899,7 +3536,7 @@ class Admin
      */
     private function picky_render_settings_app_tab_panels() {
         // phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only admin GET for UI
-        $active_tab = '13';
+        $active_tab = Setup_Guide::should_land_on_setup() ? '14' : '13';
         $candidate  = $this->picky_request_picky_tab_value();
         if ( $candidate !== '' ) {
             // Legacy redirect: tab 7 (Reservations) is folded into tab 13 (Bookings/Orders).
@@ -2910,7 +3547,7 @@ class Admin
         }
 
         $out = '';
-        $app_tabs = array( 8, 9, 10, 11, 13 );
+        $app_tabs = array( 8, 9, 10, 11, 13, 14 );
         foreach ( $app_tabs as $i ) {
             $st = ( $active_tab === (string) $i ) ? '' : 'display:none;';
             $out .= '<div style="' . esc_attr( (string) $st ) . '" data-tab="' . esc_attr( (string) $i ) . '" id="picky-settings-tab-' . esc_attr( (string) $i ) . '" class="picky-settings-tab picky-settings-tab-' . esc_attr( (string) $i ) . ' picky-settings-tab-panel picky-settings-app-tab">';
@@ -2949,6 +3586,8 @@ class Admin
                     $this->picky_render_embedded_posts_list( 'picky_order', '13' );
                 }
                 $out .= ob_get_clean();
+            } elseif ( $i === 14 ) {
+                $out .= Setup_Guide::render();
             }
             $out .= '</div>';
         }
@@ -3085,9 +3724,15 @@ class Admin
 
         // Ensure icon fonts load with absolute URLs (avoid relative URL issues when WP concatenates CSS)
         $plugin_root = plugin_dir_path( dirname( __FILE__ ) ) . Info::MAIN_FILE;
-        $root_url = plugins_url( '/', $plugin_root );
-        $font_css = "@font-face{font-family:'picky-admin-font';src:url('{$root_url}admin/font/picky-admin-font.woff?9ghvw3') format('woff'),url('{$root_url}admin/font/picky-admin-font.ttf?9ghvw3') format('truetype'),url('{$root_url}admin/font/picky-admin-font.svg?9ghvw3#picky-admin-font') format('svg');font-weight:normal;font-style:normal;font-display:block;}
-        @font-face{font-family:'picky-tools-font';src:url('{$root_url}assets/font/picky-tools-font.woff?6tbcxd') format('woff'),url('{$root_url}assets/font/picky-tools-font.ttf?6tbcxd') format('truetype'),url('{$root_url}assets/font/picky-tools-font.svg?6tbcxd#picky-tools-font') format('svg');font-weight:normal;font-style:normal;font-display:swap;}
+        $root_url    = plugins_url( '/', $plugin_root );
+        $admin_woff  = esc_url( $root_url . 'admin/font/picky-admin-font.woff?9ghvw3' );
+        $admin_ttf   = esc_url( $root_url . 'admin/font/picky-admin-font.ttf?9ghvw3' );
+        $admin_svg   = esc_url( $root_url . 'admin/font/picky-admin-font.svg?9ghvw3#picky-admin-font' );
+        $tools_woff  = esc_url( $root_url . 'assets/font/picky-tools-font.woff?6tbcxd' );
+        $tools_ttf   = esc_url( $root_url . 'assets/font/picky-tools-font.ttf?6tbcxd' );
+        $tools_svg   = esc_url( $root_url . 'assets/font/picky-tools-font.svg?6tbcxd#picky-tools-font' );
+        $font_css    = "@font-face{font-family:'picky-admin-font';src:url('{$admin_woff}') format('woff'),url('{$admin_ttf}') format('truetype'),url('{$admin_svg}') format('svg');font-weight:normal;font-style:normal;font-display:block;}
+        @font-face{font-family:'picky-tools-font';src:url('{$tools_woff}') format('woff'),url('{$tools_ttf}') format('truetype'),url('{$tools_svg}') format('svg');font-weight:normal;font-style:normal;font-display:swap;}
         .picky-wrap [class^='icon-'],.picky-wrap [class*=' icon-'],.picky-wrap .picky-element-edit-id-icon::before,.picky-wrap .picky-element-edit-rotate::before,.picky-wrap .picky-element-duplicate::before,.picky-wrap .picky-element-delete::before,.picky-wrap .picky-element-color::before,.picky-wrap .picky-element-edit::before,.picky-wrap .picky-element-custom-upload::before{font-family:'picky-tools-font' !important;speak:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}";
         wp_add_inline_style( Info::ASSET_HANDLE_APP, $font_css );
         wp_enqueue_script( Info::ASSET_HANDLE_SELECT2_SCRIPT, plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/select2.js', array( 'jquery' ), $this->version, true );
@@ -3136,7 +3781,7 @@ class Admin
         $layout_localize = array(
             'layout_id'              => $layout_id,
             'ajax_url'               => admin_url( 'admin-ajax.php' ),
-            'nonce_layout_preview'   => $layout_id ? wp_create_nonce( 'picky_save_layout_preview_' . $layout_id ) : '',
+            'nonce_layout_preview'   => current_user_can( 'manage_options' ) ? wp_create_nonce( 'picky_save_layout_preview' ) : '',
             /* translators: %s: element kind label (e.g. Shape, Table). */
             'editingElementTemplate' => __( 'Editing: %s', 'pickybooking' ),
             'elementTypeLabels'      => array(
@@ -3152,9 +3797,52 @@ class Admin
             ),
             'square_radius_field_title' => __( 'Corner radius (px)', 'pickybooking' ),
             'bookingIcons'              => Booking_Icons::js_payload(),
+            'nonce_setup'               => current_user_can( 'manage_options' ) ? wp_create_nonce( 'picky_setup_guide' ) : '',
         );
-        $layout_localize['ai_enabled'] = 0;
-        $layout_localize['i18n_ai']    = array();
+        $ai_status_payload = class_exists( __NAMESPACE__ . '\AI_Integration' )
+            ? AI_Integration::status_payload( $picky_settings )
+            : array( 'ai_enabled' => 0 );
+        $ai_integrations_url = add_query_arg(
+            array(
+                'page'      => 'picky_settings',
+                'picky_tab' => '12',
+            ),
+            admin_url( 'admin.php' )
+        );
+        $layout_localize['nonce_ai']            = current_user_can( 'manage_options' ) ? wp_create_nonce( 'picky_ai' ) : '';
+        $layout_localize['ai_enabled']          = ! empty( $ai_status_payload['ai_enabled'] ) ? 1 : 0;
+        $layout_localize['ai_status']           = isset( $ai_status_payload['ai_status'] ) ? (string) $ai_status_payload['ai_status'] : '';
+        $layout_localize['ai_provider']         = isset( $ai_status_payload['ai_provider'] ) ? (string) $ai_status_payload['ai_provider'] : '';
+        $layout_localize['ai_integrations_url'] = $ai_integrations_url;
+        $layout_localize['pro_url']             = Edition::PRO_URL;
+        $layout_localize['is_lite']             = Edition::is_lite() ? 1 : 0;
+        $layout_localize['i18n_ai']             = array(
+            'confirmReplace'      => __( 'This will replace all elements on the canvas with the AI draft. Continue?', 'pickybooking' ),
+            'generating'          => __( 'Generating…', 'pickybooking' ),
+            'done'                => __( 'Done', 'pickybooking' ),
+            'error'               => __( 'AI request failed.', 'pickybooking' ),
+            'notConfigured'       => __( 'Connect Groq (free) or OpenAI in Settings → Integrations to generate layouts.', 'pickybooking' ),
+            'billingNeeded'       => __( 'OpenAI has no credits. Switch Provider to Groq (free) or add OpenAI billing credits.', 'pickybooking' ),
+            'promptRequired'      => __( 'Please enter a short description first.', 'pickybooking' ),
+            'servicePrompt'       => __( 'Describe the service (or refine the name):', 'pickybooking' ),
+            'labelPrompt'         => __( 'Optional context for the name (cancel to abort):', 'pickybooking' ),
+            'textPrompt'          => __( 'Optional context for the text (cancel to abort):', 'pickybooking' ),
+            'statusReadyTitle'    => __( 'Connected', 'pickybooking' ),
+            'statusReadyText'     => isset( $ai_status_payload['statusReadyText'] ) ? (string) $ai_status_payload['statusReadyText'] : '',
+            'statusSetupTitle'    => __( 'AI chat preview', 'pickybooking' ),
+            'statusSetupText'     => __( 'Add a free Groq API key in Integrations to generate layouts. The chat stays available so you can see how it works.', 'pickybooking' ),
+            'statusDisabledTitle' => __( 'AI is off', 'pickybooking' ),
+            'statusDisabledText'  => __( 'Enable “AI features” in Settings → Integrations, then Save.', 'pickybooking' ),
+            'statusNoKeyTitle'    => __( 'API key missing', 'pickybooking' ),
+            'statusNoKeyText'     => __( 'Paste your Groq (free) or OpenAI API key in Settings → Integrations and Save.', 'pickybooking' ),
+            'statusBillingTitle'  => __( 'Provider limit / billing', 'pickybooking' ),
+            'statusBillingText'   => __( 'OpenAI needs credits, or Groq hit a free-tier rate limit. Wait a bit, switch model/provider, then try again.', 'pickybooking' ),
+            'openSettings'        => __( 'Open settings', 'pickybooking' ),
+            'chatUserPrefix'      => __( 'You', 'pickybooking' ),
+            'chatBotPrefix'       => __( 'AI', 'pickybooking' ),
+            'chatWelcome'         => __( 'Describe rooms and zones. I’ll draft a neat floor plan like Coworking Floor 2: walls, furniture, and matching bookable stations — not a rainbow grid.', 'pickybooking' ),
+            'generateNeedsSetup'  => __( 'Connect Groq or OpenAI first — use Open settings above.', 'pickybooking' ),
+        );
         wp_localize_script( Info::ASSET_HANDLE_APP, 'pickyLayoutData', $layout_localize );
 
         add_action( 'admin_footer', array( Booking_Icons::class, 'print_sprite_once' ) );
@@ -3241,7 +3929,7 @@ class Admin
             return esc_html__( 'Online payment reference on file', 'pickybooking' );
         }
 
-        return '—';
+        return esc_html( '—' );
     }
 
     private function picky_payment_summary_html( $post_id ) {
@@ -3303,7 +3991,7 @@ class Admin
     public function render_order_columns( $column, $post_id ) {
         if ( $column === 'picky_order_layout' ) {
             $layout_id = (int) get_post_meta( $post_id, '_picky_order_layout_id', true );
-            echo $layout_id > 0 ? esc_html( (string) get_the_title( $layout_id ) ) : '—';
+            echo esc_html( $layout_id > 0 ? (string) get_the_title( $layout_id ) : '—' );
 
         } elseif ( $column === 'picky_order_date' ) {
             $date = (string) get_post_meta( $post_id, '_picky_order_date', true );
@@ -3672,6 +4360,12 @@ class Admin
                 color: #111 !important;
                 font-weight: 600;
             }
+            /* Keep icon column fixed so the label does not drift away from the glyph. */
+            #adminmenu #toplevel_page_picky_settings .wp-menu-image {
+                width: 36px;
+                min-width: 36px;
+                max-width: 36px;
+            }
             #adminmenu li#toplevel_page_picky_settings:hover:not(.wp-has-current-submenu):not(.current) > a {
                 color: #fff;
             }
@@ -3751,7 +4445,7 @@ class Admin
         $all_count = isset( $all_count_q->found_posts ) ? absint( $all_count_q->found_posts ) : 0;
         $list_base = $in_settings_shell ? admin_url( 'admin.php' ) : admin_url( 'edit.php' );
         $all_url     = add_query_arg( $base_args, $list_base );
-        $views['picky_layout_all'] = '<a href="' . esc_url( (string) $all_url ) . '"' . ( $current_layout_id === 0 ? ' class="current" aria-current="page"' : '' ) . '>' . esc_html__( 'All Layouts', 'pickybooking' ) . ' <span class="count">(' . absint( $all_count ) . ')</span></a>';
+        $views['picky_layout_all'] = '<a href="' . esc_url( (string) $all_url ) . '"' . ( $current_layout_id === 0 ? ' class="' . esc_attr( 'current' ) . '" aria-current="page"' : '' ) . '>' . esc_html__( 'All Layouts', 'pickybooking' ) . ' <span class="count">(' . absint( $all_count ) . ')</span></a>';
 
         $layouts = get_posts(
             array(
@@ -3784,7 +4478,7 @@ class Admin
             $url = add_query_arg( $args, $list_base );
             $key = 'picky_layout_' . $lid;
             $title = get_the_title( $lid );
-            $views[ $key ] = '<a href="' . esc_url( (string) $url ) . '"' . ( $current_layout_id === $lid ? ' class="current" aria-current="page"' : '' ) . '>' . esc_html( (string) $title ) . ' <span class="count">(' . $cnt . ')</span></a>';
+            $views[ $key ] = '<a href="' . esc_url( (string) $url ) . '"' . ( $current_layout_id === $lid ? ' class="' . esc_attr( 'current' ) . '" aria-current="page"' : '' ) . '>' . esc_html( (string) $title ) . ' <span class="count">(' . $cnt . ')</span></a>';
         }
 
         return $views;
@@ -3833,13 +4527,10 @@ class Admin
 
 
     public function settings_save_validate($input){
-        // Settings API calls this sanitize callback. When the request is the options form, verify its nonce before any other input is used. Programmatic update_option() has no option_page field and must keep working.
-        $option_page = isset( $_POST['option_page'] ) && is_scalar( $_POST['option_page'] )
-            ? sanitize_key( wp_unslash( (string) $_POST['option_page'] ) )
-            : '';
+        // Settings API sanitize callback. Verify our settings nonce before reading other POST fields. Programmatic update_option() has no matching nonce and must keep working.
         $layout_field_posted = false;
-        if ( $option_page === $this->settings_group ) {
-            check_admin_referer( $this->settings_group . '-options' );
+        if ( isset( $_POST['_wpnonce'] ) && is_scalar( $_POST['_wpnonce'] )
+            && wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['_wpnonce'] ) ), $this->settings_group . '-options' ) ) {
             $layout_field_posted = ( isset( $_POST['picky_background_canvas'] ) && is_scalar( $_POST['picky_background_canvas'] ) )
                 || ( isset( $_POST['picky_background_table'] ) && is_scalar( $_POST['picky_background_table'] ) );
         }
@@ -3916,8 +4607,42 @@ class Admin
 	                    	$sms_error = 1;
 	                    }
 	                } 
-	               
-	                
+                    if ( $key === 'ai_openai_key' ) {
+                        $trim = trim( (string) $value );
+                        if ( $trim === '' && ! empty( $options_array['ai_openai_key'] ) ) {
+                            continue;
+                        }
+                        $options_array['ai_openai_key'] = sanitize_text_field( $trim );
+                        continue;
+                    }
+                    if ( $key === 'ai_groq_key' ) {
+                        $trim = trim( (string) $value );
+                        if ( $trim === '' && ! empty( $options_array['ai_groq_key'] ) ) {
+                            continue;
+                        }
+                        $options_array['ai_groq_key'] = sanitize_text_field( $trim );
+                        continue;
+                    }
+                    if ( $key === 'stripe_secret_key' || $key === 'paypal_client_secret' ) {
+                        $trim = trim( (string) $value );
+                        if ( $trim === '' && ! empty( $options_array[ $key ] ) ) {
+                            continue; // Leave blank to keep stored secret.
+                        }
+                        $options_array[ $key ] = sanitize_text_field( $trim );
+                        continue;
+                    }
+                    if ( $key === 'ai_provider' && class_exists( __NAMESPACE__ . '\AI_Integration' ) ) {
+                        $options_array['ai_provider'] = AI_Integration::normalize_provider( (string) $value );
+                        continue;
+                    }
+                    if ( $key === 'ai_model' && class_exists( __NAMESPACE__ . '\AI_Integration' ) ) {
+                        $model    = sanitize_text_field( (string) $value );
+                        $provider = isset( $input['ai_provider'] )
+                            ? AI_Integration::normalize_provider( (string) $input['ai_provider'] )
+                            : AI_Integration::get_provider( $options_array );
+                        $options_array['ai_model'] = AI_Integration::migrate_model_id( $model, $provider );
+                        continue;
+                    }
 
                     // Sanitize every option key (WP.org InputSanitization).
                     if ( $key === 'position' ) {
@@ -3946,9 +4671,18 @@ class Admin
                 }
             }
 
-            // SMS provider API checks omitted in Lite (Pro-only).
-            if ( isset( $input['send_sms'] ) ) {
-                $input['send_sms'] = '0';
+            // Pro-only toggles: never persist enablement from Lite UI (fields are disabled, but POST can still forge).
+            if ( ! Edition::allows( 'sms' ) ) {
+                $options_array['send_sms'] = '0';
+            }
+            if ( ! Edition::allows( 'payments' ) ) {
+                $options_array['deposit_enabled']  = '0';
+                $options_array['payment_provider'] = 'none';
+            }
+            if ( ! Edition::allows( 'integrations' ) ) {
+                foreach ( array( 'hubspot_enabled', 'mailchimp_enabled', 'n8n_webhook_enabled', 'zapier_webhook_enabled', 'make_webhook_enabled', 'gcal_enabled' ) as $pro_toggle ) {
+                    $options_array[ $pro_toggle ] = '0';
+                }
             }
 
 
@@ -4010,12 +4744,61 @@ class Admin
             }
         }
 
+        if ( isset( $options_array['shortcode_layout'] ) ) {
+            $options_array['shortcode_layout'] = Edition::clamp_wizard_layout( (string) $options_array['shortcode_layout'] );
+        }
+
+        Setup_Guide::on_settings_saved();
+
         return $options_array;
         
         // phpcs:enable WordPress.Security.NonceVerification.Missing
     }
 
+    /**
+     * Lite-only Pro feature stub panel (no Pro logic — markup + link only).
+     *
+     * @param string $title   Panel title.
+     * @param string $message Short description.
+     * @return string
+     */
+    private function picky_render_pro_feature_stub( $title, $message ) {
+        $out  = '<div class="picky-pro-stub-panel">';
+        $out .= '<h2 class="picky-app-tab-title picky-pro-stub-panel__title">';
+        $out .= '<span>' . esc_html( (string) $title ) . '</span> ';
+        $out .= \Picky\Edition::pro_badge_html();
+        $out .= '</h2>';
+        $out .= '<p class="picky-pro-stub-panel__text">' . esc_html( (string) $message ) . '</p>';
+        $out .= '<p class="picky-pro-stub-panel__actions">';
+        $out .= '<a class="button button-primary" href="' . esc_url( \Picky\Edition::PRO_URL ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Learn about Pro', 'pickybooking' ) . '</a>';
+        $out .= '</p>';
+        $out .= '</div>';
+        return $out;
+    }
 
+    /**
+     * AJAX: mark a soft Setup checklist step as done.
+     */
+    public function ajax_setup_mark_done() {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Forbidden.', 'pickybooking' ) ), 403 );
+        }
+        check_ajax_referer( 'picky_setup_guide', 'nonce' );
+        $step = isset( $_POST['step'] ) ? sanitize_key( wp_unslash( (string) $_POST['step'] ) ) : '';
+        if ( $step === '' || ! in_array( $step, Setup_Guide::soft_step_ids(), true ) ) {
+            wp_send_json_error( array( 'message' => __( 'Unknown step.', 'pickybooking' ) ), 400 );
+        }
+        Setup_Guide::mark_steps( $step );
+        $progress = Setup_Guide::get_progress();
+        wp_send_json_success(
+            array(
+                'step'    => $step,
+                'done'    => (int) $progress['done'],
+                'pending' => (int) $progress['pending'],
+                'total'   => (int) $progress['total'],
+            )
+        );
+    }
 
     // Element Mapping
     public function vc_infobox_mapping() {
@@ -4068,10 +4851,11 @@ class Admin
 
 
     public function add_menus() {
-        $plugin_name = Info::get_plugin_title();
+        $plugin_name = Info::get_plugin_menu_title();
 
         /* Top-level opens the unified dashboard (reservations, calendar, layouts live in-app). */
         /* Above WooCommerce (typically ~55–56) so the plugin stays visible in the main admin stack. */
+        /* Menu label stays short — full Plugin Name is for WP.org / Plugins list only. */
         add_menu_page(
             (string) $plugin_name,
             (string) $plugin_name,
@@ -4429,13 +5213,45 @@ class Admin
         return '';
     }
 
-    private function picky_doc_format_value( $value ) {
+    /**
+     * Whether a settings slug should never be shown in plaintext in docs.
+     *
+     * @param string $slug Option key.
+     * @return bool
+     */
+    private function picky_doc_is_secret_option( $slug ) {
+        $s = strtolower( (string) $slug );
+        if ( $s === '' ) {
+            return false;
+        }
+        if ( preg_match( '/(_key|_secret|_token|_password)$/', $s ) ) {
+            return true;
+        }
+        if ( false !== strpos( $s, 'password' )
+            || false !== strpos( $s, 'secret' )
+            || false !== strpos( $s, 'access_token' )
+            || false !== strpos( $s, 'api_key' )
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param mixed  $value Option value.
+     * @param string $slug  Option key (used to mask secrets).
+     * @return string
+     */
+    private function picky_doc_format_value( $value, $slug = '' ) {
         if ( is_array( $value ) || is_object( $value ) ) {
             return __( '[complex value]', 'pickybooking' );
         }
         $value = (string) $value;
         if ( $value === '' ) {
             return __( 'empty', 'pickybooking' );
+        }
+        if ( $this->picky_doc_is_secret_option( $slug ) ) {
+            return __( '•••••••• (set)', 'pickybooking' );
         }
         if ( $value === '1' ) {
             return __( 'enabled (1)', 'pickybooking' );
@@ -5183,7 +5999,7 @@ class Admin
             }
         }
         ?>
-        <div class="<?php echo esc_attr( (string) $cal_wrapper_class ); ?>" data-picky-context="<?php echo $embed ? 'calendar-embedded' : 'calendar'; ?>">
+        <div class="<?php echo esc_attr( (string) $cal_wrapper_class ); ?>" data-picky-context="<?php echo esc_attr( $embed ? 'calendar-embedded' : 'calendar' ); ?>">
             <div class="picky-cal-head">
                 <div class="picky-cal-head__main">
                     <div class="picky-cal-head__copy">
@@ -5306,8 +6122,8 @@ class Admin
                 <a class="button" href="<?php echo esc_url( add_query_arg( array_merge( $base_args, array( 'date' => $next_date ) ), $base_url ) ); ?>"><?php echo esc_html__( 'Next', 'pickybooking' ); ?> &rarr;</a>
                 <span class="picky-cal-spacer"></span>
                 <nav class="picky-cal-view-links" aria-label="<?php echo esc_attr__( 'Calendar view', 'pickybooking' ); ?>">
-                    <a class="picky-cal-view-link<?php echo $view === 'day' ? ' is-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( array_merge( $base_args, array( 'view' => 'day', 'date' => $start_date->format( 'Y-m-d' ) ) ), $base_url ) ); ?>"><?php echo esc_html__( 'Day', 'pickybooking' ); ?></a>
-                    <a class="picky-cal-view-link<?php echo $view === 'week' ? ' is-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( array_merge( $base_args, array( 'view' => 'week', 'date' => $start_date->format( 'Y-m-d' ) ) ), $base_url ) ); ?>"><?php echo esc_html__( 'Week', 'pickybooking' ); ?></a>
+                    <a class="picky-cal-view-link<?php echo esc_attr( $view === 'day' ? ' is-active' : '' ); ?>" href="<?php echo esc_url( add_query_arg( array_merge( $base_args, array( 'view' => 'day', 'date' => $start_date->format( 'Y-m-d' ) ) ), $base_url ) ); ?>"><?php echo esc_html__( 'Day', 'pickybooking' ); ?></a>
+                    <a class="picky-cal-view-link<?php echo esc_attr( $view === 'week' ? ' is-active' : '' ); ?>" href="<?php echo esc_url( add_query_arg( array_merge( $base_args, array( 'view' => 'week', 'date' => $start_date->format( 'Y-m-d' ) ) ), $base_url ) ); ?>"><?php echo esc_html__( 'Week', 'pickybooking' ); ?></a>
                     <a class="picky-cal-view-link" href="<?php echo esc_url( add_query_arg( array_merge( $base_args, array( 'date' => $today->format( 'Y-m-d' ) ) ), $base_url ) ); ?>"><?php echo esc_html__( 'Today', 'pickybooking' ); ?></a>
                 </nav>
                 <form method="get" class="picky-cal-jump">
@@ -5845,10 +6661,10 @@ class Admin
                                 <?php endif; ?>
                                 <p class="picky-docs-meta">
                                     <strong><?php esc_html_e( 'Current', 'pickybooking' ); ?>:</strong>
-                                    <?php echo esc_html( $this->picky_doc_format_value( $current_value ) ); ?>
+                                    <?php echo esc_html( $this->picky_doc_format_value( $current_value, $slug ) ); ?>
                                     &nbsp;|&nbsp;
                                     <strong><?php esc_html_e( 'Default', 'pickybooking' ); ?>:</strong>
-                                    <?php echo esc_html( $this->picky_doc_format_value( $default_value ) ); ?>
+                                    <?php echo esc_html( $this->picky_doc_format_value( $default_value, $slug ) ); ?>
                                 </p>
                             </article>
                         <?php endforeach; ?>
@@ -5913,13 +6729,11 @@ class Admin
         }
 
         $layout_id = absint( picky_request_query_value( 'layout_id' ) );
-        $delete_nonce = picky_request_query_value( '_wpnonce' );
-        if ( ! wp_verify_nonce( $delete_nonce, 'picky_delete_layout_' . $layout_id ) ) {
-            wp_die( esc_html__( 'Security check failed.', 'pickybooking' ) );
-        }
         if ( ! $layout_id || get_post_type( $layout_id ) !== 'picky_layout' ) {
             wp_die( esc_html__( 'Invalid layout.', 'pickybooking' ) );
         }
+
+        check_admin_referer( 'picky_delete_layout_' . $layout_id );
 
         if ( ! current_user_can( 'delete_post', $layout_id ) ) {
             wp_die( esc_html__( 'Insufficient permissions.', 'pickybooking' ) );
@@ -5950,13 +6764,11 @@ class Admin
         }
 
         $layout_id = absint( picky_request_query_value( 'layout_id' ) );
-        $duplicate_nonce = picky_request_query_value( '_wpnonce' );
-        if ( ! wp_verify_nonce( $duplicate_nonce, 'picky_duplicate_layout_' . $layout_id ) ) {
-            wp_die( esc_html__( 'Security check failed.', 'pickybooking' ) );
-        }
         if ( ! $layout_id || get_post_type( $layout_id ) !== 'picky_layout' ) {
             wp_die( esc_html__( 'Invalid layout.', 'pickybooking' ) );
         }
+
+        check_admin_referer( 'picky_duplicate_layout_' . $layout_id );
 
         if ( ! current_user_can( 'edit_post', $layout_id ) || ! current_user_can( 'publish_posts' ) ) {
             wp_die( esc_html__( 'Insufficient permissions.', 'pickybooking' ) );
@@ -6198,13 +7010,17 @@ class Admin
 
     /** Intercept native WP "Edit" for picky_layout — redirect to builder. */
     public function redirect_edit_layout() {
-        $action  = sanitize_key( picky_request_query_value( 'action' ) );
-        $post_id = absint( picky_request_query_value( 'post' ) );
-        if ( $action !== 'edit' || get_post_type( $post_id ) !== 'picky_layout' ) {
+        $action = sanitize_key( picky_request_query_value( 'action' ) );
+        if ( $action !== 'edit' ) {
             return;
         }
-        if ( ! isset( $_GET['_wpnonce'] ) || ! is_scalar( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_GET['_wpnonce'] ) ), 'picky_edit_picky_layout_' . $post_id ) ) {
-            wp_die( esc_html__( 'Security check failed.', 'pickybooking' ) );
+        $nonce = picky_request_query_value( '_wpnonce' );
+        if ( $nonce === '' || ! wp_verify_nonce( $nonce, 'picky_edit_picky_layout' ) ) {
+            return;
+        }
+        $post_id = absint( picky_request_query_value( 'post' ) );
+        if ( get_post_type( $post_id ) !== 'picky_layout' ) {
+            return;
         }
         if ( ! current_user_can( 'manage_options' ) ) {
             wp_die( esc_html__( 'Insufficient permissions.', 'pickybooking' ) );
@@ -6270,8 +7086,7 @@ class Admin
         $actions['picky_export'] = '<a href="' . esc_url( (string) $export_url ) . '">' . esc_html__( 'Export JSON', 'pickybooking' ) . '</a>';
         unset( $actions['trash'], $actions['untrash'], $actions['delete'] );
         if ( current_user_can( 'delete_post', (int) $post->ID ) ) {
-            $confirm = esc_js( __( 'Delete this layout permanently? This cannot be undone.', 'pickybooking' ) );
-            $actions['delete'] = '<a href="' . esc_url( $this->picky_layout_delete_url( (int) $post->ID ) ) . '" class="submitdelete" onclick="return confirm(\'' . $confirm . '\');">' . esc_html__( 'Delete', 'pickybooking' ) . '</a>';
+            $actions['delete'] = '<a href="' . esc_url( $this->picky_layout_delete_url( (int) $post->ID ) ) . '" class="submitdelete" data-picky-confirm="' . esc_attr( __( 'Delete this layout permanently? This cannot be undone.', 'pickybooking' ) ) . '">' . esc_html__( 'Delete', 'pickybooking' ) . '</a>';
         }
         return $actions;
     }
@@ -6589,6 +7404,39 @@ class Admin
                 }
             }
 
+            $visual = isset( $svc['visual'] ) ? sanitize_key( (string) $svc['visual'] ) : '';
+            if ( $visual !== 'image' && $visual !== 'icon' ) {
+                $visual = '';
+            }
+            $image_id  = isset( $svc['image_id'] ) ? absint( $svc['image_id'] ) : 0;
+            $image_url = isset( $svc['image_url'] ) ? esc_url_raw( (string) $svc['image_url'] ) : '';
+            $image_ratio = isset( $svc['image_ratio'] ) ? sanitize_key( (string) $svc['image_ratio'] ) : 'square';
+            if ( ! in_array( $image_ratio, array( 'square', 'portrait', 'landscape' ), true ) ) {
+                $image_ratio = 'square';
+            }
+            $icon = isset( $svc['icon'] ) ? Booking_Icons::sanitize( $svc['icon'] ) : '';
+
+            // Mutually exclusive: image XOR icon.
+            if ( $visual === 'image' || ( $visual === '' && $image_id > 0 && $image_url !== '' && $icon === '' ) ) {
+                $visual = 'image';
+                $icon   = '';
+                if ( $image_id > 0 ) {
+                    $resolved = wp_get_attachment_image_url( $image_id, 'medium' );
+                    if ( is_string( $resolved ) && $resolved !== '' ) {
+                        $image_url = esc_url_raw( $resolved );
+                    }
+                }
+                if ( $image_url === '' ) {
+                    $visual   = 'icon';
+                    $image_id = 0;
+                }
+            } else {
+                $visual    = 'icon';
+                $image_id  = 0;
+                $image_url = '';
+                $image_ratio = 'square';
+            }
+
             $out[] = array(
                 'sid'         => $sid,
                 'name'        => $name,
@@ -6596,7 +7444,11 @@ class Admin
                 'duration'    => $duration,
                 'description' => $description,
                 'parent_sids' => $parent_sids,
-                'icon'        => isset( $svc['icon'] ) ? Booking_Icons::sanitize( $svc['icon'] ) : '',
+                'icon'        => $icon,
+                'visual'      => $visual,
+                'image_id'    => $image_id,
+                'image_url'   => $image_url,
+                'image_ratio' => $image_ratio,
             );
         }
         return $out;
@@ -6788,6 +7640,7 @@ class Admin
             'show_booked_avatars'    => '',
             'booked_avatars_tone'    => '',
             'shortcode_layout'       => '',
+            'simple_show_services'   => '',
             'multi_select'           => '',
             'event_mode'             => '',
             'event_date'             => '',
@@ -6861,6 +7714,7 @@ class Admin
             'show_labels'            => ( $layout_meta['show_labels'] === '0' || $layout_meta['show_labels'] === '1' ) ? $layout_meta['show_labels'] : '',
             'show_item_fill'         => ( $layout_meta['show_item_fill'] === '0' || $layout_meta['show_item_fill'] === '1' ) ? $layout_meta['show_item_fill'] : '',
             'shortcode_layout'       => in_array( $layout_meta['shortcode_layout'], array( '1', '2', '3', '4' ), true ) ? $layout_meta['shortcode_layout'] : '',
+            'simple_show_services'   => ( $layout_meta['simple_show_services'] === '1' ) ? '1' : ( ( $layout_meta['simple_show_services'] === '0' ) ? '0' : '' ),
             'multi_select'           => ( $layout_meta['multi_select'] === '0' || $layout_meta['multi_select'] === '1' ) ? $layout_meta['multi_select'] : '',
             'event_mode'             => ( $layout_meta['event_mode'] === 'once' ) ? 'once' : '',
             'event_date'             => function_exists( 'picky_normalize_booking_date' ) ? picky_normalize_booking_date( $layout_meta['event_date'] ) : '',
@@ -7296,6 +8150,512 @@ class Admin
 
             [
                 'type'        => 'settings_section',
+                'slug'        => 'picky_sec_payments',
+                'title'       => __( 'Payments & deposits', 'pickybooking' ),
+                'description' => __( 'Calculate booking totals in Free. Online card checkout (Stripe / WooCommerce) is available in Pro.', 'pickybooking' ),
+                'tab'         => '5',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_pay_pricing',
+                'title'       => __( 'Booking price calculation', 'pickybooking' ),
+                'description' => __( 'These values calculate the booking total shown to guests and saved on the booking. They do not charge a card by themselves.', 'pickybooking' ),
+                'tab'         => '5',
+            ],
+            [
+                'label' => __( 'Amount calculation', 'pickybooking' ),
+                'slug'  => 'payment_amount_source',
+                'type'  => 'radio',
+                'inputs' => array(
+                    0 => array(
+                        'title'       => __( 'Fixed amount', 'pickybooking' ),
+                        'value'       => 'fixed',
+                        'description' => __( 'Flat amount × each booked item.', 'pickybooking' ),
+                    ),
+                    1 => array(
+                        'title'       => __( 'Services total', 'pickybooking' ),
+                        'value'       => 'services',
+                        'description' => __( 'Sum of selected service prices.', 'pickybooking' ),
+                    ),
+                    2 => array(
+                        'title'       => __( 'Services, else fixed', 'pickybooking' ),
+                        'value'       => 'services_or_fixed',
+                        'description' => __( 'Services when > 0; otherwise fixed.', 'pickybooking' ),
+                    ),
+                ),
+                'tab'   => '5',
+            ],
+            [
+                'label'       => __( 'Fixed deposit / booking amount', 'pickybooking' ),
+                'slug'        => 'deposit_amount',
+                'type'        => 'number',
+                'after'       => '',
+                'description' => __( 'Per booked item when using Fixed amount or as a fallback. Ignored when source is Services total and the sum is > 0.', 'pickybooking' ),
+                'tab'         => '5',
+            ],
+            [
+                'label'       => __( 'Currency (ISO code)', 'pickybooking' ),
+                'slug'        => 'deposit_currency',
+                'type'        => 'text',
+                'description' => __( 'Three-letter code, e.g. USD, EUR, GBP. Used for price display; in Pro also for Stripe/Woo charges.', 'pickybooking' ),
+                'tab'         => '5',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_pay_online',
+                'title'       => __( 'Online payment', 'pickybooking' ),
+                'description' => __( 'Collect a card payment before the booking is confirmed. Available in PickyBooking Pro.', 'pickybooking' ),
+                'tab'         => '5',
+            ],
+            [
+                'label'       => __( 'Require online payment to confirm a booking', 'pickybooking' ),
+                'slug'        => 'deposit_enabled',
+                'type'        => 'checkbox',
+                'pro'         => true,
+                'pro_feature' => 'payments',
+                'description' => __( 'If enabled, the guest is sent to pay right after submitting the form (Stripe Checkout or WooCommerce, depending on the provider below).', 'pickybooking' ),
+                'tab'         => '5',
+            ],
+            [
+                'label'      => __( 'Payment provider', 'pickybooking' ),
+                'slug'       => 'payment_provider',
+                'type'       => 'radio',
+                'pro_values' => array( 'stripe', 'woocommerce' ),
+                'inputs'     => array(
+                    0 => array(
+                        'title'       => __( 'None', 'pickybooking' ),
+                        'value'       => 'none',
+                        'description' => __( 'Save booking with total, no card checkout.', 'pickybooking' ),
+                    ),
+                    1 => array(
+                        'title'       => __( 'Stripe Checkout', 'pickybooking' ),
+                        'value'       => 'stripe',
+                        'description' => __( 'Hosted Stripe session (keys in card below).', 'pickybooking' ),
+                    ),
+                    2 => array(
+                        'title'       => __( 'WooCommerce', 'pickybooking' ),
+                        'value'       => 'woocommerce',
+                        'description' => __( 'Store checkout / pay-for-order page.', 'pickybooking' ),
+                    ),
+                ),
+                'tab' => '5',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_pay_woocommerce',
+                'title'       => __( 'WooCommerce', 'pickybooking' ),
+                'description' => __( 'No API keys here — WooCommerce owns gateways and credentials. Select WooCommerce above, then configure payments in your store.', 'pickybooking' ),
+                'tab'         => '5',
+                'brand'       => 'woocommerce',
+            ],
+            [
+                'type'        => 'settings_note',
+                'slug'        => 'woocommerce_pay_note',
+                'description' => __( 'When WooCommerce is the payment provider, PickyBooking creates a store order and redirects the guest to your shop checkout. Card keys and gateways are managed in WooCommerce, not in this plugin.', 'pickybooking' ),
+                'link_label'  => __( 'Open WooCommerce payments', 'pickybooking' ),
+                'link_page'   => 'wc-settings',
+                'link_tab'    => 'checkout',
+                'tab'         => '5',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_pay_stripe',
+                'title'       => __( 'Stripe', 'pickybooking' ),
+                'description' => __( 'Only for Stripe Checkout (direct). Leave empty if you charge via WooCommerce.', 'pickybooking' ),
+                'tab'         => '5',
+                'brand'       => 'stripe',
+            ],
+            [
+                'label'       => __( 'Stripe publishable key', 'pickybooking' ),
+                'slug'        => 'stripe_publishable_key',
+                'type'        => 'text',
+                'description' => __( 'pk_… key (used for direct Stripe mode).', 'pickybooking' ),
+                'tab'         => '5',
+            ],
+            [
+                'label'       => __( 'Stripe secret key', 'pickybooking' ),
+                'slug'        => 'stripe_secret_key',
+                'type'        => 'password',
+                'description' => __( 'sk_… key — keep private; only for direct Stripe mode.', 'pickybooking' ),
+                'tab'         => '5',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_pay_paypal',
+                'title'       => __( 'PayPal', 'pickybooking' ),
+                'description' => __( 'Reserved for a future PayPal flow. Saving values here does not enable PayPal yet.', 'pickybooking' ),
+                'tab'         => '5',
+                'brand'       => 'paypal',
+            ],
+            [
+                'label'       => __( 'PayPal client ID', 'pickybooking' ),
+                'slug'        => 'paypal_client_id',
+                'type'        => 'text',
+                'autocomplete'=> 'off',
+                'description' => __( 'Reserved for future PayPal integration.', 'pickybooking' ),
+                'tab'         => '5',
+            ],
+            [
+                'label'       => __( 'PayPal client secret', 'pickybooking' ),
+                'slug'        => 'paypal_client_secret',
+                'type'        => 'password',
+                'description' => __( 'Reserved for future PayPal integration.', 'pickybooking' ),
+                'tab'         => '5',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_integrations',
+                'title'       => __( 'CRM & automation', 'pickybooking' ),
+                'description' => __( 'Connect successful bookings to your CRM, email platform, and automation webhooks. These run after the booking is saved in WordPress.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_ai',
+                'title'       => __( 'AI assistant', 'pickybooking' ),
+                'description' => __( 'Draft layouts and copy with your own API key. Groq offers a free tier (no card required). OpenAI is optional and billed to your OpenAI account. PickyBooking does not proxy or store your key on our servers.', 'pickybooking' ),
+                'tab'         => '12',
+                'brand'       => 'ai',
+            ],
+            [
+                'label'       => __( 'Enable AI features', 'pickybooking' ),
+                'slug'        => 'ai_enabled',
+                'type'        => 'checkbox',
+                'description' => __( 'Optional. Automatically turns on when an API key is saved. Uncheck only if you want to hide AI generation without deleting the key — saving a key again will re-enable it.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Provider', 'pickybooking' ),
+                'slug'        => 'ai_provider',
+                'type'        => 'select',
+                'options'     => AI_Integration::providers(),
+                'description' => __( 'Groq = free tier (recommended to start). OpenAI = paid, often higher quality.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Groq API key', 'pickybooking' ),
+                'slug'        => 'ai_groq_key',
+                'type'        => 'password',
+                'description' => __( 'Free key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer">console.groq.com/keys</a> (no credit card). Leave blank after saving to keep the existing key.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'OpenAI API key', 'pickybooking' ),
+                'slug'        => 'ai_openai_key',
+                'type'        => 'password',
+                'description' => __( 'Only needed if Provider is OpenAI. Create a key at <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">platform.openai.com/api-keys</a>. Leave blank after saving to keep the existing key.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Model', 'pickybooking' ),
+                'slug'        => 'ai_model',
+                'type'        => 'select',
+                'options'     => array_merge(
+                    AI_Integration::models_for_provider( 'groq' ),
+                    AI_Integration::models_for_provider( 'openai' )
+                ),
+                'description' => __( 'Pick a model that matches your provider. For Groq free tier, Llama 4 Scout is fastest; GPT OSS models are stronger but use reasoning tokens.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'integration_test_button',
+                'slug'        => 'ai',
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_hubspot',
+                'title'       => __( 'HubSpot CRM', 'pickybooking' ),
+                'description' => __( 'When sync is on, each successful booking is pushed from WordPress to HubSpot: the guest becomes (or updates) a contact, and optionally a deal is created with the full reservation in the deal description and a link to edit the booking in WP. HubSpot does not load or mirror bookings back into this plugin unless you build separate webhooks or workflows.', 'pickybooking' ),
+                'tab'         => '12',
+                'brand'       => 'hubspot',
+            ],
+            [
+                'label'       => __( 'Enable HubSpot sync', 'pickybooking' ),
+                'slug'        => 'hubspot_enabled',
+                'type'        => 'checkbox',
+                'description' => __( 'When enabled, each successful booking is sent to HubSpot after it is saved in WordPress.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'HubSpot access token', 'pickybooking' ),
+                'slug'        => 'hubspot_access_token',
+                'type'        => 'password',
+                'description' => __( 'In HubSpot: open <strong>Development</strong> → <strong>Legacy apps</strong>, create a <strong>legacy private app</strong> (or use the new developer platform). Under Scopes, add at least <code>crm.objects.contacts.read</code>, <code>crm.objects.contacts.write</code>, <code>crm.objects.deals.read</code>, and <code>crm.objects.deals.write</code> so contacts, deals, and deal pipelines can be used. Turn off “Create a HubSpot deal for each booking” below if you only want contacts. Note-related scopes are not required. Then open the app’s <strong>Auth</strong> tab, reveal the access token, and paste it here.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Create a HubSpot deal for each booking', 'pickybooking' ),
+                'slug'        => 'hubspot_sync_deals',
+                'type'        => 'checkbox',
+                'description' => __( 'Creates a deal linked to the contact, with date, time, party size, and an admin link to the WordPress reservation. Uses the first pipeline and first stage unless you set overrides below.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Deal pipeline ID (optional)', 'pickybooking' ),
+                'slug'        => 'hubspot_deal_pipeline_id',
+                'type'        => 'text',
+                'description' => __( 'Internal pipeline ID (e.g. <code>default</code> or a custom ID from HubSpot deal pipeline settings). Leave empty together with stage to auto-detect.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Deal stage ID (optional)', 'pickybooking' ),
+                'slug'        => 'hubspot_deal_stage_id',
+                'type'        => 'text',
+                'description' => __( 'Internal stage ID within that pipeline. Must be set together with pipeline ID if you override auto-detection.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'integration_test_button',
+                'slug'        => 'hubspot',
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_mailchimp',
+                'title'       => __( 'Mailchimp', 'pickybooking' ),
+                'description' => __( 'Uses your own Mailchimp account with a Marketing API key. You do <strong>not</strong> need OAuth, app registration, or Mailchimp’s “Developing an app?” flow — that path is for products that access <em>other people’s</em> Mailchimp accounts.', 'pickybooking' ),
+                'tab'         => '12',
+                'brand'       => 'mailchimp',
+            ],
+            [
+                'label'       => __( 'Enable Mailchimp sync', 'pickybooking' ),
+                'slug'        => 'mailchimp_enabled',
+                'type'        => 'checkbox',
+                'description' => __( 'When enabled, each successful booking is sent to Mailchimp after it is saved in WordPress.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Mailchimp Marketing API key', 'pickybooking' ),
+                'slug'        => 'mailchimp_api_key',
+                'type'        => 'password',
+                'description' => sprintf(
+                    /* translators: %s: Link to Mailchimp help article about API keys */
+                    __( 'You need the key from <strong>Profile → Extras → API keys</strong> only — not Mobile. Steps: click your avatar → <strong>Profile</strong> → <strong>Extras</strong> → <strong>API keys</strong>. On that page, find the section <strong>Your API keys</strong> and click <strong>Create A Key</strong> (or copy an existing key). The secret is long and ends with <code>-us10</code>, <code>-eu1</code>, etc. If Mailchimp opens <strong>Create a mobile client key</strong> or anything about Mobile SDK, close it: that is a different product and will not work in WordPress. %s', 'pickybooking' ),
+                    '<a href="https://mailchimp.com/help/about-api-keys/" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Mailchimp: About API keys', 'pickybooking' ) . '</a>'
+                ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Mailchimp Audience (List) ID', 'pickybooking' ),
+                'slug'        => 'mailchimp_list_id',
+                'type'        => 'text',
+                'description' => __( 'Find your Audience ID in your Mailchimp account under Audience &rarr; Settings &rarr; Audience name and defaults.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'integration_test_button',
+                'slug'        => 'mailchimp',
+                'tab'         => '12',
+            ],
+            [
+                'type'          => 'integration_test_button',
+                'slug'          => 'mailchimp_subscriber',
+                'button_label'  => __( 'Test write to audience (this user)', 'pickybooking' ),
+                'description'   => __( 'Runs the same Mailchimp member request as a real booking: adds or updates the <strong>currently logged-in WordPress user</strong> in the Audience (no reservation post). Use this after “Test Connection” succeeds.', 'pickybooking' ),
+                'tab'           => '12',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_n8n',
+                'title'       => __( 'Automation webhook (n8n)', 'pickybooking' ),
+                'description' => __( 'After a booking is saved, the plugin can POST JSON to an n8n Webhook trigger. Use this to notify Slack, enrich data with AI, sync to sheets, or chain with HubSpot. Runs after HubSpot sync when both are enabled so HubSpot IDs can appear in the payload. For Zapier or Make.com, use the sections below.', 'pickybooking' ),
+                'tab'         => '12',
+                'brand'       => 'n8n',
+            ],
+            [
+                'label'       => __( 'Enable booking webhook', 'pickybooking' ),
+                'slug'        => 'n8n_webhook_enabled',
+                'type'        => 'checkbox',
+                'description' => __( 'When enabled and the URL is set, each successful booking triggers one POST with Content-Type application/json.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Webhook URL', 'pickybooking' ),
+                'slug'        => 'n8n_webhook_url',
+                'type'        => 'text',
+                'description' => __( 'Example: your n8n production webhook URL (often ends with a long path or UUID). Use HTTPS in production.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Webhook secret (optional)', 'pickybooking' ),
+                'slug'        => 'n8n_webhook_secret',
+                'type'        => 'password',
+                'description' => __( 'If set, each request includes <code>X-Picky-N8N-Signature: sha256=&lt;hmac&gt;</code> where the HMAC is computed over the raw JSON body with this secret.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'integration_test_button',
+                'slug'        => 'n8n',
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_zapier',
+                'title'       => __( 'Zapier', 'pickybooking' ),
+                'description' => __( 'Connect to thousands of apps via Zapier using <strong>Webhooks by Zapier</strong> → <strong>Catch Hook</strong>. The plugin POSTs the same JSON structure as the n8n webhook (event <code>pickybooking.booking_created</code>). Enable the Zap, copy the custom webhook URL here, then map fields in Zapier. Runs after HubSpot sync and after the n8n webhook when those are enabled. For Make.com, use the Make section below.', 'pickybooking' ),
+                'tab'         => '12',
+                'brand'       => 'zapier',
+            ],
+            [
+                'label'       => __( 'Enable Zapier webhook', 'pickybooking' ),
+                'slug'        => 'zapier_webhook_enabled',
+                'type'        => 'checkbox',
+                'description' => __( 'When enabled and the URL is set, each successful booking triggers one POST with Content-Type application/json.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Zapier Catch Hook URL', 'pickybooking' ),
+                'slug'        => 'zapier_webhook_url',
+                'type'        => 'text',
+                'description' => __( 'From Zapier: Webhooks by Zapier → Catch Hook → copy the webhook URL (HTTPS).', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Zapier signing secret (optional)', 'pickybooking' ),
+                'slug'        => 'zapier_webhook_secret',
+                'type'        => 'password',
+                'description' => __( 'If set, each request includes <code>X-Picky-ZAPIER-Signature: sha256=&lt;hmac&gt;</code> over the raw JSON body. Leave blank when saving to keep the stored secret.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'integration_test_button',
+                'slug'        => 'zapier',
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_make',
+                'title'       => __( 'Make.com', 'pickybooking' ),
+                'description' => __( 'Automate with <strong>Make</strong> using a <strong>Webhooks</strong> → <strong>Custom webhook</strong> module as the scenario entry point. The plugin POSTs the same JSON as the n8n webhook (event <code>pickybooking.booking_created</code>). Create the module, run the scenario once to obtain the URL, paste it below, then map <code>body</code> fields in later modules. Runs after HubSpot sync, the n8n webhook, and the Zapier webhook when those are enabled.', 'pickybooking' ),
+                'tab'         => '12',
+                'brand'       => 'make',
+            ],
+            [
+                'label'       => __( 'Enable Make.com webhook', 'pickybooking' ),
+                'slug'        => 'make_webhook_enabled',
+                'type'        => 'checkbox',
+                'description' => __( 'When enabled and the URL is set, each successful booking triggers one POST with Content-Type application/json.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Make.com Custom webhook URL', 'pickybooking' ),
+                'slug'        => 'make_webhook_url',
+                'type'        => 'text',
+                'description' => __( 'From Make: Webhooks → Custom webhook → copy the HTTPS URL after the first run.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Make.com signing secret (optional)', 'pickybooking' ),
+                'slug'        => 'make_webhook_secret',
+                'type'        => 'password',
+                'description' => __( 'If set, each request includes <code>X-Picky-MAKE-Signature: sha256=&lt;hmac&gt;</code> over the raw JSON body. Leave blank when saving to keep the stored secret.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'integration_test_button',
+                'slug'        => 'make',
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_gcal',
+                'title'       => __( 'Google Calendar', 'pickybooking' ),
+                'description' => __( 'Sync bookings to Google Calendar using a <strong>Service Account</strong>. Create a project in Google Cloud Console, enable the Calendar API, create a Service Account, download the JSON key, and share your target calendar with the service account email. Bookings appear as events with guest details.', 'pickybooking' ),
+                'tab'         => '12',
+                'brand'       => 'gcal',
+            ],
+            [
+                'label'       => __( 'Enable Google Calendar sync', 'pickybooking' ),
+                'slug'        => 'gcal_enabled',
+                'type'        => 'checkbox',
+                'description' => __( 'When enabled, each successful booking creates an event in the configured Google Calendar.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Service Account JSON Key', 'pickybooking' ),
+                'slug'        => 'gcal_service_account_json',
+                'type'        => 'textarea',
+                'description' => __( 'Paste the entire contents of the downloaded JSON key file from Google Cloud Console (Service Account → Keys → Create Key). Contains client_email and private_key.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Calendar ID', 'pickybooking' ),
+                'slug'        => 'gcal_calendar_id',
+                'type'        => 'text',
+                'description' => __( 'The Google Calendar ID to sync events to. Use "primary" for your main calendar, or find the Calendar ID in Google Calendar settings. The service account must have write access to this calendar.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'label'       => __( 'Add customer as attendee', 'pickybooking' ),
+                'slug'        => 'gcal_add_attendees',
+                'type'        => 'checkbox',
+                'description' => __( 'When enabled and the customer provides an email, they will be added as an attendee to the calendar event and receive an invitation.', 'pickybooking' ),
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'integration_test_button',
+                'slug'        => 'gcal',
+                'tab'         => '12',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_sms_intro',
+                'title'       => __( 'SMS notifications', 'pickybooking' ),
+                'description' => __( 'Send booking alerts to a staff phone. More providers can be added later — Vonage ships first.', 'pickybooking' ),
+                'tab'         => '3',
+            ],
+            [
+                'type'        => 'settings_section',
+                'slug'        => 'picky_sec_sms',
+                'title'       => __( 'Vonage (Nexmo)', 'pickybooking' ),
+                'description' => __( 'Optional: notify a phone when someone books via the Vonage SMS API.', 'pickybooking' ),
+                'tab'         => '3',
+                'brand'       => 'vonage',
+            ],
+            [
+                'label' => __( 'Send SMS when a booking is created', 'pickybooking' ),
+                'slug'  => 'send_sms',
+                'type'  => 'checkbox',
+                'description' => sprintf(
+                    wp_kses(
+                        /* translators: %s: HTML link to Vonage */
+                        __( 'Uses the Vonage (Nexmo) APIs. Create API credentials in the dashboard: %s', 'pickybooking' ),
+                        array(
+                            'a' => array(
+                                'href'   => true,
+                                'target' => true,
+                            ),
+                        )
+                    ),
+                    '<a target="_blank" rel="noopener noreferrer" href="' . esc_url( 'https://dashboard.nexmo.com/' ) . '">' . esc_html__( 'Vonage dashboard', 'pickybooking' ) . '</a>'
+                ),
+                'tab'   => '3',
+            ],
+            [
+                'label'       => __( 'Vonage API key', 'pickybooking' ),
+                'description' => __( 'From your Vonage application / API settings.', 'pickybooking' ),
+                'slug'        => 'sms_key',
+                'type'        => 'text',
+                'tab'         => '3',
+            ],
+            [
+                'label'       => __( 'Vonage API secret', 'pickybooking' ),
+                'description' => __( 'Keep this private.', 'pickybooking' ),
+                'slug'        => 'sms_secret',
+                'type'        => 'text',
+                'tab'         => '3',
+            ],
+            [
+                'label'       => __( 'Destination phone number', 'pickybooking' ),
+                'description' => __( 'Who receives the alert, in E.164 format (e.g. +447700900000).', 'pickybooking' ),
+                'slug'        => 'sms_phone',
+                'type'        => 'text',
+                'tab'         => '3',
+            ],
+
+            [
+                'type'        => 'settings_section',
                 'slug'        => 'picky_sec_layout_colors',
                 'title'       => __( 'Layout Colors', 'pickybooking' ),
                 'description' => __( 'Public shortcode appearance only. Does not change colors inside the admin layout builder.', 'pickybooking' ),
@@ -7470,18 +8830,7 @@ class Admin
             ],
         ];
 
-        // Lite: omit Pro settings tabs (payments / SMS / integrations+AI) from the form entirely.
-        if ( class_exists( __NAMESPACE__ . '\Edition' ) && Edition::is_lite() ) {
-            $field_args = array_values(
-                array_filter(
-                    $field_args,
-                    static function ( $field ) {
-                        $tab = isset( $field['tab'] ) ? (string) $field['tab'] : '';
-                        return ! in_array( $tab, array( '3', '5', '12' ), true );
-                    }
-                )
-            );
-        }
+        // Lite: payments / SMS / non-AI integrations render as Pro-locked UI (see card helper).
 
         // Model
         $settings = $this->settings;
@@ -7490,8 +8839,8 @@ class Admin
         $fields = $this->custom_settings_fields($field_args, $settings);
         $settings_group = $this->settings_group;
         $option_name = INFO::OPTION_NAME;
-        $heading = Info::get_plugin_title();
-        $plugin_name = Info::get_plugin_title();
+        $heading = Info::get_plugin_menu_title();
+        $plugin_name = Info::get_plugin_menu_title();
         $submit_text = __( 'Save settings', 'pickybooking' );
         $picky_settings_tab_q = $this->picky_request_picky_tab_value();
 
@@ -7626,20 +8975,15 @@ class Admin
      */
     public function save_layout() {
         // phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Nonce verified at start; values sanitized via helpers/allowlists
+        check_admin_referer( 'picky_save_layout', 'picky_layout_nonce' );
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die( esc_html__( 'Insufficient permissions.', 'pickybooking' ) );
+        }
         $layout_id = isset( $_POST['layout_id'] ) && is_scalar( $_POST['layout_id'] )
             ? absint( wp_unslash( (string) $_POST['layout_id'] ) )
             : 0;
-        $layout_nonce = isset( $_POST['picky_layout_nonce'] ) && is_scalar( $_POST['picky_layout_nonce'] )
-            ? sanitize_text_field( wp_unslash( (string) $_POST['picky_layout_nonce'] ) )
-            : '';
-        if ( ! wp_verify_nonce( $layout_nonce, 'picky_save_layout_' . $layout_id ) ) {
-            wp_die( esc_html__( 'Security check failed.', 'pickybooking' ) );
-        }
         if ( ! $layout_id || get_post_type( $layout_id ) !== 'picky_layout' ) {
             wp_die( esc_html__( 'Invalid layout.', 'pickybooking' ) );
-        }
-        if ( ! current_user_can( 'manage_options' ) ) {
-            wp_die( esc_html__( 'Insufficient permissions.', 'pickybooking' ) );
         }
 
         // Layout title
@@ -7790,12 +9134,26 @@ class Admin
         }
         if ( isset( $_POST['picky_layout_shortcode_layout'] ) && is_scalar( $_POST['picky_layout_shortcode_layout'] ) ) {
             $raw_wizard = sanitize_text_field( wp_unslash( (string) $_POST['picky_layout_shortcode_layout'] ) );
-            if ( in_array( $raw_wizard, array( '1', '2', '3', '4' ), true ) ) {
+            if ( $raw_wizard === '' ) {
+                delete_post_meta( $layout_id, '_picky_layout_shortcode_layout' );
+            } elseif ( in_array( $raw_wizard, Edition::allowed_wizard_layouts(), true ) ) {
                 update_post_meta( $layout_id, '_picky_layout_shortcode_layout', $raw_wizard );
+            } elseif ( in_array( $raw_wizard, array( '1', '2', '3', '4' ), true ) ) {
+                // Lite: Pro wizard values collapse to Classic.
+                update_post_meta( $layout_id, '_picky_layout_shortcode_layout', Edition::clamp_wizard_layout( $raw_wizard ) );
             } else {
                 delete_post_meta( $layout_id, '_picky_layout_shortcode_layout' );
             }
         }
+        $posted_simple_svc = isset( $_POST['picky_layout_simple_show_services'] )
+            ? map_deep( wp_unslash( $_POST['picky_layout_simple_show_services'] ), 'sanitize_text_field' )
+            : '0';
+        if ( is_array( $posted_simple_svc ) ) {
+            $last_simple_svc   = end( $posted_simple_svc );
+            $posted_simple_svc = is_scalar( $last_simple_svc ) ? sanitize_text_field( (string) $last_simple_svc ) : '0';
+        }
+        $simple_show_services = ( is_scalar( $posted_simple_svc ) && (string) $posted_simple_svc === '1' ) ? '1' : '0';
+        update_post_meta( $layout_id, '_picky_layout_simple_show_services', $simple_show_services );
 
         // Services library (posted as JSON string from builder JS)
         if ( isset( $_POST['picky_layout_services_library'] ) && is_scalar( $_POST['picky_layout_services_library'] ) ) {
@@ -7886,18 +9244,13 @@ class Admin
      */
     public function ajax_save_layout_preview() {
         // phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce verified; preview sanitized before save
+        check_ajax_referer( 'picky_save_layout_preview', '_wpnonce' );
         if ( ! current_user_can( 'manage_options' ) ) {
             wp_send_json_error( array( 'message' => __( 'Unauthorized', 'pickybooking' ) ), 403 );
         }
         $layout_id = isset( $_POST['layout_id'] ) && is_scalar( $_POST['layout_id'] )
             ? absint( wp_unslash( (string) $_POST['layout_id'] ) )
             : 0;
-        $nonce = isset( $_POST['_wpnonce'] ) && is_scalar( $_POST['_wpnonce'] )
-            ? sanitize_text_field( wp_unslash( (string) $_POST['_wpnonce'] ) )
-            : '';
-        if ( ! wp_verify_nonce( $nonce, 'picky_save_layout_preview_' . $layout_id ) ) {
-            wp_send_json_error( array( 'message' => __( 'Security check failed.', 'pickybooking' ) ), 403 );
-        }
         if ( ! $layout_id || get_post_type( $layout_id ) !== 'picky_layout' ) {
             wp_send_json_error( array( 'message' => __( 'Invalid layout.', 'pickybooking' ) ), 400 );
         }
@@ -7931,5 +9284,305 @@ class Admin
 
     public function ajax_test_integration() {
         wp_send_json_error( array( 'message' => __( 'Not available.', 'pickybooking' ) ), 404 );
+    }
+
+    /**
+     * Shared guard for AI AJAX endpoints.
+     *
+     * @return true
+     */
+    private function picky_ai_ajax_guard() {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( __( 'Unauthorized', 'pickybooking' ), 403 );
+        }
+        $nonce_ok = isset( $_POST['_wpnonce'] )
+            && wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['_wpnonce'] ) ), 'picky_ai' );
+        if ( ! $nonce_ok ) {
+            wp_send_json_error( __( 'Security check failed.', 'pickybooking' ), 403 );
+        }
+        if ( ! AI_Integration::is_configured() ) {
+            wp_send_json_error( __( 'Add your Groq or OpenAI API key under Settings → Integrations, then Save.', 'pickybooking' ) );
+        }
+        $rate = AI_Integration::check_rate_limit();
+        if ( is_wp_error( $rate ) ) {
+            wp_send_json_error( $rate->get_error_message() );
+        }
+        return true;
+    }
+
+    /**
+     * AJAX: fresh AI connection status for the layout modal (avoids stale localize after Save).
+     */
+    public function ajax_ai_status() {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( __( 'Unauthorized', 'pickybooking' ), 403 );
+        }
+        $nonce_ok = isset( $_POST['_wpnonce'] )
+            && wp_verify_nonce( sanitize_text_field( wp_unslash( (string) $_POST['_wpnonce'] ) ), 'picky_ai' );
+        if ( ! $nonce_ok ) {
+            wp_send_json_error( __( 'Security check failed.', 'pickybooking' ), 403 );
+        }
+        wp_send_json_success( AI_Integration::status_payload() );
+    }
+
+    /**
+     * AJAX: generate layout elements from a prompt and save to the current layout.
+     */
+    public function ajax_ai_layout_draft() {
+        $this->picky_ai_ajax_guard();
+
+        $layout_id = isset( $_POST['layout_id'] ) ? absint( $_POST['layout_id'] ) : 0;
+        if ( $layout_id <= 0 || get_post_type( $layout_id ) !== 'picky_layout' ) {
+            wp_send_json_error( __( 'Invalid layout.', 'pickybooking' ) );
+        }
+
+        $prompt = isset( $_POST['prompt'] ) ? AI_Integration::sanitize_prompt( wp_unslash( (string) $_POST['prompt'] ) ) : '';
+        if ( $prompt === '' ) {
+            wp_send_json_error( __( 'Please enter a short description first.', 'pickybooking' ) );
+        }
+
+        $canvas_w = isset( $_POST['canvas_width'] ) ? max( 500, min( 2500, absint( $_POST['canvas_width'] ) ) ) : 1000;
+        $canvas_h = isset( $_POST['canvas_height'] ) ? max( 500, min( 2500, absint( $_POST['canvas_height'] ) ) ) : 750;
+
+        // AI only extracts room intent; geometry is built in PHP (stable walls/furniture).
+        $guess   = AI_Integration::guess_layout_intent_from_prompt( $prompt );
+        $decoded = AI_Integration::chat_json(
+            AI_Integration::layout_intent_system_prompt(),
+            "User request:\n" . $prompt . "\n\nReturn the intent JSON only. If the user asks for two rooms (e.g. beauty + massage), you MUST return two rooms.",
+            array(
+                'max_tokens'  => 800,
+                'temperature' => 0.1,
+            )
+        );
+
+        if ( is_wp_error( $decoded ) ) {
+            $intent = $guess;
+        } else {
+            $ai     = AI_Integration::normalize_layout_intent( $decoded, $prompt );
+            $intent = AI_Integration::merge_layout_intent( $guess, $ai, $prompt );
+        }
+
+        // Size canvas to the plan (snug), then fill rooms with evenly spaced items.
+        list( $canvas_w, $canvas_h ) = AI_Integration::suggest_canvas_for_intent( $intent, $canvas_w, $canvas_h );
+
+        $raw_elements = AI_Integration::build_layout_from_intent( $intent, $canvas_w, $canvas_h );
+        if ( empty( $raw_elements ) ) {
+            wp_send_json_error( __( 'Could not build a layout from that description. Try again.', 'pickybooking' ) );
+        }
+
+        $allowed_classes = array( 'type-1', 'type-4', 'type-6', 'type-wall', 'type-shape', 'type-icon', 'type-text' );
+        $normalized      = array();
+        $i               = 0;
+        foreach ( $raw_elements as $el ) {
+            if ( ! is_array( $el ) ) {
+                continue;
+            }
+            $class = isset( $el['class'] ) ? sanitize_text_field( (string) $el['class'] ) : '';
+            if ( ! in_array( $class, $allowed_classes, true ) ) {
+                continue;
+            }
+            $norm = $this->picky_normalize_import_element( $el, $i );
+            if ( ! is_array( $norm ) ) {
+                continue;
+            }
+            $is_wall = ( $class === 'type-wall' );
+            $min_w   = $is_wall ? 8 : 20;
+            $min_h   = $is_wall ? 8 : 10;
+            $w       = max( $min_w, floatval( $norm['x1'] ) - floatval( $norm['x'] ) );
+            $h       = max( $min_h, floatval( $norm['y1'] ) - floatval( $norm['y'] ) );
+            // Keep walls at ~10px after normalize_import.
+            if ( $is_wall ) {
+                if ( $w >= $h ) {
+                    $h = 10;
+                } else {
+                    $w = 10;
+                }
+            }
+            $x = max( 0, min( floatval( $norm['x'] ), $canvas_w - $min_w ) );
+            $y = max( 0, min( floatval( $norm['y'] ), $canvas_h - $min_h ) );
+            if ( $x + $w > $canvas_w ) {
+                $w = max( $min_w, $canvas_w - $x );
+            }
+            if ( $y + $h > $canvas_h ) {
+                $h = max( $min_h, $canvas_h - $y );
+            }
+            $norm['x']       = $x;
+            $norm['y']       = $y;
+            $norm['x1']      = $x + $w;
+            $norm['y1']      = $y + $h;
+            $norm['z_index'] = 10 + $i;
+            if ( empty( $norm['unique'] ) ) {
+                $norm['unique'] = 'ai_' . ( $i + 1 ) . '_' . wp_generate_password( 6, false, false );
+            }
+            $styled = AI_Integration::apply_layout_style_defaults( $norm, $canvas_w, $canvas_h );
+            if ( $styled === null || ! empty( $styled['_picky_convert_to_walls'] ) ) {
+                continue;
+            }
+            $normalized[] = $styled;
+            $i++;
+            if ( $i >= 300 ) {
+                break;
+            }
+        }
+
+        $normalized = AI_Integration::normalize_wall_thickness( $normalized );
+        if ( empty( $normalized ) ) {
+            wp_send_json_error( __( 'Could not build a layout from that description. Try again.', 'pickybooking' ) );
+        }
+        foreach ( $normalized as $k => $el ) {
+            $normalized[ $k ]['z_index'] = 10 + (int) $k;
+        }
+
+        update_post_meta( $layout_id, '_picky_layout_position', rawurlencode( wp_json_encode( $normalized ) ) );
+        update_post_meta( $layout_id, '_picky_layout_canvas_width', $canvas_w );
+        update_post_meta( $layout_id, '_picky_layout_canvas_height', $canvas_h );
+
+        wp_send_json_success(
+            array(
+                'reload'         => true,
+                'count'          => count( $normalized ),
+                'canvas_width'   => $canvas_w,
+                'canvas_height'  => $canvas_h,
+                'message'        => sprintf(
+                    /* translators: %d: number of elements */
+                    __( 'Layout draft applied (%d elements). Reloading…', 'pickybooking' ),
+                    count( $normalized )
+                ),
+            )
+        );
+    }
+
+    /**
+     * AJAX: generate service name + description.
+     */
+    public function ajax_ai_service_copy() {
+        $this->picky_ai_ajax_guard();
+
+        $prompt   = isset( $_POST['prompt'] ) ? AI_Integration::sanitize_prompt( wp_unslash( (string) $_POST['prompt'] ), 500 ) : '';
+        $price    = isset( $_POST['price'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['price'] ) ) : '';
+        $duration = isset( $_POST['duration'] ) ? absint( $_POST['duration'] ) : 0;
+        if ( $prompt === '' ) {
+            wp_send_json_error( __( 'Please enter a short description first.', 'pickybooking' ) );
+        }
+
+        $system = 'You write short booking-service copy. Return ONLY JSON: '
+            . '{"name":"...","description":"..."} with name <= 60 chars and description <= 180 chars. No markdown.';
+        $user   = 'Service idea: ' . $prompt;
+        if ( $price !== '' ) {
+            $user .= "\nPrice hint: " . $price;
+        }
+        if ( $duration > 0 ) {
+            $user .= "\nDuration minutes: " . $duration;
+        }
+
+        $decoded = AI_Integration::chat_json( $system, $user, array( 'max_tokens' => 400, 'temperature' => 0.5 ) );
+        if ( is_wp_error( $decoded ) ) {
+            wp_send_json_error( $decoded->get_error_message() );
+        }
+
+        $name = isset( $decoded['name'] ) ? sanitize_text_field( (string) $decoded['name'] ) : '';
+        $desc = isset( $decoded['description'] ) ? sanitize_text_field( (string) $decoded['description'] ) : '';
+        if ( $name === '' ) {
+            wp_send_json_error( __( 'AI did not return a service name.', 'pickybooking' ) );
+        }
+        if ( function_exists( 'mb_substr' ) ) {
+            $desc = mb_substr( $desc, 0, 200 );
+        } else {
+            $desc = substr( $desc, 0, 200 );
+        }
+
+        wp_send_json_success(
+            array(
+                'name'        => $name,
+                'description' => $desc,
+            )
+        );
+    }
+
+    /**
+     * AJAX: generate label or text for a canvas element.
+     */
+    public function ajax_ai_element_copy() {
+        $this->picky_ai_ajax_guard();
+
+        $prompt = isset( $_POST['prompt'] ) ? AI_Integration::sanitize_prompt( wp_unslash( (string) $_POST['prompt'] ), 400 ) : '';
+        $type   = isset( $_POST['element_type'] ) ? sanitize_key( wp_unslash( (string) $_POST['element_type'] ) ) : 'type-1';
+        $mode   = isset( $_POST['mode'] ) ? sanitize_key( wp_unslash( (string) $_POST['mode'] ) ) : 'label';
+        if ( $prompt === '' ) {
+            $prompt = 'Generate a short fitting name';
+        }
+
+        if ( $mode === 'text' || $type === 'type-text' ) {
+            $system = 'Return ONLY JSON: {"text":"..."} — a short canvas label (1-4 words or one short sentence). No markdown.';
+        } else {
+            $system = 'Return ONLY JSON: {"label":"..."} — a short bookable-item name (1-3 words). No markdown.';
+        }
+        $user = 'Element type: ' . $type . "\nContext: " . $prompt;
+
+        $decoded = AI_Integration::chat_json( $system, $user, array( 'max_tokens' => 120, 'temperature' => 0.5 ) );
+        if ( is_wp_error( $decoded ) ) {
+            wp_send_json_error( $decoded->get_error_message() );
+        }
+
+        $label = isset( $decoded['label'] ) ? sanitize_text_field( (string) $decoded['label'] ) : '';
+        $text  = isset( $decoded['text'] ) ? sanitize_text_field( (string) $decoded['text'] ) : '';
+        if ( $label === '' && $text !== '' ) {
+            $label = $text;
+        }
+        if ( $text === '' && $label !== '' ) {
+            $text = $label;
+        }
+        if ( $label === '' && $text === '' ) {
+            wp_send_json_error( __( 'AI did not return a label.', 'pickybooking' ) );
+        }
+
+        wp_send_json_success(
+            array(
+                'label' => $label,
+                'text'  => $text,
+            )
+        );
+    }
+
+    /**
+     * AJAX: generate form_message, form_confirm_text, form_thx.
+     */
+    public function ajax_ai_form_copy() {
+        $this->picky_ai_ajax_guard();
+
+        $prompt = isset( $_POST['prompt'] ) ? AI_Integration::sanitize_prompt( wp_unslash( (string) $_POST['prompt'] ) ) : '';
+        if ( $prompt === '' ) {
+            wp_send_json_error( __( 'Please enter a short description first.', 'pickybooking' ) );
+        }
+
+        $system = 'You write booking-form microcopy for a small business. Return ONLY JSON: '
+            . '{"form_message":"...","form_confirm_text":"...","form_thx":"..."}. '
+            . 'form_message: one short line under the Book button. '
+            . 'form_confirm_text: short GDPR-style consent sentence (plain text or simple HTML with a privacy link placeholder). '
+            . 'form_thx: friendly thank-you after booking (1-2 sentences). No markdown fences.';
+
+        $decoded = AI_Integration::chat_json(
+            $system,
+            'Business: ' . $prompt,
+            array( 'max_tokens' => 600, 'temperature' => 0.5 )
+        );
+        if ( is_wp_error( $decoded ) ) {
+            wp_send_json_error( $decoded->get_error_message() );
+        }
+
+        $form_message = isset( $decoded['form_message'] ) ? sanitize_text_field( (string) $decoded['form_message'] ) : '';
+        $form_confirm = isset( $decoded['form_confirm_text'] ) ? wp_kses_post( (string) $decoded['form_confirm_text'] ) : '';
+        $form_thx     = isset( $decoded['form_thx'] ) ? wp_kses_post( (string) $decoded['form_thx'] ) : '';
+        if ( $form_message === '' && $form_thx === '' ) {
+            wp_send_json_error( __( 'AI did not return form copy.', 'pickybooking' ) );
+        }
+
+        wp_send_json_success(
+            array(
+                'form_message'      => $form_message,
+                'form_confirm_text' => $form_confirm,
+                'form_thx'          => $form_thx,
+            )
+        );
     }
 }

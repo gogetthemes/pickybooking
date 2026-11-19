@@ -1,5 +1,37 @@
 # Changelog
 
+## 1.0.26
+
+Fix admin menu icon/label spacing and keep the settings rail on-screen in narrow Playground viewports.
+
+## 1.0.25
+
+Use a short admin menu / settings-rail label so the long WP.org Plugin Name no longer wraps and overlaps the sidebar.
+
+## 1.0.24
+
+Plugin Check: document nonce verification on frontend POST helpers (sniff does not follow helper methods). Exclude hidden files from the distribution zip.
+
+## 1.0.23
+
+Final EscapeOutput pass: remove phpcs:ignore escapes, confirm dialogs via data-picky-confirm, and wp_kses for settings shell markup.
+
+## 1.0.22
+
+Escape embedded admin list markup with wp_kses instead of phpcs:ignore.
+
+## 1.0.21
+
+WordPress.org review follow-up: escape remaining builder/frontend attribute ternaries and related late-output strings.
+
+## 1.0.20
+
+WordPress.org review follow-up: escape remaining HTML attributes, verify settings/booking nonces before other POST reads, and check edit-redirect nonces before reading post IDs.
+
+## 1.0.19
+
+WordPress.org review: verify nonces before reading request input on admin AJAX and form handlers, and escape plugin font URLs in inline CSS.
+
 ## 1.0.18
 
 Plugin Check: the query string is sanitized with wp_strip_all_tags() before parsing. Each parameter is still passed through sanitize_text_field().

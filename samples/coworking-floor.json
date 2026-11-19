@@ -26,7 +26,12 @@
             "price": 25,
             "duration": 120,
             "description": "Flexible desk in the open hall (2h).",
-            "parent_sids": []
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/coworking-images/svc_hot_desk.jpg"
         },
         {
             "sid": "svc_meeting_room",
@@ -34,7 +39,12 @@
             "price": 60,
             "duration": 60,
             "description": "Conference room by the hour.",
-            "parent_sids": []
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/coworking-images/svc_meeting_room.jpg"
         },
         {
             "sid": "svc_private_office",
@@ -42,7 +52,12 @@
             "price": 90,
             "duration": 240,
             "description": "Enclosed office for focused work (4h).",
-            "parent_sids": []
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/coworking-images/svc_private_office.jpg"
         },
         {
             "sid": "svc_day_pass",
@@ -50,7 +65,12 @@
             "price": 35,
             "duration": 480,
             "description": "Full-day access to coworking amenities.",
-            "parent_sids": []
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/coworking-images/svc_day_pass.jpg"
         },
         {
             "sid": "svc_addon_monitor",
@@ -62,7 +82,12 @@
                 "svc_hot_desk",
                 "svc_day_pass",
                 "svc_private_office"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/coworking-images/svc_addon_monitor.jpg"
         },
         {
             "sid": "svc_addon_locker",
@@ -73,7 +98,12 @@
             "parent_sids": [
                 "svc_hot_desk",
                 "svc_day_pass"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/coworking-images/svc_addon_locker.jpg"
         },
         {
             "sid": "svc_addon_parking",
@@ -86,7 +116,12 @@
                 "svc_day_pass",
                 "svc_meeting_room",
                 "svc_private_office"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/coworking-images/svc_addon_parking.jpg"
         },
         {
             "sid": "svc_addon_projector",
@@ -96,7 +131,12 @@
             "description": "AV setup for presentations.",
             "parent_sids": [
                 "svc_meeting_room"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/coworking-images/svc_addon_projector.jpg"
         },
         {
             "sid": "svc_addon_whiteboard",
@@ -106,7 +146,12 @@
             "description": "Markers and flipchart for workshops.",
             "parent_sids": [
                 "svc_meeting_room"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/coworking-images/svc_addon_whiteboard.jpg"
         },
         {
             "sid": "svc_addon_catering",
@@ -116,7 +161,12 @@
             "description": "Light catering for the room.",
             "parent_sids": [
                 "svc_meeting_room"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/coworking-images/svc_addon_catering.jpg"
         },
         {
             "sid": "svc_addon_extra_guest",
@@ -127,7 +177,12 @@
             "parent_sids": [
                 "svc_meeting_room",
                 "svc_private_office"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/coworking-images/svc_addon_extra_guest.jpg"
         },
         {
             "sid": "svc_addon_cleaning",
@@ -138,7 +193,12 @@
             "parent_sids": [
                 "svc_meeting_room",
                 "svc_private_office"
-            ]
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_ratio": "square",
+            "icon": "",
+            "image_url": "samples/coworking-images/svc_addon_cleaning.jpg"
         }
     ],
     "elements": [
@@ -3401,5 +3461,6 @@
             ]
         }
     ],
-    "source_post_id": 203
+    "source_post_id": 203,
+    "_sample_version": "3.3.0"
 }

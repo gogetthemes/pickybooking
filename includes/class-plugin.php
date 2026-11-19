@@ -33,6 +33,7 @@ class Plugin
      */
     private function define_upgrade_hooks() {
         $this->loader->add_action( 'plugins_loaded', $this, 'maybe_migrate_color_defaults', 5 );
+        $this->loader->add_action( 'plugins_loaded', $this, 'maybe_migrate_lite_wizard', 6 );
         // Elementor / Pro integrations intentionally omitted in Lite (WP.org freemium: no locked code).
     }
 
@@ -41,6 +42,16 @@ class Plugin
      */
     public function maybe_migrate_color_defaults() {
         Color_Defaults_Migration::apply();
+    }
+
+    /**
+     * Lite: one-time clamp of Smart / Smart Map wizard values.
+     */
+    public function maybe_migrate_lite_wizard() {
+        if ( ! class_exists( __NAMESPACE__ . '\\Activator' ) ) {
+            require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-activator.php';
+        }
+        Activator::migrate_lite_wizard_layouts();
     }
 
     private function load_dependencies() {
@@ -132,6 +143,12 @@ class Plugin
 
         $this->loader->add_action('wp_ajax_picky_save_booking_status', $plugin_admin, 'ajax_save_booking_status');
         $this->loader->add_action('wp_ajax_picky_save_order_status', $plugin_admin, 'ajax_save_order_status');
+        $this->loader->add_action('wp_ajax_picky_setup_mark_done', $plugin_admin, 'ajax_setup_mark_done');
+        $this->loader->add_action( 'wp_ajax_picky_ai_layout_draft', $plugin_admin, 'ajax_ai_layout_draft' );
+        $this->loader->add_action( 'wp_ajax_picky_ai_service_copy', $plugin_admin, 'ajax_ai_service_copy' );
+        $this->loader->add_action( 'wp_ajax_picky_ai_element_copy', $plugin_admin, 'ajax_ai_element_copy' );
+        $this->loader->add_action( 'wp_ajax_picky_ai_form_copy', $plugin_admin, 'ajax_ai_form_copy' );
+        $this->loader->add_action( 'wp_ajax_picky_ai_status', $plugin_admin, 'ajax_ai_status' );
     }
 
     private function define_frontend_hooks() {

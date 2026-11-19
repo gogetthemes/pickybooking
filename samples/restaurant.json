@@ -22,134 +22,187 @@
     "services_library": [
         {
             "sid": "svc_hot_desk",
-            "name": "Hot Desk",
-            "price": 25,
-            "duration": 120,
-            "description": "Flexible desk in the open hall (2h).",
+            "name": "Standard Table",
+            "price": 0,
+            "duration": 90,
+            "description": "Table reservation for dining.",
             "parent_sids": [],
-            "icon": ""
-        },
-        {
-            "sid": "svc_meeting_room",
-            "name": "Meeting Room",
-            "price": 60,
-            "duration": 60,
-            "description": "Conference room by the hour.",
-            "parent_sids": [],
-            "icon": ""
-        },
-        {
-            "sid": "svc_private_office",
-            "name": "Private Office",
-            "price": 90,
-            "duration": 240,
-            "description": "Enclosed office for focused work (4h).",
-            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/restaurant-images/svc_hot_desk.jpg",
+            "image_ratio": "square",
             "icon": ""
         },
         {
             "sid": "svc_day_pass",
-            "name": "Day Pass",
-            "price": 35,
-            "duration": 480,
-            "description": "Full-day access to coworking amenities.",
+            "name": "Bar Seat",
+            "price": 15,
+            "duration": 60,
+            "description": "Counter seat at the bar.",
             "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/restaurant-images/svc_day_pass.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_meeting_room",
+            "name": "Party Table",
+            "price": 40,
+            "duration": 120,
+            "description": "Larger table for groups and celebrations.",
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/restaurant-images/svc_meeting_room.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_private_office",
+            "name": "Private Dining",
+            "price": 80,
+            "duration": 150,
+            "description": "Private room dining experience.",
+            "parent_sids": [],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/restaurant-images/svc_private_office.jpg",
+            "image_ratio": "square",
             "icon": ""
         },
         {
             "sid": "svc_addon_monitor",
-            "name": "External Monitor",
-            "price": 10,
+            "name": "Wine Pairing",
+            "price": 35,
             "duration": 1,
-            "description": "Extra display for the day.",
+            "description": "Curated wine pairing for your meal.",
             "parent_sids": [
                 "svc_hot_desk",
-                "svc_day_pass",
+                "svc_meeting_room",
                 "svc_private_office"
             ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/restaurant-images/svc_addon_monitor.jpg",
+            "image_ratio": "square",
             "icon": ""
         },
         {
             "sid": "svc_addon_locker",
-            "name": "Day Locker",
+            "name": "Coat Check",
             "price": 5,
             "duration": 1,
-            "description": "Secure locker for personal items.",
-            "parent_sids": [
-                "svc_hot_desk",
-                "svc_day_pass"
-            ],
-            "icon": ""
-        },
-        {
-            "sid": "svc_addon_parking",
-            "name": "Parking Spot",
-            "price": 12,
-            "duration": 1,
-            "description": "Reserved parking for your visit.",
+            "description": "Secure coat and bag check.",
             "parent_sids": [
                 "svc_hot_desk",
                 "svc_day_pass",
                 "svc_meeting_room",
                 "svc_private_office"
             ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/restaurant-images/svc_addon_locker.jpg",
+            "image_ratio": "square",
+            "icon": ""
+        },
+        {
+            "sid": "svc_addon_parking",
+            "name": "Valet Parking",
+            "price": 15,
+            "duration": 1,
+            "description": "Valet parking for your visit.",
+            "parent_sids": [
+                "svc_hot_desk",
+                "svc_day_pass",
+                "svc_meeting_room",
+                "svc_private_office"
+            ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/restaurant-images/svc_addon_parking.jpg",
+            "image_ratio": "square",
             "icon": ""
         },
         {
             "sid": "svc_addon_projector",
-            "name": "Projector & Screen",
-            "price": 15,
+            "name": "Birthday Cake",
+            "price": 45,
             "duration": 1,
-            "description": "AV setup for presentations.",
+            "description": "Celebration cake delivered to the table.",
             "parent_sids": [
-                "svc_meeting_room"
+                "svc_meeting_room",
+                "svc_private_office"
             ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/restaurant-images/svc_addon_projector.jpg",
+            "image_ratio": "square",
             "icon": ""
         },
         {
             "sid": "svc_addon_whiteboard",
-            "name": "Whiteboard Kit",
-            "price": 8,
+            "name": "Celebration Flowers",
+            "price": 25,
             "duration": 1,
-            "description": "Markers and flipchart for workshops.",
+            "description": "Fresh floral arrangement for the table.",
             "parent_sids": [
-                "svc_meeting_room"
+                "svc_meeting_room",
+                "svc_private_office"
             ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/restaurant-images/svc_addon_whiteboard.jpg",
+            "image_ratio": "square",
             "icon": ""
         },
         {
             "sid": "svc_addon_catering",
-            "name": "Coffee & Snacks",
-            "price": 20,
+            "name": "Champagne Bottle",
+            "price": 55,
             "duration": 1,
-            "description": "Light catering for the room.",
+            "description": "Chilled champagne for toasts.",
             "parent_sids": [
-                "svc_meeting_room"
+                "svc_meeting_room",
+                "svc_private_office"
             ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/restaurant-images/svc_addon_catering.jpg",
+            "image_ratio": "square",
             "icon": ""
         },
         {
             "sid": "svc_addon_extra_guest",
             "name": "Extra Guest",
-            "price": 10,
+            "price": 20,
             "duration": 1,
-            "description": "Additional guest beyond included seats.",
+            "description": "Add one more guest to the booking.",
             "parent_sids": [
                 "svc_meeting_room",
                 "svc_private_office"
             ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/restaurant-images/svc_addon_extra_guest.jpg",
+            "image_ratio": "square",
             "icon": ""
         },
         {
             "sid": "svc_addon_cleaning",
-            "name": "Deep Clean",
-            "price": 25,
+            "name": "Kids Menu",
+            "price": 12,
             "duration": 1,
-            "description": "Post-session deep clean.",
+            "description": "Child-friendly menu option.",
             "parent_sids": [
-                "svc_meeting_room",
-                "svc_private_office"
+                "svc_hot_desk",
+                "svc_meeting_room"
             ],
+            "visual": "image",
+            "image_id": 0,
+            "image_url": "samples/restaurant-images/svc_addon_cleaning.jpg",
+            "image_ratio": "square",
             "icon": ""
         }
     ],
@@ -8378,5 +8431,6 @@
             "service_ids": []
         }
     ],
-    "source_post_id": 348
+    "source_post_id": 348,
+    "_sample_version": "3.3.0"
 }

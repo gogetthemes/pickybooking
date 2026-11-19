@@ -332,24 +332,73 @@ if ( ! function_exists( 'picky_get_wedding_layout_payload' ) ) {
 			'booking_item_icon'       => '',
 			'services_library'        => array(
 				array(
-					'sid'         => 'svc_ceremony_seat',
-					'name'        => 'Ceremony Seat',
-					'price'       => 0,
-					'duration'    => 180,
-					'description' => 'Reserved seat for the ceremony.',
-					'parent_sids' => array(),
+					'sid'          => 'svc_ceremony_seat',
+					'name'         => 'Ceremony Seat',
+					'price'        => 0,
+					'duration'     => 180,
+					'description'  => 'Reserved seat for the ceremony.',
+					'parent_sids'  => array(),
+					'visual'       => 'image',
+					'image_id'     => 0,
+					'image_url'    => 'samples/wedding-images/svc_ceremony_seat.jpg',
+					'image_ratio'  => 'square',
+					'icon'         => '',
 				),
 				array(
-					'sid'         => 'svc_addon_program',
-					'name'        => 'Printed Program',
-					'price'       => 5,
-					'duration'    => 1,
-					'description' => 'Keepsake ceremony program.',
-					'parent_sids' => array( 'svc_ceremony_seat' ),
+					'sid'          => 'svc_addon_program',
+					'name'         => 'Printed Program',
+					'price'        => 5,
+					'duration'     => 1,
+					'description'  => 'Keepsake ceremony program.',
+					'parent_sids'  => array( 'svc_ceremony_seat' ),
+					'visual'       => 'image',
+					'image_id'     => 0,
+					'image_url'    => 'samples/wedding-images/svc_addon_program.jpg',
+					'image_ratio'  => 'square',
+					'icon'         => '',
+				),
+				array(
+					'sid'          => 'svc_addon_flowers',
+					'name'         => 'Flower Petals',
+					'price'        => 8,
+					'duration'     => 1,
+					'description'  => 'Petal toss pack for guests.',
+					'parent_sids'  => array( 'svc_ceremony_seat' ),
+					'visual'       => 'image',
+					'image_id'     => 0,
+					'image_url'    => 'samples/wedding-images/svc_addon_flowers.jpg',
+					'image_ratio'  => 'square',
+					'icon'         => '',
+				),
+				array(
+					'sid'          => 'svc_addon_parking',
+					'name'         => 'Guest Parking',
+					'price'        => 10,
+					'duration'     => 1,
+					'description'  => 'Reserved guest parking spot.',
+					'parent_sids'  => array( 'svc_ceremony_seat' ),
+					'visual'       => 'image',
+					'image_id'     => 0,
+					'image_url'    => 'samples/wedding-images/svc_addon_parking.jpg',
+					'image_ratio'  => 'square',
+					'icon'         => '',
+				),
+				array(
+					'sid'          => 'svc_addon_livestream',
+					'name'         => 'Livestream Access',
+					'price'        => 15,
+					'duration'     => 1,
+					'description'  => 'Private livestream link for remote guests.',
+					'parent_sids'  => array( 'svc_ceremony_seat' ),
+					'visual'       => 'image',
+					'image_id'     => 0,
+					'image_url'    => 'samples/wedding-images/svc_addon_livestream.jpg',
+					'image_ratio'  => 'square',
+					'icon'         => '',
 				),
 			),
 			'elements'                => $elements,
-			'_sample_version'         => '1.3.0',
+			'_sample_version'         => '1.4.0',
 		);
 	}
 }
@@ -411,6 +460,9 @@ if ( ! function_exists( 'picky_apply_wedding_layout_meta' ) ) {
 		$services = isset( $payload['services_library'] ) && is_array( $payload['services_library'] )
 			? $payload['services_library']
 			: array();
+		if ( function_exists( 'picky_services_library_materialize_images' ) ) {
+			$services = picky_services_library_materialize_images( $services, $layout_id );
+		}
 		update_post_meta( $layout_id, '_picky_layout_services_library', wp_json_encode( $services ) );
 		update_post_meta( $layout_id, '_picky_sample_key', 'wedding' );
 

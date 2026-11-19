@@ -1,15 +1,15 @@
 # Copyright (C) 2026 PickyBooking
-# This file is distributed under the GPL-2.0-or-later.
+# This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: PickyBooking 1.0.5\n"
+"Project-Id-Version: PickyBooking 1.0.4\n"
 "Report-Msgid-Bugs-To: https://pickybooking.com/\n"
 "Last-Translator: PickyBooking\n"
 "Language-Team: PickyBooking\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-26T17:31:08+00:00\n"
+"POT-Creation-Date: 2026-11-16T12:53:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: pickybooking\n"
@@ -17,20 +17,21 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: pickybooking.php
-#: admin/class-admin.php:4076
-#: admin/class-admin.php:4078
+#: admin/class-admin.php:4677
+#: admin/class-admin.php:4679
+#: includes/class-elementor.php:65
 msgid "PickyBooking"
 msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
 #: pickybooking.php
-msgid "https://pickybooking.com/"
+msgid "https://pickybooking.com"
 msgstr ""
 
 #. Description of the plugin
 #: pickybooking.php
-msgid "Free visual booking plugin: drag-and-drop floor plans with bookable items, guest booking shortcode, and email notifications. Upgrade to PickyBooking Pro for payments, integrations, decorative layers, and more."
+msgid "Visual booking plugin with a drag-and-drop floor/area layout builder for tables, rooms, courts, desks, and any reservable items."
 msgstr ""
 
 #: admin/class-admin.php:61
@@ -88,7 +89,7 @@ msgstr ""
 #: admin/class-admin.php:171
 #: admin/class-admin.php:187
 #: admin/class-admin.php:209
-#: frontend/class-frontend.php:668
+#: frontend/class-frontend.php:1021
 msgid "—"
 msgstr ""
 
@@ -122,9 +123,9 @@ msgid "Connection"
 msgstr ""
 
 #: admin/class-admin.php:206
-#: admin/class-admin.php:1296
-#: admin/class-admin.php:1956
-#: includes/class-booking-icons.php:162
+#: admin/class-admin.php:1293
+#: admin/class-admin.php:1932
+#: includes/class-booking-icons.php:164
 msgid "Calendar"
 msgstr ""
 
@@ -133,6 +134,7 @@ msgid "Primary calendar"
 msgstr ""
 
 #: admin/class-admin.php:221
+#: admin/class-admin.php:8362
 msgid "Webhook URL"
 msgstr ""
 
@@ -145,7 +147,7 @@ msgstr ""
 #: admin/class-admin.php:330
 #: admin/class-admin.php:339
 #: admin/class-admin.php:370
-#: admin/class-admin.php:4579
+#: admin/class-admin.php:5171
 msgid "Off"
 msgstr ""
 
@@ -173,7 +175,7 @@ msgid "Ready"
 msgstr ""
 
 #: admin/class-admin.php:341
-#: admin/class-admin.php:4579
+#: admin/class-admin.php:5171
 msgid "On"
 msgstr ""
 
@@ -246,7 +248,7 @@ msgid "Optional SMS to your staff phone via Vonage. Test credentials in dashboar
 msgstr ""
 
 #: admin/class-admin.php:454
-#: admin/class-admin.php:7315
+#: admin/class-admin.php:8712
 msgid "Public shortcode appearance only. Does not change colors inside the admin layout builder."
 msgstr ""
 
@@ -363,6 +365,8 @@ msgid "Reserved for a future PayPal flow; currently unused by the booking paymen
 msgstr ""
 
 #: admin/class-admin.php:500
+#: admin/class-admin.php:8183
+#: admin/class-admin.php:8190
 msgid "Reserved for future PayPal integration."
 msgstr ""
 
@@ -634,2354 +638,3039 @@ msgstr ""
 msgid "Consent text supports basic HTML; test the form once after changing these toggles."
 msgstr ""
 
-#: admin/class-admin.php:765
+#: admin/class-admin.php:764
 msgid "Test Connection"
 msgstr ""
 
-#: admin/class-admin.php:804
+#: admin/class-admin.php:799
 msgid "Generate form copy with AI"
 msgstr ""
 
-#: admin/class-admin.php:808
+#: admin/class-admin.php:803
 msgid "e.g. Boutique salon in Berlin, calm tone"
 msgstr ""
 
-#: admin/class-admin.php:809
+#: admin/class-admin.php:804
 msgid "Generate with AI"
 msgstr ""
 
-#: admin/class-admin.php:946
+#: admin/class-admin.php:941
 msgid "Paste secret token/key"
 msgstr ""
 
-#: admin/class-admin.php:948
+#: admin/class-admin.php:943
 msgid "Paste HubSpot access token"
 msgstr ""
 
-#: admin/class-admin.php:950
+#: admin/class-admin.php:945
 msgid "Marketing API key (Profile → Extras → API keys; not Mobile SDK)"
 msgstr ""
 
-#: admin/class-admin.php:952
+#: admin/class-admin.php:947
 msgid "Paste OpenAI API key (sk-…)"
 msgstr ""
 
-#: admin/class-admin.php:954
+#: admin/class-admin.php:949
 msgid "Paste Groq API key (gsk_…)"
 msgstr ""
 
-#: admin/class-admin.php:956
+#: admin/class-admin.php:951
 msgid "Paste Stripe Secret key"
 msgstr ""
 
-#: admin/class-admin.php:960
+#: admin/class-admin.php:955
 msgid "Enter a new key/token to replace the stored one"
 msgstr ""
 
-#: admin/class-admin.php:964
+#: admin/class-admin.php:959
 msgid "A token is already saved (hidden). Leave blank to keep it."
 msgstr ""
 
-#: admin/class-admin.php:1095
+#: admin/class-admin.php:1090
 msgid "Second time window"
 msgstr ""
 
-#: admin/class-admin.php:1131
-#: admin/class-admin.php:4560
+#: admin/class-admin.php:1126
+#: admin/class-admin.php:5152
 msgid "Open"
 msgstr ""
 
-#: admin/class-admin.php:1191
+#: admin/class-admin.php:1186
 msgid "With the default wizard (table first or date/time first on the map page), this background is usually covered by the floor plan and booking modal, so changing it has little effect. It matters most for Smart layout and Third layout, where it tints the booking shell and calendar column."
 msgstr ""
 
 #: admin/class-admin.php:1252
-msgid "PickyBooking Logo"
-msgstr ""
-
-#: admin/class-admin.php:1255
-#: admin/class-admin.php:1257
-#: admin/class-admin.php:1262
+#: admin/class-admin.php:1254
+#: admin/class-admin.php:1259
 msgid "Expand sidebar"
 msgstr ""
 
-#: admin/class-admin.php:1262
-#: admin/class-admin.php:1264
+#: admin/class-admin.php:1259
+#: admin/class-admin.php:1261
 msgid "Collapse sidebar"
 msgstr ""
 
-#: admin/class-admin.php:1294
+#: admin/class-admin.php:1291
 msgid "Plugin settings"
 msgstr ""
 
-#: admin/class-admin.php:1295
-#: admin/class-admin.php:1605
-#: admin/class-admin.php:2761
-#: admin/class-admin.php:5819
+#: admin/class-admin.php:1292
+#: admin/class-admin.php:1593
+#: admin/class-admin.php:3135
+#: admin/class-admin.php:6396
 #: admin/partials/reservations-list-custom.php:25
 msgid "Bookings"
 msgstr ""
 
-#: admin/class-admin.php:1299
+#: admin/class-admin.php:1296
 msgid "Settings"
 msgstr ""
 
-#: admin/class-admin.php:1302
+#: admin/class-admin.php:1299
 msgid "Main"
 msgstr ""
 
-#: admin/class-admin.php:1305
+#: admin/class-admin.php:1302
 msgid "Work Days"
 msgstr ""
 
-#: admin/class-admin.php:1308
+#: admin/class-admin.php:1305
 msgid "SMS"
 msgstr ""
 
-#: admin/class-admin.php:1311
-#: admin/class-admin.php:7314
+#: admin/class-admin.php:1308
+#: admin/class-admin.php:8711
 msgid "Layout Colors"
 msgstr ""
 
-#: admin/class-admin.php:1314
-#: admin/class-admin.php:5822
+#: admin/class-admin.php:1311
+#: admin/class-admin.php:6399
 msgid "Payments"
 msgstr ""
 
-#: admin/class-admin.php:1317
+#: admin/class-admin.php:1314
 msgid "Integrations"
 msgstr ""
 
-#: admin/class-admin.php:1320
+#: admin/class-admin.php:1317
 msgid "Form & Emails"
 msgstr ""
 
-#: admin/class-admin.php:1323
-#: admin/class-admin.php:6108
-#: admin/class-admin.php:6115
+#: admin/class-admin.php:1319
+#: admin/class-admin.php:6684
+#: admin/class-admin.php:6691
 msgid "Import / Export"
 msgstr ""
 
-#: admin/class-admin.php:1325
+#: admin/class-admin.php:1320
 msgid "Documentation"
 msgstr ""
 
-#: admin/class-admin.php:1327
-msgid "PickyBooking Pro"
-msgstr ""
-
-#: admin/class-admin.php:1327
-msgid "Go Pro"
-msgstr ""
-
-#: admin/class-admin.php:1472
-#: public/class-public.php:3285
+#: admin/class-admin.php:1463
+#: public/class-public.php:3342
 msgid "Edit Order"
 msgstr ""
 
 #. translators: %d: order post ID
 #. translators: %d: order id
-#. translators: %d: order ID
-#: admin/class-admin.php:1500
-#: admin/class-admin.php:1574
-#: admin/class-admin.php:2006
+#: admin/class-admin.php:1491
+#: admin/class-admin.php:1562
+#: admin/class-admin.php:1977
 #, php-format
 msgid "Order #%d"
 msgstr ""
 
-#: admin/class-admin.php:1544
-#: admin/class-admin.php:1761
-#: admin/class-admin.php:1888
-#: admin/class-admin.php:2142
-#: admin/class-admin.php:2204
-#: admin/class-admin.php:2300
-#: admin/class-admin.php:2631
-#: admin/class-admin.php:5673
-#: admin/class-admin.php:5948
-#: admin/class-admin.php:5963
-#: admin/class-admin.php:5990
-#: admin/class-admin.php:6003
-#: admin/class-admin.php:6026
-#: admin/class-admin.php:6039
-#: admin/class-admin.php:6098
-#: admin/class-admin.php:7627
+#: admin/class-admin.php:1532
+#: admin/class-admin.php:1741
+#: admin/class-admin.php:1864
+#: admin/class-admin.php:2108
+#: admin/class-admin.php:2170
+#: admin/class-admin.php:2257
+#: admin/class-admin.php:2283
+#: admin/class-admin.php:3002
+#: admin/class-admin.php:6250
+#: admin/class-admin.php:6525
+#: admin/class-admin.php:6540
+#: admin/class-admin.php:6567
+#: admin/class-admin.php:6580
+#: admin/class-admin.php:6603
+#: admin/class-admin.php:6616
+#: admin/class-admin.php:6674
+#: admin/class-admin.php:7527
+#: admin/class-admin.php:7712
+#: admin/class-admin.php:9027
 msgid "Insufficient permissions."
 msgstr ""
 
-#: admin/class-admin.php:1550
+#: admin/class-admin.php:1538
 msgid "Order not found."
 msgstr ""
 
-#: admin/class-admin.php:1565
-#: admin/class-admin.php:1911
-#: admin/class-admin.php:2188
-#: public/class-public.php:4123
-#: public/class-public.php:4171
-#: public/class-public.php:4177
-#: public/class-public.php:4197
+#: admin/class-admin.php:1553
+#: admin/class-admin.php:1887
+#: admin/class-admin.php:2154
+#: public/class-public.php:4180
+#: public/class-public.php:4225
+#: public/class-public.php:4231
+#: public/class-public.php:4251
 msgid "Requested"
 msgstr ""
 
-#: admin/class-admin.php:1566
-#: admin/class-admin.php:1912
-#: admin/class-admin.php:2189
-#: admin/class-admin.php:2777
-#: admin/class-admin.php:4710
-#: admin/class-admin.php:5261
-#: admin/class-admin.php:5300
-#: admin/class-admin.php:5623
-#: public/class-public.php:4132
-#: public/class-public.php:4172
-#: public/class-public.php:4179
-#: public/class-public.php:4198
+#: admin/class-admin.php:1554
+#: admin/class-admin.php:1888
+#: admin/class-admin.php:2155
+#: admin/class-admin.php:3151
+#: admin/class-admin.php:5302
+#: admin/class-admin.php:5850
+#: admin/class-admin.php:5889
+#: admin/class-admin.php:6207
+#: public/class-public.php:4188
+#: public/class-public.php:4226
+#: public/class-public.php:4233
+#: public/class-public.php:4252
 msgid "Reserved"
 msgstr ""
 
-#: admin/class-admin.php:1567
-#: admin/class-admin.php:1913
-#: admin/class-admin.php:2190
-#: admin/class-admin.php:4716
-#: admin/class-admin.php:5302
-#: admin/class-admin.php:5625
-#: public/class-public.php:4141
-#: public/class-public.php:4173
-#: public/class-public.php:4181
-#: public/class-public.php:4199
+#: admin/class-admin.php:1555
+#: admin/class-admin.php:1889
+#: admin/class-admin.php:2156
+#: admin/class-admin.php:5308
+#: admin/class-admin.php:5891
+#: admin/class-admin.php:6209
+#: public/class-public.php:4196
+#: public/class-public.php:4227
+#: public/class-public.php:4235
+#: public/class-public.php:4253
 msgid "Canceled"
 msgstr ""
 
-#: admin/class-admin.php:1568
-#: admin/class-admin.php:1914
-#: admin/class-admin.php:2191
-#: admin/class-admin.php:4719
-#: admin/class-admin.php:5626
+#: admin/class-admin.php:1556
+#: admin/class-admin.php:1890
+#: admin/class-admin.php:2157
+#: admin/class-admin.php:5311
+#: admin/class-admin.php:6210
 msgid "Draft"
 msgstr ""
 
-#: admin/class-admin.php:1585
+#: admin/class-admin.php:1573
 msgid "Order saved successfully."
 msgstr ""
 
-#: admin/class-admin.php:1617
-#: admin/class-admin.php:1733
-#: admin/class-admin.php:1968
-#: admin/class-admin.php:2119
+#: admin/class-admin.php:1605
+#: admin/class-admin.php:1715
+#: admin/class-admin.php:1944
+#: admin/class-admin.php:2086
 msgid "Save changes"
 msgstr ""
 
-#. translators: %d: number of items in the order
-#: admin/class-admin.php:1635
+#: admin/class-admin.php:1621
 #, php-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] ""
 msgstr[1] ""
 
-#. translators: %d: order ID
-#. translators: %d: booking ID
-#: admin/class-admin.php:1643
-#: admin/class-admin.php:2014
+#: admin/class-admin.php:1626
+#: admin/class-admin.php:1982
 #, php-format
 msgid "ID #%d"
 msgstr ""
 
-#: admin/class-admin.php:1657
+#: admin/class-admin.php:1639
 msgid "Customer Details"
 msgstr ""
 
-#: admin/class-admin.php:1670
+#: admin/class-admin.php:1652
 msgid "Order Status"
 msgstr ""
 
-#: admin/class-admin.php:1674
-#: admin/class-admin.php:2042
+#: admin/class-admin.php:1656
+#: admin/class-admin.php:2009
 msgid "Change status"
 msgstr ""
 
-#: admin/class-admin.php:1680
+#: admin/class-admin.php:1662
 msgid "Status saves automatically and applies to all items in this order."
 msgstr ""
 
-#: admin/class-admin.php:1685
-#: admin/class-admin.php:2053
+#: admin/class-admin.php:1667
+#: admin/class-admin.php:2020
 msgid "Quick status"
 msgstr ""
 
-#: admin/class-admin.php:1703
+#: admin/class-admin.php:1685
 msgid "Delete this order? Child bookings will also be removed."
 msgstr ""
 
-#: admin/class-admin.php:1705
+#: admin/class-admin.php:1687
 msgid "Delete order"
 msgstr ""
 
-#: admin/class-admin.php:1719
+#: admin/class-admin.php:1701
 msgid "Booking Items"
 msgstr ""
 
-#: admin/class-admin.php:1735
-#: admin/class-admin.php:2121
+#: admin/class-admin.php:1717
+#: admin/class-admin.php:2088
 msgid "Discard"
 msgstr ""
 
-#: admin/class-admin.php:1758
-#: admin/class-admin.php:2297
+#: admin/class-admin.php:1738
+#: admin/class-admin.php:2280
 msgid "Invalid order."
 msgstr ""
 
-#: admin/class-admin.php:1894
+#: admin/class-admin.php:1870
 msgid "Reservation not found."
 msgstr ""
 
 #. translators: %d: booking id
-#: admin/class-admin.php:1920
+#: admin/class-admin.php:1896
 #, php-format
 msgid "Reservation #%d"
 msgstr ""
 
 #. translators: %s: configurable item name singular (e.g. Table, Room, Court)
-#: admin/class-admin.php:1930
-#: public/class-public.php:3310
+#: admin/class-admin.php:1906
+#: public/class-public.php:3367
 #, php-format
 msgid "%s Reservation Details"
 msgstr ""
 
-#: admin/class-admin.php:1937
+#: admin/class-admin.php:1913
 msgid "Reservation saved successfully."
 msgstr ""
 
-#. translators: %s: number of guests
-#: admin/class-admin.php:1997
+#: admin/class-admin.php:1971
 #, php-format
 msgid "%s guest"
 msgid_plural "%s guests"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-admin.php:2038
+#: admin/class-admin.php:2005
 msgid "Reservation Status"
 msgstr ""
 
-#: admin/class-admin.php:2048
+#: admin/class-admin.php:2015
 msgid "Status saves automatically when you change it."
 msgstr ""
 
-#: admin/class-admin.php:2080
-#: admin/class-admin.php:3864
+#: admin/class-admin.php:2047
+#: admin/class-admin.php:4290
 msgid "Payment status"
 msgstr ""
 
-#: admin/class-admin.php:2086
+#: admin/class-admin.php:2053
 msgid "Mark as paid if the guest paid offline (cash, transfer, etc.). Saves automatically."
 msgstr ""
 
-#: admin/class-admin.php:2088
+#: admin/class-admin.php:2055
 msgid "Quick payment status"
 msgstr ""
 
-#: admin/class-admin.php:2106
+#: admin/class-admin.php:2073
 msgid "Delete this reservation?"
 msgstr ""
 
-#: admin/class-admin.php:2108
+#: admin/class-admin.php:2075
 msgid "Delete reservation"
 msgstr ""
 
-#: admin/class-admin.php:2139
-#: admin/class-admin.php:2201
+#: admin/class-admin.php:2105
+#: admin/class-admin.php:2167
+#: admin/class-admin.php:2254
 msgid "Invalid reservation."
 msgstr ""
 
-#: admin/class-admin.php:2210
-#: admin/class-admin.php:2306
+#: admin/class-admin.php:2176
+#: admin/class-admin.php:2289
 msgid "Invalid status."
 msgstr ""
 
-#: admin/class-admin.php:2244
-#: admin/class-admin.php:3359
-#: admin/class-admin.php:3867
-#: admin/class-admin.php:4754
+#: admin/class-admin.php:2210
+#: admin/class-admin.php:3781
+#: admin/class-admin.php:4293
+#: admin/class-admin.php:5346
 msgid "Paid"
 msgstr ""
 
-#: admin/class-admin.php:2245
-#: admin/class-admin.php:3364
-#: admin/class-admin.php:3868
+#: admin/class-admin.php:2211
+#: admin/class-admin.php:3786
+#: admin/class-admin.php:4294
 msgid "Pending"
 msgstr ""
 
-#: admin/class-admin.php:2246
-#: admin/class-admin.php:4757
+#: admin/class-admin.php:2212
+#: admin/class-admin.php:5349
 msgid "Unpaid"
 msgstr ""
 
-#: admin/class-admin.php:2247
-#: admin/class-admin.php:3278
-#: admin/class-admin.php:3871
-#: public/class-public.php:3451
+#: admin/class-admin.php:2213
+#: admin/class-admin.php:3700
+#: admin/class-admin.php:4297
+#: public/class-public.php:3507
 msgid "No payment required"
 msgstr ""
 
-#: admin/class-admin.php:2286
-#: admin/class-admin.php:7885
-msgid "Not available."
+#: admin/class-admin.php:2264
+msgid "Invalid payment status."
 msgstr ""
 
-#: admin/class-admin.php:2359
-#: admin/partials/layout-library.php:127
+#: admin/class-admin.php:2340
+#: admin/partials/layout-library.php:117
 #: admin/partials/layouts-list-custom.php:26
 #: admin/partials/layouts-list-custom.php:28
-#: public/class-public.php:3217
+#: public/class-public.php:3274
 msgid "Layouts"
 msgstr ""
 
-#: admin/class-admin.php:2360
+#: admin/class-admin.php:2341
 msgid "Open or switch layout"
 msgstr ""
 
 #. translators: %d: layout post ID
 #. translators: %d: layout post ID when title is empty
-#: admin/class-admin.php:2366
-#: admin/class-admin.php:4931
-#: includes/class-layout-library.php:375
+#: admin/class-admin.php:2347
+#: admin/class-admin.php:5523
+#: elementor/widgets/class-widget-layout-navigator.php:459
+#: includes/class-elementor.php:202
+#: includes/class-elementor.php:406
+#: includes/class-layout-library.php:376
 #, php-format
 msgid "Layout #%d"
 msgstr ""
 
-#: admin/class-admin.php:2374
-#: admin/partials/layout-library.php:156
+#: admin/class-admin.php:2355
+#: admin/partials/layout-library.php:146
 #: admin/partials/layouts-list-custom.php:31
 msgid "Add new"
 msgstr ""
 
-#: admin/class-admin.php:2400
-#: admin/class-admin.php:3237
-#: admin/class-admin.php:3313
-#: admin/class-admin.php:5306
-#: admin/class-admin.php:5593
-#: admin/class-admin.php:5817
-#: public/class-public.php:3218
-#: public/class-public.php:3705
+#: admin/class-admin.php:2380
+#: admin/class-admin.php:3659
+#: admin/class-admin.php:3735
+#: admin/class-admin.php:5895
+#: admin/class-admin.php:6179
+#: admin/class-admin.php:6394
+#: elementor/widgets/class-widget-layout-navigator.php:138
+#: elementor/widgets/class-widget-layout-navigator.php:188
+#: public/class-public.php:3275
+#: public/class-public.php:3766
 msgid "Layout"
 msgstr ""
 
-#: admin/class-admin.php:2419
+#: admin/class-admin.php:2399
 msgid "Save Layout"
 msgstr ""
 
-#: admin/class-admin.php:2763
+#: admin/class-admin.php:3137
 msgid "All multi-item bookings. Each order groups the items a customer reserved together; click an order to see its line items, services, durations and total."
 msgstr ""
 
-#: admin/class-admin.php:2765
+#: admin/class-admin.php:3139
 msgid "Booking stats"
 msgstr ""
 
-#: admin/class-admin.php:2770
-#: admin/class-admin.php:3318
-#: admin/class-admin.php:5254
-#: public/class-public.php:2179
-#: public/class-public.php:3114
+#: admin/class-admin.php:3144
+#: admin/class-admin.php:3740
+#: admin/class-admin.php:5843
+#: public/class-public.php:2209
+#: public/class-public.php:2534
+#: public/class-public.php:3171
 msgid "Total"
 msgstr ""
 
-#: admin/class-admin.php:2784
-#: admin/class-admin.php:5268
-#: admin/class-admin.php:5301
+#: admin/class-admin.php:3158
+#: admin/class-admin.php:5857
+#: admin/class-admin.php:5890
 msgid "Requests"
 msgstr ""
 
-#: admin/class-admin.php:2792
+#: admin/class-admin.php:3166
 msgid "Paid revenue"
 msgstr ""
 
-#: admin/class-admin.php:2979
-#: admin/partials/view_layout.php:396
-#: admin/partials/view_layout.php:813
+#: admin/class-admin.php:3356
+#: admin/partials/view_layout.php:423
+#: admin/partials/view_layout.php:836
 msgid "Upload image"
 msgstr ""
 
-#: admin/class-admin.php:2980
+#: admin/class-admin.php:3357
 msgid "Remove image"
 msgstr ""
 
-#: admin/class-admin.php:3127
+#: admin/class-admin.php:3507
 msgid "Select image / SVG"
 msgstr ""
 
-#: admin/class-admin.php:3128
+#: admin/class-admin.php:3508
 msgid "Use this file"
 msgstr ""
 
-#: admin/class-admin.php:3129
+#: admin/class-admin.php:3509
 msgid "Insert image"
 msgstr ""
 
-#: admin/class-admin.php:3130
+#: admin/class-admin.php:3510
 msgid "Use this image"
 msgstr ""
 
-#: admin/class-admin.php:3131
+#: admin/class-admin.php:3511
 msgid "Saving status…"
 msgstr ""
 
-#: admin/class-admin.php:3132
+#: admin/class-admin.php:3512
 msgid "Status saved"
 msgstr ""
 
-#: admin/class-admin.php:3133
+#: admin/class-admin.php:3513
 msgid "Could not save status. Try again."
 msgstr ""
 
+#: admin/class-admin.php:3558
+msgid "This will replace all elements on the canvas with the AI draft. Continue?"
+msgstr ""
+
+#: admin/class-admin.php:3559
+msgid "Generating…"
+msgstr ""
+
+#: admin/class-admin.php:3560
+msgid "Done"
+msgstr ""
+
+#: admin/class-admin.php:3561
+msgid "AI request failed."
+msgstr ""
+
+#: admin/class-admin.php:3562
+msgid "Connect Groq (free) or OpenAI in Settings → Integrations to generate layouts."
+msgstr ""
+
+#: admin/class-admin.php:3563
+msgid "OpenAI has no credits. Switch Provider to Groq (free) or add OpenAI billing credits."
+msgstr ""
+
+#: admin/class-admin.php:3564
+#: admin/class-admin.php:9599
+#: admin/class-admin.php:9726
+#: admin/class-admin.php:9820
+msgid "Please enter a short description first."
+msgstr ""
+
+#: admin/class-admin.php:3565
+msgid "Describe the service (or refine the name):"
+msgstr ""
+
+#: admin/class-admin.php:3566
+msgid "Optional context for the name (cancel to abort):"
+msgstr ""
+
+#: admin/class-admin.php:3567
+msgid "Optional context for the text (cancel to abort):"
+msgstr ""
+
+#: admin/class-admin.php:3568
+msgid "Connected"
+msgstr ""
+
+#: admin/class-admin.php:3570
+msgid "AI chat preview"
+msgstr ""
+
+#: admin/class-admin.php:3571
+msgid "Add a free Groq API key in Integrations to generate layouts. The chat stays available so you can see how it works."
+msgstr ""
+
+#: admin/class-admin.php:3572
+msgid "AI is off"
+msgstr ""
+
+#: admin/class-admin.php:3573
+msgid "Enable “AI features” in Settings → Integrations, then Save."
+msgstr ""
+
+#: admin/class-admin.php:3574
+msgid "API key missing"
+msgstr ""
+
+#: admin/class-admin.php:3575
+msgid "Paste your Groq (free) or OpenAI API key in Settings → Integrations and Save."
+msgstr ""
+
+#: admin/class-admin.php:3576
+msgid "Provider limit / billing"
+msgstr ""
+
+#: admin/class-admin.php:3577
+msgid "OpenAI needs credits, or Groq hit a free-tier rate limit. Wait a bit, switch model/provider, then try again."
+msgstr ""
+
+#: admin/class-admin.php:3578
+#: admin/partials/view_layout.php:199
+msgid "Open settings"
+msgstr ""
+
+#: admin/class-admin.php:3579
+msgid "You"
+msgstr ""
+
+#: admin/class-admin.php:3580
+#: admin/class-admin.php:6402
+#: admin/partials/view_layout.php:293
+#: admin/partials/view_layout.php:676
+msgid "AI"
+msgstr ""
+
+#: admin/class-admin.php:3581
+#: admin/partials/view_layout.php:204
+msgid "Describe rooms and zones. I’ll draft a neat floor plan like Coworking Floor 2: walls, furniture, and matching bookable stations — not a rainbow grid."
+msgstr ""
+
+#: admin/class-admin.php:3582
+msgid "Connect Groq or OpenAI first — use Open settings above."
+msgstr ""
+
 #. translators: %s: element kind label (e.g. Shape, Table).
-#: admin/class-admin.php:3161
+#: admin/class-admin.php:3585
 #, php-format
 msgid "Editing: %s"
 msgstr ""
 
-#: admin/class-admin.php:3163
-#: admin/partials/view_layout.php:221
+#: admin/class-admin.php:3587
+#: admin/partials/view_layout.php:249
 msgid "Wall"
 msgstr ""
 
-#: admin/class-admin.php:3164
-#: admin/partials/view_layout.php:219
+#: admin/class-admin.php:3588
+#: admin/partials/view_layout.php:247
 msgid "Shape"
 msgstr ""
 
-#: admin/class-admin.php:3165
-#: admin/partials/view_layout.php:215
-#: admin/partials/view_layout.php:360
-#: admin/partials/view_layout.php:764
+#: admin/class-admin.php:3589
+#: admin/partials/view_layout.php:243
+#: admin/partials/view_layout.php:390
+#: admin/partials/view_layout.php:788
+#: admin/partials/view_layout.php:923
 msgid "Icon"
 msgstr ""
 
-#: admin/class-admin.php:3166
-#: admin/partials/view_layout.php:223
+#: admin/class-admin.php:3590
+#: admin/partials/view_layout.php:251
 msgid "Text"
 msgstr ""
 
-#: admin/class-admin.php:3168
-#: admin/partials/view_layout.php:210
+#: admin/class-admin.php:3592
+#: admin/partials/view_layout.php:238
+#: admin/partials/view_layout.php:946
 msgid "Square"
 msgstr ""
 
-#: admin/class-admin.php:3169
-#: admin/partials/view_layout.php:212
+#: admin/class-admin.php:3593
+#: admin/partials/view_layout.php:240
 msgid "Circle"
 msgstr ""
 
 #. translators: %s: configurable item name singular (e.g. table, room)
-#: admin/class-admin.php:3171
+#: admin/class-admin.php:3595
 #, php-format
 msgid "Universal %s"
 msgstr ""
 
-#: admin/class-admin.php:3173
-#: admin/partials/view_layout.php:287
-#: admin/partials/view_layout.php:348
-#: admin/partials/view_layout.php:676
-#: admin/partials/view_layout.php:752
-#: admin/partials/view_layout.php:784
+#: admin/class-admin.php:3598
+#: admin/partials/view_layout.php:317
+#: admin/partials/view_layout.php:378
+#: admin/partials/view_layout.php:700
+#: admin/partials/view_layout.php:776
+#: admin/partials/view_layout.php:807
 msgid "Corner radius (px)"
 msgstr ""
 
-#: admin/class-admin.php:3207
-#: admin/class-admin.php:5413
+#: admin/class-admin.php:3629
+#: admin/class-admin.php:6002
 #: frontend/class-frontend.php:47
+#: includes/class-google-calendar-integration.php:71
 #: public/class-public.php:50
 msgid "Table"
 msgstr ""
 
-#: admin/class-admin.php:3236
+#: admin/class-admin.php:3658
 msgid "Title"
 msgstr ""
 
 #. translators: %s: configurable item name
-#: admin/class-admin.php:3239
+#: admin/class-admin.php:3661
 #, php-format
 msgid "%s Number"
 msgstr ""
 
-#: admin/class-admin.php:3240
-#: admin/class-admin.php:3314
-#: public/class-public.php:1682
-#: public/class-public.php:3342
-#: public/class-public.php:3682
+#: admin/class-admin.php:3662
+#: admin/class-admin.php:3736
+#: frontend/class-frontend.php:680
+#: frontend/class-frontend.php:714
+#: public/class-public.php:1716
+#: public/class-public.php:3399
+#: public/class-public.php:3743
 msgid "Date"
 msgstr ""
 
-#: admin/class-admin.php:3241
-#: admin/class-admin.php:3315
-#: admin/class-admin.php:5323
-#: admin/class-admin.php:5591
-#: public/class-public.php:1689
-#: public/class-public.php:3350
-#: public/class-public.php:3686
-#: public/class-public.php:3851
+#: admin/class-admin.php:3663
+#: admin/class-admin.php:3737
+#: admin/class-admin.php:5912
+#: admin/class-admin.php:6177
+#: frontend/class-frontend.php:684
+#: frontend/class-frontend.php:718
+#: public/class-public.php:1723
+#: public/class-public.php:3407
+#: public/class-public.php:3747
+#: public/class-public.php:3911
 msgid "Time"
 msgstr ""
 
-#: admin/class-admin.php:3242
-#: admin/partials/view_layout.php:260
-#: admin/partials/view_layout.php:649
-#: admin/partials/view_layout.php:855
-#: admin/partials/view_layout.php:872
-#: public/class-public.php:2210
-#: public/class-public.php:2492
-#: public/class-public.php:3146
-#: public/class-public.php:3404
+#: admin/class-admin.php:3664
+#: admin/partials/view_layout.php:292
+#: admin/partials/view_layout.php:675
+#: admin/partials/view_layout.php:878
+#: admin/partials/view_layout.php:895
+#: public/class-public.php:2240
+#: public/class-public.php:2549
+#: public/class-public.php:3203
+#: public/class-public.php:3461
 msgid "Name"
 msgstr ""
 
-#: admin/class-admin.php:3243
-#: public/class-public.php:2222
-#: public/class-public.php:2504
-#: public/class-public.php:3158
-#: public/class-public.php:3412
+#: admin/class-admin.php:3665
+#: public/class-public.php:2252
+#: public/class-public.php:2561
+#: public/class-public.php:3215
+#: public/class-public.php:3469
 msgid "Phone Number"
 msgstr ""
 
-#: admin/class-admin.php:3244
+#: admin/class-admin.php:3666
 msgid "Service"
 msgstr ""
 
-#: admin/class-admin.php:3245
-#: admin/class-admin.php:3319
-#: public/class-public.php:3429
-#: public/class-public.php:3699
+#: admin/class-admin.php:3667
+#: admin/class-admin.php:3741
+#: public/class-public.php:3485
+#: public/class-public.php:3760
 msgid "Payment"
 msgstr ""
 
-#: admin/class-admin.php:3246
-#: admin/class-admin.php:3312
-#: public/class-public.php:3282
+#: admin/class-admin.php:3668
+#: admin/class-admin.php:3734
+#: public/class-public.php:3339
 msgid "Order"
 msgstr ""
 
-#: admin/class-admin.php:3255
-#: public/class-public.php:3445
+#: admin/class-admin.php:3677
+#: public/class-public.php:3501
 msgid "View Woo order"
 msgstr ""
 
-#: admin/class-admin.php:3261
-#: public/class-public.php:3447
-msgid "Online payment reference on file"
+#: admin/class-admin.php:3683
+#: public/class-public.php:3503
+msgid "View Stripe payment"
 msgstr ""
 
-#: admin/class-admin.php:3282
-#: public/class-public.php:3453
+#: admin/class-admin.php:3704
+#: public/class-public.php:3509
 msgid "Payment Succeeded"
 msgstr ""
 
-#: admin/class-admin.php:3287
-#: public/class-public.php:3458
+#: admin/class-admin.php:3709
+#: public/class-public.php:3522
 msgid "Pending payment"
 msgstr ""
 
-#: admin/class-admin.php:3291
-#: public/class-public.php:3461
+#: admin/class-admin.php:3713
+#: public/class-public.php:3525
 msgid "Payment failed"
 msgstr ""
 
-#: admin/class-admin.php:3316
+#: admin/class-admin.php:3738
 msgid "Customer"
 msgstr ""
 
-#: admin/class-admin.php:3317
-#: public/class-public.php:3690
+#: admin/class-admin.php:3739
+#: public/class-public.php:3751
 msgid "Items"
 msgstr ""
 
-#: admin/class-admin.php:3357
+#: admin/class-admin.php:3779
 msgid "No payment"
 msgstr ""
 
 #. translators: %d: number of new bookings
-#: admin/class-admin.php:3615
+#: admin/class-admin.php:4045
 #, php-format
 msgid "You have %d new bookings."
 msgstr ""
 
-#: admin/class-admin.php:3620
+#: admin/class-admin.php:4050
 msgid "Open bookings"
 msgstr ""
 
-#: admin/class-admin.php:3803
+#: admin/class-admin.php:4232
 msgid "All Layouts"
 msgstr ""
 
-#: admin/class-admin.php:3866
+#: admin/class-admin.php:4292
 msgid "All payment statuses"
 msgstr ""
 
-#: admin/class-admin.php:3869
+#: admin/class-admin.php:4295
 msgid "Failed"
 msgstr ""
 
-#: admin/class-admin.php:3870
+#: admin/class-admin.php:4296
 msgid "Cancelled"
 msgstr ""
 
-#: admin/class-admin.php:3875
-#: admin/class-admin.php:4387
+#: admin/class-admin.php:4301
+#: admin/class-admin.php:4979
+#: admin/class-admin.php:8127
 msgid "Payment provider"
 msgstr ""
 
-#: admin/class-admin.php:3877
+#: admin/class-admin.php:4303
 msgid "All providers"
 msgstr ""
 
-#: admin/class-admin.php:3878
+#: admin/class-admin.php:4304
 msgid "Direct Stripe"
 msgstr ""
 
-#: admin/class-admin.php:3879
+#: admin/class-admin.php:4305
+#: admin/class-admin.php:8142
 msgid "WooCommerce"
 msgstr ""
 
-#: admin/class-admin.php:3880
-#: includes/class-booking-icons.php:89
+#: admin/class-admin.php:4306
+#: includes/class-booking-icons.php:91
 msgid "None"
 msgstr ""
 
-#: admin/class-admin.php:4079
+#: admin/class-admin.php:4522
+msgid "Some of SMS settings data is empty"
+msgstr ""
+
+#. translators: %s: error message from the HTTP client
+#: admin/class-admin.php:4551
+#, php-format
+msgid "SMS balance check failed: %s"
+msgstr ""
+
+#: admin/class-admin.php:4560
+#: admin/class-admin.php:4578
+#: frontend/class-frontend.php:3501
+msgid "SMS provider returned an unexpected response."
+msgstr ""
+
+#: admin/class-admin.php:4566
+#, php-format
+msgid "SMS settings has invalid data. (%s)"
+msgstr ""
+
+#: admin/class-admin.php:4574
+#, php-format
+msgid "SMS key and secret settings is valid. Balance - %s"
+msgstr ""
+
+#: admin/class-admin.php:4585
+msgid "SMS is enabled: fill API key, API secret, and destination phone (international format, e.g. +15551234567), then save to verify with Vonage."
+msgstr ""
+
+#: admin/class-admin.php:4680
+#: elementor/widgets/class-widget-layout-navigator.php:117
 msgid "Content"
 msgstr ""
 
-#: admin/class-admin.php:4086
+#: admin/class-admin.php:4687
 msgid "Element ID"
 msgstr ""
 
-#: admin/class-admin.php:4089
+#: admin/class-admin.php:4690
 msgid "Enter element ID"
 msgstr ""
 
-#: admin/class-admin.php:4096
+#: admin/class-admin.php:4697
 msgid "Extra class name"
 msgstr ""
 
-#: admin/class-admin.php:4099
+#: admin/class-admin.php:4700
 msgid "Style particular content element differently - add a class name and refer to it in custom CSS."
 msgstr ""
 
-#: admin/class-admin.php:4134
-#: admin/class-admin.php:4167
+#: admin/class-admin.php:4737
+#: admin/class-admin.php:4769
 msgid "Dashboard"
 msgstr ""
 
-#: admin/class-admin.php:4142
-#: admin/class-admin.php:4143
-#: admin/class-admin.php:6216
-#: admin/class-admin.php:6226
-#: admin/class-admin.php:6249
-#: public/class-public.php:3221
+#: admin/class-admin.php:4745
+#: admin/class-admin.php:4746
+#: admin/class-admin.php:6787
+#: admin/class-admin.php:6797
+#: admin/class-admin.php:6820
+#: public/class-public.php:3278
 msgid "Edit Layout"
 msgstr ""
 
-#: admin/class-admin.php:4350
+#: admin/class-admin.php:4942
 msgid "Canvas width"
 msgstr ""
 
-#: admin/class-admin.php:4351
+#: admin/class-admin.php:4943
 msgid "Canvas height"
 msgstr ""
 
-#: admin/class-admin.php:4352
+#: admin/class-admin.php:4944
 msgid "Canvas element scale"
 msgstr ""
 
-#: admin/class-admin.php:4353
+#: admin/class-admin.php:4945
 msgid "Canvas background image"
 msgstr ""
 
-#: admin/class-admin.php:4354
+#: admin/class-admin.php:4946
 msgid "Canvas background fit mode"
 msgstr ""
 
-#: admin/class-admin.php:4355
+#: admin/class-admin.php:4947
 msgid "Legacy table background"
 msgstr ""
 
-#: admin/class-admin.php:4356
+#: admin/class-admin.php:4948
 msgid "Legacy seat background"
 msgstr ""
 
-#: admin/class-admin.php:4357
+#: admin/class-admin.php:4949
 msgid "Legacy position data"
 msgstr ""
 
-#: admin/class-admin.php:4358
+#: admin/class-admin.php:4950
 msgid "Reservable item singular name"
 msgstr ""
 
-#: admin/class-admin.php:4359
+#: admin/class-admin.php:4951
 msgid "Reservable item plural name"
 msgstr ""
 
-#: admin/class-admin.php:4360
+#: admin/class-admin.php:4952
 msgid "Form helper message"
 msgstr ""
 
-#: admin/class-admin.php:4361
+#: admin/class-admin.php:4953
 msgid "Require consent checkbox"
 msgstr ""
 
-#: admin/class-admin.php:4362
+#: admin/class-admin.php:4954
 msgid "Consent text HTML"
 msgstr ""
 
-#: admin/class-admin.php:4363
+#: admin/class-admin.php:4955
 msgid "Admin notification email"
 msgstr ""
 
-#: admin/class-admin.php:4364
+#: admin/class-admin.php:4956
 msgid "Thank-you message"
 msgstr ""
 
-#: admin/class-admin.php:4365
+#: admin/class-admin.php:4957
 msgid "Send confirmation to customer"
 msgstr ""
 
-#: admin/class-admin.php:4366
+#: admin/class-admin.php:4958
 msgid "Wizard flow mode"
 msgstr ""
 
-#: admin/class-admin.php:4367
+#: admin/class-admin.php:4959
 msgid "Widget alignment in page"
 msgstr ""
 
-#: admin/class-admin.php:4368
+#: admin/class-admin.php:4960
 msgid "Ask for party size"
 msgstr ""
 
-#: admin/class-admin.php:4369
-#: admin/class-admin.php:6971
+#: admin/class-admin.php:4961
+#: admin/class-admin.php:7892
 msgid "Show email field"
 msgstr ""
 
-#: admin/class-admin.php:4370
+#: admin/class-admin.php:4962
 msgid "Show phone field on booking forms"
 msgstr ""
 
-#: admin/class-admin.php:4371
+#: admin/class-admin.php:4963
 msgid "Show max persons on map items"
 msgstr ""
 
-#: admin/class-admin.php:4372
+#: admin/class-admin.php:4964
 msgid "Show center seat/capacity badge"
 msgstr ""
 
-#: admin/class-admin.php:4373
+#: admin/class-admin.php:4965
 msgid "Show ID badge on map items"
 msgstr ""
 
-#: admin/class-admin.php:4374
+#: admin/class-admin.php:4966
 msgid "Show element label on map items"
 msgstr ""
 
-#: admin/class-admin.php:4375
+#: admin/class-admin.php:4967
 msgid "Allow end time field"
 msgstr ""
 
-#: admin/class-admin.php:4376
-#: admin/class-admin.php:7131
+#: admin/class-admin.php:4968
+#: admin/class-admin.php:8052
 msgid "Animate bookable items on the map"
 msgstr ""
 
-#: admin/class-admin.php:4377
+#: admin/class-admin.php:4969
 msgid "Mobile item selection mode"
 msgstr ""
 
-#: admin/class-admin.php:4378
+#: admin/class-admin.php:4970
 msgid "Booking conflict mode"
 msgstr ""
 
-#: admin/class-admin.php:4379
+#: admin/class-admin.php:4971
 msgid "Send SMS notifications"
 msgstr ""
 
-#: admin/class-admin.php:4380
+#: admin/class-admin.php:4972
+#: admin/class-admin.php:8688
 msgid "Vonage API key"
 msgstr ""
 
-#: admin/class-admin.php:4381
+#: admin/class-admin.php:4973
+#: admin/class-admin.php:8695
 msgid "Vonage API secret"
 msgstr ""
 
-#: admin/class-admin.php:4382
+#: admin/class-admin.php:4974
 msgid "SMS destination phone"
 msgstr ""
 
-#: admin/class-admin.php:4383
+#: admin/class-admin.php:4975
 msgid "Require payment before confirmation"
 msgstr ""
 
-#: admin/class-admin.php:4384
+#: admin/class-admin.php:4976
 msgid "Fixed payment amount (or fallback)"
 msgstr ""
 
-#: admin/class-admin.php:4385
+#: admin/class-admin.php:4977
 msgid "Payment currency"
 msgstr ""
 
-#: admin/class-admin.php:4386
+#: admin/class-admin.php:4978
+#: admin/class-admin.php:8081
 msgid "Payment amount source"
 msgstr ""
 
-#: admin/class-admin.php:4388
+#: admin/class-admin.php:4980
+#: admin/class-admin.php:8158
 msgid "Stripe publishable key"
 msgstr ""
 
-#: admin/class-admin.php:4389
+#: admin/class-admin.php:4981
+#: admin/class-admin.php:8165
 msgid "Stripe secret key"
 msgstr ""
 
-#: admin/class-admin.php:4390
+#: admin/class-admin.php:4982
 msgid "PayPal client ID (reserved)"
 msgstr ""
 
-#: admin/class-admin.php:4391
+#: admin/class-admin.php:4983
 msgid "PayPal client secret (reserved)"
 msgstr ""
 
-#: admin/class-admin.php:4392
+#: admin/class-admin.php:4984
 msgid "Send new bookings to HubSpot CRM"
 msgstr ""
 
-#: admin/class-admin.php:4393
+#: admin/class-admin.php:4985
 msgid "HubSpot access token (legacy private app or developer project)"
 msgstr ""
 
-#: admin/class-admin.php:4394
+#: admin/class-admin.php:4986
+#: admin/class-admin.php:8276
 msgid "Create a HubSpot deal for each booking"
 msgstr ""
 
-#: admin/class-admin.php:4395
+#: admin/class-admin.php:4987
+#: admin/class-admin.php:8283
 msgid "Deal pipeline ID (optional)"
 msgstr ""
 
-#: admin/class-admin.php:4396
+#: admin/class-admin.php:4988
+#: admin/class-admin.php:8290
 msgid "Deal stage ID (optional)"
 msgstr ""
 
-#: admin/class-admin.php:4397
+#: admin/class-admin.php:4989
 msgid "Send new bookings to Mailchimp"
 msgstr ""
 
-#: admin/class-admin.php:4398
+#: admin/class-admin.php:4990
+#: admin/class-admin.php:8317
 msgid "Mailchimp Marketing API key"
 msgstr ""
 
-#: admin/class-admin.php:4399
+#: admin/class-admin.php:4991
+#: admin/class-admin.php:8328
 msgid "Mailchimp Audience (List) ID"
 msgstr ""
 
-#: admin/class-admin.php:4400
+#: admin/class-admin.php:4992
 msgid "Send booking webhook (n8n)"
 msgstr ""
 
-#: admin/class-admin.php:4401
+#: admin/class-admin.php:4993
 msgid "n8n webhook URL"
 msgstr ""
 
-#: admin/class-admin.php:4402
+#: admin/class-admin.php:4994
 msgid "n8n webhook signing secret (optional)"
 msgstr ""
 
-#: admin/class-admin.php:4403
+#: admin/class-admin.php:4995
 msgid "Send booking webhook (Zapier)"
 msgstr ""
 
-#: admin/class-admin.php:4404
+#: admin/class-admin.php:4996
+#: admin/class-admin.php:8396
 msgid "Zapier Catch Hook URL"
 msgstr ""
 
-#: admin/class-admin.php:4405
+#: admin/class-admin.php:4997
 msgid "Zapier webhook signing secret (optional)"
 msgstr ""
 
-#: admin/class-admin.php:4406
+#: admin/class-admin.php:4998
 msgid "Send booking webhook (Make.com)"
 msgstr ""
 
-#: admin/class-admin.php:4407
+#: admin/class-admin.php:4999
+#: admin/class-admin.php:8430
 msgid "Make.com Custom webhook URL"
 msgstr ""
 
-#: admin/class-admin.php:4408
+#: admin/class-admin.php:5000
 msgid "Make.com webhook signing secret (optional)"
 msgstr ""
 
-#: admin/class-admin.php:4409
+#: admin/class-admin.php:5001
 msgid "Sync bookings to Google Calendar"
 msgstr ""
 
-#: admin/class-admin.php:4410
+#: admin/class-admin.php:5002
 msgid "Service Account JSON key"
 msgstr ""
 
-#: admin/class-admin.php:4411
+#: admin/class-admin.php:5003
 msgid "Google Calendar ID"
 msgstr ""
 
-#: admin/class-admin.php:4412
+#: admin/class-admin.php:5004
+#: admin/class-admin.php:8478
 msgid "Add customer as attendee"
 msgstr ""
 
-#: admin/class-admin.php:4413
+#: admin/class-admin.php:5005
 msgid "How many days ahead to allow bookings"
 msgstr ""
 
-#: admin/class-admin.php:4414
+#: admin/class-admin.php:5006
 msgid "Default booking duration (hours)"
 msgstr ""
 
-#: admin/class-admin.php:4415
+#: admin/class-admin.php:5007
 msgid "Buffer before booking (hours)"
 msgstr ""
 
-#: admin/class-admin.php:4457
+#: admin/class-admin.php:5049
 msgid "What you call one bookable object everywhere (Table, Court, Room, …)."
 msgstr ""
 
-#: admin/class-admin.php:4459
+#: admin/class-admin.php:5051
 msgid "Plural label for headings/lists. If empty, the plugin pluralizes the singular name."
 msgstr ""
 
-#: admin/class-admin.php:4461
+#: admin/class-admin.php:5053
 msgid "Controls the booking wizard order on the frontend (map-first, date/time-first, layout-first Smart Map, or auto-assign)."
 msgstr ""
 
 #. translators: 1: singular item, 2: plural items
-#: admin/class-admin.php:4465
+#: admin/class-admin.php:5057
 #, php-format
 msgid "Controls how mobile users select a %1$s: map, list, or no map. Does not change desktop behavior. Applies to %2$s selection only."
 msgstr ""
 
-#: admin/class-admin.php:4470
+#: admin/class-admin.php:5062
 msgid "Turn this on for capacity sharing and any flow where headcount matters."
 msgstr ""
 
 #. translators: %s: plural reservable items
-#: admin/class-admin.php:4474
+#: admin/class-admin.php:5066
 #, php-format
 msgid "Exclusive: one party blocks a whole item for the time range. Capacity: many parties can share the same item until it is full (requires party size). Applies to: %s."
 msgstr ""
 
-#: admin/class-admin.php:4478
+#: admin/class-admin.php:5070
 msgid "Rolling booking window: last selectable day is “today + N days”."
 msgstr ""
 
-#: admin/class-admin.php:4480
+#: admin/class-admin.php:5072
 msgid "Default length of a reservation if the guest does not pick an end time. Also used for overlap checks in many flows."
 msgstr ""
 
-#: admin/class-admin.php:4482
+#: admin/class-admin.php:5074
 msgid "Extra blocked time *before* an existing booking starts (turnover / setup)."
 msgstr ""
 
-#: admin/class-admin.php:4484
+#: admin/class-admin.php:5076
 msgid "If on, a booking is not final until online payment completes (per your payment settings)."
 msgstr ""
 
-#: admin/class-admin.php:4486
+#: admin/class-admin.php:5078
 msgid "Where online payments are processed: off, Stripe (direct), or WooCommerce (uses your store gateways)."
 msgstr ""
 
-#: admin/class-admin.php:4488
+#: admin/class-admin.php:5080
 msgid "Optional: sends an SMS to the staff number below when a booking is created (Vonage)."
 msgstr ""
 
-#: admin/class-admin.php:4495
+#: admin/class-admin.php:5087
 msgid "[complex value]"
 msgstr ""
 
-#: admin/class-admin.php:4499
+#: admin/class-admin.php:5091
 msgid "empty"
 msgstr ""
 
-#: admin/class-admin.php:4502
+#: admin/class-admin.php:5094
 msgid "enabled (1)"
 msgstr ""
 
-#: admin/class-admin.php:4505
+#: admin/class-admin.php:5097
 msgid "disabled (0)"
 msgstr ""
 
-#: admin/class-admin.php:4544
-#: admin/class-admin.php:7153
+#: admin/class-admin.php:5136
+#: admin/class-admin.php:8504
 msgid "Monday"
 msgstr ""
 
-#: admin/class-admin.php:4545
-#: admin/class-admin.php:7167
+#: admin/class-admin.php:5137
+#: admin/class-admin.php:8518
 msgid "Tuesday"
 msgstr ""
 
-#: admin/class-admin.php:4546
-#: admin/class-admin.php:7181
+#: admin/class-admin.php:5138
+#: admin/class-admin.php:8532
 msgid "Wednesday"
 msgstr ""
 
-#: admin/class-admin.php:4547
-#: admin/class-admin.php:7195
+#: admin/class-admin.php:5139
+#: admin/class-admin.php:8546
 msgid "Thursday"
 msgstr ""
 
-#: admin/class-admin.php:4548
-#: admin/class-admin.php:7209
+#: admin/class-admin.php:5140
+#: admin/class-admin.php:8560
 msgid "Friday"
 msgstr ""
 
-#: admin/class-admin.php:4549
-#: admin/class-admin.php:7223
+#: admin/class-admin.php:5141
+#: admin/class-admin.php:8574
 msgid "Saturday"
 msgstr ""
 
-#: admin/class-admin.php:4550
-#: admin/class-admin.php:7237
+#: admin/class-admin.php:5142
+#: admin/class-admin.php:8588
 msgid "Sunday"
 msgstr ""
 
-#: admin/class-admin.php:4561
+#: admin/class-admin.php:5153
 msgid "Closed"
 msgstr ""
 
-#: admin/class-admin.php:4564
+#: admin/class-admin.php:5156
 msgid "This is your weekly availability model (per weekday + optional split shift). It is not the per-reservation length — that is covered by “Default booking duration / buffer” above."
 msgstr ""
 
-#: admin/class-admin.php:4568
-#: admin/class-admin.php:5352
+#: admin/class-admin.php:5160
+#: admin/class-admin.php:5941
 msgid "Day"
 msgstr ""
 
-#: admin/class-admin.php:4569
-#: admin/class-admin.php:5297
-#: admin/class-admin.php:5327
-#: admin/class-admin.php:5592
-#: public/class-public.php:3854
+#: admin/class-admin.php:5161
+#: admin/class-admin.php:5886
+#: admin/class-admin.php:5916
+#: admin/class-admin.php:6178
+#: public/class-public.php:3914
 msgid "Status"
 msgstr ""
 
-#: admin/class-admin.php:4570
+#: admin/class-admin.php:5162
 msgid "Window 1"
 msgstr ""
 
-#: admin/class-admin.php:4571
+#: admin/class-admin.php:5163
 msgid "Split"
 msgstr ""
 
-#: admin/class-admin.php:4572
+#: admin/class-admin.php:5164
 msgid "Window 2"
 msgstr ""
 
-#: admin/class-admin.php:4713
-#: admin/class-admin.php:4722
-#: admin/class-admin.php:5624
+#: admin/class-admin.php:5305
+#: admin/class-admin.php:5314
+#: admin/class-admin.php:6208
 msgid "Request"
 msgstr ""
 
 #. translators: %d: number of guests
-#: admin/class-admin.php:4745
+#: admin/class-admin.php:5337
 #, php-format
 msgid "%d guest"
 msgid_plural "%d guests"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-admin.php:4780
+#: admin/class-admin.php:5372
 msgid "New"
 msgstr ""
 
-#: admin/class-admin.php:4918
+#: admin/class-admin.php:5510
 msgid "No layout"
 msgstr ""
 
 #. translators: %d: layout post ID when the layout no longer exists
-#: admin/class-admin.php:4925
+#: admin/class-admin.php:5517
 #, php-format
 msgid "Layout #%d (unavailable)"
 msgstr ""
 
-#: admin/class-admin.php:5234
+#: admin/class-admin.php:5823
 msgid "Reservations Calendar"
 msgstr ""
 
 #. translators: 1: work-day open time, 2: work-day close time
-#: admin/class-admin.php:5241
+#: admin/class-admin.php:5830
 #, php-format
 msgid "Operational day/week board for all bookings. Showing work hours %1$s–%2$s from Work Days settings."
 msgstr ""
 
-#: admin/class-admin.php:5249
+#: admin/class-admin.php:5838
 msgid "Calendar stats"
 msgstr ""
 
-#: admin/class-admin.php:5281
+#: admin/class-admin.php:5870
 msgid "Saved view"
 msgstr ""
 
-#: admin/class-admin.php:5283
+#: admin/class-admin.php:5872
 msgid "Custom"
 msgstr ""
 
-#: admin/class-admin.php:5284
+#: admin/class-admin.php:5873
 msgid "Dinner rush"
 msgstr ""
 
-#: admin/class-admin.php:5285
+#: admin/class-admin.php:5874
 msgid "New requests"
 msgstr ""
 
-#: admin/class-admin.php:5286
+#: admin/class-admin.php:5875
 msgid "Today only"
 msgstr ""
 
-#: admin/class-admin.php:5290
+#: admin/class-admin.php:5879
 msgid "Mode"
 msgstr ""
 
-#: admin/class-admin.php:5292
+#: admin/class-admin.php:5881
 msgid "Board"
 msgstr ""
 
-#: admin/class-admin.php:5293
+#: admin/class-admin.php:5882
 msgid "Table lanes"
 msgstr ""
 
-#: admin/class-admin.php:5299
+#: admin/class-admin.php:5888
 msgid "All"
 msgstr ""
 
-#: admin/class-admin.php:5308
+#: admin/class-admin.php:5897
 msgid "All layouts"
 msgstr ""
 
-#: admin/class-admin.php:5317
+#: admin/class-admin.php:5906
 msgid "Table ID contains"
 msgstr ""
 
-#: admin/class-admin.php:5318
+#: admin/class-admin.php:5907
 msgid "e.g. 12"
 msgstr ""
 
-#: admin/class-admin.php:5321
+#: admin/class-admin.php:5910
 msgid "Sort cards by"
 msgstr ""
 
-#: admin/class-admin.php:5324
+#: admin/class-admin.php:5913
 msgid "Table ID"
 msgstr ""
 
-#: admin/class-admin.php:5325
+#: admin/class-admin.php:5914
 msgid "Customer name"
 msgstr ""
 
-#: admin/class-admin.php:5326
+#: admin/class-admin.php:5915
 msgid "Party size"
 msgstr ""
 
-#: admin/class-admin.php:5328
+#: admin/class-admin.php:5917
 msgid "New first"
 msgstr ""
 
-#: admin/class-admin.php:5332
+#: admin/class-admin.php:5921
 msgid "Density"
 msgstr ""
 
-#: admin/class-admin.php:5334
+#: admin/class-admin.php:5923
 msgid "Cozy"
 msgstr ""
 
-#: admin/class-admin.php:5335
+#: admin/class-admin.php:5924
 msgid "Compact"
 msgstr ""
 
-#: admin/class-admin.php:5338
-#: admin/class-picky-reservations-list-facade.php:148
+#: admin/class-admin.php:5927
 msgid "Apply"
 msgstr ""
 
-#: admin/class-admin.php:5342
+#: admin/class-admin.php:5931
 msgid "Previous"
 msgstr ""
 
-#: admin/class-admin.php:5349
+#: admin/class-admin.php:5938
 msgid "Next"
 msgstr ""
 
-#: admin/class-admin.php:5351
+#: admin/class-admin.php:5940
 msgid "Calendar view"
 msgstr ""
 
-#: admin/class-admin.php:5353
+#: admin/class-admin.php:5942
 msgid "Week"
 msgstr ""
 
-#: admin/class-admin.php:5354
+#: admin/class-admin.php:5943
 msgid "Today"
 msgstr ""
 
-#: admin/class-admin.php:5367
+#: admin/class-admin.php:5956
 msgid "Jump to"
 msgstr ""
 
-#: admin/class-admin.php:5369
+#: admin/class-admin.php:5958
 msgid "Go"
 msgstr ""
 
-#: admin/class-admin.php:5408
+#: admin/class-admin.php:5997
 msgid "Lane mode optimizes operational scanning: rows are tables, columns are 30-minute slots."
 msgstr ""
 
-#: admin/class-admin.php:5537
+#: admin/class-admin.php:6126
 msgid "booking"
 msgid_plural "bookings"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-admin.php:5543
+#: admin/class-admin.php:6132
 msgid "No bookings"
 msgstr ""
 
-#. translators: %d: number of hidden bookings
-#: admin/class-admin.php:5555
+#: admin/class-admin.php:6142
 #, php-format
 msgid "+%d more"
 msgstr ""
 
-#: admin/class-admin.php:5576
+#: admin/class-admin.php:6162
 msgid "No bookings found for this range."
 msgstr ""
 
-#: admin/class-admin.php:5577
+#: admin/class-admin.php:6163
 msgid "Try widening the date range or resetting filters."
 msgstr ""
 
-#: admin/class-admin.php:5583
+#: admin/class-admin.php:6169
 msgid "Booking details"
 msgstr ""
 
-#: admin/class-admin.php:5584
+#: admin/class-admin.php:6170
 msgid "Close details"
 msgstr ""
 
-#: admin/class-admin.php:5587
+#: admin/class-admin.php:6173
+#: frontend/class-frontend.php:646
+#: frontend/class-frontend.php:814
+#: includes/class-hubspot-integration.php:155
+#: includes/class-white-label.php:91
 msgid "Booking"
 msgstr ""
 
-#: admin/class-admin.php:5594
+#: admin/class-admin.php:6180
 msgid "People"
 msgstr ""
 
-#: admin/class-admin.php:5596
+#: admin/class-admin.php:6182
 msgid "Open booking record"
 msgstr ""
 
-#: admin/class-admin.php:5682
+#: admin/class-admin.php:6259
 msgid "Booking flow, labels, and form fields"
 msgstr ""
 
-#: admin/class-admin.php:5683
+#: admin/class-admin.php:6260
 msgid "Layout and canvas defaults"
 msgstr ""
 
-#: admin/class-admin.php:5684
+#: admin/class-admin.php:6261
 msgid "Date horizon and booking duration rules"
 msgstr ""
 
-#: admin/class-admin.php:5685
+#: admin/class-admin.php:6262
 msgid "Weekly hours (summary)"
 msgstr ""
 
-#: admin/class-admin.php:5686
+#: admin/class-admin.php:6263
 msgid "Emails and thank-you page text"
 msgstr ""
 
-#: admin/class-admin.php:5687
+#: admin/class-admin.php:6264
 msgid "Payments and deposits"
 msgstr ""
 
-#: admin/class-admin.php:5688
+#: admin/class-admin.php:6265
 msgid "SMS notifications (staff)"
 msgstr ""
 
-#: admin/class-admin.php:5692
+#: admin/class-admin.php:6269
 msgid "Create at least one layout in “Layouts” and place your bookable elements on the map. Keep non-bookable shapes (walls/text/decor) as visual helpers only."
 msgstr ""
 
-#: admin/class-admin.php:5693
+#: admin/class-admin.php:6270
 msgid "Open “Settings” (Main tab) and set labels, booking mode, wizard order, and what the guest sees (email, party size, map badges, mobile behavior)."
 msgstr ""
 
-#: admin/class-admin.php:5694
+#: admin/class-admin.php:6271
 msgid "Set “Date horizon and booking duration rules”: how far ahead guests can book, default reservation length, and buffer time between bookings (turnover)."
 msgstr ""
 
-#: admin/class-admin.php:5695
+#: admin/class-admin.php:6272
 msgid "Set “Weekly hours” using the table below: enable each weekday, choose window times, and use split hours when you need a lunch break or two shifts."
 msgstr ""
 
-#: admin/class-admin.php:5696
+#: admin/class-admin.php:6273
 msgid "Configure “Emails and thank-you page text” (where admin copies go, optional guest confirmation, success message)."
 msgstr ""
 
-#: admin/class-admin.php:5697
+#: admin/class-admin.php:6274
 msgid "If needed, enable optional SMS to staff, payments/deposits, and test those integrations."
 msgstr ""
 
-#: admin/class-admin.php:5698
+#: admin/class-admin.php:6275
 msgid "Colors and visual styling: adjust them in the plugin “Settings” Appearance tab (not duplicated here on purpose)."
 msgstr ""
 
-#: admin/class-admin.php:5699
+#: admin/class-admin.php:6276
 msgid "Place shortcode `[pickybooking id=\"LAYOUT_ID\"]` on the target page and test the full journey as a customer (desktop and mobile)."
 msgstr ""
 
-#: admin/class-admin.php:5704
+#: admin/class-admin.php:6281
 msgid "Restaurant / Cafe (table reservations)"
 msgstr ""
 
-#: admin/class-admin.php:5706
+#: admin/class-admin.php:6283
 msgid "Item naming: Table / Tables"
 msgstr ""
 
-#: admin/class-admin.php:5707
-#: admin/class-admin.php:5737
+#: admin/class-admin.php:6284
+#: admin/class-admin.php:6314
 msgid "Booking mode: Exclusive"
 msgstr ""
 
-#: admin/class-admin.php:5708
+#: admin/class-admin.php:6285
 msgid "Wizard: Smart (date/time first) for busy operations"
 msgstr ""
 
-#: admin/class-admin.php:5709
+#: admin/class-admin.php:6286
 msgid "Show center badge and max persons so guests pick suitable tables"
 msgstr ""
 
-#: admin/class-admin.php:5710
+#: admin/class-admin.php:6287
 msgid "Typical duration: 1.5–2.5 hours, with pre-booking buffer for turnover"
 msgstr ""
 
-#: admin/class-admin.php:5714
+#: admin/class-admin.php:6291
 msgid "Coworking / Hot desk space"
 msgstr ""
 
-#: admin/class-admin.php:5716
+#: admin/class-admin.php:6293
 msgid "Item naming: Desk / Desks or Seat / Seats"
 msgstr ""
 
-#: admin/class-admin.php:5717
+#: admin/class-admin.php:6294
 msgid "Booking mode: Capacity"
 msgstr ""
 
-#: admin/class-admin.php:5718
+#: admin/class-admin.php:6295
 msgid "Enable party size to subtract capacity correctly"
 msgstr ""
 
-#: admin/class-admin.php:5719
+#: admin/class-admin.php:6296
 msgid "Use map badges to show capacity at a glance"
 msgstr ""
 
-#: admin/class-admin.php:5720
+#: admin/class-admin.php:6297
 msgid "Longer schedule windows and larger days-ahead horizon are common"
 msgstr ""
 
-#: admin/class-admin.php:5724
+#: admin/class-admin.php:6301
 msgid "Sports venue (court/field booking)"
 msgstr ""
 
-#: admin/class-admin.php:5726
+#: admin/class-admin.php:6303
 msgid "Item naming: Court / Courts or Field / Fields"
 msgstr ""
 
-#: admin/class-admin.php:5727
+#: admin/class-admin.php:6304
 msgid "Booking mode: Exclusive (one booking blocks the full resource)"
 msgstr ""
 
-#: admin/class-admin.php:5728
+#: admin/class-admin.php:6305
 msgid "Show end-time field to support variable session length"
 msgstr ""
 
-#: admin/class-admin.php:5729
+#: admin/class-admin.php:6306
 msgid "Keep mobile mode as map or dropdown based on number of courts"
 msgstr ""
 
-#: admin/class-admin.php:5730
+#: admin/class-admin.php:6307
 msgid "Deposits are recommended for no-show reduction"
 msgstr ""
 
-#: admin/class-admin.php:5734
+#: admin/class-admin.php:6311
 msgid "Clinic / Beauty / Service rooms"
 msgstr ""
 
-#: admin/class-admin.php:5736
+#: admin/class-admin.php:6313
 msgid "Item naming: Room / Rooms or Chair / Chairs"
 msgstr ""
 
-#: admin/class-admin.php:5738
+#: admin/class-admin.php:6315
 msgid "Use strict schedule windows with optional split shifts"
 msgstr ""
 
-#: admin/class-admin.php:5739
+#: admin/class-admin.php:6316
 msgid "Consent checkbox and clear policy text are usually required"
 msgstr ""
 
-#: admin/class-admin.php:5740
+#: admin/class-admin.php:6317
 msgid "Enable customer email confirmations for appointment clarity"
 msgstr ""
 
-#: admin/class-admin.php:5744
+#: admin/class-admin.php:6321
 msgid "Event venue / Mixed zones"
 msgstr ""
 
-#: admin/class-admin.php:5746
+#: admin/class-admin.php:6323
 msgid "Item naming: Zone / Zones, Booth / Booths, etc."
 msgstr ""
 
-#: admin/class-admin.php:5747
+#: admin/class-admin.php:6324
 msgid "Use visual non-bookable shapes/text to explain map areas"
 msgstr ""
 
-#: admin/class-admin.php:5748
+#: admin/class-admin.php:6325
 msgid "Pick wizard mode based on sales process: Classic for map-first, Smart for date-first"
 msgstr ""
 
-#: admin/class-admin.php:5749
+#: admin/class-admin.php:6326
 msgid "Transparent canvas mode helps blend maps into branded landing pages"
 msgstr ""
 
-#: admin/class-admin.php:5750
+#: admin/class-admin.php:6327
 msgid "Use Import/Export to clone layouts across similar event pages"
 msgstr ""
 
-#: admin/class-admin.php:5754
+#: admin/class-admin.php:6331
 msgid "Day tours (boats, hop-on buses, group departures)"
 msgstr ""
 
-#: admin/class-admin.php:5756
+#: admin/class-admin.php:6333
 msgid "Item naming: Tour / Tours, Bus / Buses, or Departure / Departures"
 msgstr ""
 
-#: admin/class-admin.php:5757
+#: admin/class-admin.php:6334
 msgid "Booking mode: Capacity — the same vehicle/tour run can be shared until “max persons” is reached"
 msgstr ""
 
-#: admin/class-admin.php:5758
+#: admin/class-admin.php:6335
 msgid "Enable party size so each booking reserves the correct number of seats"
 msgstr ""
 
-#: admin/class-admin.php:5759
+#: admin/class-admin.php:6336
 msgid "Wizard: Smart (date/time first) so guests only see departures that still have seats"
 msgstr ""
 
-#: admin/class-admin.php:5760
+#: admin/class-admin.php:6337
 msgid "Set default duration to the tour leg length; add buffer for boarding/turnaround between departures"
 msgstr ""
 
-#: admin/class-admin.php:5764
+#: admin/class-admin.php:6341
 msgid "Training / classes (seats in a room)"
 msgstr ""
 
-#: admin/class-admin.php:5766
+#: admin/class-admin.php:6343
 msgid "Item naming: Class / Classes, Room / Rooms, or Seat / Seats"
 msgstr ""
 
-#: admin/class-admin.php:5767
+#: admin/class-admin.php:6344
 msgid "Booking mode: Capacity when multiple students share one scheduled session"
 msgstr ""
 
-#: admin/class-admin.php:5768
+#: admin/class-admin.php:6345
 msgid "Enable party size if one booking can cover several attendees (e.g. a company group)"
 msgstr ""
 
-#: admin/class-admin.php:5769
+#: admin/class-admin.php:6346
 msgid "Use weekly hours for session windows; optional split shifts if you run morning and evening classes"
 msgstr ""
 
-#: admin/class-admin.php:5770
+#: admin/class-admin.php:6347
 msgid "Use email confirmations and consent text if you process personal or training data"
 msgstr ""
 
-#: admin/class-admin.php:5774
+#: admin/class-admin.php:6351
 msgid "Hotel / B&B (overnight room stays)"
 msgstr ""
 
-#: admin/class-admin.php:5776
+#: admin/class-admin.php:6353
 msgid "Item naming: Room / Rooms or Unit / Units"
 msgstr ""
 
-#: admin/class-admin.php:5777
+#: admin/class-admin.php:6354
 msgid "Booking mode: Exclusive — one stay blocks the whole room for that time range"
 msgstr ""
 
-#: admin/class-admin.php:5778
+#: admin/class-admin.php:6355
 msgid "Set a longer default booking length (e.g. overnight or multi-day) and use “end time” if guests choose checkout time"
 msgstr ""
 
-#: admin/class-admin.php:5779
+#: admin/class-admin.php:6356
 msgid "Larger “days ahead” is typical for travel planning"
 msgstr ""
 
-#: admin/class-admin.php:5780
+#: admin/class-admin.php:6357
 msgid "Customer email on + clear confirmation text; optional deposit in Payments if you require prepayment"
 msgstr ""
 
-#: admin/class-admin.php:5793
-#: admin/class-admin.php:5799
+#: admin/class-admin.php:6370
+#: admin/class-admin.php:6376
 msgid "PickyBooking Documentation"
 msgstr ""
 
-#: admin/class-admin.php:5802
+#: admin/class-admin.php:6379
 msgid "Full HTML documentation (online)"
 msgstr ""
 
-#: admin/class-admin.php:5804
+#: admin/class-admin.php:6381
 msgid "Complete product guide: setup stages, how-tos (layout, services, bookings, emails/SMS, CRM, payments, avatars, import/export, AI), industry recipes, troubleshooting, and a full features catalog."
 msgstr ""
 
-#: admin/class-admin.php:5808
+#: admin/class-admin.php:6385
 msgid "Open HTML documentation"
 msgstr ""
 
-#: admin/class-admin.php:5815
+#: admin/class-admin.php:6392
 msgid "Guides:"
 msgstr ""
 
-#: admin/class-admin.php:5818
-#: public/class-public.php:3850
+#: admin/class-admin.php:6395
+#: frontend/class-frontend.php:722
+#: public/class-public.php:3910
 msgid "Services"
 msgstr ""
 
-#: admin/class-admin.php:5820
+#: admin/class-admin.php:6397
 msgid "Emails & SMS"
 msgstr ""
 
-#: admin/class-admin.php:5821
+#: admin/class-admin.php:6398
 msgid "CRM"
 msgstr ""
 
-#: admin/class-admin.php:5823
+#: admin/class-admin.php:6400
 msgid "Avatars"
 msgstr ""
 
-#: admin/class-admin.php:5824
+#: admin/class-admin.php:6401
 msgid "Import/Export"
 msgstr ""
 
-#: admin/class-admin.php:5825
-#: admin/partials/view_layout.php:262
-#: admin/partials/view_layout.php:651
-msgid "AI"
-msgstr ""
-
-#: admin/class-admin.php:5826
+#: admin/class-admin.php:6403
 msgid "Industries"
 msgstr ""
 
-#: admin/class-admin.php:5827
+#: admin/class-admin.php:6404
 msgid "Troubleshooting"
 msgstr ""
 
-#: admin/class-admin.php:5837
+#: admin/class-admin.php:6414
 msgid "This page is an in-plugin guide for administrators. It explains the full setup flow, all settings, and ready-to-use configuration patterns."
 msgstr ""
 
-#: admin/class-admin.php:5840
+#: admin/class-admin.php:6417
 msgid "Implementation flow (end-to-end)"
 msgstr ""
 
-#: admin/class-admin.php:5849
+#: admin/class-admin.php:6426
 msgid "Business setup examples (8 scenarios)"
 msgstr ""
 
-#: admin/class-admin.php:5865
+#: admin/class-admin.php:6442
 msgid "All settings reference"
 msgstr ""
 
-#: admin/class-admin.php:5866
+#: admin/class-admin.php:6443
 msgid "Most options are listed as values only. A small set of “critical” options includes a short note. Color pickers are not duplicated here—use the Settings screen."
 msgstr ""
 
-#: admin/class-admin.php:5925
+#: admin/class-admin.php:6502
 msgid "Current"
 msgstr ""
 
-#: admin/class-admin.php:5928
-#: admin/partials/view_layout.php:288
-#: admin/partials/view_layout.php:677
+#: admin/class-admin.php:6505
+#: admin/partials/view_layout.php:318
+#: admin/partials/view_layout.php:701
 msgid "Default"
 msgstr ""
 
-#: admin/class-admin.php:5969
-#: admin/class-admin.php:7624
-#: admin/class-admin.php:7862
-#: frontend/class-frontend.php:2576
+#: admin/class-admin.php:6546
+#: admin/class-admin.php:7533
+#: admin/class-admin.php:9024
+#: admin/class-admin.php:9263
+#: admin/class-admin.php:9292
+#: admin/class-admin.php:9558
+#: admin/class-admin.php:9580
+#: frontend/class-frontend.php:2997
 msgid "Security check failed."
 msgstr ""
 
-#: admin/class-admin.php:5997
-#: admin/class-admin.php:6033
-#: admin/class-admin.php:7620
-#: admin/class-admin.php:7858
+#: admin/class-admin.php:6574
+#: admin/class-admin.php:6610
+#: admin/class-admin.php:7718
+#: admin/class-admin.php:9020
+#: admin/class-admin.php:9259
+#: admin/class-admin.php:9594
 #: includes/class-layout-library.php:155
 msgid "Invalid layout."
 msgstr ""
 
-#: admin/class-admin.php:6110
-#: admin/class-admin.php:6116
+#: admin/class-admin.php:6686
+#: admin/class-admin.php:6692
 msgid "Copy layouts between sites or from backups using JSON export and import."
 msgstr ""
 
-#: admin/class-admin.php:6124
-#: admin/class-admin.php:6215
-#: admin/partials/view_layout.php:439
+#: admin/class-admin.php:6700
+#: admin/class-admin.php:6786
+#: admin/partials/view_layout.php:462
 msgid "Export"
 msgstr ""
 
-#: admin/class-admin.php:6125
+#: admin/class-admin.php:6701
 msgid "Open a layout in the visual editor and click “Export” in the top bar, or use “Export” in the Layouts list."
 msgstr ""
 
-#: admin/class-admin.php:6128
+#: admin/class-admin.php:6704
 msgid "Import"
 msgstr ""
 
-#: admin/class-admin.php:6129
+#: admin/class-admin.php:6705
 msgid "Paste a PickyBooking layout JSON or upload a .json file. Includes elements, canvas size, background images (embedded when possible), fit mode, visibility flags, and the services library when present."
 msgstr ""
 
-#: admin/class-admin.php:6138
+#: admin/class-admin.php:6714
 msgid "Layout title"
 msgstr ""
 
-#: admin/class-admin.php:6140
-#: includes/class-layout-library.php:605
+#: admin/class-admin.php:6716
+#: admin/class-admin.php:7540
+#: includes/class-layout-library.php:606
 msgid "Imported Layout"
 msgstr ""
 
-#: admin/class-admin.php:6141
+#: admin/class-admin.php:6717
 msgid "Leave empty to use the title from JSON, when present."
 msgstr ""
 
-#: admin/class-admin.php:6145
+#: admin/class-admin.php:6721
 msgid "JSON file"
 msgstr ""
 
-#: admin/class-admin.php:6149
+#: admin/class-admin.php:6725
 msgid "JSON content"
 msgstr ""
 
-#: admin/class-admin.php:6152
+#: admin/class-admin.php:6728
 msgid "If both file and textarea are provided, the uploaded file is used."
 msgstr ""
 
-#: admin/class-admin.php:6157
+#: admin/class-admin.php:6733
 msgid "Import Layout"
 msgstr ""
 
-#: admin/class-admin.php:6177
+#: admin/class-admin.php:6751
 msgid "New Layout"
 msgstr ""
 
-#: admin/class-admin.php:6213
-#: admin/partials/view_layout.php:187
-#: admin/partials/view_layout.php:188
+#: admin/class-admin.php:6784
+#: admin/partials/view_layout.php:178
+#: admin/partials/view_layout.php:179
 msgid "Layout Name"
 msgstr ""
 
-#: admin/class-admin.php:6214
+#: admin/class-admin.php:6785
 msgid "Shortcode"
 msgstr ""
 
-#: admin/class-admin.php:6239
+#: admin/class-admin.php:6810
 msgid "Download JSON"
 msgstr ""
 
-#: admin/class-admin.php:6251
-#: admin/partials/layout-library.php:86
+#: admin/class-admin.php:6822
+#: admin/partials/layout-library.php:78
 #: admin/partials/layouts-list-custom.php:100
-#: admin/partials/view_layout.php:442
+#: admin/partials/view_layout.php:464
 msgid "Duplicate"
 msgstr ""
 
-#: admin/class-admin.php:6263
+#: admin/class-admin.php:6834
 msgid "Export JSON"
 msgstr ""
 
-#: admin/class-admin.php:6266
-#: admin/partials/layout-library.php:90
+#: admin/class-admin.php:6837
+#: admin/partials/layout-library.php:82
 #: admin/partials/layouts-list-custom.php:104
-#: admin/partials/view_layout.php:445
+#: admin/partials/view_layout.php:467
 msgid "Delete this layout permanently? This cannot be undone."
 msgstr ""
 
-#: admin/class-admin.php:6267
-#: admin/partials/layout-library.php:90
-#: admin/partials/layouts-list-custom.php:105
-#: admin/partials/view_layout.php:401
-#: admin/partials/view_layout.php:445
-#: admin/partials/view_layout.php:818
+#: admin/class-admin.php:6837
+#: admin/partials/layout-library.php:82
+#: admin/partials/layouts-list-custom.php:104
+#: admin/partials/view_layout.php:428
+#: admin/partials/view_layout.php:467
+#: admin/partials/view_layout.php:841
 msgid "Delete"
 msgstr ""
 
-#: admin/class-admin.php:6420
+#: admin/class-admin.php:7017
 msgid "Could not upload the JSON file."
 msgstr ""
 
-#: admin/class-admin.php:6424
+#: admin/class-admin.php:7021
 msgid "Uploaded file is invalid."
 msgstr ""
 
-#: admin/class-admin.php:6776
+#: admin/class-admin.php:7411
 msgid "Paste JSON content or upload a JSON file."
 msgstr ""
 
-#: admin/class-admin.php:6784
+#: admin/class-admin.php:7419
 msgid "Layout JSON is invalid."
 msgstr ""
 
-#: admin/class-admin.php:6833
+#: admin/class-admin.php:7469
 msgid "Imported layout position is invalid."
 msgstr ""
 
-#: admin/class-admin.php:6842
+#: admin/class-admin.php:7478
 msgid "No layout elements found in the imported JSON."
 msgstr ""
 
-#: admin/class-admin.php:6854
+#: admin/class-admin.php:7490
 msgid "No valid layout elements found in the imported JSON."
 msgstr ""
 
-#: admin/class-admin.php:6889
-msgid "JSON import is available in PickyBooking Pro."
+#: admin/class-admin.php:7796
+#: includes/class-layout-library.php:235
+msgid "Could not encode layout as JSON."
 msgstr ""
 
-#: admin/class-admin.php:6893
-msgid "JSON export is available in PickyBooking Pro."
-msgstr ""
-
-#: admin/class-admin.php:6907
+#: admin/class-admin.php:7821
 msgid "Names & how far ahead guests can book"
 msgstr ""
 
-#: admin/class-admin.php:6908
+#: admin/class-admin.php:7822
 msgid "Labels guests see for your bookable items, plus the rolling booking window and default slot length used when building availability."
 msgstr ""
 
-#: admin/class-admin.php:6912
+#: admin/class-admin.php:7826
 msgid "Singular name for what is being booked"
 msgstr ""
 
-#: admin/class-admin.php:6915
+#: admin/class-admin.php:7829
 msgid "e.g. Table, Room, Court, Desk"
 msgstr ""
 
-#: admin/class-admin.php:6919
+#: admin/class-admin.php:7833
 msgid "Plural name"
 msgstr ""
 
-#: admin/class-admin.php:6922
+#: admin/class-admin.php:7836
 msgid "e.g. Tables, Rooms. Leave empty to add “s” to the singular name."
 msgstr ""
 
-#: admin/class-admin.php:6926
+#: admin/class-admin.php:7840
+msgid "Delete plugin data when uninstalling"
+msgstr ""
+
+#: admin/class-admin.php:7843
+msgid "Off by default. When checked, uninstalling the plugin removes settings. Layouts and bookings stay in WordPress as custom posts until you delete them yourself."
+msgstr ""
+
+#: admin/class-admin.php:7847
 msgid "How many days ahead bookings are allowed"
 msgstr ""
 
-#: admin/class-admin.php:6929
+#: admin/class-admin.php:7850
 msgid "day(s)"
 msgstr ""
 
-#: admin/class-admin.php:6930
+#: admin/class-admin.php:7851
 msgid "Last bookable day is today plus this many days (rolling window)."
 msgstr ""
 
-#: admin/class-admin.php:6934
+#: admin/class-admin.php:7855
 msgid "Default booking length (hours)"
 msgstr ""
 
-#: admin/class-admin.php:6937
-#: admin/class-admin.php:6945
+#: admin/class-admin.php:7858
+#: admin/class-admin.php:7866
 msgid "hour(s)"
 msgstr ""
 
-#: admin/class-admin.php:6938
+#: admin/class-admin.php:7859
 msgid "If the guest does not choose an end time, the reserved slot is this long. Also used when building availability."
 msgstr ""
 
-#: admin/class-admin.php:6942
+#: admin/class-admin.php:7863
 msgid "Extra blocked time before each booking (hours)"
 msgstr ""
 
-#: admin/class-admin.php:6946
+#: admin/class-admin.php:7867
 msgid "Padding before an existing booking: new requests cannot start inside this window before another booking begins (turnaround / setup)."
 msgstr ""
 
-#: admin/class-admin.php:6952
+#: admin/class-admin.php:7873
 msgid "Party size & what visitors see"
 msgstr ""
 
-#: admin/class-admin.php:6953
+#: admin/class-admin.php:7874
 msgid "Turn party size on when you use capacity mode. Control which fields and map hints appear on the public booking form."
 msgstr ""
 
-#: admin/class-admin.php:6957
+#: admin/class-admin.php:7878
 msgid "Ask for party size (number of people)"
 msgstr ""
 
-#: admin/class-admin.php:6960
+#: admin/class-admin.php:7881
 msgid "Needed for capacity mode and any setup where availability depends on guest count."
 msgstr ""
 
-#: admin/class-admin.php:6964
+#: admin/class-admin.php:7885
 msgid "Visibility on the booking form & layout"
 msgstr ""
 
-#: admin/class-admin.php:6975
+#: admin/class-admin.php:7896
 msgid "Show phone field"
 msgstr ""
 
 #. translators: %s: singular item label
-#: admin/class-admin.php:6981
+#: admin/class-admin.php:7902
 #, php-format
 msgid "Show “max persons” on each %s"
 msgstr ""
 
-#: admin/class-admin.php:6987
+#: admin/class-admin.php:7908
 msgid "Show center seat / capacity badge on the map"
 msgstr ""
 
-#: admin/class-admin.php:6991
+#: admin/class-admin.php:7912
 msgid "Show ID badge on the map"
 msgstr ""
 
-#: admin/class-admin.php:6995
+#: admin/class-admin.php:7916
 msgid "Show element label on the map"
 msgstr ""
 
-#: admin/class-admin.php:6999
+#: admin/class-admin.php:7920
 msgid "Show end time (“until”) for the reservation"
 msgstr ""
 
-#: admin/class-admin.php:7006
+#: admin/class-admin.php:7927
 msgid "Wizard flow, mobile & placement"
 msgstr ""
 
-#: admin/class-admin.php:7007
+#: admin/class-admin.php:7928
 msgid "Choose how guests move through the booking steps on phones and desktop, exclusive vs shared capacity, and how the shortcode block aligns on the page."
 msgstr ""
 
 #. translators: %s: singular item label (table, room, …)
-#: admin/class-admin.php:7013
+#: admin/class-admin.php:7934
 #, php-format
 msgid "On phones: how guests pick a %s"
 msgstr ""
 
-#: admin/class-admin.php:7020
+#: admin/class-admin.php:7941
 msgid "Hide layout (no map)"
 msgstr ""
 
 #. translators: %s: singular item label
-#: admin/class-admin.php:7024
+#: admin/class-admin.php:7945
 #, php-format
 msgid "On narrow screens the map is hidden; guests book without choosing a specific %s (if your flow allows)."
 msgstr ""
 
-#: admin/class-admin.php:7029
+#: admin/class-admin.php:7950
 msgid "Show scaled map (tap to select)"
 msgstr ""
 
 #. translators: %s: singular item label
-#: admin/class-admin.php:7033
+#: admin/class-admin.php:7954
 #, php-format
 msgid "The full layout is shown, scaled to fit; guests tap a %s."
 msgstr ""
 
-#: admin/class-admin.php:7038
+#: admin/class-admin.php:7959
 msgid "Show a dropdown list"
 msgstr ""
 
 #. translators: %s: plural items label
-#: admin/class-admin.php:7042
+#: admin/class-admin.php:7963
 #, php-format
 msgid "A list of %s; unavailable ones are disabled when possible."
 msgstr ""
 
-#: admin/class-admin.php:7050
-#: admin/partials/view_layout.php:1130
+#: admin/class-admin.php:7971
+#: admin/partials/view_layout.php:1196
 msgid "Booking mode"
 msgstr ""
 
-#: admin/class-admin.php:7055
+#: admin/class-admin.php:7976
 msgid "Exclusive — one booking per item per time slot"
 msgstr ""
 
 #. translators: %s: singular item label
-#: admin/class-admin.php:7059
+#: admin/class-admin.php:7980
 #, php-format
 msgid "If any part of a time range overlaps an existing booking, that %s is unavailable."
 msgstr ""
 
-#: admin/class-admin.php:7064
+#: admin/class-admin.php:7985
 msgid "Capacity — share by headcount"
 msgstr ""
 
 #. translators: 1: singular item label, 2: plural items label
-#: admin/class-admin.php:7068
+#: admin/class-admin.php:7989
 #, php-format
 msgid "Each %1$s has a “max persons”; several bookings can share the same %2$s until capacity is full. Turn on “party size” above."
 msgstr ""
 
-#: admin/class-admin.php:7077
+#: admin/class-admin.php:7998
 msgid "Wizard order (frontend steps)"
 msgstr ""
 
-#: admin/class-admin.php:7083
-#: admin/partials/view_layout.php:1067
+#: admin/class-admin.php:8004
+#: admin/partials/view_layout.php:1124
 msgid "Classic — pick item first"
 msgstr ""
 
 #. translators: %s: singular item label
-#: admin/class-admin.php:7087
+#: admin/class-admin.php:8008
 #, php-format
 msgid "Guest chooses a %s, then date, time, and details in the popup."
 msgstr ""
 
-#: admin/class-admin.php:7092
-#: admin/partials/view_layout.php:1068
+#: admin/class-admin.php:8013
+#: admin/partials/view_layout.php:1125
 msgid "Smart — date & time first"
 msgstr ""
 
 #. translators: %s: plural items label
-#: admin/class-admin.php:7096
+#: admin/class-admin.php:8017
 #, php-format
 msgid "Guest picks date and time, then one of the available %s, then details."
 msgstr ""
 
-#: admin/class-admin.php:7101
-#: admin/partials/view_layout.php:1069
+#: admin/class-admin.php:8022
+#: admin/partials/view_layout.php:1126
 msgid "Smart Map — layout first"
 msgstr ""
 
 #. translators: %s: plural items label
-#: admin/class-admin.php:7105
+#: admin/class-admin.php:8026
 #, php-format
 msgid "Map is shown immediately. Guest picks date and time in a compact bar at the bottom; available %s update on the layout."
 msgstr ""
 
-#: admin/class-admin.php:7110
-#: admin/partials/view_layout.php:1070
+#: admin/class-admin.php:8031
+#: admin/partials/view_layout.php:1127
 msgid "Simple — no map, time only"
 msgstr ""
 
-#. translators: 1: singular item label, 2: singular item label (same)
-#: admin/class-admin.php:7114
+#. translators: %s: singular item label
+#: admin/class-admin.php:8035
 #, php-format
-msgid "No picking a specific %1$s on the map: guest chooses date, time, and details; the first available %2$s is assigned."
+msgid "No picking a specific %s on the map: guest chooses date, time, and details; the first available %s is assigned."
 msgstr ""
 
-#: admin/class-admin.php:7123
+#: admin/class-admin.php:8044
 msgid "Shortcode block alignment"
 msgstr ""
 
-#: admin/class-admin.php:7127
+#: admin/class-admin.php:8048
 msgid "Align the booking widget within the page content (left, center, or right)."
 msgstr ""
 
-#: admin/class-admin.php:7134
+#: admin/class-admin.php:8055
 msgid "Staggered entrance when the layout loads, plus a light hover/selection scale. Turn off for a fully static floor plan."
 msgstr ""
 
-#: admin/class-admin.php:7141
+#: admin/class-admin.php:8061
+msgid "Payments & deposits"
+msgstr ""
+
+#: admin/class-admin.php:8062
+msgid "Optional prepayment or deposit before a booking is confirmed. Connect Stripe directly or route charges through WooCommerce."
+msgstr ""
+
+#: admin/class-admin.php:8068
+msgid "Collect payment"
+msgstr ""
+
+#: admin/class-admin.php:8069
+msgid "When this is on, the booking is confirmed only after the guest pays. Failed or abandoned payment frees the slot."
+msgstr ""
+
+#: admin/class-admin.php:8074
+msgid "Require online payment to confirm a booking"
+msgstr ""
+
+#: admin/class-admin.php:8077
+msgid "If enabled, the guest is sent to pay right after submitting the form (Stripe Checkout or WooCommerce, depending on the provider below)."
+msgstr ""
+
+#: admin/class-admin.php:8086
+msgid "Fixed amount (use the value below)"
+msgstr ""
+
+#: admin/class-admin.php:8088
+msgid "Charge this flat amount for each booked item (table/room). Two tables → 2 × fixed amount."
+msgstr ""
+
+#: admin/class-admin.php:8091
+msgid "Selected services total"
+msgstr ""
+
+#: admin/class-admin.php:8093
+msgid "Charge the sum of prices of services the customer selected on each booked item. If services total is zero, no payment is taken."
+msgstr ""
+
+#: admin/class-admin.php:8096
+msgid "Selected services total, fallback to fixed amount"
+msgstr ""
+
+#: admin/class-admin.php:8098
+msgid "Use the services total when > 0; otherwise charge the fixed amount below for each booked item."
+msgstr ""
+
+#: admin/class-admin.php:8104
+msgid "Fixed amount to charge"
+msgstr ""
+
+#: admin/class-admin.php:8108
+msgid "Per booked item when using Fixed amount or as a fallback. Ignored when source is Selected services total and services sum > 0."
+msgstr ""
+
+#: admin/class-admin.php:8112
+msgid "Currency (ISO code)"
+msgstr ""
+
+#: admin/class-admin.php:8115
+msgid "Three-letter code, e.g. USD, EUR, GBP. Should match your Stripe or WooCommerce currency."
+msgstr ""
+
+#: admin/class-admin.php:8121
+msgid "How guests pay"
+msgstr ""
+
+#: admin/class-admin.php:8122
+msgid "Choose the checkout the guest sees after submitting the form."
+msgstr ""
+
+#: admin/class-admin.php:8132
+msgid "None — no payment step"
+msgstr ""
+
+#: admin/class-admin.php:8134
+msgid "Bookings are recorded without collecting card payment through this plugin."
+msgstr ""
+
+#: admin/class-admin.php:8137
+msgid "Stripe Checkout (direct)"
+msgstr ""
+
+#: admin/class-admin.php:8139
+msgid "Uses the Stripe keys below to create a hosted Checkout session; guest returns after paying."
+msgstr ""
+
+#: admin/class-admin.php:8144
+msgid "Creates a WooCommerce order and sends the guest to your store checkout / pay-for-order page."
+msgstr ""
+
+#: admin/class-admin.php:8152
+msgid "Stripe keys"
+msgstr ""
+
+#: admin/class-admin.php:8153
+msgid "Only for Stripe Checkout (direct). Leave empty if you charge via WooCommerce."
+msgstr ""
+
+#: admin/class-admin.php:8161
+msgid "pk_… key (used for direct Stripe mode)."
+msgstr ""
+
+#: admin/class-admin.php:8168
+msgid "sk_… key — keep private; only for direct Stripe mode."
+msgstr ""
+
+#: admin/class-admin.php:8174
+msgid "PayPal"
+msgstr ""
+
+#: admin/class-admin.php:8175
+msgid "Reserved for a future PayPal flow. Saving values here does not enable PayPal yet."
+msgstr ""
+
+#: admin/class-admin.php:8180
+msgid "PayPal client ID"
+msgstr ""
+
+#: admin/class-admin.php:8187
+msgid "PayPal client secret"
+msgstr ""
+
+#: admin/class-admin.php:8196
+msgid "CRM & automation"
+msgstr ""
+
+#: admin/class-admin.php:8197
+msgid "Connect successful bookings to your CRM, email platform, and automation webhooks. These run after the booking is saved in WordPress."
+msgstr ""
+
+#: admin/class-admin.php:8203
+msgid "AI assistant"
+msgstr ""
+
+#: admin/class-admin.php:8204
+msgid "Draft layouts and copy with your own API key. Groq offers a free tier (no card required). OpenAI is optional and billed to your OpenAI account. PickyBooking does not proxy or store your key on our servers."
+msgstr ""
+
+#: admin/class-admin.php:8209
+msgid "Enable AI features"
+msgstr ""
+
+#: admin/class-admin.php:8212
+msgid "Optional. Automatically turns on when an API key is saved. Uncheck only if you want to hide AI generation without deleting the key — saving a key again will re-enable it."
+msgstr ""
+
+#: admin/class-admin.php:8216
+msgid "Provider"
+msgstr ""
+
+#: admin/class-admin.php:8220
+msgid "Groq = free tier (recommended to start). OpenAI = paid, often higher quality."
+msgstr ""
+
+#: admin/class-admin.php:8224
+msgid "Groq API key"
+msgstr ""
+
+#: admin/class-admin.php:8227
+msgid "Free key at <a href=\"https://console.groq.com/keys\" target=\"_blank\" rel=\"noopener noreferrer\">console.groq.com/keys</a> (no credit card). Leave blank after saving to keep the existing key."
+msgstr ""
+
+#: admin/class-admin.php:8231
+msgid "OpenAI API key"
+msgstr ""
+
+#: admin/class-admin.php:8234
+msgid "Only needed if Provider is OpenAI. Create a key at <a href=\"https://platform.openai.com/api-keys\" target=\"_blank\" rel=\"noopener noreferrer\">platform.openai.com/api-keys</a>. Leave blank after saving to keep the existing key."
+msgstr ""
+
+#: admin/class-admin.php:8238
+msgid "Model"
+msgstr ""
+
+#: admin/class-admin.php:8245
+msgid "Pick a model that matches your provider. For Groq free tier, Llama 4 Scout is fastest; GPT OSS models are stronger but use reasoning tokens."
+msgstr ""
+
+#: admin/class-admin.php:8256
+msgid "HubSpot CRM"
+msgstr ""
+
+#: admin/class-admin.php:8257
+msgid "When sync is on, each successful booking is pushed from WordPress to HubSpot: the guest becomes (or updates) a contact, and optionally a deal is created with the full reservation in the deal description and a link to edit the booking in WP. HubSpot does not load or mirror bookings back into this plugin unless you build separate webhooks or workflows."
+msgstr ""
+
+#: admin/class-admin.php:8262
+msgid "Enable HubSpot sync"
+msgstr ""
+
+#: admin/class-admin.php:8265
+msgid "When enabled, each successful booking is sent to HubSpot after it is saved in WordPress."
+msgstr ""
+
+#: admin/class-admin.php:8269
+msgid "HubSpot access token"
+msgstr ""
+
+#: admin/class-admin.php:8272
+msgid "In HubSpot: open <strong>Development</strong> → <strong>Legacy apps</strong>, create a <strong>legacy private app</strong> (or use the new developer platform). Under Scopes, add at least <code>crm.objects.contacts.read</code>, <code>crm.objects.contacts.write</code>, <code>crm.objects.deals.read</code>, and <code>crm.objects.deals.write</code> so contacts, deals, and deal pipelines can be used. Turn off “Create a HubSpot deal for each booking” below if you only want contacts. Note-related scopes are not required. Then open the app’s <strong>Auth</strong> tab, reveal the access token, and paste it here."
+msgstr ""
+
+#: admin/class-admin.php:8279
+msgid "Creates a deal linked to the contact, with date, time, party size, and an admin link to the WordPress reservation. Uses the first pipeline and first stage unless you set overrides below."
+msgstr ""
+
+#: admin/class-admin.php:8286
+msgid "Internal pipeline ID (e.g. <code>default</code> or a custom ID from HubSpot deal pipeline settings). Leave empty together with stage to auto-detect."
+msgstr ""
+
+#: admin/class-admin.php:8293
+msgid "Internal stage ID within that pipeline. Must be set together with pipeline ID if you override auto-detection."
+msgstr ""
+
+#: admin/class-admin.php:8304
+#: public/class-public.php:3568
+msgid "Mailchimp"
+msgstr ""
+
+#: admin/class-admin.php:8305
+msgid "Uses your own Mailchimp account with a Marketing API key. You do <strong>not</strong> need OAuth, app registration, or Mailchimp’s “Developing an app?” flow — that path is for products that access <em>other people’s</em> Mailchimp accounts."
+msgstr ""
+
+#: admin/class-admin.php:8310
+msgid "Enable Mailchimp sync"
+msgstr ""
+
+#: admin/class-admin.php:8313
+msgid "When enabled, each successful booking is sent to Mailchimp after it is saved in WordPress."
+msgstr ""
+
+#. translators: %s: Link to Mailchimp help article about API keys
+#: admin/class-admin.php:8322
+#, php-format
+msgid "You need the key from <strong>Profile → Extras → API keys</strong> only — not Mobile. Steps: click your avatar → <strong>Profile</strong> → <strong>Extras</strong> → <strong>API keys</strong>. On that page, find the section <strong>Your API keys</strong> and click <strong>Create A Key</strong> (or copy an existing key). The secret is long and ends with <code>-us10</code>, <code>-eu1</code>, etc. If Mailchimp opens <strong>Create a mobile client key</strong> or anything about Mobile SDK, close it: that is a different product and will not work in WordPress. %s"
+msgstr ""
+
+#: admin/class-admin.php:8323
+msgid "Mailchimp: About API keys"
+msgstr ""
+
+#: admin/class-admin.php:8331
+msgid "Find your Audience ID in your Mailchimp account under Audience &rarr; Settings &rarr; Audience name and defaults."
+msgstr ""
+
+#: admin/class-admin.php:8342
+msgid "Test write to audience (this user)"
+msgstr ""
+
+#: admin/class-admin.php:8343
+msgid "Runs the same Mailchimp member request as a real booking: adds or updates the <strong>currently logged-in WordPress user</strong> in the Audience (no reservation post). Use this after “Test Connection” succeeds."
+msgstr ""
+
+#: admin/class-admin.php:8349
+msgid "Automation webhook (n8n)"
+msgstr ""
+
+#: admin/class-admin.php:8350
+msgid "After a booking is saved, the plugin can POST JSON to an n8n Webhook trigger. Use this to notify Slack, enrich data with AI, sync to sheets, or chain with HubSpot. Runs after HubSpot sync when both are enabled so HubSpot IDs can appear in the payload. For Zapier or Make.com, use the sections below."
+msgstr ""
+
+#: admin/class-admin.php:8355
+msgid "Enable booking webhook"
+msgstr ""
+
+#: admin/class-admin.php:8358
+#: admin/class-admin.php:8392
+#: admin/class-admin.php:8426
+msgid "When enabled and the URL is set, each successful booking triggers one POST with Content-Type application/json."
+msgstr ""
+
+#: admin/class-admin.php:8365
+msgid "Example: your n8n production webhook URL (often ends with a long path or UUID). Use HTTPS in production."
+msgstr ""
+
+#: admin/class-admin.php:8369
+msgid "Webhook secret (optional)"
+msgstr ""
+
+#: admin/class-admin.php:8372
+msgid "If set, each request includes <code>X-Picky-N8N-Signature: sha256=&lt;hmac&gt;</code> where the HMAC is computed over the raw JSON body with this secret."
+msgstr ""
+
+#: admin/class-admin.php:8383
+#: public/class-public.php:3618
+msgid "Zapier"
+msgstr ""
+
+#: admin/class-admin.php:8384
+msgid "Connect to thousands of apps via Zapier using <strong>Webhooks by Zapier</strong> → <strong>Catch Hook</strong>. The plugin POSTs the same JSON structure as the n8n webhook (event <code>pickybooking.booking_created</code>). Enable the Zap, copy the custom webhook URL here, then map fields in Zapier. Runs after HubSpot sync and after the n8n webhook when those are enabled. For Make.com, use the Make section below."
+msgstr ""
+
+#: admin/class-admin.php:8389
+msgid "Enable Zapier webhook"
+msgstr ""
+
+#: admin/class-admin.php:8399
+msgid "From Zapier: Webhooks by Zapier → Catch Hook → copy the webhook URL (HTTPS)."
+msgstr ""
+
+#: admin/class-admin.php:8403
+msgid "Zapier signing secret (optional)"
+msgstr ""
+
+#: admin/class-admin.php:8406
+msgid "If set, each request includes <code>X-Picky-ZAPIER-Signature: sha256=&lt;hmac&gt;</code> over the raw JSON body. Leave blank when saving to keep the stored secret."
+msgstr ""
+
+#: admin/class-admin.php:8417
+#: public/class-public.php:3645
+msgid "Make.com"
+msgstr ""
+
+#: admin/class-admin.php:8418
+msgid "Automate with <strong>Make</strong> using a <strong>Webhooks</strong> → <strong>Custom webhook</strong> module as the scenario entry point. The plugin POSTs the same JSON as the n8n webhook (event <code>pickybooking.booking_created</code>). Create the module, run the scenario once to obtain the URL, paste it below, then map <code>body</code> fields in later modules. Runs after HubSpot sync, the n8n webhook, and the Zapier webhook when those are enabled."
+msgstr ""
+
+#: admin/class-admin.php:8423
+msgid "Enable Make.com webhook"
+msgstr ""
+
+#: admin/class-admin.php:8433
+msgid "From Make: Webhooks → Custom webhook → copy the HTTPS URL after the first run."
+msgstr ""
+
+#: admin/class-admin.php:8437
+msgid "Make.com signing secret (optional)"
+msgstr ""
+
+#: admin/class-admin.php:8440
+msgid "If set, each request includes <code>X-Picky-MAKE-Signature: sha256=&lt;hmac&gt;</code> over the raw JSON body. Leave blank when saving to keep the stored secret."
+msgstr ""
+
+#: admin/class-admin.php:8451
+#: public/class-public.php:3672
+msgid "Google Calendar"
+msgstr ""
+
+#: admin/class-admin.php:8452
+msgid "Sync bookings to Google Calendar using a <strong>Service Account</strong>. Create a project in Google Cloud Console, enable the Calendar API, create a Service Account, download the JSON key, and share your target calendar with the service account email. Bookings appear as events with guest details."
+msgstr ""
+
+#: admin/class-admin.php:8457
+msgid "Enable Google Calendar sync"
+msgstr ""
+
+#: admin/class-admin.php:8460
+msgid "When enabled, each successful booking creates an event in the configured Google Calendar."
+msgstr ""
+
+#: admin/class-admin.php:8464
+msgid "Service Account JSON Key"
+msgstr ""
+
+#: admin/class-admin.php:8467
+msgid "Paste the entire contents of the downloaded JSON key file from Google Cloud Console (Service Account → Keys → Create Key). Contains client_email and private_key."
+msgstr ""
+
+#: admin/class-admin.php:8471
+msgid "Calendar ID"
+msgstr ""
+
+#: admin/class-admin.php:8474
+msgid "The Google Calendar ID to sync events to. Use \"primary\" for your main calendar, or find the Calendar ID in Google Calendar settings. The service account must have write access to this calendar."
+msgstr ""
+
+#: admin/class-admin.php:8481
+msgid "When enabled and the customer provides an email, they will be added as an attendee to the calendar event and receive an invitation."
+msgstr ""
+
+#: admin/class-admin.php:8492
 msgid "Weekly schedule"
 msgstr ""
 
-#: admin/class-admin.php:7142
+#: admin/class-admin.php:8493
 msgid "Turn days on or off and set the hours when bookings are accepted. You can add a second time window per day."
 msgstr ""
 
-#: admin/class-admin.php:7146
+#: admin/class-admin.php:8497
 msgid "Opening hours by day"
 msgstr ""
 
-#: admin/class-admin.php:7150
+#: admin/class-admin.php:8501
 msgid "Guests can only book inside the enabled intervals."
 msgstr ""
 
-#: admin/class-admin.php:7255
+#: admin/class-admin.php:8606
 msgid "Form text & emails"
 msgstr ""
 
-#: admin/class-admin.php:7256
+#: admin/class-admin.php:8607
 msgid "Customize helper text on the public form, consent wording, thank-you message, and where admin notifications are sent."
 msgstr ""
 
-#: admin/class-admin.php:7263
+#: admin/class-admin.php:8614
 msgid "Generate helper text, consent wording, and thank-you copy from a short business description. Review the fields below, then Save settings."
 msgstr ""
 
-#: admin/class-admin.php:7266
+#: admin/class-admin.php:8617
 msgid "Hint under the “Book” button"
 msgstr ""
 
-#: admin/class-admin.php:7269
+#: admin/class-admin.php:8620
 msgid "Short line shown under the main call-to-action (e.g. “We will confirm shortly”)."
 msgstr ""
 
-#: admin/class-admin.php:7273
+#: admin/class-admin.php:8624
 msgid "Consent & customer email"
 msgstr ""
 
-#: admin/class-admin.php:7277
+#: admin/class-admin.php:8628
 msgid "To email the guest, enable “Show email field” on the Main tab and ask them to fill it in."
 msgstr ""
 
-#: admin/class-admin.php:7281
+#: admin/class-admin.php:8632
 msgid "Require GDPR / privacy consent checkbox"
 msgstr ""
 
-#: admin/class-admin.php:7285
+#: admin/class-admin.php:8636
 msgid "Send booking confirmation email to the guest"
 msgstr ""
 
-#: admin/class-admin.php:7290
+#: admin/class-admin.php:8641
 msgid "Consent checkbox label & text"
 msgstr ""
 
-#: admin/class-admin.php:7293
+#: admin/class-admin.php:8644
 msgid "HTML allowed. Shown next to the consent checkbox when it is enabled."
 msgstr ""
 
-#: admin/class-admin.php:7297
+#: admin/class-admin.php:8648
 msgid "Thank-you message after booking"
 msgstr ""
 
-#: admin/class-admin.php:7300
+#: admin/class-admin.php:8651
 msgid "Leave empty to use the built-in default message."
 msgstr ""
 
-#: admin/class-admin.php:7304
+#: admin/class-admin.php:8655
 msgid "Where to send admin booking alerts"
 msgstr ""
 
-#: admin/class-admin.php:7305
+#: admin/class-admin.php:8656
 msgid "If empty, WordPress site admin email is used."
 msgstr ""
 
-#: admin/class-admin.php:7319
+#: admin/class-admin.php:8664
+msgid "SMS (Vonage / Nexmo)"
+msgstr ""
+
+#: admin/class-admin.php:8665
+msgid "Optional: notify a phone when someone books."
+msgstr ""
+
+#: admin/class-admin.php:8669
+msgid "Send SMS when a booking is created"
+msgstr ""
+
+#. translators: %s: HTML link to Vonage
+#: admin/class-admin.php:8675
+#, php-format
+msgid "Uses the Vonage (Nexmo) APIs. Create API credentials in the dashboard: %s"
+msgstr ""
+
+#: admin/class-admin.php:8683
+msgid "Vonage dashboard"
+msgstr ""
+
+#: admin/class-admin.php:8689
+msgid "From your Vonage application / API settings."
+msgstr ""
+
+#: admin/class-admin.php:8696
+msgid "Keep this private."
+msgstr ""
+
+#: admin/class-admin.php:8702
+msgid "Destination phone number"
+msgstr ""
+
+#: admin/class-admin.php:8703
+msgid "Who receives the alert, in E.164 format (e.g. +447700900000)."
+msgstr ""
+
+#: admin/class-admin.php:8716
 msgid "Public map & chrome colors"
 msgstr ""
 
-#: admin/class-admin.php:7323
+#: admin/class-admin.php:8720
 msgid "Shortcode only, not the admin builder. The first color tints the whole booking wrapper and the left calendar column — it is not the draggable map image (that is set on each layout). Other colors target map items (fills, seats, badges, IDs)."
 msgstr ""
 
-#: admin/class-admin.php:7326
+#: admin/class-admin.php:8723
 msgid "Booking wrapper & calendar column background"
 msgstr ""
 
 #. translators: %s: plural bookable items, e.g. "Tables"
-#: admin/class-admin.php:7332
+#: admin/class-admin.php:8729
 #, php-format
 msgid "%s shape fill (map items without their own color / image)"
 msgstr ""
 
-#: admin/class-admin.php:7338
+#: admin/class-admin.php:8735
 msgid "Seat chip fill (small circles on map items)"
 msgstr ""
 
-#: admin/class-admin.php:7342
+#: admin/class-admin.php:8739
 msgid "Seats count pill on map items (.picky-element-seats) — background"
 msgstr ""
 
-#: admin/class-admin.php:7346
+#: admin/class-admin.php:8743
 msgid "Max persons badge — text (on hover)"
 msgstr ""
 
 #. translators: %s: singular item, e.g. "Table"
-#: admin/class-admin.php:7352
+#: admin/class-admin.php:8749
 #, php-format
 msgid "%s ID badge background (unused when ID is unboxed text)"
 msgstr ""
 
 #. translators: %s: singular item
-#: admin/class-admin.php:7360
+#: admin/class-admin.php:8757
 #, php-format
 msgid "%s ID text on map (D1, MR1, …)"
 msgstr ""
 
-#: admin/class-admin.php:7368
+#: admin/class-admin.php:8765
 msgid "Date picker colors"
 msgstr ""
 
-#: admin/class-admin.php:7372
+#: admin/class-admin.php:8769
 msgid "Shortcode only. Targets the booking calendar (jQuery UI). Header row uses global .ui-datepicker selectors — if another plugin adds a datepicker on the same page, its title row may pick up that color too."
 msgstr ""
 
-#: admin/class-admin.php:7375
+#: admin/class-admin.php:8772
 msgid "Month/year & weekday row text (.ui-datepicker title + th)"
 msgstr ""
 
-#: admin/class-admin.php:7379
+#: admin/class-admin.php:8776
 msgid "Day cell background (enabled, not selected)"
 msgstr ""
 
-#: admin/class-admin.php:7383
+#: admin/class-admin.php:8780
 msgid "Day cell background (disabled / unavailable)"
 msgstr ""
 
-#: admin/class-admin.php:7387
+#: admin/class-admin.php:8784
 msgid "Day cell background (selected day)"
 msgstr ""
 
-#: admin/class-admin.php:7391
+#: admin/class-admin.php:8788
 msgid "Day number text (default)"
 msgstr ""
 
-#: admin/class-admin.php:7395
+#: admin/class-admin.php:8792
 msgid "Day number text (disabled)"
 msgstr ""
 
-#: admin/class-admin.php:7399
+#: admin/class-admin.php:8796
 msgid "Day number text (selected)"
 msgstr ""
 
-#: admin/class-admin.php:7403
+#: admin/class-admin.php:8800
 msgid "Prev/next arrow icon color"
 msgstr ""
 
-#: admin/class-admin.php:7407
+#: admin/class-admin.php:8804
 msgid "Prev/next arrow hover fill"
 msgstr ""
 
-#: admin/class-admin.php:7411
+#: admin/class-admin.php:8808
 msgid "Prev/next arrow button background"
 msgstr ""
 
-#: admin/class-admin.php:7415
+#: admin/class-admin.php:8812
 msgid "Prev/next arrow icon (disabled)"
 msgstr ""
 
-#: admin/class-admin.php:7419
+#: admin/class-admin.php:8816
 msgid "Prev/next arrow button background (disabled)"
 msgstr ""
 
-#: admin/class-admin.php:7425
+#: admin/class-admin.php:8822
 msgid "Booking form colors"
 msgstr ""
 
-#: admin/class-admin.php:7429
+#: admin/class-admin.php:8826
 msgid "Shortcode only. Submit button is the public booking CTA color (independent of the plugin’s mint admin brand). Notices apply everywhere; “form panel” only colors extra step containers in smart / multi-step flows — not the first popup shell."
 msgstr ""
 
-#: admin/class-admin.php:7432
+#: admin/class-admin.php:8829
 msgid "Submit / Pay & Book button background"
 msgstr ""
 
-#: admin/class-admin.php:7436
+#: admin/class-admin.php:8833
 msgid "Submit / Pay & Book button text"
 msgstr ""
 
-#: admin/class-admin.php:7440
+#: admin/class-admin.php:8837
 msgid "Booking form body background"
 msgstr ""
 
-#: admin/class-admin.php:7444
+#: admin/class-admin.php:8841
 msgid "Booking title in form (.picky-form-booking-title)"
 msgstr ""
 
-#: admin/class-admin.php:7448
+#: admin/class-admin.php:8845
 msgid "Large section headings (.picky-input-label-big)"
 msgstr ""
 
-#: admin/class-admin.php:7452
+#: admin/class-admin.php:8849
 msgid "Field labels (.picky-input-label)"
 msgstr ""
 
-#: admin/class-admin.php:7456
+#: admin/class-admin.php:8853
 msgid "Hints & consent HTML default color (.picky-small-text, consent label)"
 msgstr ""
 
-#: admin/class-admin.php:7460
+#: admin/class-admin.php:8857
 msgid "Inputs, native selects & Select2 (.picky-tables-wrap …)"
 msgstr ""
 
-#: admin/class-admin.php:7464
+#: admin/class-admin.php:8861
 msgid "Input / select text (same scope as background)"
 msgstr ""
 
-#: admin/class-admin.php:7468
+#: admin/class-admin.php:8865
 msgid "Error notice background (.picky-error)"
 msgstr ""
 
-#: admin/class-admin.php:7472
+#: admin/class-admin.php:8869
 msgid "Error notice text"
 msgstr ""
 
-#: admin/class-admin.php:7476
+#: admin/class-admin.php:8873
 msgid "Info notice background (.picky-message)"
 msgstr ""
 
-#: admin/class-admin.php:7480
+#: admin/class-admin.php:8877
 msgid "Info notice text"
 msgstr ""
 
-#: admin/class-admin.php:7509
+#: admin/class-admin.php:8893
 msgid "Save settings"
 msgstr ""
 
-#: admin/class-admin.php:7548
+#: admin/class-admin.php:8930
 msgid "Theme default (inherit)"
 msgstr ""
 
-#: admin/class-admin.php:7549
+#: admin/class-admin.php:8931
 msgid "Sans Serif"
 msgstr ""
 
-#: admin/class-admin.php:7550
+#: admin/class-admin.php:8932
 msgid "Serif"
 msgstr ""
 
-#: admin/class-admin.php:7551
+#: admin/class-admin.php:8933
 msgid "Monospace"
 msgstr ""
 
-#: admin/class-admin.php:7552
+#: admin/class-admin.php:8934
 msgid "Cursive"
 msgstr ""
 
-#: admin/class-admin.php:7854
+#: admin/class-admin.php:9255
+#: admin/class-admin.php:9286
+#: admin/class-admin.php:9553
+#: admin/class-admin.php:9575
 msgid "Unauthorized"
 msgstr ""
 
-#: admin/class-admin.php:7873
+#: admin/class-admin.php:9274
 msgid "Could not save preview."
 msgstr ""
 
-#: admin/class-picky-reservations-list-facade.php:124
-msgid "Select bulk action"
+#: admin/class-admin.php:9299
+msgid "No integration specified"
 msgstr ""
 
-#: admin/class-picky-reservations-list-facade.php:127
-msgid "Bulk actions"
+#: admin/class-admin.php:9319
+msgid "API Key and Audience ID are required. Please fill in both fields and try again."
 msgstr ""
 
-#: admin/class-picky-reservations-list-facade.php:173
+#: admin/class-admin.php:9325
+msgid "You must be logged in to run this test."
+msgstr ""
+
+#. translators: %s: email address written to Mailchimp
+#: admin/class-admin.php:9344
+#, php-format
+msgid "Success — Mailchimp accepted the member update for %s. Open the Audience in Mailchimp to confirm."
+msgstr ""
+
+#. translators: %s: Mailchimp audience (list) name
+#: admin/class-admin.php:9389
+#, php-format
+msgid "Connected — audience: %s"
+msgstr ""
+
+#: admin/class-admin.php:9394
+#: admin/class-admin.php:9425
+msgid "Connected successfully!"
+msgstr ""
+
+#: admin/class-admin.php:9398
+msgid " If the suffix already matches the datacenter, the key is usually wrong, revoked, or not a Marketing API key from the same Mailchimp account as the Audience. Do not use Mobile SDK client keys — they never authorize the Marketing API. Create or copy a key under Profile → Extras → API keys, save, and test again."
+msgstr ""
+
+#: admin/class-admin.php:9407
+msgid "Access token is required. Please fill in the field and try again."
+msgstr ""
+
+#: admin/class-admin.php:9444
+msgid "Service Account JSON key is required. Please paste the JSON key and try again."
+msgstr ""
+
+#: admin/class-admin.php:9450
+msgid "Invalid Service Account JSON. The key must contain client_email and private_key fields."
+msgstr ""
+
+#: admin/class-admin.php:9455
+msgid "Google Calendar integration class not loaded."
+msgstr ""
+
+#: admin/class-admin.php:9467
+msgid "Failed to authenticate with Google. Common causes: 1) Calendar API not enabled in Google Cloud Console 2) Invalid or incomplete JSON key 3) Private key truncated during paste. Check the JSON key contains all fields including the full private_key."
+msgstr ""
+
+#: admin/class-admin.php:9480
+msgid "Calendar API request failed: "
+msgstr ""
+
+#: admin/class-admin.php:9485
+msgid "Connected successfully! Service Account can access the calendar."
+msgstr ""
+
+#: admin/class-admin.php:9487
+msgid "Calendar not found. Check the Calendar ID and ensure the service account email has been shared with the calendar."
+msgstr ""
+
+#: admin/class-admin.php:9489
+msgid "Access denied. Ensure the Calendar API is enabled in Google Cloud Console and the service account email has write access to the calendar."
+msgstr ""
+
+#: admin/class-admin.php:9494
+msgid "Calendar access failed: "
+msgstr ""
+
+#. translators: %s: provider label (e.g. Groq (free tier))
+#: admin/class-admin.php:9513
+#, php-format
+msgid "Connected successfully! %s accepted the API key."
+msgstr ""
+
+#: admin/class-admin.php:9521
+msgid "Webhook URL is required. Please fill in the field and try again."
+msgstr ""
+
+#: admin/class-admin.php:9537
+msgid "Ping sent successfully (HTTP "
+msgstr ""
+
+#: admin/class-admin.php:9539
+msgid "Webhook returned HTTP "
+msgstr ""
+
+#: admin/class-admin.php:9542
+msgid "Unknown integration"
+msgstr ""
+
+#: admin/class-admin.php:9561
+msgid "Add your Groq or OpenAI API key under Settings → Integrations, then Save."
+msgstr ""
+
+#: admin/class-admin.php:9629
+#: admin/class-admin.php:9689
+msgid "Could not build a layout from that description. Try again."
+msgstr ""
+
+#. translators: %d: number of elements
+#: admin/class-admin.php:9707
+#, php-format
+msgid "Layout draft applied (%d elements). Reloading…"
+msgstr ""
+
+#: admin/class-admin.php:9747
+msgid "AI did not return a service name."
+msgstr ""
+
+#: admin/class-admin.php:9799
+msgid "AI did not return a label."
+msgstr ""
+
+#: admin/class-admin.php:9842
+msgid "AI did not return form copy."
+msgstr ""
+
+#: admin/class-picky-reservations-list-facade.php:171
 msgid "View"
 msgstr ""
 
-#: admin/class-picky-reservations-list-facade.php:243
+#: admin/class-picky-reservations-list-facade.php:269
 msgid "Filter"
 msgstr ""
 
-#: admin/class-picky-reservations-list-facade.php:253
+#: admin/class-picky-reservations-list-facade.php:279
 msgid "Empty Trash"
 msgstr ""
 
-#: admin/class-picky-reservations-list-facade.php:283
+#: admin/class-picky-reservations-list-facade.php:309
 msgid "Filters and search"
 msgstr ""
 
@@ -2993,59 +3682,58 @@ msgstr ""
 msgid "Preset"
 msgstr ""
 
-#. translators: %s: layout title
-#: admin/partials/layout-library.php:55
+#: admin/partials/layout-library.php:53
 #, php-format
 msgid "Open %s"
 msgstr ""
 
-#: admin/partials/layout-library.php:83
+#: admin/partials/layout-library.php:75
 msgid "Open in builder"
 msgstr ""
 
-#: admin/partials/layout-library.php:90
+#: admin/partials/layout-library.php:82
 msgid "Delete this layout permanently"
 msgstr ""
 
-#: admin/partials/layout-library.php:103
+#: admin/partials/layout-library.php:95
 msgid "Use this layout"
 msgstr ""
 
-#: admin/partials/layout-library.php:121
+#: admin/partials/layout-library.php:111
 msgid "Layout deleted."
 msgstr ""
 
-#: admin/partials/layout-library.php:130
+#: admin/partials/layout-library.php:120
 msgid "Open a saved floor plan to edit it, or start from a preset below."
 msgstr ""
 
-#: admin/partials/layout-library.php:133
+#: admin/partials/layout-library.php:123
 msgid "Layout stats"
 msgstr ""
 
-#: admin/partials/layout-library.php:138
+#: admin/partials/layout-library.php:128
 msgid "Yours"
 msgstr ""
 
-#: admin/partials/layout-library.php:145
-#: admin/partials/layout-library.php:171
-#: admin/partials/view_layout.php:917
+#: admin/partials/layout-library.php:135
+#: admin/partials/layout-library.php:161
+#: admin/partials/view_layout.php:977
 msgid "Presets"
 msgstr ""
 
-#: admin/partials/layout-library.php:154
+#: admin/partials/layout-library.php:144
 msgid "Your layouts"
 msgstr ""
 
-#: admin/partials/layout-library.php:160
+#: admin/partials/layout-library.php:150
 msgid "No saved layouts yet. Add a new layout or import a preset."
 msgstr ""
 
-#: admin/partials/layout-library.php:172
+#: admin/partials/layout-library.php:162
 msgid "Start from a ready-made map. Import creates your own editable copy."
 msgstr ""
 
-#: admin/partials/layout-library.php:174
+#: admin/partials/layout-library.php:164
 msgid "No presets available."
 msgstr ""
 
@@ -3060,8 +3748,8 @@ msgstr ""
 
 #: admin/partials/layouts-list-custom.php:97
 #: admin/partials/reservations-list-custom.php:96
-#: public/class-public.php:3251
-#: public/class-public.php:4004
+#: public/class-public.php:3308
+#: public/class-public.php:4064
 msgid "Edit"
 msgstr ""
 
@@ -3081,1151 +3769,1700 @@ msgstr ""
 msgid "Trash"
 msgstr ""
 
-#: admin/partials/view_layout.php:24
+#: admin/partials/view_layout.php:21
 msgid "Layout saved."
 msgstr ""
 
-#: admin/partials/view_layout.php:27
+#: admin/partials/view_layout.php:24
 msgid "Layout imported."
 msgstr ""
 
-#: admin/partials/view_layout.php:30
+#: admin/partials/view_layout.php:27
 msgid "Layout duplicated. You are editing the copy."
 msgstr ""
 
-#: admin/partials/view_layout.php:159
+#: admin/partials/view_layout.php:150
 msgid "Bookable Items"
 msgstr ""
 
-#: admin/partials/view_layout.php:163
+#: admin/partials/view_layout.php:154
 msgid "Decorative"
 msgstr ""
 
-#: admin/partials/view_layout.php:185
+#: admin/partials/view_layout.php:176
 msgid "Layout settings"
 msgstr ""
 
-#: admin/partials/view_layout.php:193
+#: admin/partials/view_layout.php:187
+#: admin/partials/view_layout.php:970
+msgid "AI Layout"
+msgstr ""
+
+#: admin/partials/view_layout.php:189
+msgid "Clear chat"
+msgstr ""
+
+#: admin/partials/view_layout.php:190
+#: admin/partials/view_layout.php:213
+#: public/class-public.php:2981
+msgid "Close"
+msgstr ""
+
+#: admin/partials/view_layout.php:209
+msgid "Prompt"
+msgstr ""
+
+#: admin/partials/view_layout.php:210
+msgid "e.g. Coworking: open desk hall on the right, 2 meeting rooms left, reception near entrance, lounge at the back"
+msgstr ""
+
+#: admin/partials/view_layout.php:214
+msgid "Generate layout"
+msgstr ""
+
+#: admin/partials/view_layout.php:221
 msgid "Drag & Drop elements"
 msgstr ""
 
-#: admin/partials/view_layout.php:241
-#: admin/partials/view_layout.php:628
+#: admin/partials/view_layout.php:273
+#: admin/partials/view_layout.php:654
 msgid "Drag to rotate"
 msgstr ""
 
-#: admin/partials/view_layout.php:242
-#: admin/partials/view_layout.php:629
+#: admin/partials/view_layout.php:274
+#: admin/partials/view_layout.php:655
 msgid "Drag to tilt (3D)"
 msgstr ""
 
-#: admin/partials/view_layout.php:245
-#: admin/partials/view_layout.php:632
+#: admin/partials/view_layout.php:277
+#: admin/partials/view_layout.php:658
 msgid "Edit element"
 msgstr ""
 
-#: admin/partials/view_layout.php:255
-#: admin/partials/view_layout.php:644
+#: admin/partials/view_layout.php:287
+#: admin/partials/view_layout.php:670
 msgid "Max persons"
 msgstr ""
 
-#: admin/partials/view_layout.php:262
-#: admin/partials/view_layout.php:651
+#: admin/partials/view_layout.php:293
+#: admin/partials/view_layout.php:676
 msgid "Generate name with AI"
 msgstr ""
 
-#: admin/partials/view_layout.php:268
-#: admin/partials/view_layout.php:657
+#: admin/partials/view_layout.php:298
+#: admin/partials/view_layout.php:681
 msgid "Name position"
 msgstr ""
 
-#: admin/partials/view_layout.php:270
-#: admin/partials/view_layout.php:659
+#: admin/partials/view_layout.php:300
+#: admin/partials/view_layout.php:683
 msgid "Below"
 msgstr ""
 
-#: admin/partials/view_layout.php:271
-#: admin/partials/view_layout.php:660
+#: admin/partials/view_layout.php:301
+#: admin/partials/view_layout.php:684
 msgid "Above"
 msgstr ""
 
-#: admin/partials/view_layout.php:275
-#: admin/partials/view_layout.php:664
+#: admin/partials/view_layout.php:305
+#: admin/partials/view_layout.php:688
 msgid "Label color"
 msgstr ""
 
-#: admin/partials/view_layout.php:279
-#: admin/partials/view_layout.php:668
+#: admin/partials/view_layout.php:309
+#: admin/partials/view_layout.php:692
 msgid "Show/Hide ID"
 msgstr ""
 
-#: admin/partials/view_layout.php:280
-#: admin/partials/view_layout.php:669
+#: admin/partials/view_layout.php:310
+#: admin/partials/view_layout.php:693
 msgid "Show/Hide ID on canvas"
 msgstr ""
 
-#: admin/partials/view_layout.php:283
-#: admin/partials/view_layout.php:672
+#: admin/partials/view_layout.php:313
+#: admin/partials/view_layout.php:696
 msgid "Custom ID (optional)"
 msgstr ""
 
-#: admin/partials/view_layout.php:284
-#: admin/partials/view_layout.php:673
+#: admin/partials/view_layout.php:314
+#: admin/partials/view_layout.php:697
 msgid "Leave blank to use auto-ID"
 msgstr ""
 
-#: admin/partials/view_layout.php:288
-#: admin/partials/view_layout.php:677
+#: admin/partials/view_layout.php:318
+#: admin/partials/view_layout.php:701
 msgid "Leave empty for default rounding (8px). Enter 1–120 to override."
 msgstr ""
 
-#: admin/partials/view_layout.php:291
-#: admin/partials/view_layout.php:728
+#: admin/partials/view_layout.php:321
+#: admin/partials/view_layout.php:752
 msgid "Text Color"
 msgstr ""
 
-#: admin/partials/view_layout.php:295
-#: admin/partials/view_layout.php:732
+#: admin/partials/view_layout.php:325
+#: admin/partials/view_layout.php:756
 msgid "Text Color Source"
 msgstr ""
 
-#: admin/partials/view_layout.php:297
-#: admin/partials/view_layout.php:735
+#: admin/partials/view_layout.php:327
+#: admin/partials/view_layout.php:759
 msgid "Custom color"
 msgstr ""
 
-#: admin/partials/view_layout.php:298
-#: admin/partials/view_layout.php:736
+#: admin/partials/view_layout.php:328
+#: admin/partials/view_layout.php:760
 msgid "Theme (inherit)"
 msgstr ""
 
-#: admin/partials/view_layout.php:302
-#: admin/partials/view_layout.php:724
+#: admin/partials/view_layout.php:332
+#: admin/partials/view_layout.php:748
 msgid "Padding"
 msgstr ""
 
-#: admin/partials/view_layout.php:306
-#: admin/partials/view_layout.php:686
+#: admin/partials/view_layout.php:336
+#: admin/partials/view_layout.php:710
 msgid "Font Size"
 msgstr ""
 
-#: admin/partials/view_layout.php:310
-#: admin/partials/view_layout.php:690
+#: admin/partials/view_layout.php:340
+#: admin/partials/view_layout.php:714
 msgid "Line height (px)"
 msgstr ""
 
-#: admin/partials/view_layout.php:311
-#: admin/partials/view_layout.php:349
-#: admin/partials/view_layout.php:697
-#: admin/partials/view_layout.php:753
+#: admin/partials/view_layout.php:341
+#: admin/partials/view_layout.php:379
+#: admin/partials/view_layout.php:721
+#: admin/partials/view_layout.php:777
 msgid "Auto"
 msgstr ""
 
-#: admin/partials/view_layout.php:311
-#: admin/partials/view_layout.php:697
+#: admin/partials/view_layout.php:341
+#: admin/partials/view_layout.php:721
 msgid "Leave empty to match font size."
 msgstr ""
 
-#: admin/partials/view_layout.php:314
-#: admin/partials/view_layout.php:700
+#: admin/partials/view_layout.php:344
+#: admin/partials/view_layout.php:724
 msgid "Font Family"
 msgstr ""
 
-#: admin/partials/view_layout.php:325
-#: admin/partials/view_layout.php:712
+#: admin/partials/view_layout.php:355
+#: admin/partials/view_layout.php:736
 msgid "Font Weight"
 msgstr ""
 
-#: admin/partials/view_layout.php:336
-#: admin/partials/view_layout.php:740
+#: admin/partials/view_layout.php:366
+#: admin/partials/view_layout.php:764
 msgid "Shape Type"
 msgstr ""
 
-#: admin/partials/view_layout.php:349
-#: admin/partials/view_layout.php:753
+#: admin/partials/view_layout.php:379
+#: admin/partials/view_layout.php:777
 msgid "Leave empty to use the preset for the selected shape type."
 msgstr ""
 
-#: admin/partials/view_layout.php:352
-#: admin/partials/view_layout.php:756
+#: admin/partials/view_layout.php:382
+#: admin/partials/view_layout.php:780
 msgid "Outline width (px)"
 msgstr ""
 
-#: admin/partials/view_layout.php:356
-#: admin/partials/view_layout.php:760
+#: admin/partials/view_layout.php:386
+#: admin/partials/view_layout.php:784
 msgid "Outline color"
 msgstr ""
 
-#: admin/partials/view_layout.php:368
-#: admin/partials/view_layout.php:681
+#: admin/partials/view_layout.php:395
+#: admin/partials/view_layout.php:705
 msgid "Text Content"
 msgstr ""
 
-#: admin/partials/view_layout.php:370
-#: admin/partials/view_layout.php:683
+#: admin/partials/view_layout.php:397
+#: admin/partials/view_layout.php:707
 msgid "Edit text field"
 msgstr ""
 
-#: admin/partials/view_layout.php:373
-#: admin/partials/view_layout.php:788
+#: admin/partials/view_layout.php:400
+#: admin/partials/view_layout.php:811
 msgid "Opacity"
 msgstr ""
 
-#: admin/partials/view_layout.php:384
-#: admin/partials/view_layout.php:802
+#: admin/partials/view_layout.php:411
+#: admin/partials/view_layout.php:825
 msgid "Available services"
 msgstr ""
 
-#: admin/partials/view_layout.php:388
-#: admin/partials/view_layout.php:806
+#: admin/partials/view_layout.php:415
+#: admin/partials/view_layout.php:829
 msgid "No services in the library yet. Add services in the Services Library panel below the canvas."
 msgstr ""
 
-#: admin/partials/view_layout.php:393
-#: admin/partials/view_layout.php:810
+#: admin/partials/view_layout.php:420
+#: admin/partials/view_layout.php:833
 msgid "Resize"
 msgstr ""
 
-#: admin/partials/view_layout.php:394
-#: admin/partials/view_layout.php:811
+#: admin/partials/view_layout.php:421
+#: admin/partials/view_layout.php:834
 msgid "Rotate"
 msgstr ""
 
-#: admin/partials/view_layout.php:395
-#: admin/partials/view_layout.php:812
+#: admin/partials/view_layout.php:422
+#: admin/partials/view_layout.php:835
 msgid "3D"
 msgstr ""
 
-#: admin/partials/view_layout.php:397
-#: admin/partials/view_layout.php:814
-#: admin/partials/view_layout.php:1052
+#: admin/partials/view_layout.php:424
+#: admin/partials/view_layout.php:837
+#: admin/partials/view_layout.php:1109
 msgid "Color"
 msgstr ""
 
-#: admin/partials/view_layout.php:398
-#: admin/partials/view_layout.php:815
+#: admin/partials/view_layout.php:425
+#: admin/partials/view_layout.php:838
 msgid "Duplicate selection (Ctrl/Cmd+D)"
 msgstr ""
 
-#: admin/partials/view_layout.php:398
-#: admin/partials/view_layout.php:815
+#: admin/partials/view_layout.php:425
+#: admin/partials/view_layout.php:838
 msgid "Duplicate selection"
 msgstr ""
 
-#: admin/partials/view_layout.php:399
-#: admin/partials/view_layout.php:816
+#: admin/partials/view_layout.php:426
+#: admin/partials/view_layout.php:839
 msgid "Bring to front"
 msgstr ""
 
-#: admin/partials/view_layout.php:400
-#: admin/partials/view_layout.php:817
+#: admin/partials/view_layout.php:427
+#: admin/partials/view_layout.php:840
 msgid "Send to back"
 msgstr ""
 
-#: admin/partials/view_layout.php:418
+#: admin/partials/view_layout.php:445
 msgid "Canvas tools"
 msgstr ""
 
-#: admin/partials/view_layout.php:420
+#: admin/partials/view_layout.php:447
 msgid "Canvas Size"
 msgstr ""
 
-#: admin/partials/view_layout.php:423
+#: admin/partials/view_layout.php:450
 msgid "Width"
 msgstr ""
 
-#: admin/partials/view_layout.php:425
+#: admin/partials/view_layout.php:452
 msgid "Height"
 msgstr ""
 
-#: admin/partials/view_layout.php:430
+#: admin/partials/view_layout.php:457
 msgid "Copy shortcode to clipboard"
 msgstr ""
 
-#. translators: %s: layout ID
-#: admin/partials/view_layout.php:434
+#: admin/partials/view_layout.php:459
 #, php-format
 msgid "ID: %s"
 msgstr ""
 
-#: admin/partials/view_layout.php:461
+#: admin/partials/view_layout.php:483
 msgid "Undo"
 msgstr ""
 
-#: admin/partials/view_layout.php:462
+#: admin/partials/view_layout.php:484
 msgid "Canvas zoom"
 msgstr ""
 
-#: admin/partials/view_layout.php:463
+#: admin/partials/view_layout.php:485
 msgid "Zoom Out"
 msgstr ""
 
-#: admin/partials/view_layout.php:464
+#: admin/partials/view_layout.php:486
 msgid "Reset zoom and pan"
 msgstr ""
 
-#: admin/partials/view_layout.php:465
+#: admin/partials/view_layout.php:487
 msgid "Zoom In"
 msgstr ""
 
-#: admin/partials/view_layout.php:775
+#: admin/partials/view_layout.php:798
 msgid "Thickness (px)"
 msgstr ""
 
-#: admin/partials/view_layout.php:785
+#: admin/partials/view_layout.php:808
 msgid "Default (2)"
 msgstr ""
 
-#: admin/partials/view_layout.php:785
+#: admin/partials/view_layout.php:808
 msgid "Leave empty for default rounding (2px). Enter 0 for sharp ends, or 1–120 to override."
 msgstr ""
 
-#: admin/partials/view_layout.php:848
+#: admin/partials/view_layout.php:871
 msgid "Services Library"
 msgstr ""
 
-#: admin/partials/view_layout.php:849
+#: admin/partials/view_layout.php:872
 msgid "+ Add service"
 msgstr ""
 
-#: admin/partials/view_layout.php:851
+#: admin/partials/view_layout.php:874
 msgid "No services yet. Click \"+ Add service\" to create one."
 msgstr ""
 
-#: admin/partials/view_layout.php:856
+#: admin/partials/view_layout.php:879
 msgid "Type"
 msgstr ""
 
-#: admin/partials/view_layout.php:857
-#: admin/partials/view_layout.php:876
-#: public/class-public.php:3853
+#: admin/partials/view_layout.php:880
+#: admin/partials/view_layout.php:899
+#: public/class-public.php:3913
 msgid "Price"
 msgstr ""
 
-#: admin/partials/view_layout.php:858
-#: public/class-public.php:3852
+#: admin/partials/view_layout.php:881
+#: public/class-public.php:3912
 msgid "Duration"
 msgstr ""
 
-#: admin/partials/view_layout.php:859
-#: admin/partials/view_layout.php:884
+#: admin/partials/view_layout.php:882
+#: admin/partials/view_layout.php:907
 msgid "Description"
 msgstr ""
 
-#: admin/partials/view_layout.php:860
+#: admin/partials/view_layout.php:883
 msgid "Actions"
 msgstr ""
 
-#: admin/partials/view_layout.php:873
+#: admin/partials/view_layout.php:896
 msgid "Service name"
 msgstr ""
 
-#: admin/partials/view_layout.php:880
+#: admin/partials/view_layout.php:903
 msgid "Duration (min)"
 msgstr ""
 
-#: admin/partials/view_layout.php:885
+#: admin/partials/view_layout.php:908
 msgid "Short description shown to customers"
 msgstr ""
 
-#: admin/partials/view_layout.php:889
+#: admin/partials/view_layout.php:912
 msgid "Add-on of (parent services)"
 msgstr ""
 
-#: admin/partials/view_layout.php:890
+#: admin/partials/view_layout.php:913
 msgid "Leave empty to make this a top-level service. Tick parents to turn it into an add-on visible only when those parents are selected."
 msgstr ""
 
-#: admin/partials/view_layout.php:894
+#: admin/partials/view_layout.php:917
 msgid "No top-level services available yet — create one first to allow add-ons."
 msgstr ""
 
-#: admin/partials/view_layout.php:897
-#: admin/partials/view_layout.php:996
-msgid "Booking popup icon"
+#: admin/partials/view_layout.php:920
+msgid "Booking popup visual"
 msgstr ""
 
-#: admin/partials/view_layout.php:898
-msgid "Optional icon shown beside this service in the booking confirmation popup."
+#: admin/partials/view_layout.php:921
+msgid "Choose either an icon or an image — not both. Image formats suit staff photos (portrait), banners (landscape), or logos (square)."
 msgstr ""
 
-#: admin/partials/view_layout.php:905
-msgid "Cancel"
+#: admin/partials/view_layout.php:922
+msgid "Visual type"
 msgstr ""
 
-#: admin/partials/view_layout.php:906
-msgid "Save"
-msgstr ""
-
-#: admin/partials/view_layout.php:919
-#: admin/partials/view_layout.php:1175
-msgid "Saving…"
-msgstr ""
-
-#: admin/partials/view_layout.php:927
-msgid "Layout appearance"
+#: admin/partials/view_layout.php:924
+msgid "Image"
 msgstr ""
 
 #: admin/partials/view_layout.php:928
-msgid "Canvas and item colors/images, fit mode, transparency, and how the live map shows the center seat/capacity badge."
+msgid "Optional icon shown beside this service in the booking popup."
 msgstr ""
 
-#: admin/partials/view_layout.php:937
-msgid "Cover"
-msgstr ""
-
-#: admin/partials/view_layout.php:938
-msgid "Contain"
-msgstr ""
-
-#: admin/partials/view_layout.php:939
-msgid "Stretch"
-msgstr ""
-
-#: admin/partials/view_layout.php:940
-msgid "Repeat"
+#: admin/partials/view_layout.php:935
+msgid "No image"
 msgstr ""
 
 #: admin/partials/view_layout.php:941
-msgid "Repeat X"
+msgid "Select image"
 msgstr ""
 
 #: admin/partials/view_layout.php:942
-msgid "Repeat Y"
+msgid "Remove"
 msgstr ""
 
-#: admin/partials/view_layout.php:943
-msgid "Center"
+#: admin/partials/view_layout.php:944
+msgid "Image format"
 msgstr ""
 
 #: admin/partials/view_layout.php:947
-msgid "Canvas Background Image"
+msgid "Portrait (vertical)"
 msgstr ""
 
-#: admin/partials/view_layout.php:953
-msgid "Canvas Background Color"
+#: admin/partials/view_layout.php:948
+msgid "Landscape (horizontal)"
+msgstr ""
+
+#: admin/partials/view_layout.php:955
+msgid "AI fill"
 msgstr ""
 
 #: admin/partials/view_layout.php:956
-msgid "Solid plate behind the map. Upload an image below only if you want a photo or pattern on top of this color."
+msgid "Cancel"
 msgstr ""
 
-#: admin/partials/view_layout.php:960
-msgid "Canvas Background Fit Mode"
+#: admin/partials/view_layout.php:957
+msgid "Save"
 msgstr ""
 
-#: admin/partials/view_layout.php:973
-msgid "Render Transparent Background"
+#: admin/partials/view_layout.php:964
+msgid "Generate a layout draft with AI"
 msgstr ""
 
-#: admin/partials/view_layout.php:976
-msgid "On the site, hides the gray grid behind the map; your canvas color/image or the page background shows through."
+#: admin/partials/view_layout.php:979
+#: admin/partials/view_layout.php:1253
+msgid "Saving…"
 msgstr ""
 
-#: admin/partials/view_layout.php:981
-msgid "Bookable items appearance"
+#: admin/partials/view_layout.php:987
+msgid "Layout appearance"
 msgstr ""
 
 #: admin/partials/view_layout.php:988
-msgid "Map fill color"
-msgstr ""
-
-#: admin/partials/view_layout.php:991
-msgid "Default fill on the floor map for bookable items that do not have their own color."
-msgstr ""
-
-#: admin/partials/view_layout.php:994
-msgid "Optional shared texture/image on the map for items without their own image."
+msgid "Canvas and item colors/images, fit mode, transparency, and how the live map shows the center seat/capacity badge."
 msgstr ""
 
 #: admin/partials/view_layout.php:997
-msgid "Shown next to selected items in the booking confirmation popup only — not on the map."
+msgid "Cover"
 msgstr ""
 
-#: admin/partials/view_layout.php:1006
-msgid "Map overlays on the public site"
+#: admin/partials/view_layout.php:998
+msgid "Contain"
+msgstr ""
+
+#: admin/partials/view_layout.php:999
+msgid "Stretch"
+msgstr ""
+
+#: admin/partials/view_layout.php:1000
+msgid "Repeat"
+msgstr ""
+
+#: admin/partials/view_layout.php:1001
+msgid "Repeat X"
+msgstr ""
+
+#: admin/partials/view_layout.php:1002
+msgid "Repeat Y"
+msgstr ""
+
+#: admin/partials/view_layout.php:1003
+msgid "Center"
 msgstr ""
 
 #: admin/partials/view_layout.php:1007
-msgid "Layout-only overrides. \"Use site default\" follows PickyBooking → Settings → Visibility options."
-msgstr ""
-
-#: admin/partials/view_layout.php:1010
-msgid "Center seat/capacity badge"
-msgstr ""
-
-#: admin/partials/view_layout.php:1012
-#: admin/partials/view_layout.php:1020
-#: admin/partials/view_layout.php:1028
-#: admin/partials/view_layout.php:1066
-msgid "Use site default"
+msgid "Canvas Background Image"
 msgstr ""
 
 #: admin/partials/view_layout.php:1013
-#: admin/partials/view_layout.php:1021
-#: admin/partials/view_layout.php:1029
+msgid "Canvas Background Color"
+msgstr ""
+
+#: admin/partials/view_layout.php:1016
+msgid "Solid plate behind the map. Upload an image below only if you want a photo or pattern on top of this color."
+msgstr ""
+
+#: admin/partials/view_layout.php:1020
+msgid "Canvas Background Fit Mode"
+msgstr ""
+
+#: admin/partials/view_layout.php:1033
+msgid "Render Transparent Background"
+msgstr ""
+
 #: admin/partials/view_layout.php:1036
-#: admin/partials/view_layout.php:1045
-msgid "Show"
+msgid "On the site, hides the gray grid behind the map; your canvas color/image or the page background shows through."
 msgstr ""
 
-#: admin/partials/view_layout.php:1014
-#: admin/partials/view_layout.php:1022
-#: admin/partials/view_layout.php:1030
-#: admin/partials/view_layout.php:1037
-#: admin/partials/view_layout.php:1044
-msgid "Hide"
+#: admin/partials/view_layout.php:1041
+msgid "Bookable items appearance"
 msgstr ""
 
-#: admin/partials/view_layout.php:1018
-msgid "ID badge"
+#: admin/partials/view_layout.php:1048
+msgid "Map fill color"
 msgstr ""
 
-#: admin/partials/view_layout.php:1026
-msgid "Element label"
+#: admin/partials/view_layout.php:1051
+msgid "Default fill on the floor map for bookable items that do not have their own color."
 msgstr ""
 
-#: admin/partials/view_layout.php:1034
-msgid "Item background fill"
+#: admin/partials/view_layout.php:1054
+msgid "Optional shared texture/image on the map for items without their own image."
 msgstr ""
 
-#: admin/partials/view_layout.php:1039
-msgid "Hide removes the solid plate behind bookable items (per-item color and the site “shape fill” color). Custom images still show."
+#: admin/partials/view_layout.php:1056
+msgid "Booking popup icon"
 msgstr ""
 
-#: admin/partials/view_layout.php:1042
-msgid "Booked guest avatars"
+#: admin/partials/view_layout.php:1057
+msgid "Shown next to selected items in the booking confirmation popup only — not on the map."
 msgstr ""
 
-#: admin/partials/view_layout.php:1047
-msgid "Optional: replace the ID badge with the booker’s photo when the seat is taken (logged-in bookings). Requires “Anyone can register” in WordPress Settings → General, or demo avatars."
-msgstr ""
-
-#: admin/partials/view_layout.php:1050
-msgid "Avatar color"
-msgstr ""
-
-#: admin/partials/view_layout.php:1053
-msgid "Black & white"
-msgstr ""
-
-#: admin/partials/view_layout.php:1055
-msgid "Applies a CSS filter on the map. Does not change the uploaded file."
-msgstr ""
-
-#: admin/partials/view_layout.php:1061
-msgid "Wizard flow on the public site"
-msgstr ""
-
-#: admin/partials/view_layout.php:1062
-msgid "Layout-only override of Settings → Wizard order. “Use site default” keeps the global Classic / Smart / Smart Map / Simple choice."
+#: admin/partials/view_layout.php:1063
+msgid "Map overlays on the public site"
 msgstr ""
 
 #: admin/partials/view_layout.php:1064
-msgid "Wizard order"
+msgid "Layout-only overrides. \"Use site default\" follows PickyBooking → Settings → Visibility options."
 msgstr ""
 
-#: admin/partials/view_layout.php:1076
-msgid "Event schedule"
+#: admin/partials/view_layout.php:1067
+msgid "Center seat/capacity badge"
 msgstr ""
 
+#: admin/partials/view_layout.php:1069
 #: admin/partials/view_layout.php:1077
-msgid "Calendar (default) lets guests pick a date and time. One-time event hides the calendar and books every seat for a single date and time you set here — weddings, one-off games, premieres."
+#: admin/partials/view_layout.php:1085
+#: admin/partials/view_layout.php:1123
+msgid "Use site default"
+msgstr ""
+
+#: admin/partials/view_layout.php:1070
+#: admin/partials/view_layout.php:1078
+#: admin/partials/view_layout.php:1086
+#: admin/partials/view_layout.php:1093
+#: admin/partials/view_layout.php:1102
+msgid "Show"
+msgstr ""
+
+#: admin/partials/view_layout.php:1071
+#: admin/partials/view_layout.php:1079
+#: admin/partials/view_layout.php:1087
+#: admin/partials/view_layout.php:1094
+#: admin/partials/view_layout.php:1101
+msgid "Hide"
+msgstr ""
+
+#: admin/partials/view_layout.php:1075
+msgid "ID badge"
+msgstr ""
+
+#: admin/partials/view_layout.php:1083
+msgid "Element label"
 msgstr ""
 
 #: admin/partials/view_layout.php:1091
-msgid "Calendar — guests pick date and time"
+msgid "Item background fill"
 msgstr ""
 
-#: admin/partials/view_layout.php:1095
-msgid "One-time event — fixed date and time"
+#: admin/partials/view_layout.php:1096
+msgid "Hide removes the solid plate behind bookable items (per-item color and the site “shape fill” color). Custom images still show."
 msgstr ""
 
-#: admin/partials/view_layout.php:1100
-msgid "Event date"
+#: admin/partials/view_layout.php:1099
+msgid "Booked guest avatars"
 msgstr ""
 
 #: admin/partials/view_layout.php:1104
+msgid "Optional: replace the ID badge with the booker’s photo when the seat is taken (logged-in bookings). Requires “Anyone can register” in WordPress Settings → General, or demo avatars."
+msgstr ""
+
+#: admin/partials/view_layout.php:1107
+msgid "Avatar color"
+msgstr ""
+
+#: admin/partials/view_layout.php:1110
+msgid "Black & white"
+msgstr ""
+
+#: admin/partials/view_layout.php:1112
+msgid "Applies a CSS filter on the map. Does not change the uploaded file."
+msgstr ""
+
+#: admin/partials/view_layout.php:1118
+msgid "Wizard flow on the public site"
+msgstr ""
+
+#: admin/partials/view_layout.php:1119
+msgid "Layout-only override of Settings → Wizard order. “Use site default” keeps the global Classic / Smart / Smart Map / Simple choice."
+msgstr ""
+
+#: admin/partials/view_layout.php:1121
+msgid "Wizard order"
+msgstr ""
+
+#: admin/partials/view_layout.php:1134
+msgid "Show services on step 2 (Simple)"
+msgstr ""
+
+#: admin/partials/view_layout.php:1137
+msgid "Guests can pick services from this layout’s library on the Booking options step. Only applies when Wizard order is Simple."
+msgstr ""
+
+#: admin/partials/view_layout.php:1142
+msgid "Event schedule"
+msgstr ""
+
+#: admin/partials/view_layout.php:1143
+msgid "Calendar (default) lets guests pick a date and time. One-time event hides the calendar and books every seat for a single date and time you set here — weddings, one-off games, premieres."
+msgstr ""
+
+#: admin/partials/view_layout.php:1157
+msgid "Calendar — guests pick date and time"
+msgstr ""
+
+#: admin/partials/view_layout.php:1161
+msgid "One-time event — fixed date and time"
+msgstr ""
+
+#: admin/partials/view_layout.php:1166
+msgid "Event date"
+msgstr ""
+
+#: admin/partials/view_layout.php:1170
 msgid "Event time"
 msgstr ""
 
-#: admin/partials/view_layout.php:1106
-#: public/class-public.php:1691
-#: public/class-public.php:1692
+#: admin/partials/view_layout.php:1172
+#: public/class-public.php:1725
+#: public/class-public.php:1726
 msgid "Select time"
 msgstr ""
 
-#: admin/partials/view_layout.php:1122
+#: admin/partials/view_layout.php:1188
 msgid "Show event date and time on the booking bar"
 msgstr ""
 
-#: admin/partials/view_layout.php:1124
+#: admin/partials/view_layout.php:1190
 msgid "Guests will see the fixed date and time as text. The calendar and time dropdown stay hidden either way."
 msgstr ""
 
-#: admin/partials/view_layout.php:1131
+#: admin/partials/view_layout.php:1197
 msgid "Allow customers to select multiple items at once and optionally pick different services per item."
 msgstr ""
 
-#: admin/partials/view_layout.php:1136
+#: admin/partials/view_layout.php:1202
 msgid "Enable multi-select"
 msgstr ""
 
+#: elementor/widgets/class-widget-layout-navigator.php:30
+msgid "Picky Layout Navigator"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:111
+msgid "— No layouts yet —"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:124
+msgid "Menu source"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:128
+msgid "Bookable items from one layout"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:129
+msgid "Multiple layouts (floors / locations)"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:131
+msgid "Both modes embed the real booking UI. “Items” lists zones/tables from one layout (hover highlights, click selects to book). “Multiple layouts” switches between whole layouts (floors / locations)."
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:153
+#: public/class-public.php:3909
+msgid "Item"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:157
+msgid "Only items from the Layout selected above are listed."
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:163
+#: elementor/widgets/class-widget-layout-navigator.php:197
+msgid "Menu label (optional)"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:165
+msgid "Uses item label if empty"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:173
+msgid "Menu order"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:180
+msgid "Drag rows to set Select menu order. Listed items appear first; the rest keep layout order. Leave empty for default order. Optional label overrides the menu text."
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:199
+msgid "Uses layout title if empty"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:207
+msgid "Layouts in menu"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:214
+msgid "Drag rows to reorder floors/locations. Each entry embeds the full booking shortcode. Hover/click the menu to switch; items book like on a normal page."
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:221
+msgid "Menu position"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:225
+msgid "Left"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:229
+msgid "Right"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:241
+msgid "Menu heading"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:243
+msgid "Select"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:251
+msgid "Show item IDs in menu"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:253
+#: elementor/widgets/class-widget-layout-navigator.php:268
+msgid "Yes"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:254
+#: elementor/widgets/class-widget-layout-navigator.php:269
+msgid "No"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:266
+msgid "Show labels on canvas items"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:275
+msgid "Centered on each bookable zone in this widget only."
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:284
+msgid "Style"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:292
+msgid "Highlight color"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:301
+msgid "Menu width"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:320
+msgid "Canvas corner radius"
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:383
+msgid "Select a layout that has bookable items."
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:476
+msgid "Add one or more layouts to the menu list."
+msgstr ""
+
+#: elementor/widgets/class-widget-layout-navigator.php:536
+msgid "Layout navigator"
+msgstr ""
+
 #. translators: 1: start time, 2: end time
-#: frontend/class-frontend.php:475
+#: frontend/class-frontend.php:503
 #, php-format
 msgid "%1$s – %2$s"
 msgstr ""
 
 #. translators: %s: plural bookable items label, e.g. "Tables"
-#. translators: %s: value.
-#: frontend/class-frontend.php:486
-#: frontend/class-frontend.php:2388
-#: frontend/class-frontend.php:3031
-#: public/class-public.php:2141
-#: public/class-public.php:2143
-#: public/class-public.php:2911
-#: public/class-public.php:2913
+#: frontend/class-frontend.php:514
+#: frontend/class-frontend.php:2818
+#: frontend/class-frontend.php:3444
+#: public/class-public.php:2174
+#: public/class-public.php:2175
+#: public/class-public.php:2967
+#: public/class-public.php:2968
 #, php-format
 msgid "Book %s"
 msgstr ""
 
 #. translators: 1: reservable item label (Table/Room), 2: item id/number
-#: frontend/class-frontend.php:493
+#: frontend/class-frontend.php:521
 #, php-format
 msgid "%1$s Booking #%2$s"
 msgstr ""
 
 #. translators: %s: booking date
-#. translators: %s: value.
-#: frontend/class-frontend.php:507
-#: frontend/class-frontend.php:2486
-#: frontend/class-frontend.php:2512
-#: frontend/class-frontend.php:2845
+#: frontend/class-frontend.php:535
+#: frontend/class-frontend.php:2914
+#: frontend/class-frontend.php:2937
+#: frontend/class-frontend.php:3265
 #, php-format
 msgid "Date: %s"
 msgstr ""
 
 #. translators: %s: booking time range
-#. translators: %s: value.
-#: frontend/class-frontend.php:514
-#: frontend/class-frontend.php:2488
-#: frontend/class-frontend.php:2847
+#: frontend/class-frontend.php:542
+#: frontend/class-frontend.php:2915
+#: frontend/class-frontend.php:3266
 #, php-format
 msgid "Time: %s"
 msgstr ""
 
 #. translators: %s: comma-separated service names with prices
-#: frontend/class-frontend.php:521
+#: frontend/class-frontend.php:549
 #, php-format
 msgid "Services: %s"
 msgstr ""
 
 #. translators: 1: reservation date, 2: reservation time
-#: frontend/class-frontend.php:536
+#: frontend/class-frontend.php:564
 #, php-format
 msgid "Booking: %1$s, %2$s"
 msgstr ""
 
-#: frontend/class-frontend.php:542
+#: frontend/class-frontend.php:570
 msgid "Services & add-ons:"
 msgstr ""
 
 #. translators: %s: selected services
-#: frontend/class-frontend.php:553
+#: frontend/class-frontend.php:581
 #, php-format
 msgid "Extra services: %s"
 msgstr ""
 
-#: frontend/class-frontend.php:585
-#: frontend/class-frontend.php:603
-msgid "Payments are available in PickyBooking Pro."
+#: frontend/class-frontend.php:613
+msgid "WooCommerce is required for payment mode. Please activate WooCommerce first."
+msgstr ""
+
+#: frontend/class-frontend.php:624
+#: frontend/class-frontend.php:788
+msgid "Payment amount is not configured. Either set a Fixed amount in PickyBooking settings, or make sure selected services have prices."
+msgstr ""
+
+#: frontend/class-frontend.php:665
+msgid "Could not create WooCommerce order."
+msgstr ""
+
+#: frontend/class-frontend.php:757
+msgid "Could not initialize payment order."
+msgstr ""
+
+#: frontend/class-frontend.php:777
+msgid "Stripe secret key is empty. Please configure it in settings."
+msgstr ""
+
+#: frontend/class-frontend.php:801
+msgid "Invalid Stripe amount."
+msgstr ""
+
+#: frontend/class-frontend.php:923
+msgid "Stripe request failed. Please try again."
+msgstr ""
+
+#: frontend/class-frontend.php:935
+msgid "Stripe checkout session was not created."
 msgstr ""
 
 #. translators: %s: configurable item name singular (e.g. Table, Room, Court)
-#: frontend/class-frontend.php:660
+#: frontend/class-frontend.php:1011
 #, php-format
 msgid "%s #"
 msgstr ""
 
-#: frontend/class-frontend.php:661
+#: frontend/class-frontend.php:1014
 msgid "Error"
 msgstr ""
 
-#: frontend/class-frontend.php:662
+#: frontend/class-frontend.php:1015
 msgid "Please fill in all required fields."
 msgstr ""
 
-#: frontend/class-frontend.php:663
+#: frontend/class-frontend.php:1016
 msgid "Please select a date and time, then try again."
 msgstr ""
 
-#: frontend/class-frontend.php:664
+#: frontend/class-frontend.php:1017
 msgid "Please confirm that we may use your personal data."
 msgstr ""
 
-#: frontend/class-frontend.php:665
+#: frontend/class-frontend.php:1018
 msgid "Please select an item first."
 msgstr ""
 
-#: frontend/class-frontend.php:666
+#: frontend/class-frontend.php:1019
 msgid "Unlimited"
 msgstr ""
 
 #. translators: %s: the time (HH:MM) the next reservation starts
-#: frontend/class-frontend.php:670
+#: frontend/class-frontend.php:1023
 #, php-format
 msgid "Note: the next reservation starts at %s. Your visit will be limited to that time."
 msgstr ""
 
-#: frontend/class-frontend.php:1475
-#: frontend/class-frontend.php:1551
+#: frontend/class-frontend.php:1024
+#: frontend/class-frontend.php:3711
+#: public/class-public.php:455
+#: public/class-public.php:457
+msgid "Continue"
+msgstr ""
+
+#: frontend/class-frontend.php:1025
+#: public/class-public.php:446
+#: public/class-public.php:1757
+#: public/class-public.php:2298
+#: public/class-public.php:2930
+msgid "Pay & Book"
+msgstr ""
+
+#: frontend/class-frontend.php:1026
+#: public/class-public.php:446
+#: public/class-public.php:1757
+#: public/class-public.php:2298
+#: public/class-public.php:2930
+msgid "Book Now"
+msgstr ""
+
+#: frontend/class-frontend.php:1027
+msgid "Payment successful. Your booking is confirmed."
+msgstr ""
+
+#: frontend/class-frontend.php:1028
+msgid "Payment was cancelled. Booking is not confirmed."
+msgstr ""
+
+#: frontend/class-frontend.php:1029
+msgid "Payment verification failed. Please try again."
+msgstr ""
+
+#: frontend/class-frontend.php:1030
+msgid "Booking controls"
+msgstr ""
+
+#: frontend/class-frontend.php:1031
+msgid "Select a date to see available times"
+msgstr ""
+
+#: frontend/class-frontend.php:1032
+msgid "Loading available times…"
+msgstr ""
+
+#: frontend/class-frontend.php:1033
+msgid "No available times for this date"
+msgstr ""
+
+#: frontend/class-frontend.php:1034
+msgid "Please select at least one item"
+msgstr ""
+
+#. translators: %s: comma-separated list of unavailable item labels
+#: frontend/class-frontend.php:1036
+#, php-format
+msgid "Removed (unavailable): %s"
+msgstr ""
+
+#: frontend/class-frontend.php:1037
+#: public/class-public.php:1753
+msgid "Select on the map"
+msgstr ""
+
+#. translators: %s: formatted price with currency
+#: frontend/class-frontend.php:1039
+#, php-format
+msgid "from %s"
+msgstr ""
+
+#. translators: %1$d: count, %2$s: item label (singular/plural)
+#: frontend/class-frontend.php:1041
+#, php-format
+msgid "%1$d %2$s selected"
+msgstr ""
+
+#: frontend/class-frontend.php:1860
+#: frontend/class-frontend.php:1936
 msgid "Invalid nonce"
 msgstr ""
 
-#: frontend/class-frontend.php:1951
+#: frontend/class-frontend.php:2378
 msgid "Invalid start time."
 msgstr ""
 
 #. translators: 1: item id, 2: service name
-#: frontend/class-frontend.php:2130
+#: frontend/class-frontend.php:2557
 #, php-format
 msgid "Error. Item #%1$s (%2$s) is outside working hours."
 msgstr ""
 
-#: frontend/class-frontend.php:2156
+#: frontend/class-frontend.php:2583
 msgid "No valid items to book."
 msgstr ""
 
-#: frontend/class-frontend.php:2169
-#: frontend/class-frontend.php:2704
+#: frontend/class-frontend.php:2596
+#: frontend/class-frontend.php:3126
 msgid "Another booking for this slot is being processed. Please try again in a moment."
 msgstr ""
 
 #. translators: %s: item ID
-#: frontend/class-frontend.php:2220
+#: frontend/class-frontend.php:2647
 #, php-format
 msgid "Error. Item #%s is already booked for the selected time."
 msgstr ""
 
 #. translators: 1: customer name, 2: date, 3: item count
-#: frontend/class-frontend.php:2235
+#: frontend/class-frontend.php:2662
 #, php-format
 msgid "Order by %1$s on %2$s (%3$d items)"
 msgstr ""
 
-#: frontend/class-frontend.php:2247
+#: frontend/class-frontend.php:2674
 msgid "Failed to create order."
 msgstr ""
 
 #. translators: 1: item label, 2: item id, 3: date, 4: time, 5: customer name
 #. translators: 1: reservable item label, 2: item ID, 3: reservation date, 4: reservation time, 5: customer name
-#: frontend/class-frontend.php:2302
-#: frontend/class-frontend.php:2887
+#: frontend/class-frontend.php:2732
+#: frontend/class-frontend.php:3300
 #, php-format
 msgid "%1$s #%2$s - %3$s | %4$s. By - %5$s"
 msgstr ""
 
-#: frontend/class-frontend.php:2482
+#: frontend/class-frontend.php:2912
 msgid "New Order"
 msgstr ""
 
-#. translators: %s: value.
-#: frontend/class-frontend.php:2484
+#: frontend/class-frontend.php:2913
 #, php-format
 msgid "Customer: %s"
 msgstr ""
 
-#: frontend/class-frontend.php:2490
-#: frontend/class-frontend.php:2514
+#: frontend/class-frontend.php:2917
+#: frontend/class-frontend.php:2939
 msgid "Total:"
 msgstr ""
 
 #. translators: 1: customer name
-#: frontend/class-frontend.php:2501
+#: frontend/class-frontend.php:2928
 #, php-format
 msgid "New Booking Order by %s"
 msgstr ""
 
-#: frontend/class-frontend.php:2508
+#: frontend/class-frontend.php:2935
 msgid "Your Booking Confirmation"
 msgstr ""
 
-#. translators: %s: value.
-#: frontend/class-frontend.php:2510
+#: frontend/class-frontend.php:2936
 #, php-format
 msgid "Dear %s, thank you for your booking."
 msgstr ""
 
-#. translators: %s: value.
-#: frontend/class-frontend.php:2523
+#: frontend/class-frontend.php:2947
 #, php-format
 msgid "Booking Confirmation - %s"
 msgstr ""
 
-#: frontend/class-frontend.php:2641
+#: frontend/class-frontend.php:3063
 msgid "Error. One or more fields is empty"
 msgstr ""
 
-#: frontend/class-frontend.php:2644
+#: frontend/class-frontend.php:3066
 msgid "Error. Phone number is wrong"
 msgstr ""
 
-#: frontend/class-frontend.php:2647
+#: frontend/class-frontend.php:3069
 msgid "Error. E-mail is wrong"
 msgstr ""
 
-#: frontend/class-frontend.php:2650
+#: frontend/class-frontend.php:3072
 msgid "Error. Please, confirm that you give rights to use your personal data"
 msgstr ""
 
-#: frontend/class-frontend.php:2658
+#: frontend/class-frontend.php:3080
 msgid "Error. End time must be after start time"
 msgstr ""
 
-#: frontend/class-frontend.php:2672
+#: frontend/class-frontend.php:3094
 msgid "Error. Selected time is outside working hours"
 msgstr ""
 
 #. translators: %d: number of free capacity spots left
-#: frontend/class-frontend.php:2754
-#: frontend/class-frontend.php:2815
+#: frontend/class-frontend.php:3176
+#: frontend/class-frontend.php:3237
 #, php-format
 msgid "Error. Not enough capacity for selected time. Free spots left: %d"
 msgstr ""
 
-#: frontend/class-frontend.php:2789
-#: frontend/class-frontend.php:2799
+#: frontend/class-frontend.php:3211
+#: frontend/class-frontend.php:3221
 msgid "Error. On this date and time table already booked"
 msgstr ""
 
 #. translators: 1: reservable item label, 2: item ID, 3: reservation date, 4: reservation time, 5: customer name, 6: people count
-#: frontend/class-frontend.php:2830
+#: frontend/class-frontend.php:3252
 #, php-format
 msgid "%1$s: %2$s. Date: %3$s. Time: %4$s. Name: %5$s. People: %6$s."
 msgstr ""
 
-#. translators: Placeholders are dynamic values.
-#: frontend/class-frontend.php:2842
+#: frontend/class-frontend.php:3263
 #, php-format
 msgid "%1$s Number: %2$s"
 msgstr ""
 
-#. translators: %s: value.
-#: frontend/class-frontend.php:2850
+#: frontend/class-frontend.php:3268
 #, php-format
 msgid "Reserved Until: %s"
 msgstr ""
 
 #. translators: 1: item label, 2: time the next booking begins
-#: frontend/class-frontend.php:2855
+#: frontend/class-frontend.php:3273
 #, php-format
 msgid "Please note: the next reservation for this %1$s starts at %2$s. Your visit must end by that time."
 msgstr ""
 
-#. translators: %s: value.
-#: frontend/class-frontend.php:2861
+#: frontend/class-frontend.php:3278
+#: includes/class-google-calendar-integration.php:240
 #, php-format
 msgid "Name: %s"
 msgstr ""
 
-#. translators: %s: value.
-#: frontend/class-frontend.php:2864
+#: frontend/class-frontend.php:3280
 #, php-format
 msgid "Phone Number: %s"
 msgstr ""
 
-#. translators: %s: value.
-#: frontend/class-frontend.php:2868
+#: frontend/class-frontend.php:3283
 #, php-format
 msgid "E-mail: %s"
 msgstr ""
 
-#. translators: %s: value.
-#: frontend/class-frontend.php:2871
+#: frontend/class-frontend.php:3285
 #, php-format
 msgid "Max Seats: %s"
 msgstr ""
 
-#. translators: %s: value.
-#: frontend/class-frontend.php:2873
+#: frontend/class-frontend.php:3286
 #, php-format
 msgid "People Amount: %s"
 msgstr ""
 
 #. translators: 1: reservation date, 2: reservation time, 3: customer name
-#: frontend/class-frontend.php:2879
+#: frontend/class-frontend.php:3292
 #, php-format
 msgid "Request on - %1$s | %2$s. By - %3$s"
 msgstr ""
 
+#. translators: %s: error message from the HTTP client
+#: frontend/class-frontend.php:3494
+#, php-format
+msgid "SMS request failed: %s"
+msgstr ""
+
 #. translators: 1: customer name, 2: table ID
-#: frontend/class-frontend.php:3060
+#: frontend/class-frontend.php:3517
 #, php-format
 msgid "New Booking: \"%1$s\" reserved table no. %2$s"
 msgstr ""
 
-#: frontend/class-frontend.php:3081
+#: frontend/class-frontend.php:3538
 msgid "New Table Reservation"
 msgstr ""
 
 #. translators: 1: site name
-#: frontend/class-frontend.php:3091
+#: frontend/class-frontend.php:3548
 #, php-format
 msgid "Your Reservation Confirmation - %1$s"
 msgstr ""
 
-#: frontend/class-frontend.php:3094
+#: frontend/class-frontend.php:3551
 msgid "Reservation Confirmed!"
 msgstr ""
 
 #. translators: 1: site name
-#: frontend/class-frontend.php:3098
+#: frontend/class-frontend.php:3555
 #, php-format
 msgid "Your Reservation Request - %1$s"
 msgstr ""
 
-#: frontend/class-frontend.php:3101
+#: frontend/class-frontend.php:3558
 msgid "Reservation Request Received"
 msgstr ""
 
-#. translators: %s: value.
-#: frontend/class-frontend.php:3104
+#: frontend/class-frontend.php:3560
 #, php-format
 msgid "Dear %s,"
 msgstr ""
 
-#: frontend/class-frontend.php:3105
+#: frontend/class-frontend.php:3561
 msgid "Thank you for your reservation. Here are your booking details:"
 msgstr ""
 
-#: frontend/class-frontend.php:3107
+#: frontend/class-frontend.php:3563
 msgid "We look forward to seeing you!"
 msgstr ""
 
-#: frontend/class-frontend.php:3145
+#: frontend/class-frontend.php:3599
 msgid "Reservation was saved, but email delivery failed. Please check WordPress mail/SMTP settings."
 msgstr ""
 
-#: frontend/class-frontend.php:3150
+#: frontend/class-frontend.php:3604
 msgid "Not added"
 msgstr ""
 
-#: includes/class-booking-icons.php:92
+#: includes/class-ai-integration.php:36
+msgid "Groq (free tier)"
+msgstr ""
+
+#: includes/class-ai-integration.php:37
+msgid "OpenAI (paid)"
+msgstr ""
+
+#. translators: %s: provider label
+#: includes/class-ai-integration.php:2247
+#, php-format
+msgid "%s is configured. Groq free tier has rate limits; OpenAI usage is billed to your account."
+msgstr ""
+
+#: includes/class-ai-integration.php:2279
+msgid "You must be logged in."
+msgstr ""
+
+#: includes/class-ai-integration.php:2286
+msgid "AI rate limit reached. Please wait a few minutes and try again."
+msgstr ""
+
+#: includes/class-ai-integration.php:2320
+msgid "OpenAI API key is required."
+msgstr ""
+
+#: includes/class-ai-integration.php:2321
+msgid "Groq API key is required."
+msgstr ""
+
+#: includes/class-ai-integration.php:2365
+msgid "AI returned invalid JSON. Please try again."
+msgstr ""
+
+#: includes/class-ai-integration.php:2391
+msgid "OpenAI API key is not configured."
+msgstr ""
+
+#: includes/class-ai-integration.php:2392
+msgid "Groq API key is not configured."
+msgstr ""
+
+#: includes/class-ai-integration.php:2453
+msgid "OpenAI request failed."
+msgstr ""
+
+#: includes/class-ai-integration.php:2454
+msgid "Groq request failed."
+msgstr ""
+
+#: includes/class-ai-integration.php:2466
+msgid "OpenAI accepted your API key, but this account has no credits left. Add billing credits at https://platform.openai.com/settings/organization/billing/ — or switch Provider to Groq (free tier)."
+msgstr ""
+
+#: includes/class-ai-integration.php:2469
+msgid "Groq free-tier rate limit reached. Wait a minute and try again, or switch to Llama 4 Scout."
+msgstr ""
+
+#: includes/class-ai-integration.php:2501
+msgid "AI used all tokens on internal reasoning. Try again, or switch to Llama 4 Scout."
+msgstr ""
+
+#: includes/class-ai-integration.php:2504
+msgid "AI returned an empty response."
+msgstr ""
+
+#: includes/class-booking-icons.php:94
 msgid "Choose icon"
 msgstr ""
 
-#: includes/class-booking-icons.php:135
+#: includes/class-booking-icons.php:137
 msgid "Cinema seat"
 msgstr ""
 
-#: includes/class-booking-icons.php:136
+#: includes/class-booking-icons.php:138
 msgid "Ticket"
 msgstr ""
 
-#: includes/class-booking-icons.php:137
+#: includes/class-booking-icons.php:139
 msgid "Popcorn"
 msgstr ""
 
-#: includes/class-booking-icons.php:138
+#: includes/class-booking-icons.php:140
 msgid "Beauty chair"
 msgstr ""
 
-#: includes/class-booking-icons.php:139
+#: includes/class-booking-icons.php:141
 msgid "Scissors"
 msgstr ""
 
-#: includes/class-booking-icons.php:140
+#: includes/class-booking-icons.php:142
 msgid "Nail"
 msgstr ""
 
-#: includes/class-booking-icons.php:141
+#: includes/class-booking-icons.php:143
 msgid "Spa"
 msgstr ""
 
-#: includes/class-booking-icons.php:142
+#: includes/class-booking-icons.php:144
 msgid "Massage"
 msgstr ""
 
-#: includes/class-booking-icons.php:143
+#: includes/class-booking-icons.php:145
 msgid "Car"
 msgstr ""
 
-#: includes/class-booking-icons.php:144
-#: includes/class-booking-icons.php:189
+#: includes/class-booking-icons.php:146
+#: includes/class-booking-icons.php:191
 msgid "Parking"
 msgstr ""
 
-#: includes/class-booking-icons.php:145
+#: includes/class-booking-icons.php:147
 msgid "Charging"
 msgstr ""
 
-#: includes/class-booking-icons.php:146
+#: includes/class-booking-icons.php:148
 msgid "Umbrella"
 msgstr ""
 
-#: includes/class-booking-icons.php:147
+#: includes/class-booking-icons.php:149
 msgid "Sunbed"
 msgstr ""
 
-#: includes/class-booking-icons.php:148
+#: includes/class-booking-icons.php:150
 msgid "Cocktail"
 msgstr ""
 
-#: includes/class-booking-icons.php:149
+#: includes/class-booking-icons.php:151
 msgid "Wine"
 msgstr ""
 
-#: includes/class-booking-icons.php:150
+#: includes/class-booking-icons.php:152
 msgid "Coffee"
 msgstr ""
 
-#: includes/class-booking-icons.php:151
+#: includes/class-booking-icons.php:153
 msgid "Desk"
 msgstr ""
 
-#: includes/class-booking-icons.php:152
+#: includes/class-booking-icons.php:154
 msgid "Laptop"
 msgstr ""
 
-#: includes/class-booking-icons.php:153
+#: includes/class-booking-icons.php:155
 msgid "Meeting table"
 msgstr ""
 
-#: includes/class-booking-icons.php:154
+#: includes/class-booking-icons.php:156
 msgid "Plate"
 msgstr ""
 
-#: includes/class-booking-icons.php:155
+#: includes/class-booking-icons.php:157
 msgid "Utensils"
 msgstr ""
 
-#: includes/class-booking-icons.php:156
+#: includes/class-booking-icons.php:158
 msgid "Dumbbell"
 msgstr ""
 
-#: includes/class-booking-icons.php:157
+#: includes/class-booking-icons.php:159
 msgid "Court"
 msgstr ""
 
-#: includes/class-booking-icons.php:158
+#: includes/class-booking-icons.php:160
 msgid "Bed"
 msgstr ""
 
-#: includes/class-booking-icons.php:159
-#: includes/class-booking-icons.php:197
+#: includes/class-booking-icons.php:161
+#: includes/class-booking-icons.php:199
 msgid "Clinic"
 msgstr ""
 
-#: includes/class-booking-icons.php:160
-#: includes/class-booking-icons.php:198
+#: includes/class-booking-icons.php:162
+#: includes/class-booking-icons.php:200
 msgid "VIP"
 msgstr ""
 
-#: includes/class-booking-icons.php:161
+#: includes/class-booking-icons.php:163
 msgid "Star"
 msgstr ""
 
-#: includes/class-booking-icons.php:163
+#: includes/class-booking-icons.php:165
 msgid "Clock"
 msgstr ""
 
-#: includes/class-booking-icons.php:164
+#: includes/class-booking-icons.php:166
 msgid "Person"
 msgstr ""
 
-#: includes/class-booking-icons.php:165
+#: includes/class-booking-icons.php:167
 msgid "Gift"
 msgstr ""
 
-#: includes/class-booking-icons.php:166
+#: includes/class-booking-icons.php:168
 msgid "Arrow up"
 msgstr ""
 
-#: includes/class-booking-icons.php:167
+#: includes/class-booking-icons.php:169
 msgid "Arrow down"
 msgstr ""
 
-#: includes/class-booking-icons.php:168
+#: includes/class-booking-icons.php:170
 msgid "Arrow left"
 msgstr ""
 
-#: includes/class-booking-icons.php:169
+#: includes/class-booking-icons.php:171
 msgid "Arrow right"
 msgstr ""
 
-#: includes/class-booking-icons.php:170
+#: includes/class-booking-icons.php:172
 msgid "Arrow up-left"
 msgstr ""
 
-#: includes/class-booking-icons.php:171
+#: includes/class-booking-icons.php:173
 msgid "Arrow up-right"
 msgstr ""
 
-#: includes/class-booking-icons.php:172
+#: includes/class-booking-icons.php:174
 msgid "Arrow down-left"
 msgstr ""
 
-#: includes/class-booking-icons.php:173
+#: includes/class-booking-icons.php:175
 msgid "Arrow down-right"
 msgstr ""
 
-#: includes/class-booking-icons.php:174
+#: includes/class-booking-icons.php:176
 msgid "Two-way horizontal"
 msgstr ""
 
-#: includes/class-booking-icons.php:175
+#: includes/class-booking-icons.php:177
 msgid "Two-way vertical"
 msgstr ""
 
-#: includes/class-booking-icons.php:186
+#: includes/class-booking-icons.php:188
 msgid "Cinema"
 msgstr ""
 
-#: includes/class-booking-icons.php:187
+#: includes/class-booking-icons.php:189
 msgid "Beauty"
 msgstr ""
 
-#: includes/class-booking-icons.php:188
+#: includes/class-booking-icons.php:190
 msgid "Spa & massage"
 msgstr ""
 
-#: includes/class-booking-icons.php:190
+#: includes/class-booking-icons.php:192
 msgid "Beach"
 msgstr ""
 
-#: includes/class-booking-icons.php:191
+#: includes/class-booking-icons.php:193
 msgid "Bar"
 msgstr ""
 
-#: includes/class-booking-icons.php:192
+#: includes/class-booking-icons.php:194
 msgid "Office"
 msgstr ""
 
-#: includes/class-booking-icons.php:193
+#: includes/class-booking-icons.php:195
 #: includes/class-layout-library.php:75
 msgid "Coworking"
 msgstr ""
 
-#: includes/class-booking-icons.php:194
+#: includes/class-booking-icons.php:196
 msgid "Meeting"
 msgstr ""
 
-#: includes/class-booking-icons.php:195
+#: includes/class-booking-icons.php:197
 #: includes/class-layout-library.php:30
 msgid "Restaurant"
 msgstr ""
 
-#: includes/class-booking-icons.php:196
+#: includes/class-booking-icons.php:198
 msgid "Gym & sports"
 msgstr ""
 
-#: includes/class-booking-icons.php:199
+#: includes/class-booking-icons.php:201
 msgid "General"
 msgstr ""
 
-#: includes/class-booking-icons.php:200
+#: includes/class-booking-icons.php:202
 msgid "Directions"
+msgstr ""
+
+#: includes/class-elementor.php:149
+#: includes/class-elementor.php:276
+msgid "— Select item —"
+msgstr ""
+
+#: includes/class-elementor.php:150
+msgid "— Select a layout first —"
+msgstr ""
+
+#: includes/class-elementor.php:151
+msgid "— No items in this layout —"
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:62
+msgid "Google Calendar: Service account JSON key is not configured."
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:76
+msgid "Google Calendar: Failed to authenticate with service account."
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:107
+msgid "Invalid JSON: Missing client_email or private_key field. Ensure you copied the entire JSON file content."
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:116
+msgid "Private key is incomplete. Ensure the full private_key field is pasted (includes BEGIN and END markers)."
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:139
+msgid "JWT signature failed. The private key may be corrupted or invalid."
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:156
+msgid "HTTP request failed: "
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:166
+#, php-format
+msgid "Google returned HTTP %d. Error: %s. Description: %s. Ensure Calendar API is enabled in Google Cloud Console."
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:172
+msgid "Invalid response from Google: No access token in response."
+msgstr ""
+
+#. translators: 1: Item label, 2: Item ID, 3: Customer name
+#: includes/class-google-calendar-integration.php:232
+#, php-format
+msgid "%1$s #%2$s - %3$s"
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:243
+#, php-format
+msgid "Phone: %s"
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:246
+#, php-format
+msgid "Email: %s"
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:248
+#, php-format
+msgid "People: %d"
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:250
+#, php-format
+msgid "Seats: %d"
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:257
+#, php-format
+msgid "Payment: %s (%s)"
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:261
+#, php-format
+msgid "View in WordPress: %s"
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:334
+#, php-format
+msgid "Google Calendar API error: %s"
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:342
+msgid "Unknown API error"
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:343
+#, php-format
+msgid "Google Calendar API returned HTTP %1$d: %2$s"
+msgstr ""
+
+#: includes/class-google-calendar-integration.php:349
+msgid "Google Calendar API returned invalid response."
+msgstr ""
+
+#: includes/class-hubspot-integration.php:62
+msgid "HubSpot deal was not created because the guest had no email and no phone, so a contact could not be created. Add at least one of those fields to the booking form and try again."
+msgstr ""
+
+#: includes/class-hubspot-integration.php:141
+msgid "HubSpot could not determine a deal pipeline and stage. Check that your private app can read deal pipelines (deals read scope), or set the optional Pipeline ID and Stage ID in the plugin’s HubSpot settings."
+msgstr ""
+
+#. translators: 1: item label, 2: map element id, 3: date, 4: time, 5: WP post id
+#: includes/class-hubspot-integration.php:154
+#, php-format
+msgid "Reservation · %1$s %2$s · %3$s %4$s · WP#%5$s"
+msgstr ""
+
+#: includes/class-hubspot-integration.php:254
+msgid "Deal was created in HubSpot but could not be linked to the contact."
+msgstr ""
+
+#. translators: %1$d: HTTP status, %2$s: raw body excerpt
+#: includes/class-hubspot-integration.php:326
+#: includes/class-mailchimp-integration.php:222
+#, php-format
+msgid "HTTP %1$d — %2$s"
+msgstr ""
+
+#. translators: %s: WordPress booking post ID
+#: includes/class-hubspot-integration.php:462
+#, php-format
+msgid "WordPress booking ID: %s"
+msgstr ""
+
+#: includes/class-hubspot-integration.php:465
+msgid "Source: PickyBooking (WordPress)"
+msgstr ""
+
+#: includes/class-hubspot-integration.php:474
+msgid "Date:"
+msgstr ""
+
+#: includes/class-hubspot-integration.php:477
+msgid "Start:"
+msgstr ""
+
+#: includes/class-hubspot-integration.php:480
+msgid "End:"
+msgstr ""
+
+#: includes/class-hubspot-integration.php:483
+msgid "Name:"
+msgstr ""
+
+#: includes/class-hubspot-integration.php:486
+msgid "Phone:"
+msgstr ""
+
+#: includes/class-hubspot-integration.php:489
+msgid "Email:"
+msgstr ""
+
+#: includes/class-hubspot-integration.php:491
+msgid "Party size:"
+msgstr ""
+
+#: includes/class-hubspot-integration.php:493
+msgid "Seats (capacity):"
+msgstr ""
+
+#: includes/class-hubspot-integration.php:495
+msgid "Edit in WordPress:"
 msgstr ""
 
 #: includes/class-layout-library.php:31
@@ -4276,609 +5513,630 @@ msgstr ""
 msgid "Charging bays with driveway cues — EV / parking floor plan."
 msgstr ""
 
-#: includes/class-layout-library.php:234
-msgid "Could not encode layout as JSON."
-msgstr ""
-
-#: includes/class-layout-library.php:239
+#: includes/class-layout-library.php:240
 msgid "Could not create preset directory."
 msgstr ""
 
-#: includes/class-layout-library.php:244
+#: includes/class-layout-library.php:245
 msgid "Could not write preset file."
 msgstr ""
 
-#: includes/class-layout-library.php:532
+#: includes/class-layout-library.php:533
 msgid "Layout preset not found."
 msgstr ""
 
-#: includes/class-layout-library.php:547
-#: includes/class-layout-library.php:615
+#: includes/class-layout-library.php:548
+#: includes/class-layout-library.php:616
 msgid "No layout elements found in the preset."
 msgstr ""
 
-#: includes/class-layout-library.php:568
-#: includes/class-layout-library.php:588
+#: includes/class-layout-library.php:569
+#: includes/class-layout-library.php:589
 msgid "Preset file is not readable."
 msgstr ""
 
-#: includes/class-layout-library.php:573
-#: includes/class-layout-library.php:704
+#: includes/class-layout-library.php:574
+#: includes/class-layout-library.php:710
 msgid "Source layout not found."
 msgstr ""
 
-#: includes/class-layout-library.php:593
+#: includes/class-layout-library.php:594
 msgid "Preset file is empty."
 msgstr ""
 
-#: includes/class-layout-library.php:598
+#: includes/class-layout-library.php:599
 msgid "Preset JSON is invalid."
 msgstr ""
 
 #. translators: %s: original layout title
-#: includes/class-layout-library.php:708
+#: includes/class-layout-library.php:714
 #, php-format
 msgid "Copy of %s"
 msgstr ""
 
-#: includes/plugin-bootstrap.php:26
+#: includes/class-mailchimp-integration.php:88
+msgid "Mailchimp subscriber was not created because the guest had no email address. Add the email field to the booking form and try again."
+msgstr ""
+
+#: includes/class-mailchimp-integration.php:108
+msgid "Your WordPress user needs a valid email address for this test."
+msgstr ""
+
+#: includes/class-mailchimp-integration.php:113
+msgid "API Key and Audience ID are required."
+msgstr ""
+
+#: includes/class-mailchimp-integration.php:259
+msgid "Mailchimp API key is missing."
+msgstr ""
+
+#: includes/class-make-integration.php:37
+msgid "Make.com webhook URL is empty."
+msgstr ""
+
+#: includes/class-make-integration.php:42
+msgid "Make.com webhook URL must start with http:// or https://"
+msgstr ""
+
+#: includes/class-make-integration.php:67
+msgid "Could not encode Make.com webhook payload."
+msgstr ""
+
+#. translators: 1: HTTP status code, 2: response excerpt
+#: includes/class-make-integration.php:116
+#, php-format
+msgid "Make.com webhook returned HTTP %1$d — %2$s"
+msgstr ""
+
+#: includes/class-n8n-integration.php:34
+msgid "n8n webhook URL is empty."
+msgstr ""
+
+#: includes/class-n8n-integration.php:39
+msgid "n8n webhook URL must start with http:// or https://"
+msgstr ""
+
+#: includes/class-n8n-integration.php:64
+msgid "Could not encode webhook payload."
+msgstr ""
+
+#. translators: 1: HTTP status code, 2: response excerpt
+#: includes/class-n8n-integration.php:113
+#, php-format
+msgid "Webhook returned HTTP %1$d — %2$s"
+msgstr ""
+
+#: includes/class-zapier-integration.php:37
+msgid "Zapier webhook URL is empty."
+msgstr ""
+
+#: includes/class-zapier-integration.php:42
+msgid "Zapier webhook URL must start with http:// or https://"
+msgstr ""
+
+#: includes/class-zapier-integration.php:67
+msgid "Could not encode Zapier webhook payload."
+msgstr ""
+
+#. translators: 1: HTTP status code, 2: response excerpt
+#: includes/class-zapier-integration.php:116
+#, php-format
+msgid "Zapier webhook returned HTTP %1$d — %2$s"
+msgstr ""
+
+#: includes/plugin-bootstrap.php:28
 msgid "PickyBooking cannot run while another PickyBooking edition is active. Please deactivate one of them."
 msgstr ""
 
 #: public/class-public.php:448
-#: public/class-public.php:1723
-#: public/class-public.php:2268
-#: public/class-public.php:2873
-msgid "Pay & Book"
-msgstr ""
-
-#: public/class-public.php:448
-#: public/class-public.php:1723
-#: public/class-public.php:2268
-#: public/class-public.php:2873
-msgid "Book Now"
-msgstr ""
-
-#: public/class-public.php:450
 msgid "Booking steps"
 msgstr ""
 
-#: public/class-public.php:451
+#: public/class-public.php:449
 msgid "Step 1: Date and time"
 msgstr ""
 
-#: public/class-public.php:452
+#: public/class-public.php:450
 msgid "Step 2: Services"
 msgstr ""
 
-#: public/class-public.php:453
+#: public/class-public.php:451
 msgid "Step 3: Contact details"
 msgstr ""
 
-#: public/class-public.php:457
-#: public/class-public.php:459
-msgid "Continue"
-msgstr ""
-
-#: public/class-public.php:515
+#: public/class-public.php:512
 msgid "Booking as"
 msgstr ""
 
-#: public/class-public.php:518
+#: public/class-public.php:515
 msgid "Log out"
 msgstr ""
 
-#: public/class-public.php:524
+#: public/class-public.php:521
 msgid "Log in to show your avatar on the map. You can also book as a guest."
 msgstr ""
 
-#: public/class-public.php:526
+#: public/class-public.php:523
 msgid "Log in"
 msgstr ""
 
-#: public/class-public.php:527
+#: public/class-public.php:524
 msgid "Register"
 msgstr ""
 
-#: public/class-public.php:576
+#: public/class-public.php:572
 msgid "Select the start time"
 msgstr ""
 
-#: public/class-public.php:577
+#: public/class-public.php:573
 msgid "Available start times"
 msgstr ""
 
-#: public/class-public.php:578
-#: public/class-public.php:1699
+#: public/class-public.php:574
+#: public/class-public.php:1733
 msgid "Please, chose time"
 msgstr ""
 
-#: public/class-public.php:582
+#: public/class-public.php:578
 msgid "Select the end time"
 msgstr ""
 
-#: public/class-public.php:583
+#: public/class-public.php:579
 msgid "Available end times"
 msgstr ""
 
-#: public/class-public.php:584
+#: public/class-public.php:580
 msgid "Invalid end time"
 msgstr ""
 
-#: public/class-public.php:767
+#: public/class-public.php:762
 msgid "Please, check the checkbox"
 msgstr ""
 
-#: public/class-public.php:1675
+#: public/class-public.php:1709
 msgid "Date and time"
 msgstr ""
 
-#: public/class-public.php:1683
+#: public/class-public.php:1717
 msgid "Select date"
 msgstr ""
 
-#: public/class-public.php:1684
-#: public/class-public.php:1740
-#: public/class-public.php:2430
-#: public/class-public.php:3051
+#: public/class-public.php:1718
+#: public/class-public.php:1774
+#: public/class-public.php:2465
+#: public/class-public.php:3111
 msgid "Please, pick the date"
 msgstr ""
 
-#: public/class-public.php:1703
+#: public/class-public.php:1737
 msgid "End"
 msgstr ""
 
-#: public/class-public.php:1705
+#: public/class-public.php:1739
 msgid "End time"
 msgstr ""
 
-#: public/class-public.php:1719
-msgid "Select on the map"
-msgstr ""
-
-#: public/class-public.php:1729
-#: public/class-public.php:1769
+#: public/class-public.php:1763
+#: public/class-public.php:1780
 msgid "Available for this timeslot tables are highlighted on canvas, please select your table."
 msgstr ""
 
-#: public/class-public.php:1737
-#: public/class-public.php:2427
+#: public/class-public.php:1771
+#: public/class-public.php:2461
 msgid "Choose the Date"
 msgstr ""
 
-#: public/class-public.php:1749
+#: public/class-public.php:1784
 msgid "Select your time"
 msgstr ""
 
-#: public/class-public.php:1760
-#: public/class-public.php:2437
-#: public/class-public.php:2447
-#: public/class-public.php:3060
-#: public/class-public.php:3070
+#: public/class-public.php:1795
+#: public/class-public.php:2472
+#: public/class-public.php:2482
+#: public/class-public.php:3120
+#: public/class-public.php:3130
 msgid "Choose time"
 msgstr ""
 
-#: public/class-public.php:2102
-#: public/class-public.php:2293
-#: public/class-public.php:2893
+#: public/class-public.php:2136
+#: public/class-public.php:2324
+#: public/class-public.php:2950
 msgid "Thank You!"
 msgstr ""
 
-#: public/class-public.php:2102
-#: public/class-public.php:2293
-#: public/class-public.php:2893
+#: public/class-public.php:2136
+#: public/class-public.php:2324
+#: public/class-public.php:2950
 msgid "We will call you back soon."
 msgstr ""
 
-#: public/class-public.php:2123
-#: public/class-public.php:2423
-#: public/class-public.php:3047
+#: public/class-public.php:2157
+#: public/class-public.php:2458
+#: public/class-public.php:3107
 msgid "Date & time"
 msgstr ""
 
-#: public/class-public.php:2125
+#: public/class-public.php:2159
 msgid "Date and time were selected on the booking map. Change them there, or continue to services."
 msgstr ""
 
-#: public/class-public.php:2147
+#: public/class-public.php:2179
 msgid "Select the table"
 msgstr ""
 
-#. translators: %s: value.
-#: public/class-public.php:2150
-#: public/class-public.php:3092
+#: public/class-public.php:2181
+#: public/class-public.php:3150
 #, php-format
 msgid "Choose %s"
 msgstr ""
 
-#: public/class-public.php:2153
-#: public/class-public.php:2204
-#: public/class-public.php:2216
-#: public/class-public.php:2228
-#: public/class-public.php:2242
-#: public/class-public.php:2477
-#: public/class-public.php:2498
-#: public/class-public.php:2510
-#: public/class-public.php:2524
-#: public/class-public.php:3095
-#: public/class-public.php:3140
-#: public/class-public.php:3152
-#: public/class-public.php:3164
-#: public/class-public.php:3178
+#: public/class-public.php:2184
+#: public/class-public.php:2234
+#: public/class-public.php:2246
+#: public/class-public.php:2258
+#: public/class-public.php:2272
+#: public/class-public.php:2518
+#: public/class-public.php:2555
+#: public/class-public.php:2567
+#: public/class-public.php:2581
+#: public/class-public.php:3153
+#: public/class-public.php:3197
+#: public/class-public.php:3209
+#: public/class-public.php:3221
+#: public/class-public.php:3235
 msgid "Please, fill the field"
 msgstr ""
 
-#. translators: %s: value.
-#: public/class-public.php:2159
-#: public/class-public.php:3101
+#: public/class-public.php:2189
+#: public/class-public.php:3158
 #, php-format
 msgid "Your %s"
 msgstr ""
 
-#: public/class-public.php:2166
-#: public/class-public.php:3108
+#: public/class-public.php:2196
+#: public/class-public.php:2529
+#: public/class-public.php:3165
 msgid "Add services you need"
 msgstr ""
 
-#: public/class-public.php:2174
+#: public/class-public.php:2204
 msgid "Your date and time"
 msgstr ""
 
-#: public/class-public.php:2175
+#: public/class-public.php:2205
 msgid "Max. seats"
 msgstr ""
 
-#: public/class-public.php:2186
-#: public/class-public.php:2488
-#: public/class-public.php:3122
+#: public/class-public.php:2216
+#: public/class-public.php:2545
+#: public/class-public.php:3179
 msgid "Contact details"
 msgstr ""
 
-#: public/class-public.php:2193
-#: public/class-public.php:2466
-#: public/class-public.php:3129
+#: public/class-public.php:2223
+#: public/class-public.php:2507
+#: public/class-public.php:3186
 msgid "People amount"
 msgstr ""
 
-#: public/class-public.php:2195
-#: public/class-public.php:2468
-#: public/class-public.php:3131
+#: public/class-public.php:2225
+#: public/class-public.php:2509
+#: public/class-public.php:3188
 msgid "for this table maximum amount is:"
 msgstr ""
 
-#: public/class-public.php:2196
-#: public/class-public.php:2469
-#: public/class-public.php:3132
+#: public/class-public.php:2226
+#: public/class-public.php:2510
+#: public/class-public.php:3189
 msgid "free space for selected time is:"
 msgstr ""
 
-#: public/class-public.php:2199
-#: public/class-public.php:2472
-#: public/class-public.php:3135
+#: public/class-public.php:2229
+#: public/class-public.php:2513
+#: public/class-public.php:3192
 msgid "Select amount of people"
 msgstr ""
 
-#: public/class-public.php:2229
-#: public/class-public.php:2511
-#: public/class-public.php:3165
+#: public/class-public.php:2259
+#: public/class-public.php:2568
+#: public/class-public.php:3222
 msgid "Please, fill correct phone number"
 msgstr ""
 
-#: public/class-public.php:2236
-#: public/class-public.php:2518
-#: public/class-public.php:3172
-#: public/class-public.php:3420
+#: public/class-public.php:2266
+#: public/class-public.php:2575
+#: public/class-public.php:3229
+#: public/class-public.php:3477
 msgid "E-mail"
 msgstr ""
 
-#: public/class-public.php:2243
-#: public/class-public.php:2525
-#: public/class-public.php:3179
+#: public/class-public.php:2273
+#: public/class-public.php:2582
+#: public/class-public.php:3236
 msgid "Please, fill correct email"
 msgstr ""
 
-#: public/class-public.php:2461
+#: public/class-public.php:2496
 msgid "Booking options"
 msgstr ""
 
-#: public/class-public.php:2481
+#: public/class-public.php:2538
 msgid "No extra options for this booking. Continue to your details."
 msgstr ""
 
-#: public/class-public.php:2921
-msgid "Close"
-msgstr ""
-
-#. translators: %s: value.
-#: public/class-public.php:3089
+#: public/class-public.php:3148
 #, php-format
 msgid "Select the %s"
 msgstr ""
 
-#: public/class-public.php:3219
-#: public/class-public.php:3220
+#: public/class-public.php:3276
+#: public/class-public.php:3277
 msgid "Add New Layout"
 msgstr ""
 
-#: public/class-public.php:3222
+#: public/class-public.php:3279
 msgid "Search Layouts"
 msgstr ""
 
-#: public/class-public.php:3223
+#: public/class-public.php:3280
 msgid "No Layouts found"
 msgstr ""
 
-#: public/class-public.php:3225
+#: public/class-public.php:3282
 msgid "Floor plan layouts for table reservation."
 msgstr ""
 
 #. translators: %s: configurable item name plural (e.g. Tables, Rooms, Courts)
-#: public/class-public.php:3244
+#: public/class-public.php:3301
 #, php-format
 msgid "%s Reservations"
 msgstr ""
 
 #. translators: %s: configurable item name singular (e.g. Table, Room, Court)
-#: public/class-public.php:3246
+#: public/class-public.php:3303
 #, php-format
 msgid "%s Reservation"
 msgstr ""
 
 #. translators: %s: configurable item name singular
-#: public/class-public.php:3248
+#: public/class-public.php:3305
 #, php-format
 msgid "Add %s Reservation"
 msgstr ""
 
 #. translators: %s: configurable item name singular
-#: public/class-public.php:3250
+#: public/class-public.php:3307
 #, php-format
 msgid "Add New %s Reservation"
 msgstr ""
 
-#: public/class-public.php:3252
+#: public/class-public.php:3309
 msgid "Edit Reservation"
 msgstr ""
 
-#: public/class-public.php:3253
+#: public/class-public.php:3310
 msgid "New Reservation"
 msgstr ""
 
-#: public/class-public.php:3254
-#: public/class-public.php:3255
+#: public/class-public.php:3311
+#: public/class-public.php:3312
 msgid "View Reservation"
 msgstr ""
 
-#: public/class-public.php:3256
+#: public/class-public.php:3313
 msgid "Search Reservations"
 msgstr ""
 
-#: public/class-public.php:3257
+#: public/class-public.php:3314
 msgid "No Reservations found"
 msgstr ""
 
-#: public/class-public.php:3258
+#: public/class-public.php:3315
 msgid "No Reservations found in trash"
 msgstr ""
 
-#: public/class-public.php:3259
+#: public/class-public.php:3316
 msgid "Parent Reservations"
 msgstr ""
 
 #. translators: %s: configurable item name plural
-#: public/class-public.php:3262
+#: public/class-public.php:3319
 #, php-format
 msgid "This is where %s reservations are stored."
 msgstr ""
 
-#: public/class-public.php:3281
+#: public/class-public.php:3338
 msgid "Orders"
 msgstr ""
 
-#: public/class-public.php:3283
+#: public/class-public.php:3340
 msgid "Add Order"
 msgstr ""
 
-#: public/class-public.php:3284
+#: public/class-public.php:3341
 msgid "Add New Order"
 msgstr ""
 
-#: public/class-public.php:3286
+#: public/class-public.php:3343
 msgid "Search Orders"
 msgstr ""
 
-#: public/class-public.php:3287
+#: public/class-public.php:3344
 msgid "No Orders found"
 msgstr ""
 
-#: public/class-public.php:3288
+#: public/class-public.php:3345
 msgid "No Orders found in trash"
 msgstr ""
 
-#: public/class-public.php:3290
+#: public/class-public.php:3347
 msgid "PickyBooking customer orders (groups of child bookings)."
 msgstr ""
 
-#: public/class-public.php:3312
+#: public/class-public.php:3369
 msgid "Order Details"
 msgstr ""
 
-#: public/class-public.php:3313
+#: public/class-public.php:3370
 msgid "Order Items"
 msgstr ""
 
-#: public/class-public.php:3334
+#: public/class-public.php:3391
 msgid "Table Number"
 msgstr ""
 
-#: public/class-public.php:3368
+#: public/class-public.php:3425
 msgid "Time to reserve to"
 msgstr ""
 
-#: public/class-public.php:3386
+#: public/class-public.php:3443
 msgid "Table Seats"
 msgstr ""
 
-#: public/class-public.php:3395
+#: public/class-public.php:3452
 msgid "People Amount"
 msgstr ""
 
-#: public/class-public.php:3471
+#: public/class-public.php:3533
 msgid "HubSpot"
 msgstr ""
 
-#: public/class-public.php:3481
+#: public/class-public.php:3543
 msgid "HubSpot sync is turned off in plugin settings (Payments / HubSpot tab)."
 msgstr ""
 
-#: public/class-public.php:3483
+#: public/class-public.php:3545
 msgid "Contact record ID"
 msgstr ""
 
-#: public/class-public.php:3487
+#: public/class-public.php:3549
 msgid "Deal record ID"
 msgstr ""
 
-#: public/class-public.php:3494
+#: public/class-public.php:3556
 msgid "Deal should appear in HubSpot under Deals (try “All pipelines” or search for “Reservation”)."
 msgstr ""
 
-#: public/class-public.php:3496
+#: public/class-public.php:3558
 msgid "No deal was synced for this booking. Check the HubSpot error above if shown; otherwise verify deals scopes, pipeline settings, and submit a new test booking."
 msgstr ""
 
-#: public/class-public.php:3498
+#: public/class-public.php:3560
 msgid "In HubSpot CRM, search by this contact’s email or phone. For deals, search “Reservation” or filter by All pipelines."
 msgstr ""
 
-#: public/class-public.php:3506
-msgid "Mailchimp"
-msgstr ""
-
-#: public/class-public.php:3515
+#: public/class-public.php:3577
 msgid "Mailchimp sync is turned off in plugin settings (Payments / Mailchimp tab)."
 msgstr ""
 
-#: public/class-public.php:3518
+#: public/class-public.php:3580
 msgid "Successfully synced to Mailchimp Audience."
 msgstr ""
 
-#: public/class-public.php:3529
+#: public/class-public.php:3591
 msgid "Automation (n8n)"
 msgstr ""
 
-#: public/class-public.php:3537
+#: public/class-public.php:3599
 msgid "Booking webhook is off in plugin settings (Automation webhook / n8n section)."
 msgstr ""
 
 #. translators: %s: localized date/time
-#: public/class-public.php:3544
+#: public/class-public.php:3606
 #, php-format
 msgid "Webhook reported success (Unix time %s). Check your n8n Executions tab."
 msgstr ""
 
-#: public/class-public.php:3549
+#: public/class-public.php:3611
 msgid "No webhook delivery recorded for this booking yet (e.g. created before webhook was enabled)."
 msgstr ""
 
-#: public/class-public.php:3556
-msgid "Zapier"
-msgstr ""
-
-#: public/class-public.php:3564
+#: public/class-public.php:3626
 msgid "Zapier webhook is off in plugin settings (Payments tab → Zapier)."
 msgstr ""
 
 #. translators: %s: localized date/time
-#: public/class-public.php:3571
+#: public/class-public.php:3633
 #, php-format
 msgid "Zapier webhook reported success (%s). Check your Zap history in Zapier."
 msgstr ""
 
-#: public/class-public.php:3576
+#: public/class-public.php:3638
 msgid "No Zapier delivery recorded for this booking yet (e.g. created before the Zap was enabled)."
 msgstr ""
 
-#: public/class-public.php:3583
-msgid "Make.com"
-msgstr ""
-
-#: public/class-public.php:3591
+#: public/class-public.php:3653
 msgid "Make.com webhook is off in plugin settings (Payments tab → Make.com)."
 msgstr ""
 
 #. translators: %s: localized date/time
-#: public/class-public.php:3598
+#: public/class-public.php:3660
 #, php-format
 msgid "Make.com webhook reported success (%s). Check scenario history in Make."
 msgstr ""
 
-#: public/class-public.php:3603
+#: public/class-public.php:3665
 msgid "No Make.com delivery recorded for this booking yet (e.g. created before the scenario was enabled)."
 msgstr ""
 
-#: public/class-public.php:3610
-msgid "Google Calendar"
-msgstr ""
-
-#: public/class-public.php:3621
+#: public/class-public.php:3683
 msgid "Google Calendar sync is turned off in plugin settings (Integrations tab → Google Calendar)."
 msgstr ""
 
-#: public/class-public.php:3627
+#: public/class-public.php:3689
 msgid "✓ Synced to Google Calendar"
 msgstr ""
 
 #. translators: %s: localized date/time
-#: public/class-public.php:3632
+#: public/class-public.php:3694
 #, php-format
 msgid "Synced at %s"
 msgstr ""
 
-#: public/class-public.php:3637
+#: public/class-public.php:3699
 msgid "View in Google Calendar"
 msgstr ""
 
-#: public/class-public.php:3639
+#: public/class-public.php:3701
 msgid "Not synced to Google Calendar yet."
 msgstr ""
 
-#: public/class-public.php:3670
+#: public/class-public.php:3731
 msgid "Customer Name"
 msgstr ""
 
-#: public/class-public.php:3674
+#: public/class-public.php:3735
 msgid "Email"
 msgstr ""
 
-#: public/class-public.php:3678
+#: public/class-public.php:3739
 msgid "Phone"
 msgstr ""
 
-#: public/class-public.php:3694
+#: public/class-public.php:3755
 msgid "Order Total"
 msgstr ""
 
-#: public/class-public.php:3720
+#: public/class-public.php:3781
 msgid "Debug snapshot (price/duration was 0)"
 msgstr ""
 
-#: public/class-public.php:3721
+#: public/class-public.php:3782
 msgid "Generated automatically when order total or any item resolved to 0. Helps diagnose service-library / layout mismatches."
 msgstr ""
 
-#: public/class-public.php:3788
+#: public/class-public.php:3848
 msgid "Order status reconciled: payment was already confirmed; all items have been marked Reserved."
 msgstr ""
 
 #. translators: %d: duration in minutes
-#: public/class-public.php:3809
+#: public/class-public.php:3869
 #, php-format
 msgid "%d min"
 msgstr ""
 
 #. translators: %d: hours
-#: public/class-public.php:3815
+#: public/class-public.php:3875
 #, php-format
 msgid "%d h"
 msgid_plural "%d h"
@@ -4886,49 +6144,42 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1: hours, 2: remaining minutes
-#: public/class-public.php:3818
+#: public/class-public.php:3878
 #, php-format
 msgid "%1$d h %2$d min"
 msgstr ""
 
-#: public/class-public.php:3849
-msgid "Item"
-msgstr ""
-
-#: public/class-public.php:3860
+#: public/class-public.php:3920
 msgid "No items."
 msgstr ""
 
-#: public/class-public.php:3955
+#: public/class-public.php:4015
 msgid "Add-on"
 msgstr ""
 
-#: public/class-public.php:3991
+#: public/class-public.php:4051
 msgid "Standalone add-ons"
 msgstr ""
 
-#: public/class-public.php:4012
+#: public/class-public.php:4072
 msgid "Order total"
 msgstr ""
 
-#. translators: Placeholders are dynamic values.
-#: public/class-public.php:4128
+#: public/class-public.php:4184
 #, php-format
 msgid "Requested <span class=\"count\">(%s)</span>"
 msgid_plural "Requested <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#. translators: Placeholders are dynamic values.
-#: public/class-public.php:4137
+#: public/class-public.php:4192
 #, php-format
 msgid "Reserved <span class=\"count\">(%s)</span>"
 msgid_plural "Reserved <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#. translators: Placeholders are dynamic values.
-#: public/class-public.php:4146
+#: public/class-public.php:4200
 #, php-format
 msgid "Canceled <span class=\"count\">(%s)</span>"
 msgid_plural "Canceled <span class=\"count\">(%s)</span>"

@@ -30,7 +30,7 @@ class Info
      *
      * @var string
      */
-    const VERSION = '1.0.18';
+    const VERSION = '1.0.26';
 
     /**
      * The name for the entry in the options table.
@@ -116,6 +116,49 @@ class Info
         // exclusive - any reservation blocks the whole item for the interval
         // capacity  - reservations consume capacity up to item's max persons (requires people amount)
         'booking_mode' => 'exclusive',
+        // SMS / Payments / CRM defaults (Lite shows UI with Pro lock; enablement forced off on save).
+        'send_sms'   => '0',
+        'sms_key'    => '',
+        'sms_secret' => '',
+        'sms_phone'  => '',
+        'deposit_enabled'       => '0',
+        'deposit_amount'        => '',
+        'deposit_currency'      => 'USD',
+        'payment_amount_source' => 'fixed',
+        'payment_provider'      => 'none',
+        'stripe_publishable_key' => '',
+        'stripe_secret_key'      => '',
+        'paypal_client_id'       => '',
+        'paypal_client_secret'   => '',
+        'hubspot_enabled'          => '0',
+        'hubspot_access_token'     => '',
+        'hubspot_sync_deals'       => '0',
+        'hubspot_deal_pipeline_id' => '',
+        'hubspot_deal_stage_id'    => '',
+        'mailchimp_enabled' => '0',
+        'mailchimp_api_key' => '',
+        'mailchimp_list_id' => '',
+        'n8n_webhook_enabled' => '0',
+        'n8n_webhook_url'     => '',
+        'n8n_webhook_secret'  => '',
+        'zapier_webhook_enabled' => '0',
+        'zapier_webhook_url'     => '',
+        'zapier_webhook_secret'  => '',
+        'make_webhook_enabled' => '0',
+        'make_webhook_url'     => '',
+        'make_webhook_secret'  => '',
+        'gcal_enabled'              => '0',
+        'gcal_service_account_json' => '',
+        'gcal_calendar_id'          => 'primary',
+        'gcal_add_attendees'        => '1',
+
+        // AI is free in Lite (site owner's Groq/OpenAI key).
+        'ai_enabled'    => '0',
+        'ai_provider'   => 'groq',
+        'ai_groq_key'   => '',
+        'ai_openai_key' => '',
+        'ai_model'      => 'meta-llama/llama-4-scout-17b-16e-instruct',
+
         'days_ahead' => '30',
         'table_booked_time' => '2',
         'table_before_booked_time' => '2',
@@ -274,10 +317,45 @@ class Info
             'data-rotate' => '1',
             'data-big-side' => 'w',
         ),
+        array(
+            'title' => 'Wall',
+            'data-type' => 'type-wall',
+            'data-max-seats' => '0',
+            'data-seats' => '0',
+            'data-rotate' => '1',
+            'data-big-side' => 'w',
+        ),
+        array(
+            'title' => 'Text',
+            'data-type' => 'type-text',
+            'data-max-seats' => '0',
+            'data-seats' => '0',
+            'data-rotate' => '1',
+            'data-big-side' => 'w',
+        ),
+        array(
+            'title' => 'Shape',
+            'data-type' => 'type-shape',
+            'data-max-seats' => '0',
+            'data-seats' => '0',
+            'data-rotate' => '1',
+            'data-big-side' => 'w',
+        ),
+        array(
+            'title' => 'Icon',
+            'data-type' => 'type-icon',
+            'data-max-seats' => '0',
+            'data-seats' => '0',
+            'data-rotate' => '1',
+            'data-big-side' => 'w',
+        ),
     );
 
     /**
      * Retrieves the plugin title from the main plugin file.
+     *
+     * Used for WP.org / Plugins list marketing name. Prefer get_plugin_menu_title()
+     * for wp-admin chrome (sidebar, settings rail) so a long Plugin Name cannot wrap.
      *
      * @return string The plugin title
      */
@@ -285,6 +363,17 @@ class Info
         $path = plugin_dir_path(dirname(__FILE__)).self::MAIN_FILE;
         $data = function_exists('get_plugin_data') ? get_plugin_data($path) : array();
         return (isset($data['Name']) && !empty($data['Name'])) ? (string)$data['Name'] : 'PickyBooking';
+    }
+
+    /**
+     * Short label for wp-admin menu and in-plugin settings rail.
+     *
+     * Keep this short even when Plugin Name is a long WP.org marketing title.
+     *
+     * @return string
+     */
+    public static function get_plugin_menu_title() {
+        return 'PickyBooking';
     }
 
     public static function get_plugin_path() {
@@ -328,8 +417,15 @@ class Info
             $raw = array();
         }
         if ( function_exists( 'wp_parse_args' ) ) {
-            return wp_parse_args( $raw, self::$DEFAULT_OPTIONS );
+            $merged = wp_parse_args( $raw, self::$DEFAULT_OPTIONS );
+        } else {
+            $merged = array_merge( self::$DEFAULT_OPTIONS, $raw );
         }
-        return array_merge( self::$DEFAULT_OPTIONS, $raw );
+        // Lite: never expose online checkout as active (forged HTML / stale options).
+        if ( class_exists( __NAMESPACE__ . '\\Edition' ) && ! Edition::allows( 'payments' ) ) {
+            $merged['deposit_enabled']  = '0';
+            $merged['payment_provider'] = 'none';
+        }
+        return $merged;
     }
 }

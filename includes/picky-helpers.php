@@ -353,3 +353,163 @@ if ( ! function_exists( 'picky_request_query_value' ) ) {
 		return sanitize_text_field( (string) $raw );
 	}
 }
+
+if ( ! function_exists( 'picky_plugin_root_dir' ) ) {
+	/**
+	 * Absolute path to the active plugin root (directory containing pickybooking.php).
+	 *
+	 * @return string
+	 */
+	function picky_plugin_root_dir() {
+		return dirname( __DIR__ );
+	}
+}
+
+if ( ! function_exists( 'picky_services_library_resolve_bundled_image_path' ) ) {
+	/**
+	 * Map a service image_url to a readable local file under the plugin (samples/…).
+	 *
+	 * @param string $image_url Relative samples/… path, plugin URL, or absolute file path.
+	 * @return string Absolute filesystem path or empty.
+	 */
+	function picky_services_library_resolve_bundled_image_path( $image_url ) {
+		$image_url = is_string( $image_url ) ? trim( $image_url ) : '';
+		if ( $image_url === '' ) {
+			return '';
+		}
+
+		$root = picky_plugin_root_dir();
+
+		// Absolute readable path.
+		if ( strpos( $image_url, '/' ) === 0 && is_readable( $image_url ) ) {
+			return $image_url;
+		}
+
+		// Relative plugin path (samples/…).
+		$rel = ltrim( str_replace( '\\', '/', $image_url ), '/' );
+		if ( strpos( $rel, 'samples/' ) === 0 ) {
+			$abs = $root . '/' . $rel;
+			if ( is_readable( $abs ) ) {
+				return $abs;
+			}
+		}
+
+		// Plugin URL → local file (…/plugins/pickybooking/samples/…).
+		if ( preg_match( '#/wp-content/plugins/[^/]+/(samples/.+)$#i', $image_url, $m ) ) {
+			$abs = $root . '/' . ltrim( str_replace( '\\', '/', (string) $m[1] ), '/' );
+			if ( is_readable( $abs ) ) {
+				return $abs;
+			}
+		}
+
+		return '';
+	}
+}
+
+if ( ! function_exists( 'picky_services_library_materialize_images' ) ) {
+	/**
+	 * Import bundled service images into the Media Library and rewrite image_id/image_url.
+	 *
+	 * Relative paths like samples/{preset}-images/foo.jpg (or plugin sample URLs) are
+	 * sideloaded so preset installs ship working attachment URLs on any site.
+	 *
+	 * @param array<int, array<string, mixed>> $services  Services library rows.
+	 * @param int                              $layout_id Optional parent post for attachments.
+	 * @return array<int, array<string, mixed>>
+	 */
+	function picky_services_library_materialize_images( array $services, $layout_id = 0 ) {
+		$layout_id = absint( $layout_id );
+
+		if ( ! function_exists( 'media_handle_sideload' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/media.php';
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+		}
+
+		foreach ( $services as $i => $svc ) {
+			if ( ! is_array( $svc ) ) {
+				continue;
+			}
+			$url = isset( $svc['image_url'] ) ? trim( (string) $svc['image_url'] ) : '';
+			if ( $url === '' ) {
+				continue;
+			}
+
+			$existing_id = isset( $svc['image_id'] ) ? absint( $svc['image_id'] ) : 0;
+			if ( $existing_id > 0 && wp_attachment_is_image( $existing_id ) ) {
+				$att = wp_get_attachment_image_url( $existing_id, 'medium_large' );
+				if ( ! $att ) {
+					$att = wp_get_attachment_url( $existing_id );
+				}
+				if ( is_string( $att ) && $att !== '' ) {
+					$services[ $i ]['visual']      = 'image';
+					$services[ $i ]['image_id']    = $existing_id;
+					$services[ $i ]['image_url']   = $att;
+					$services[ $i ]['image_ratio'] = isset( $svc['image_ratio'] ) && (string) $svc['image_ratio'] !== ''
+						? sanitize_key( (string) $svc['image_ratio'] )
+						: 'square';
+					$services[ $i ]['icon']        = '';
+					continue;
+				}
+			}
+
+			$path = picky_services_library_resolve_bundled_image_path( $url );
+			if ( $path === '' ) {
+				// Keep remote http(s) URLs as-is (export/import between sites).
+				if ( preg_match( '#^https?://#i', $url ) ) {
+					$services[ $i ]['visual'] = 'image';
+				}
+				continue;
+			}
+
+			$basename = wp_basename( $path );
+			$tmp      = wp_tempnam( $basename );
+			if ( ! is_string( $tmp ) || $tmp === '' ) {
+				continue;
+			}
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents, WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+			$copied = file_put_contents( $tmp, file_get_contents( $path ) );
+			if ( false === $copied ) {
+				@unlink( $tmp ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.unlink_unlink
+				continue;
+			}
+
+			$file_array = array(
+				'name'     => $basename,
+				'tmp_name' => $tmp,
+			);
+			$title = isset( $svc['name'] ) ? sanitize_text_field( (string) $svc['name'] ) : $basename;
+			$aid   = media_handle_sideload( $file_array, $layout_id, $title );
+			if ( is_wp_error( $aid ) || ! $aid ) {
+				@unlink( $tmp ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.unlink_unlink
+				// Fallback: public plugin URL so the card still shows an image.
+				$rel = 'samples/' . ltrim( str_replace( '\\', '/', substr( $path, strlen( picky_plugin_root_dir() ) ) ), '/' );
+				$rel = preg_replace( '#^/+#', '', str_replace( 'samples/samples/', 'samples/', $rel ) );
+				if ( strpos( $path, picky_plugin_root_dir() . '/samples/' ) === 0 ) {
+					$rel = 'samples/' . substr( $path, strlen( picky_plugin_root_dir() . '/samples/' ) );
+					$services[ $i ]['visual']      = 'image';
+					$services[ $i ]['image_id']    = 0;
+					$services[ $i ]['image_url']   = plugins_url( $rel, picky_plugin_root_dir() . '/pickybooking.php' );
+					$services[ $i ]['image_ratio'] = 'square';
+					$services[ $i ]['icon']        = '';
+				}
+				continue;
+			}
+
+			$aid = (int) $aid;
+			$att = wp_get_attachment_image_url( $aid, 'medium_large' );
+			if ( ! $att ) {
+				$att = wp_get_attachment_url( $aid );
+			}
+			$services[ $i ]['visual']      = 'image';
+			$services[ $i ]['image_id']    = $aid;
+			$services[ $i ]['image_url']   = is_string( $att ) ? $att : '';
+			$services[ $i ]['image_ratio'] = isset( $svc['image_ratio'] ) && (string) $svc['image_ratio'] !== ''
+				? sanitize_key( (string) $svc['image_ratio'] )
+				: 'square';
+			$services[ $i ]['icon']        = '';
+		}
+
+		return $services;
+	}
+}

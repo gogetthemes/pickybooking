@@ -101,8 +101,7 @@ $picky_layouts_add_url = wp_nonce_url( admin_url( 'post-new.php?post_type=picky_
 									}
 									if ( current_user_can( 'delete_post', $pid ) ) {
 										$del_url = $this->picky_layout_delete_url( $pid );
-										$confirm = esc_js( __( 'Delete this layout permanently? This cannot be undone.', 'pickybooking' ) );
-										$actions['delete'] = '<a href="' . esc_url( (string) $del_url ) . '" class="submitdelete" onclick="return confirm(\'' . $confirm . '\');">' . esc_html__( 'Delete', 'pickybooking' ) . '</a>';
+										$actions['delete'] = '<a href="' . esc_url( (string) $del_url ) . '" class="submitdelete" data-picky-confirm="' . esc_attr( __( 'Delete this layout permanently? This cannot be undone.', 'pickybooking' ) ) . '">' . esc_html__( 'Delete', 'pickybooking' ) . '</a>';
 									}
 									$actions = apply_filters( 'post_row_actions', $actions, $post );
 									if ( ! empty( $actions ) ) {
@@ -113,9 +112,9 @@ $picky_layouts_add_url = wp_nonce_url( admin_url( 'post-new.php?post_type=picky_
 												$sep . $action,
 												array(
 													'a'    => array(
-														'href'    => true,
-														'class'   => true,
-														'onclick' => true,
+														'href'               => true,
+														'class'              => true,
+														'data-picky-confirm' => true,
 													),
 													'span' => array(
 														'class' => true,

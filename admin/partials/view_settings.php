@@ -202,26 +202,37 @@ if ( ! defined( 'ABSPATH' ) ) {
             $after_form   = isset( $mid_after[1] ) ? $mid_after[1] : '';
 
             /*
-             * Before the markers: nav + app panels + embedded layout builder. Do not pass through wp_kses()
-             * using "post" rules: those disallow <form>, strip many attributes from buttons/inputs, and can
-             * remove style elements — breaking Save Layout and all JS hooks (#picky-undo, etc.). This HTML is produced
-             * only by Admin::custom_settings_fields(), not end-user content.
+             * Before/after markers: nav + app panels + builder. Escaped via Admin helper
+             * (wp_kses + restore of trusted data:image preset thumbs).
              */
-            echo $before_form; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- picky_escape_admin_shell_html() runs wp_kses; data:image URIs restored after.
+            echo $this->picky_escape_admin_shell_html( $before_form );
 
             ob_start();
             settings_fields( $settings_group );
             $settings_fields_out = ob_get_clean();
 
             echo '<form id="options-save" action="options.php" method="post">';
-            echo $settings_fields_out; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core settings_fields() markup.
+            echo wp_kses(
+                $settings_fields_out,
+                array(
+                    'input' => array(
+                        'type'         => true,
+                        'id'           => true,
+                        'name'         => true,
+                        'value'        => true,
+                        'autocomplete' => true,
+                    ),
+                )
+            );
             echo wp_kses( $inside_form, $allowed_html );
             echo '<div class="submit-wrap picky-settings-submit-wrap">';
             submit_button( $submit_text );
             echo '<div class="spinner"></div></div>';
             echo '</form>';
 
-            echo $after_form; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Closing wrappers only; same trusted output pipeline as $before_form.
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- picky_escape_admin_shell_html() runs wp_kses; data:image URIs restored after.
+            echo $this->picky_escape_admin_shell_html( $after_form );
         } else {
             ?>
             <form id="options-save" action="options.php" method="post">
