@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.27
+
+Setup Checklist under Settings, clearer free amount calculation vs Pro online payment UI, Payments radio tiles matched to Main, shared Pro badge styling, and brand icons for provider cards.
+
 ## 1.0.26
 
 Fix admin menu icon/label spacing and keep the settings rail on-screen in narrow Playground viewports.
