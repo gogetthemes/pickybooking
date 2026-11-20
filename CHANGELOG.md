@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.0.28
+
+Fix frontend map crash from a missing pickyShowPaymentReturnNotice call so the booking canvas initializes.
+
 ## 1.0.27
 
-Setup Checklist under Settings, clearer free amount calculation vs Pro online payment UI, Payments radio tiles matched to Main, shared Pro badge styling, and brand icons for provider cards.
+Setup Checklist under Settings, clearer free amount calculation vs Pro online payment UI, Payments radio tiles matched to Main, shared Pro badge styling, and brand icons for provider cards. Lite Pro areas are upsell stubs only (no working Pro forms).
 
 ## 1.0.26
 

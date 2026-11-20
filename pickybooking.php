@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name:       PickyBooking – Visual Booking Map
+ * Plugin Name:       PickyBooking – Visual Table & Seat Booking Map
  * Plugin URI:        https://pickybooking.com/
- * Description:       Free visual booking plugin: drag-and-drop floor plans with bookable items, guest booking shortcode, and email notifications. Upgrade to PickyBooking Pro for payments, integrations, decorative layers, and more.
- * Version:           1.0.27
+ * Description:       Interactive floor plan booking for WordPress: guests pick a table, seat, or desk on a visual map and reserve online. Pro adds payments, integrations, and more.
+ * Version:           1.0.28
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            GoGetThemes

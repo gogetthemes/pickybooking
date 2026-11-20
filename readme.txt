@@ -1,15 +1,15 @@
-=== PickyBooking – Visual Booking Map ===
+=== PickyBooking – Visual Table & Seat Booking Map ===
 Contributors: gogetthemes
 Donate link: https://pickybooking.com/
-Tags: booking, reservation, floor plan, table booking, appointment
+Tags: table booking, floor plan, seat map, restaurant reservation, visual booking
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.27
+Stable tag: 1.0.28
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Visual floor-plan bookings for tables, seats, desks, and more. Embed with a shortcode and manage reservations by email.
+Interactive floor plan and visual table booking for WordPress. Guests pick a seat, table, or desk on a custom map and book online.
 
 == Description ==
 
@@ -106,8 +106,11 @@ No. Every feature listed as free works without a license key or time limit. Pro 
 
 == Changelog ==
 
+= 1.0.28 =
+* Fix frontend map crash: define missing pickyShowPaymentReturnNotice so the booking canvas can initialize.
+
 = 1.0.27 =
-* Add Setup Checklist under Settings, clarify free booking amount calculation vs Pro online payments, match Payments radio tiles to Main, and refresh Pro badges / provider brand icons.
+* Add Setup Checklist under Settings, clarify free booking amount calculation vs Pro online payments, match Payments radio tiles to Main, and refresh Pro badges / provider brand icons. Lite Pro areas are upsell stubs only (no working Pro forms).
 
 = 1.0.26 =
 * Fix admin menu icon/label spacing and keep the settings rail on-screen in narrow Playground viewports.

@@ -76,6 +76,81 @@
     if($el.hasClass('type-4') || $el.hasClass('type-circle')){ return false; }
     return true;
   }
+
+  /**
+   * After Stripe/Woo return (?picky_payment=success|cancel|failed), show thank-you or error.
+   * Must exist before the early call below — missing def crashed the whole frontend bundle.
+   */
+  function pickyShowPaymentReturnNotice(){
+    var params;
+    try {
+      params = new URLSearchParams(window.location.search || '');
+    } catch(e){
+      return;
+    }
+    var payment = (params.get('picky_payment') || '').toLowerCase();
+    if(!payment){ return; }
+    var msg = '';
+    var isSuccess = false;
+    if(payment === 'success'){
+      msg = pickyI18n.payment_success ? String(pickyI18n.payment_success) : '';
+      isSuccess = true;
+    } else if(payment === 'cancel'){
+      msg = pickyI18n.payment_cancel ? String(pickyI18n.payment_cancel) : '';
+    } else {
+      msg = pickyI18n.payment_failed ? String(pickyI18n.payment_failed) : '';
+    }
+    $('.picky-tables-wrap').each(function(){
+      var wrap = $(this);
+
+      if(isSuccess){
+        wrap.find('.picky-form-booking').hide();
+        wrap.find('.picky-selection-tray').hide();
+
+        var thx = wrap.find('.picky-form-thx');
+        var titleElem = thx.find('.picky-form-thx-title');
+        if(titleElem.length){
+          thx.find('.picky-payment-thx-msg').remove();
+          titleElem.after('<p class="picky-payment-thx-msg" style="color:#16a34a;margin-top:10px;font-weight:bold;text-align:center;">' + msg + '</p>');
+        }
+
+        if(wrap.hasClass('picky-smart-booking-overlay')){
+          wrap.attr('aria-hidden', 'false');
+          if(!wrap.hasClass('picky-tables-wrap-second')){
+             wrap.find('.picky-form-back').show();
+          }
+          pickySetBookingModalOpen(true);
+        } else if (wrap.find('.picky-smart-booking-overlay').length) {
+          wrap.find('.picky-smart-booking-overlay').attr('aria-hidden', 'false');
+          wrap.find('.picky-form-back').show();
+          pickySetBookingModalOpen(true);
+        }
+
+        thx.fadeIn(150);
+
+        window.pickyPaymentRefreshTimeout = setTimeout(function() {
+          try {
+            var currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.delete('picky_payment');
+            currentUrl.searchParams.delete('picky_booking_id');
+            window.location.href = currentUrl.toString();
+          } catch(e) {
+            window.location.href = window.location.pathname;
+          }
+        }, 6000);
+      } else {
+        wrap.find('.picky-payment-return-notice').remove();
+        var notice = $('<div class="picky-payment-return-notice picky-payment-return-error" role="status" aria-live="polite"></div>').text(msg);
+        wrap.prepend(notice);
+        notice.hide().fadeIn(150);
+
+        var firstNotice = $('.picky-payment-return-notice').first();
+        if(firstNotice.length && typeof pickySmoothScrollTo === 'function'){
+          pickySmoothScrollTo(firstNotice, 20);
+        }
+      }
+    });
+  }
   
   // Map an HH:MM string to "minutes since midnight" for END-of-window times.
   // "00:00" / "24:00" become 1440 so 23:30 → 00:00 stays a valid one-day slot.
