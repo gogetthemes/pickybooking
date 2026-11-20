@@ -1289,14 +1289,22 @@
         if(!baseW || baseW <= 0){ baseW = 0; }
         if(!baseH || baseH <= 0){ baseH = 750; }
 
-        var containerW = $wrapInner.width();
+        // Prefer the outer booking wrap width. Measuring .picky-draggable-wrap after a
+        // previous transform:scale can return a collapsed/too-narrow width (Playground /
+        // some themes), which then over-scales the canvas into a thin strip on the left.
+        var containerW = $wrap.width();
         if(!containerW || containerW <= 0){
-          containerW = $wrap.width();
+          containerW = $wrap.parent().width();
+        }
+        if(!containerW || containerW <= 0){
+          containerW = $wrapInner.width();
         }
         if(!containerW || containerW <= 0 || !baseW || baseW <= 0){
           $wrapInner.css({'height': '', 'max-width': '', 'margin-left': '', 'margin-right': ''});
           return;
         }
+        // Theme column padding / admin bar layouts — keep a small gutter.
+        if(containerW > 40){ containerW = containerW - 16; }
 
         // Width-fit: scale down whenever the canvas is wider than the container (any viewport).
         // Cap at 1 so we stay 1:1 with admin when there is enough space.

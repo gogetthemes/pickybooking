@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.29
+
+Fix frontend floor-plan scaling when the canvas wrapper width collapses under transform (map was squashed to the left).
+
 ## 1.0.28
 
 Fix frontend map crash from a missing pickyShowPaymentReturnNotice call so the booking canvas initializes.

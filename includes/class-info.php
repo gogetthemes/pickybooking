@@ -30,7 +30,7 @@ class Info
      *
      * @var string
      */
-    const VERSION = '1.0.28';
+    const VERSION = '1.0.29';
 
     /**
      * The name for the entry in the options table.

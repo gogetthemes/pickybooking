@@ -5,7 +5,7 @@ Tags: table booking, floor plan, seat map, restaurant reservation, visual bookin
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.28
+Stable tag: 1.0.29
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,9 @@ No. Every feature listed as free works without a license key or time limit. Pro 
 6. Layouts library — your saved floor plans, Start from blank, and Pro preset previews.
 
 == Changelog ==
+
+= 1.0.29 =
+* Fix frontend floor-plan scaling when the canvas wrapper width is measured too narrow (map no longer collapses to a strip on the left).
 
 = 1.0.28 =
 * Fix frontend map crash: define missing pickyShowPaymentReturnNotice so the booking canvas can initialize.
